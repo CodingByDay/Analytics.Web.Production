@@ -8,7 +8,7 @@ using System.Web.Security;
 using DevExpress.DashboardWeb;
 using System.Data.SqlClient;
 using System.Data;
-
+using static peptak.SiteMaster;
 namespace peptak
 {
     public partial class _Default : Page
@@ -20,7 +20,12 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
+        
+
+
+
+
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
             string uname = HttpContext.Current.User.Identity.Name;
             if (uname == "user1")

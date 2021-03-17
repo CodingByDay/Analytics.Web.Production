@@ -11,7 +11,16 @@
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-
+    <style>
+      
+        #users {
+              margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+        }
+    </style>
+   
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 

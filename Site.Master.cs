@@ -48,7 +48,11 @@ namespace peptak
         protected void administration_Click(object sender, EventArgs e)
         {
             //pass
+            Response.Redirect("administration.aspx", true);
+          
 
         }
+
+   
     }
 }

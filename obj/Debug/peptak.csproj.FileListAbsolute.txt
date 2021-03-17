@@ -467,6 +467,8 @@ C:\Users\tadej\Desktop\2\peptak\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\tadej\Desktop\2\peptak\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\tadej\Desktop\2\peptak\obj\Debug\peptak.dll
 C:\Users\tadej\Desktop\2\peptak\obj\Debug\peptak.pdb
+C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.dll.licenses
+C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\2\peptak\bin\peptak.dll.config
 C:\Users\janko\Desktop\2\peptak\bin\peptak.dll
 C:\Users\janko\Desktop\2\peptak\bin\peptak.pdb
@@ -536,6 +538,8 @@ C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Printing.v20.2.Core.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.RichEdit.v20.2.Core.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Sparkline.v20.2.Core.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Utils.v20.2.dll
+C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.ASPxPivotGrid.v20.2.dll
+C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.ASPxThemes.v20.2.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.Resources.v20.2.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.v20.2.dll
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Xpo.v20.2.dll
@@ -578,6 +582,7 @@ C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Printing.v20.2.Core.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.RichEdit.v20.2.Core.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Sparkline.v20.2.Core.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Utils.v20.2.xml
+C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.ASPxPivotGrid.v20.2.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Web.v20.2.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.Xpo.v20.2.xml
 C:\Users\janko\Desktop\2\peptak\bin\DevExpress.XtraCharts.v20.2.xml
@@ -696,9 +701,6 @@ C:\Users\janko\Desktop\2\peptak\bin\de\DevExpress.XtraTreeList.v20.2.resources.d
 C:\Users\janko\Desktop\2\peptak\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\2\peptak\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\2\peptak\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csprojAssemblyReference.cache
-C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.dll.licenses
-C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.pdb
