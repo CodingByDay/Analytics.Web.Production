@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="test1" />
+  <DataSources>
+    <SqlDataSource Name="tZE_Stock" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="tZE_Stock">
+        <Tables>
+          <Table Name="tZE_Stock" />
+        </Tables>
+        <Columns>
+          <Column Table="tZE_Stock" Name="ackItem" />
+          <Column Table="tZE_Stock" Name="anvValueDiff" />
+          <Column Table="tZE_Stock" Name="adDate" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+</Dashboard>

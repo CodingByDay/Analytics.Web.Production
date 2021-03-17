@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Proizvodnja v lanskem letu" />
+  <DataSources>
+    <SqlDataSource Name="TZE_DASHDATA_0000081" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="TZE_DASHDATA_0000081">
+        <Tables>
+          <Table Name="TZE_DASHDATA_0000081" />
+        </Tables>
+        <Columns>
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlItem$#" />
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlValue$#" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+    <SqlDataSource Name="proiz_lani_cela_tabela" ComponentName="sqlDataSource2">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="proiz_lani_cela_tabela">
+        <Tables>
+          <Table Name="TZE_DASHDATA_0000081" />
+        </Tables>
+        <Columns>
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlItem$#" />
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlValue$#" />
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlName$#" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+    <SqlDataSource Name="uvTN_OpenOrdersForConsignee" ComponentName="sqlDataSource3">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="uvTN_OpenOrdersForConsignee">
+        <Tables>
+          <Table Name="uvTN_OpenOrdersForConsignee" />
+        </Tables>
+        <Columns>
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="acconsignee" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Narocilo" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="anno" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Ident" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Naziv" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Rok" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Zamuda" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Kolicina" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="OdprtaKolicina" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Cena" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Vrednost" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="OdprtaVrednost" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Parameters>
+    <Parameter Name="Parameter1" />
+  </Parameters>
+  <Items>
+    <Pie ComponentName="pieDashboardItem1" Name="V obliki tortice" DataSource="sqlDataSource1" DataMember="TZE_DASHDATA_0000081" ShowPieCaptions="false">
+      <ColoringOptions MeasuresColoringMode="Hue" />
+      <DataItems>
+        <Dimension DataMember="#$sqlItem$#" SortOrder="Descending" SortByMeasure="DataItem2" TopNEnabled="true" TopNCount="15" TopNMeasure="DataItem2" DefaultId="DataItem1" />
+        <Measure DataMember="#$sqlValue$#" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+    <Grid ComponentName="gridDashboardItem1" Name="Dataset z vsemi kolonami" DataSource="sqlDataSource2" DataMember="proiz_lani_cela_tabela">
+      <DataItems>
+        <Dimension DataMember="#$sqlItem$#" SortOrder="Descending" SortByMeasure="DataItem2" DefaultId="DataItem0" />
+        <Dimension DataMember="#$sqlName$#" DefaultId="DataItem1" />
+        <Measure DataMember="#$sqlValue$#" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+      </DataItems>
+      <GridColumns>
+        <GridDimensionColumn Name="Ident" Weight="59.862385321100959">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Naziv" Weight="97.018348623853271">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Vrednost" Weight="68.119266055045927">
+          <Measure DefaultId="DataItem2" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions ColumnWidthMode="Manual" />
+    </Grid>
+    <Chart ComponentName="chartDashboardItem2" Name="Proizvodnja lanskega leta po identih" DataSource="sqlDataSource2" DataMember="proiz_lani_cela_tabela" Rotated="true">
+      <ColoringOptions MeasuresColoringMode="None" />
+      <DataItems>
+        <Measure DataMember="#$sqlValue$#" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="#$sqlItem$#" Name="Izdelki" SortOrder="Descending" ColoringMode="Hue" SortByMeasure="DataItem1" DefaultId="DataItem2" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem2" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednost proizvodnje" />
+          <Series>
+            <Simple Name="Vrednost">
+              <Value DefaultId="DataItem1" />
+              <PointLabelOptions OverlappingMode="None" ContentType="Value" />
+            </Simple>
+          </Series>
+        </Pane>
+        <Pane Name="Pane 2" />
+      </Panes>
+      <ChartLegend Visible="false" />
+      <AxisX Reverse="true" TitleVisible="true" LimitVisiblePoints="true" />
+    </Chart>
+  </Items>
+  <ColorScheme>
+    <Entry DataSource="sqlDataSource1" DataMember="TZE_DASHDATA_0000081" Color="-2411962">
+      <DimensionKeys>
+        <DimensionKey>
+          <Definition DataMember="#$sqlItem$#" />
+          <Value Type="System.String" Value="FCAPCR063/4" />
+        </DimensionKey>
+      </DimensionKeys>
+    </Entry>
+    <Entry DataSource="sqlDataSource2" DataMember="proiz_lani_cela_tabela" Color="-2092519">
+      <DimensionKeys>
+        <DimensionKey>
+          <Definition DataMember="#$sqlItem$#" />
+          <Value Type="System.String" Value="FCAPIHSCR063" />
+        </DimensionKey>
+      </DimensionKeys>
+    </Entry>
+  </ColorScheme>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup>
+        <LayoutGroup Orientation="Vertical" Weight="1.1627246925260171">
+          <LayoutItem DashboardItem="chartDashboardItem2" />
+          <LayoutItem DashboardItem="pieDashboardItem1" />
+        </LayoutGroup>
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="0.83727530747398293" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

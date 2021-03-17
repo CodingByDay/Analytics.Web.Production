@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Naročila 2" />
+  <DataSources>
+    <SqlDataSource Name="uvTN_OpenOrdersForConsignee" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="uvTN_OpenOrdersForConsignee">
+        <Tables>
+          <Table Name="uvTN_OpenOrdersForConsignee" Alias="uvTN_OpenOrdersForConsignee_1" />
+        </Tables>
+        <Columns>
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="acconsignee" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="acstatus" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Narocilo" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="anno" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Ident" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Naziv" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Rok" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Zamuda" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Kolicina" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="OdprtaKolicina" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Cena" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="Vrednost" />
+          <Column Table="uvTN_OpenOrdersForConsignee_1" Name="OdprtaVrednost" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Odprta naročila" DataSource="sqlDataSource1" DataMember="uvTN_OpenOrdersForConsignee">
+      <DataItems>
+        <Dimension DataMember="acconsignee" SortOrder="Descending" SortByMeasure="DataItem1" DefaultId="DataItem0" />
+        <Measure DataMember="Vrednost" FilterString="[DataItem3] &lt;&gt; 'X' And [DataItem3] &lt;&gt; 'Z'" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="OdprtaVrednost" FilterString="[DataItem3] &lt;&gt; 'X' And [DataItem3] &lt;&gt; 'Z'" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="acstatus" DefaultId="DataItem3" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem3" />
+      </HiddenDimensions>
+      <GridColumns>
+        <GridDimensionColumn Name="Kupec">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Vrednost naročil">
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="Odprta vrednost">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions />
+    </Grid>
+    <Pie ComponentName="pieDashboardItem1" Name="Odprta naročila po kupcih" DataSource="sqlDataSource1" DataMember="uvTN_OpenOrdersForConsignee" PieType="Donut" LabelContentType="ArgumentValueAndPercent">
+      <DataItems>
+        <Measure DataMember="OdprtaVrednost" FilterString="[acstatus] &lt;&gt; 'X' And [acstatus] &lt;&gt; 'Z'" DefaultId="DataItem0">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="acconsignee" SortOrder="Descending" SortByMeasure="DataItem0" DefaultId="DataItem1" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem0" />
+      </Values>
+    </Pie>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Range Filter 1" DataSource="sqlDataSource1" DataMember="uvTN_OpenOrdersForConsignee" />
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup Weight="1.9142857142857144">
+          <LayoutGroup Orientation="Vertical" Weight="1.0075685903500473">
+            <LayoutItem DashboardItem="gridDashboardItem1" Weight="1.0075685903500473" />
+            <LayoutItem DashboardItem="rangeFilterDashboardItem1" Weight="1.0075685903500473" />
+          </LayoutGroup>
+          <LayoutItem DashboardItem="pieDashboardItem1" Weight="0.99243140964995269" />
+        </LayoutGroup>
+        <LayoutItem Weight="0.085714285714285632" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

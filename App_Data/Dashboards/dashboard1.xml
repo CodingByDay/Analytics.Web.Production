@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="TZE_DASHDATA_0000081" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="TZE_DASHDATA_0000081">
+        <Tables>
+          <Table Name="TZE_DASHDATA_0000081" />
+        </Tables>
+        <Columns>
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlName$#" />
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlValue$#" />
+          <Column Table="TZE_DASHDATA_0000081" Name="#$sqlItem$#" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="TZE_DASHDATA_0000081">
+      <DataItems>
+        <Measure DataMember="#$sqlItem$#" SummaryType="Count" DefaultId="DataItem0" />
+        <Dimension DataMember="#$sqlValue$#" DefaultId="DataItem1" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem1" />
+      </SeriesDimensions>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="chartDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

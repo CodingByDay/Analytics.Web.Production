@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Naročila" />
+  <DataSources>
+    <SqlDataSource Name="OdprtaNarocilaPoKupcih" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="OdprtaNarocilaPoKupcih">
+        <Tables>
+          <Table Name="uvTN_OpenOrdersForConsignee" />
+        </Tables>
+        <Columns>
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="kupec" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="Vrednost" />
+          <Column Table="uvTN_OpenOrdersForConsignee" Name="OdprtaVrednost" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Odprta naročila po kupcih" DataSource="sqlDataSource1" DataMember="OdprtaNarocilaPoKupcih">
+      <DataItems>
+        <Dimension DataMember="kupec" SortOrder="Descending" SortByMeasure="DataItem2" TopNCount="10" TopNMeasure="DataItem2" DefaultId="DataItem0" />
+        <Measure DataMember="OdprtaVrednost" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="Vrednost" SortByMeasure="DataItem2" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Dimension>
+      </DataItems>
+      <GridColumns>
+        <GridDimensionColumn Name="Kupec" Weight="70.861084681255932">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Skupna vrednost" Weight="70.861084681255932">
+          <Dimension DefaultId="DataItem1" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Odprta vrednost" Weight="83.27783063748808">
+          <Measure DefaultId="DataItem2" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions ColumnWidthMode="AutoFitToContents" />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
