@@ -50,18 +50,11 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                 
                         <li> <asp:Button type="submit" Value="SignOut" runat="server" ID="cmdSignOut" OnClick="cmdSignOut_Click" Text="Odjava" /></li>
-
+                        <li> <asp:Button type="submit" Value="Admin" runat="server" ID="admin" OnClick="administration_Click" Text="Administracija" /></li>
                     </ul>
                 </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                 
-                       <li> <asp:Button type="submit" Value="Admin" runat="server" ID="Button1" OnClick="administration_Click" Text="Administracija" /></li>
-
-                    </ul>
-                </div>
+                
             </div>
         </div>
         <div class="container body-content">
