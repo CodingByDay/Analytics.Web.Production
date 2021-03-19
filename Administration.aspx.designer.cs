@@ -15,22 +15,22 @@ namespace peptak
     {
 
         /// <summary>
-        /// users control.
+        /// usersPermisions control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox users;
+        protected global::System.Web.UI.WebControls.DropDownList usersPermisions;
 
         /// <summary>
-        /// graphs control.
+        /// graphsFinal control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ListBox graphs;
+        protected global::DevExpress.Web.ASPxCheckBoxList graphsFinal;
 
         /// <summary>
         /// Save control.

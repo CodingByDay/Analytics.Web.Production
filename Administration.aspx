@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Administration.aspx.cs" Inherits="peptak.Administration" %>
+<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
     
@@ -12,17 +13,20 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
      
     <hr />
-    <center><h1>Izberite uporabnika, in se odločite katere grafe lahko vidi.</h1></center>
+    <center><h4>Izberite uporabnika, in se odločite katere grafe lahko vidi.</h4></center>
     <hr />
     <div align="center">
-    <asp:ListBox  ID="users" runat="server" Height="162px" Width="327px"></asp:ListBox>
-    </div>
+    <asp:DropDownList ID="usersPermisions" runat="server"></asp:DropDownList>    </div>
 
        <hr />
     <center><h1 id="test">Izberite grafe katere lahko vidi.</h1></center>
     <hr />
     <div align="center" id="graphBox">
-    <asp:ListBox  ID="graphs" runat="server" Height="162px" Width="700px" SelectionMode="Multiple"></asp:ListBox>
+       
+        <dx:ASPxCheckBoxList ID="graphsFinal" runat="server" ValueType="System.String">
+        </dx:ASPxCheckBoxList>
+ 
+
 
         <hr />
            <center><asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" /></center>
