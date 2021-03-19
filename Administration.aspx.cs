@@ -21,35 +21,48 @@ namespace peptak
         private List<String> graphNames = new List<string>();
         private string[] graphQuery = new string[100];
         private String finalQuery = "";
-        private int[] index;
         public string ArraySelected;
-        private int user;
         private List<String> values = new List<string>();
-        private SelectedIndexCollection indexList;
         private string[] answer = new string[100];
         private object id;
-
+        private String permisionQuery;
         protected void Page_Load(object sender, EventArgs e)
         {
 
-           
-
-
-          
-            FillList();
-            FillListGraphs();
 
 
 
+            if (!IsPostBack) // Doesn't update the values more than once.
+            {
+                FillList();
+                FillListGraphs();
+                showConfig();
+            }
 
 
+
+            usersPermisions.AutoPostBack = true;
 
             Save.Click += Save_Click;
 
-
         }
 
-    
+        private void showConfig()
+        {
+            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+            // SET @ColList = ''
+            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
+            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+            // EXEC(@SQLStatment)
+
+            permisionQuery = @"DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+                    SET @ColList = ''
+                    select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
+                    SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+                    EXEC(@SQLStatment)";
+            // Documentation. This query is for getting all the permision table data from the user
+
+        }
 
         public void FillList()
         {
@@ -57,9 +70,9 @@ namespace peptak
             {
 
 
-                //Button btn = ((Button)Master.FindControl("admin"));
-                //btn.Text = "Nazaj";
-                //btn.Click += Btn_Click;
+                // Button btn = ((Button)Master.FindControl("admin"));
+                // btn.Text = "Nazaj";
+                // btn.Click += Btn_Click;
                 string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
@@ -143,14 +156,14 @@ namespace peptak
         }
       
 
-        private void makeSQLquery(string name, SelectedIndexCollection selectedGraphs)
+        private void makeSQLquery(SelectedIndexCollection selectedGraphs)
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             for (int i = 0; i < selectedGraphs.Count; i++)
             {
                 var tempGraphString = values.ElementAt(i);
-                findId = String.Format($"SELECT id_permisions from Users where uname='{name}'");
+                findId = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
               
 
                 // execute query
@@ -194,15 +207,18 @@ namespace peptak
 
         private void Save_Click(object sender, EventArgs e)
         {
+            Response.Write(usersPermisions.SelectedValue);
             indexList = graphsFinal.SelectedIndices;
-          
-            makeSQLquery(usersPermisions.SelectedValue, indexList);
-           
-           
+            makeSQLquery(indexList);                      
         }
         private void saveSettings_Click(object sender, EventArgs e)
         {
             Response.Redirect("logon.aspx", true);
+        }
+
+        protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //
         }
     }
 }

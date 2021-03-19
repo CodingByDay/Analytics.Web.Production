@@ -16,10 +16,10 @@
     <center><h4>Izberite uporabnika, in se odločite katere grafe lahko vidi.</h4></center>
     <hr />
     <div align="center">
-    <asp:DropDownList ID="usersPermisions" runat="server"></asp:DropDownList>    </div>
+    <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged"></asp:DropDownList>    </div>
 
        <hr />
-    <center><h1 id="test">Izberite grafe katere lahko vidi.</h1></center>
+    <center><h4 id="test">Izberite grafe katere lahko vidi.</h4></center>
     <hr />
     <div align="center" id="graphBox">
        
