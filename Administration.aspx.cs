@@ -16,7 +16,9 @@ namespace peptak
         private string findId;
         private string finalQuerys;
         private SqlConnection conn;
+        private string findIdString;
         private SqlCommand cmd;
+        private object idNumber;
         private List<String> DataUser = new List<string>();
         private List<String> graphNames = new List<string>();
         private string[] graphQuery = new string[100];
@@ -26,6 +28,14 @@ namespace peptak
         private string[] answer = new string[100];
         private object id;
         private String permisionQuery;
+        private SelectedIndexCollection indexList;
+        private object idUser;
+        private List<String> BinaryPermisionList = new List<String>();
+        private bool? bitValue;
+        private bool isConfirmed;
+        private int test;
+        private List<String> columnNames = new List<string>();
+        private List<bool> config = new List<bool>();
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -37,30 +47,73 @@ namespace peptak
                 FillList();
                 FillListGraphs();
                 showConfig();
+               
+            }
+            else
+            {
+                showConfig();
+
+            }
+          foreach(bool configValue in config)
+            {
+                Response.Write(configValue);
             }
 
-
-
             usersPermisions.AutoPostBack = true;
-
-            Save.Click += Save_Click;
-
+          
+        
+          
         }
 
         private void showConfig()
         {
+            config.Clear();
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
             // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
             // SET @ColList = ''
             // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment)
+            findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
 
-            permisionQuery = @"DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+            // Documentation. This query is for getting all the permision table data from the user
+            cmd = new SqlCommand(findIdString, conn);
+            
+            idNumber = cmd.ExecuteScalar();
+
+            Int32 Total_Key = System.Convert.ToInt32(idNumber);
+
+            permisionQuery = $@"DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
                     SET @ColList = ''
                     select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+                    SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions WHERE id_permisions={Total_Key}'
                     EXEC(@SQLStatment)";
-            // Documentation. This query is for getting all the permision table data from the user
+
+            cmd = new SqlCommand(permisionQuery, conn);
+
+
+            SqlDataReader permisions = cmd.ExecuteReader();
+
+            while (permisions.Read())
+            {
+                // test = (int)permisions["id_permision"];
+                //string nameofTable = values.ElementAt(i);
+                // //...
+                for (int i = 0; i < permisions.FieldCount; i++)
+                {
+                    columnNames.Add(permisions.GetName(i));
+                    ////  BinaryPermisionList.Add(sdr["uname"].ToString());
+                    //BinaryPermisionList.Add(bitValue.ToString());
+                    //i++;//
+                }
+                foreach (string name in columnNames)
+                {
+
+                    bool bitValueTemp = (bool)(permisions[name] as bool? ?? false);
+                    config.Add(bitValueTemp);
+                }
+            }
 
         }
 
@@ -111,7 +164,7 @@ namespace peptak
 
                 System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
                 System.IO.FileInfo[] fi = di.GetFiles();
-
+                
 
                 foreach (System.IO.FileInfo file in fi)
                 {
@@ -122,7 +175,7 @@ namespace peptak
                     graphNames.Add(file.Name + " " + tempXmlName);
                     string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
 
-                    // REffils potential new tables.
+                    // Refils potential new tables.
                     finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(trimmed);
 
