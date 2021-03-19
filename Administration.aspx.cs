@@ -13,6 +13,7 @@ namespace peptak
 {
     public partial class Administration : System.Web.UI.Page
     {
+        private string findId;
         private string finalQuerys;
         private SqlConnection conn;
         private SqlCommand cmd;
@@ -23,9 +24,11 @@ namespace peptak
         private int[] index;
         public string ArraySelected;
         private int user;
-        private string[] values = new string[100];
+        private List<String> values = new List<string>();
         private SelectedIndexCollection indexList;
         private string[] answer = new string[100];
+        private object id;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -108,7 +111,7 @@ namespace peptak
 
                     // REffils potential new tables.
                     finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-                    values.Append(trimmed);
+                    values.Add(trimmed);
 
                     // execute query
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -140,34 +143,46 @@ namespace peptak
         }
       
 
-        private void makeSQLquery(string name, string[] selectedGraphs)
+        private void makeSQLquery(string name, SelectedIndexCollection selectedGraphs)
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            for (int i = 0; i < selectedGraphs.Length ; i++)
+            for (int i = 0; i < selectedGraphs.Count; i++)
             {
-                var tempGraph = selectedGraphs[i];
-
-                finalQuerys = String.Format($"UPDATE permisions SET {tempGraph}=false WHERE uname={name};");
+                var tempGraphString = values.ElementAt(i);
+                findId = String.Format($"SELECT id_permisions from Users where uname='{name}'");
+              
 
                 // execute query
-          
+
                 // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand(findId, conn);
+                try
+                {
+                    id = cmd.ExecuteScalar();
+                    
+                }
+                catch (Exception e)
+                {
+                    continue;
+
+
+                }
+                Int32 Total_ID = System.Convert.ToInt32(id);
+
+                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}='True' WHERE id_permisions={Total_ID};");
                 cmd = new SqlCommand(finalQuerys, conn);
                 try
                 {
                     cmd.ExecuteNonQuery();
-                    Response.Write(finalQuerys);
-                    answer.Append(finalQuerys);
                 }
                 catch (Exception e)
                 {
-                    Response.Write(finalQuerys);
-                    answer.Append(finalQuerys);
-                  
+                    continue;
+
 
                 }
-             
+
             }
             cmd.Dispose();
             conn.Close();
@@ -180,15 +195,10 @@ namespace peptak
         private void Save_Click(object sender, EventArgs e)
         {
             indexList = graphsFinal.SelectedIndices;
-            foreach (int i in indexList)
-            {
-                graphQuery.Append(values[i]);
-            }
-            makeSQLquery(usersPermisions.SelectedValue, graphQuery);
-            foreach (string i in answer) {
-                Response.Write(i);
-
-            }
+          
+            makeSQLquery(usersPermisions.SelectedValue, indexList);
+           
+           
         }
         private void saveSettings_Click(object sender, EventArgs e)
         {
