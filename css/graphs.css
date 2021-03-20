@@ -2,6 +2,22 @@
 }
 
 
+#save{
+   font-size: larger;
+}
+
+#permisionSettings {
+margin:10px;
+width:400px;
+justify-content:center;
+border: solid;
+border-color: black;
+border-width: thick;
+margin-bottom:10px;
+}
+
+
+
 
 
 

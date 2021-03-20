@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Administration.aspx.cs" Inherits="peptak.Administration" %>
+﻿<%@ Page Title="Administracija" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Administration.aspx.cs" Inherits="peptak.Administration" %>
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
    
@@ -12,27 +12,29 @@
        <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
      
+   <div id="permisionSettings"> <hr />
+    <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
     <hr />
-    <center><h4>Izberite uporabnika, in se odločite katere grafe lahko vidi.</h4></center>
-    <hr />
-    <div align="center">
-    <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged"></asp:DropDownList>    </div>
+  
+  <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged"></asp:DropDownList>    
 
        <hr />
-    <center><h4 id="test">Izberite grafe katere lahko vidi.</h4></center>
+ 
     <hr />
-    <div align="center" id="graphBox">
+   
        
-        <dx:ASPxCheckBoxList ID="graphsFinal" runat="server" ValueType="System.String">
-        </dx:ASPxCheckBoxList>
+      <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
+        </dx:ASPxCheckBoxList></center>
  
 
 
         <hr />
-           <center><asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" /></center>
-    </div>
-    
- 
+    <div id="save">
+          <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" />
+   </div>
+    <hr />
+       <hr />
+ </div>
     
 
 

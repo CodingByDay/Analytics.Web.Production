@@ -56,7 +56,7 @@ namespace peptak
             }
           foreach(bool configValue in config)
             {
-                Response.Write(configValue);
+               // Response.Write(configValue);
             }
 
             usersPermisions.AutoPostBack = true;
