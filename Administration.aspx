@@ -30,7 +30,7 @@
 
         <hr />
     <div id="save">
-          <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" />
+          <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" />
    </div>
     <hr />
        <hr />

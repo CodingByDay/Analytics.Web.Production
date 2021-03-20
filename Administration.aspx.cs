@@ -36,6 +36,7 @@ namespace peptak
         private int test;
         private List<String> columnNames = new List<string>();
         private List<bool> config = new List<bool>();
+        private List<String> debug = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -47,19 +48,20 @@ namespace peptak
                 FillList();
                 FillListGraphs();
                 showConfig();
-               
+
             }
             else
             {
+                FillListGraphs();
                 showConfig();
 
             }
-          foreach(bool configValue in config)
-            {
-               // Response.Write(configValue);
-            }
+            //foreach (bool configValue in config)
+            //{
+            //    Response.Write(configValue);
+            //}
 
-            usersPermisions.AutoPostBack = true;
+         
           
         
           
@@ -76,7 +78,7 @@ namespace peptak
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment)
             findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
-
+            Response.Write(findIdString);
             // Documentation. This query is for getting all the permision table data from the user
             cmd = new SqlCommand(findIdString, conn);
             
@@ -112,6 +114,17 @@ namespace peptak
 
                     bool bitValueTemp = (bool)(permisions[name] as bool? ?? false);
                     config.Add(bitValueTemp);
+                }
+
+                for(int i=0;i<config.Count;i++)
+                {
+                    if(config[i]==true) {
+                        graphsFinal.SelectedIndex = i;
+                    }
+                    else
+                    {
+                        continue;
+                    }
                 }
             }
 
@@ -236,8 +249,9 @@ namespace peptak
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
 
-                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}='True' WHERE id_permisions={Total_ID};");
+                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}=1 WHERE id_permisions={Total_ID};");
                 cmd = new SqlCommand(finalQuerys, conn);
+                debug.Add(finalQuerys);
                 try
                 {
                     cmd.ExecuteNonQuery();
@@ -258,12 +272,7 @@ namespace peptak
 
 
 
-        private void Save_Click(object sender, EventArgs e)
-        {
-            Response.Write(usersPermisions.SelectedValue);
-            indexList = graphsFinal.SelectedIndices;
-            makeSQLquery(indexList);                      
-        }
+     
         private void saveSettings_Click(object sender, EventArgs e)
         {
             Response.Redirect("logon.aspx", true);
@@ -272,6 +281,15 @@ namespace peptak
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
         {
             //
+        }
+
+        protected void Save_Click1(object sender, EventArgs e)
+        {
+          
+            Response.Write(usersPermisions.SelectedValue);
+            indexList = graphsFinal.SelectedIndices;
+            Response.Write(indexList.Count);
+            makeSQLquery(indexList);
         }
     }
 }
