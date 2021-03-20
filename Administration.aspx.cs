@@ -41,19 +41,18 @@ namespace peptak
         {
 
 
-
-
+            showConfig();
             if (!IsPostBack) // Doesn't update the values more than once.
             {
                 FillList();
                 FillListGraphs();
-                showConfig();
 
             }
             else
             {
-                FillListGraphs();
                 showConfig();
+                FillListGraphs();
+                
 
             }
             //foreach (bool configValue in config)
@@ -61,7 +60,12 @@ namespace peptak
             //    Response.Write(configValue);
             //}
 
-         
+            Response.Write(config.Count());
+
+            foreach(bool item in config)
+            {
+                Response.Write(item);
+            }
           
         
           
@@ -78,7 +82,6 @@ namespace peptak
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment)
             findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
-            Response.Write(findIdString);
             // Documentation. This query is for getting all the permision table data from the user
             cmd = new SqlCommand(findIdString, conn);
             
@@ -86,11 +89,8 @@ namespace peptak
 
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
 
-            permisionQuery = $@"DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-                    SET @ColList = ''
-                    select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions WHERE id_permisions={Total_Key}'
-                    EXEC(@SQLStatment)";
+            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
+                   
 
             cmd = new SqlCommand(permisionQuery, conn);
 
@@ -102,30 +102,29 @@ namespace peptak
                 // test = (int)permisions["id_permision"];
                 //string nameofTable = values.ElementAt(i);
                 // //...
-                for (int i = 0; i < permisions.FieldCount; i++)
+                for (int i = 1; i < permisions.FieldCount; i++)
                 {
                     columnNames.Add(permisions.GetName(i));
                     ////  BinaryPermisionList.Add(sdr["uname"].ToString());
                     //BinaryPermisionList.Add(bitValue.ToString());
                     //i++;//
+                    debug.Add(permisions.GetName(i));
                 }
-                foreach (string name in columnNames)
+                for(int i = 0;i<columnNames.Count;i++)
                 {
-
+                    string name = columnNames[i];
                     bool bitValueTemp = (bool)(permisions[name] as bool? ?? false);
                     config.Add(bitValueTemp);
+                    if(bitValueTemp == true)
+                    {
+                        graphsFinal.Items.ElementAt(i).Selected = true;
+                    } else
+                    {
+                        graphsFinal.Items.ElementAt(i).Selected = false;
+                    }
                 }
 
-                for(int i=0;i<config.Count;i++)
-                {
-                    if(config[i]==true) {
-                        graphsFinal.SelectedIndex = i;
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
+               
             }
 
         }
@@ -286,9 +285,8 @@ namespace peptak
         protected void Save_Click1(object sender, EventArgs e)
         {
           
-            Response.Write(usersPermisions.SelectedValue);
+
             indexList = graphsFinal.SelectedIndices;
-            Response.Write(indexList.Count);
             makeSQLquery(indexList);
         }
     }
