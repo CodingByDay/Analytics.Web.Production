@@ -29,11 +29,7 @@ namespace peptak
         private object id;
         private String permisionQuery;
         private SelectedIndexCollection indexList;
-        private object idUser;
         private List<String> BinaryPermisionList = new List<String>();
-        private bool? bitValue;
-        private bool isConfirmed;
-        private int test;
         private List<String> columnNames = new List<string>();
         private List<bool> config = new List<bool>();
         private List<String> debug = new List<string>();

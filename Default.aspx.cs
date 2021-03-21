@@ -21,21 +21,26 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-        
-
-
-
-
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
             string uname = HttpContext.Current.User.Identity.Name;
-            if (uname == "user1")
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select userRole from Users where uname='{uname}'", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            var sdr = cmd.ExecuteScalar();
+
+            var user = sdr.ToString();
+
+            if(user!="Manager")
+            {
+                ASPxDashboard1.WorkingMode = WorkingMode.Viewer;
+            } else
             {
                 ASPxDashboard1.WorkingMode = WorkingMode.Designer;
+            }
 
-            }
-            else {
-                ASPxDashboard1.WorkingMode = WorkingMode.Viewer;
-            }
+
 
         }
 
