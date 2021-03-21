@@ -37,15 +37,16 @@ namespace peptak
         private List<String> columnNames = new List<string>();
         private List<bool> config = new List<bool>();
         private List<String> debug = new List<string>();
+        private List<bool> valuesBool = new List<bool>();
         protected void Page_Load(object sender, EventArgs e)
         {
 
-
-            showConfig();
             if (!IsPostBack) // Doesn't update the values more than once.
             {
+
                 FillList();
                 FillListGraphs();
+                showConfig();
 
             }
             else
@@ -71,8 +72,10 @@ namespace peptak
           
         }
 
-        private void showConfig()
+        private List<bool> showConfig()
         {
+            valuesBool.Clear();
+            columnNames.Clear();
             config.Clear();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -118,15 +121,17 @@ namespace peptak
                     if(bitValueTemp == true)
                     {
                         graphsFinal.Items.ElementAt(i).Selected = true;
+                        valuesBool.Add(true);
                     } else
                     {
                         graphsFinal.Items.ElementAt(i).Selected = false;
+                        valuesBool.Add(false);
                     }
                 }
 
                
             }
-
+            return valuesBool;
         }
 
         public void FillList()
