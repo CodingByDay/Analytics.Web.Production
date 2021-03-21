@@ -35,8 +35,61 @@
     <hr />
        <hr />
  </div>
-    
+    <div id="registration">
+        <div>  
+            <table class="style1">  
+                <tr>  
+                    <center><h4>Registracija novega uporabnika.</h4></center>
+                    <td>     Ime in priimek</td>  
+                    <td>  
+                        <asp:TextBox ID="TxtName" runat="server"></asp:TextBox>  
+                    </td>  
+                </tr>  
+                <tr>  
+                    <center><td>     Uporabniško ime:</td></center>  
+                    <td>  
+                        <asp:TextBox ID="TxtUserName" runat="server"></asp:TextBox>  
+                    </td>  
+                </tr>  
+                <tr>  
+                    <center><td>     Geslo:</td></center>  
+                    <td>  
+                        <asp:TextBox ID="TxtPassword" runat="server"  
+                                     TextMode="Password"></asp:TextBox>  
+                    </td>  
+                </tr>  
+                <tr>  
+                    <center><td>     Še enkrat:</td></center>  
+                    <td>  
+                        <asp:TextBox ID="TxtRePassword" runat="server"  
+                                     TextMode="Password"></asp:TextBox>  
+                    </td>  
+                </tr>  
+                 <td>Pozicija</td>  
+                    <td>  
+                        <asp:RadioButtonList ID="userRole" runat="server">  
+                            <asp:ListItem>Manager</asp:ListItem>  
+                            <asp:ListItem>Admin</asp:ListItem>  
+                            <asp:ListItem>User</asp:ListItem>  
+                        </asp:RadioButtonList>  
+                    </td> 
+           
+                <tr>  
+                   <center><td>     Podjetje:</td></center>  
+                    <td>  
+                        <asp:DropDownList ID="companiesList" runat="server"  
+                                          AppendDataBoundItems="true">  
+                           
+                        </asp:DropDownList>  
+                    </td>  
+                </tr>  
+            </table>  
+        </div>  
+        <asp:Button ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/>  
+
+        <hr />
+        <hr />
 
 
-
+    </div>
     </asp:Content>
