@@ -38,9 +38,11 @@ namespace peptak
         private List<bool> config = new List<bool>();
         private List<String> debug = new List<string>();
         private List<bool> valuesBool = new List<bool>();
+        private int flag;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
+           
             if (!IsPostBack) // Doesn't update the values more than once.
             {
 
@@ -48,25 +50,17 @@ namespace peptak
                 FillListGraphs();
                 showConfig();
 
-            }
-            else
-            {
-                showConfig();
-                FillListGraphs();
-                
+            } 
 
-            }
+
+
+          
+           
             //foreach (bool configValue in config)
             //{
             //    Response.Write(configValue);
             //}
 
-            Response.Write(config.Count());
-
-            foreach(bool item in config)
-            {
-                Response.Write(item);
-            }
           
         
           
@@ -224,14 +218,46 @@ namespace peptak
 
             }
         }
-      
 
-        private void makeSQLquery(SelectedIndexCollection selectedGraphs)
+
+        public void FillListGraphsNames()
+        {
+            
+
+
+                string filePath = Server.MapPath("~/App_Data/Dashboards");
+
+                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+                System.IO.FileInfo[] fi = di.GetFiles();
+
+
+                foreach (System.IO.FileInfo file in fi)
+                {
+                    XDocument doc = XDocument.Load(filePath + "/" + file.Name);
+
+                    var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
+
+                    graphNames.Add(file.Name + " " + tempXmlName);
+                    string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
+
+                    // Refils potential new tables.
+                    // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
+                    values.Add(trimmed);
+
+
+                }
+            
+            }
+
+
+        private void makeSQLquery()
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            for (int i = 0; i < selectedGraphs.Count; i++)
+            for (int i = 0; i < graphsFinal.Items.Count; i++)
             {
+                
+               
                 var tempGraphString = values.ElementAt(i);
                 findId = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
               
@@ -252,8 +278,14 @@ namespace peptak
 
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
-
-                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}=1 WHERE id_permisions={Total_ID};");
+                 if(graphsFinal.Items.ElementAt(i).Selected==true)
+                {
+                    flag = 1;
+                } else
+                {
+                    flag = 0;
+                }
+                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
                 cmd = new SqlCommand(finalQuerys, conn);
                 debug.Add(finalQuerys);
                 try
@@ -284,7 +316,7 @@ namespace peptak
 
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //
+            showConfig();
         }
 
         protected void Save_Click1(object sender, EventArgs e)
@@ -292,7 +324,15 @@ namespace peptak
           
 
             indexList = graphsFinal.SelectedIndices;
-            makeSQLquery(indexList);
+            FillListGraphsNames();
+            makeSQLquery();
+            showConfig();
+            //foreach (string deb in debug)
+            //{
+            //    Response.Write(deb);
+            //}
+            //showConfig();
+
         }
     }
 }
