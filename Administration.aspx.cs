@@ -161,6 +161,7 @@ namespace peptak
 
             }
             return valuesBool;
+            copyUpdateDashboards();
         }
 
         public void FillList()
@@ -338,12 +339,32 @@ namespace peptak
             }
             cmd.Dispose();
             conn.Close();
+
+
+
+         
         }
+        /// <summary>
+        /// Copy from and to custom storage.
+        /// </summary>
+        private void copyUpdateDashboards()
+        {
+            var folder = HttpContext.Current.User.Identity.Name;
 
+            var path = $"~/App_Data/{folder}";
 
+            for(int i=0;i<graphsFinal.Items.Count;i++)
+            {
+                if(graphsFinal.Items.ElementAt(i).Selected == true)
+                {
 
+                } else 
+                {
 
+                }
+            }
 
+        }
 
         private void saveSettings_Click(object sender, EventArgs e)
         {
