@@ -11,16 +11,16 @@ namespace peptak
 {
 
 
-    public partial class _Default
+    public partial class Custom
     {
 
         /// <summary>
-        /// ASPxDashboard2 control.
+        /// form2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.DashboardWeb.ASPxDashboard ASPxDashboard1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form2;
     }
 }
