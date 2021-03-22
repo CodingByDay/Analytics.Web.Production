@@ -1,6 +1,7 @@
 ﻿using DevExpress.Web;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -39,6 +40,7 @@ namespace peptak
         private List<String> companies = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
+            values.Clear();
 
             if (!IsPostBack) // Doesn't update the values more than once.
             {
@@ -48,16 +50,22 @@ namespace peptak
                 showConfig();
                 fillCompanies();
 
+            } else
+            {
+           
+                FillListGraphs();
+                showConfig();
+                fillCompanies();
+
             }
 
+            foreach(string dev in debug)
+            {
+                Response.Write(dev);
+            }
+       
 
 
-
-
-            //foreach (bool configValue in config)
-            //{
-            //    Response.Write(configValue);
-            //}
 
 
 
@@ -103,6 +111,7 @@ namespace peptak
 
         private List<bool> showConfig()
         {
+            debug.Clear();
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
@@ -120,81 +129,52 @@ namespace peptak
             idNumber = cmd.ExecuteScalar();
 
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
+            conn.Close();
+            conn.Dispose();
             permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
-
 
             cmd = new SqlCommand(permisionQuery, conn);
 
+            debug.Add(permisionQuery);
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
 
-            SqlDataReader permisions = cmd.ExecuteReader();
-
-            while (permisions.Read())
+            using (SqlConnection connection = new SqlConnection(
+             "server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
             {
-                // test = (int)permisions["id_permision"];
-                //string nameofTable = values.ElementAt(i);
-                // //...
-                for (int i = permisions.FieldCount-fileNames.Count; i < permisions.FieldCount; i++)
+                SqlCommand command = new SqlCommand(permisionQuery, connection);
+                connection.Open();
+                SqlDataReader reader =
+                    command.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
                 {
-
-                    if (!File.Exists($"~/App_Data/{fileNames.ElementAt(i - fileNames.Count)}"))
+                    for (int i = 0; i < values.Count; i++)
                     {
-                        continue;
-                    }
-                    else
-                    {
-
-
-                        columnNames.Add(permisions.GetName(i));
-                        ////  BinaryPermisionList.Add(sdr["uname"].ToString());
-                        //BinaryPermisionList.Add(bitValue.ToString());
-                        //i++;//
-                        debug.Add(permisions.GetName(i));
-                    }
-                }
-                for (int i = 0; i < columnNames.Count; i++)
-                {
-
-
-
-                    string name = columnNames[i];
-                    bool bitValueTemp = (bool)(permisions[name] as bool? ?? false);
-                    config.Add(bitValueTemp);
-                    if (bitValueTemp == true)
-                    {
-                        graphsFinal.Items.ElementAt(i).Selected = true;
-                        valuesBool.Add(true);
-                    }
-                    else
-                    {
-                        graphsFinal.Items.ElementAt(i).Selected = false;
-                        valuesBool.Add(false);
+                        bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
+                        config.Add(bitValueTemp);
+                        if (bitValueTemp == true)
+                        {
+                            graphsFinal.Items.ElementAt(i).Selected = true;
+                            valuesBool.Add(true);
+                        }
+                        else
+                        {
+                            graphsFinal.Items.ElementAt(i).Selected = false;
+                            valuesBool.Add(false);
+                        }
                     }
                 }
 
-
+                conn.Close();
+                conn.Dispose();
+                return valuesBool;
             }
-           
-            
-            
-            
-            
-            
-            return valuesBool;
-
         }
-
-
-
         private void copyFiles()
         {
-
             var filePath = Server.MapPath("~/App_Data/Dashboards");
-
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
             System.IO.FileInfo[] fi = di.GetFiles();
             var folder = usersPermisions.SelectedValue;
-
             for (int i = 0; i < fi.Length; i++)
             {
                 var item = fi[i].Name;
@@ -204,7 +184,7 @@ namespace peptak
 
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
                 {
-                    if (File.Exists(output))
+                    if (!File.Exists(output))
                     {
                         continue;
                     }
@@ -224,30 +204,17 @@ namespace peptak
                         continue;
                     }
                 }
-
-
-
-
-
-
-
-
             }
-
-            }
-
+        }
 
 
 
-            public void FillList()
+
+ public void FillList()
         {
             try
             {
 
-
-                // Button btn = ((Button)Master.FindControl("admin"));
-                // btn.Text = "Nazaj";
-                // btn.Click += Btn_Click;
                 string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
@@ -255,8 +222,6 @@ namespace peptak
                 cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
-
-
                 while (sdr.Read())
                 {
                     DataUser.Add(sdr["uname"].ToString());
@@ -264,8 +229,6 @@ namespace peptak
                 }
                 usersPermisions.DataSource = DataUser;
                 usersPermisions.DataBind();
-
-
                 cmd.Dispose();
                 conn.Close();
 
@@ -280,7 +243,8 @@ namespace peptak
         {
             try
             {
-
+                fileNames.Clear();
+                values.Clear();
 
                 string filePath = Server.MapPath("~/App_Data/Dashboards");
 
@@ -295,12 +259,13 @@ namespace peptak
                     var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
 
                     graphNames.Add(file.Name + " " + tempXmlName);
-                    string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
+                    string trimmedless = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
+                    string trimmed = trimmedless.Replace("-", "");
                     fileNames.Add(file.Name);
                     // Refils potential new tables.
                     finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-                    values.Add(trimmed);
 
+                    values.Add(trimmed);
                     // execute query
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
@@ -333,8 +298,8 @@ namespace peptak
 
         public void FillListGraphsNames()
         {
-
-
+            fileNames.Clear();
+            values.Clear();
 
             string filePath = Server.MapPath("~/App_Data/Dashboards");
 
@@ -349,7 +314,7 @@ namespace peptak
                 var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
 
                 graphNames.Add(file.Name + " " + tempXmlName);
-                string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
+                string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
 
                 // Refils potential new tables.
                 // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
@@ -399,7 +364,6 @@ namespace peptak
                 }
                 finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
                 cmd = new SqlCommand(finalQuerys, conn);
-                debug.Add(finalQuerys);
                 try
                 {
                     cmd.ExecuteNonQuery();
@@ -427,10 +391,7 @@ namespace peptak
             Response.Redirect("logon.aspx", true);
         }
 
-        protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            showConfig();
-        }
+    
 
         protected void Save_Click1(object sender, EventArgs e)
         {
@@ -441,11 +402,8 @@ namespace peptak
             makeSQLquery();
             showConfig();
             copyFiles();
-            //foreach (string deb in debug)
-            //{
-            //    Response.Write(deb);
-            //}
-            //showConfig();
+          
+         
 
         }
 
@@ -525,14 +483,6 @@ namespace peptak
                     }
                     //
                 }
-
-
-
-
-
-
-
-
 
 
             }

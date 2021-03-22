@@ -16,7 +16,7 @@
     <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
     <hr />
   
-  <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged"></asp:DropDownList>    
+  <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server"></asp:DropDownList>    
 
        <hr />
  

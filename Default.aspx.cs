@@ -20,8 +20,9 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+    
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+        
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
