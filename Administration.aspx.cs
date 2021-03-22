@@ -35,6 +35,7 @@ namespace peptak
         private List<String> debug = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private int flag;
+        private List<String> fileNames = new List<string>();
         private List<String> companies = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -133,16 +134,29 @@ namespace peptak
                 // test = (int)permisions["id_permision"];
                 //string nameofTable = values.ElementAt(i);
                 // //...
-                for (int i = 1; i < permisions.FieldCount; i++)
+                for (int i = permisions.FieldCount-fileNames.Count; i < permisions.FieldCount; i++)
                 {
-                    columnNames.Add(permisions.GetName(i));
-                    ////  BinaryPermisionList.Add(sdr["uname"].ToString());
-                    //BinaryPermisionList.Add(bitValue.ToString());
-                    //i++;//
-                    debug.Add(permisions.GetName(i));
+
+                    if (!File.Exists($"~/App_Data/{fileNames.ElementAt(i - fileNames.Count)}"))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+
+
+                        columnNames.Add(permisions.GetName(i));
+                        ////  BinaryPermisionList.Add(sdr["uname"].ToString());
+                        //BinaryPermisionList.Add(bitValue.ToString());
+                        //i++;//
+                        debug.Add(permisions.GetName(i));
+                    }
                 }
                 for (int i = 0; i < columnNames.Count; i++)
                 {
+
+
+
                     string name = columnNames[i];
                     bool bitValueTemp = (bool)(permisions[name] as bool? ?? false);
                     config.Add(bitValueTemp);
@@ -160,11 +174,72 @@ namespace peptak
 
 
             }
+           
+            
+            
+            
+            
+            
             return valuesBool;
-            copyUpdateDashboards();
+
         }
 
-        public void FillList()
+
+
+        private void copyFiles()
+        {
+
+            var filePath = Server.MapPath("~/App_Data/Dashboards");
+
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            System.IO.FileInfo[] fi = di.GetFiles();
+            var folder = usersPermisions.SelectedValue;
+
+            for (int i = 0; i < fi.Length; i++)
+            {
+                var item = fi[i].Name;
+
+                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
+                var output = Server.MapPath($"~/App_Data/{folder}/{item}");
+
+                if (graphsFinal.Items.ElementAt(i).Selected == true)
+                {
+                    if (File.Exists(output))
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        File.Copy(source, output);
+                    }
+                }
+                else
+                {
+                    if (File.Exists(output))
+                    {
+                        File.Delete(output);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+
+
+
+
+
+
+
+
+            }
+
+            }
+
+
+
+
+            public void FillList()
         {
             try
             {
@@ -221,7 +296,7 @@ namespace peptak
 
                     graphNames.Add(file.Name + " " + tempXmlName);
                     string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
-
+                    fileNames.Add(file.Name);
                     // Refils potential new tables.
                     finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(trimmed);
@@ -344,27 +419,8 @@ namespace peptak
 
          
         }
-        /// <summary>
-        /// Copy from and to custom storage.
-        /// </summary>
-        private void copyUpdateDashboards()
-        {
-            var folder = HttpContext.Current.User.Identity.Name;
-
-            var path = $"~/App_Data/{folder}";
-
-            for(int i=0;i<graphsFinal.Items.Count;i++)
-            {
-                if(graphsFinal.Items.ElementAt(i).Selected == true)
-                {
-
-                } else 
-                {
-
-                }
-            }
-
-        }
+      
+      
 
         private void saveSettings_Click(object sender, EventArgs e)
         {
@@ -384,6 +440,7 @@ namespace peptak
             FillListGraphsNames();
             makeSQLquery();
             showConfig();
+            copyFiles();
             //foreach (string deb in debug)
             //{
             //    Response.Write(deb);
@@ -454,10 +511,14 @@ namespace peptak
                     try
                     {
                         createUser.ExecuteNonQuery();
+                        var output = $"~/App_Data/{TxtUserName}";
+                        if (!Directory.Exists(output))
+                        {
+                            Directory.CreateDirectory(output);
+                        }
                     }
                     catch (Exception error)
                     {
-                        Response.Write(error);
                      
                         
                         

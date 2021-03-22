@@ -15,7 +15,7 @@ namespace peptak
     {
 
         /// <summary>
-        /// ASPxDashboard2 control.
+        /// ASPxDashboard1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
