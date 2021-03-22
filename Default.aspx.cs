@@ -20,7 +20,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -32,12 +32,13 @@ namespace peptak
 
             var user = sdr.ToString();
 
-            if(user!="Manager")
-            {
-                ASPxDashboard1.WorkingMode = WorkingMode.Viewer;
-            } else
+            if(user=="Admin")
             {
                 ASPxDashboard1.WorkingMode = WorkingMode.Designer;
+            }
+            else
+            {
+                ASPxDashboard1.WorkingMode = WorkingMode.Viewer;
             }
 
 

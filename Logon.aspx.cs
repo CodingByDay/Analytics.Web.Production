@@ -12,6 +12,10 @@ namespace peptak
 {
     public partial class Logon : System.Web.UI.Page
     {
+        private SqlConnection conn;
+        private SqlCommand cmd;
+        private object role;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -95,12 +99,51 @@ namespace peptak
                 string strRedirect;
                 strRedirect = Request["ReturnUrl"];
                 if (strRedirect == null)
-                    strRedirect = "default.aspx";
-                Response.Redirect(strRedirect, true);
-            }
-            else
-                Response.Redirect("logon.aspx", true);
+                {
 
+                    string query = String.Format($"SELECT userRole FROM Users WHERE uname='{txtUserName}'");
+                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                    conn.Open();
+
+
+                    cmd = new SqlCommand(query, conn);
+                    try
+                    {
+                        role = cmd.ExecuteScalar();
+
+                    }
+                    catch (Exception err)
+                    {
+
+
+
+                    }
+                    string userRole = System.Convert.ToString(role);
+
+                    Response.Redirect("custom.aspx", true);
+                    // execute query
+
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    //if (userRole == "Admin")
+                    //{
+                    //    strRedirect = "default.aspx";
+                    //    Response.Redirect(strRedirect, true);
+                    //}
+                    //else
+                    //{
+                    //    strRedirect = "default.aspx";
+                    //    Response.Redirect(strRedirect, true);
+                    //}
+
+
+
+                    conn.Close();
+                    conn.Dispose();
+                }
+                else
+                    Response.Redirect("logon.aspx", true);
+
+            }
         }
     }
 }
