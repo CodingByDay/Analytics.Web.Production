@@ -395,26 +395,50 @@ namespace peptak
             {
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
-                SqlCommand check = new SqlCommand($"Select count(*) from Users where Username='{TxtUserName}'", conn);
+                SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
 
 
-                var resultCheck = cmd.ExecuteScalar();
-                if (result != null)
+                var resultCheck = check.ExecuteScalar();
+                Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                if (resultUsername > 0)
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
                 }
                 else
                 {
-                    SqlCommand createUser = new SqlCommand($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName}', '{TxtPassword}', '{userRole.SelectedValue}' {next}, '{companiesList.SelectedValue}'))");
+
+                    string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+
+                    SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
 
                     try
                     {
-                        cmd = new SqlCommand(finalQuery, conn);
-                        cmd.ExecuteNonQuery();
+                        createUserPermisions.ExecuteNonQuery();
                     }
                     catch (Exception error)
                     {
+                       //pass
 
+
+                    }
+
+
+
+
+
+                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}')");
+
+                    SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+
+                    try
+                    {
+                        createUser.ExecuteNonQuery();
+                    }
+                    catch (Exception error)
+                    {
+                        Response.Write(error);
+                     
+                        
                         
                     }
                     //
