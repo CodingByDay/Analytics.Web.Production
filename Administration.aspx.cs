@@ -40,7 +40,6 @@ namespace peptak
         private List<String> companies = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            values.Clear();
 
             if (!IsPostBack) // Doesn't update the values more than once.
             {
@@ -50,25 +49,12 @@ namespace peptak
                 showConfig();
                 fillCompanies();
 
-            } else
-            {
-           
-                FillListGraphs();
-                showConfig();
-                fillCompanies();
-
-            }
+            } 
 
             foreach(string dev in debug)
             {
                 Response.Write(dev);
             }
-       
-
-
-
-
-
 
         }
 
@@ -76,19 +62,12 @@ namespace peptak
         {
             try
             {
-
-
-                // Button btn = ((Button)Master.FindControl("admin"));
-                // btn.Text = "Nazaj";
-                // btn.Click += Btn_Click;
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
-
-
                 while (sdr.Read())
                 {
                     companies.Add(sdr["company_name"].ToString());
@@ -125,26 +104,22 @@ namespace peptak
             findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
             // Documentation. This query is for getting all the permision table data from the user
             cmd = new SqlCommand(findIdString, conn);
-
             idNumber = cmd.ExecuteScalar();
-
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
             conn.Close();
             conn.Dispose();
             permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
-
             cmd = new SqlCommand(permisionQuery, conn);
-
             debug.Add(permisionQuery);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
 
             using (SqlConnection connection = new SqlConnection(
-             "server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
-            {
+              "server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
+              {
                 SqlCommand command = new SqlCommand(permisionQuery, connection);
                 connection.Open();
                 SqlDataReader reader =
-                    command.ExecuteReader(CommandBehavior.CloseConnection);
+                command.ExecuteReader(CommandBehavior.CloseConnection);
                 while (reader.Read())
                 {
                     for (int i = 0; i < values.Count; i++)
@@ -169,6 +144,7 @@ namespace peptak
                 return valuesBool;
             }
         }
+
         private void copyFiles()
         {
             var filePath = Server.MapPath("~/App_Data/Dashboards");
@@ -178,7 +154,6 @@ namespace peptak
             for (int i = 0; i < fi.Length; i++)
             {
                 var item = fi[i].Name;
-
                 var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
                 var output = Server.MapPath($"~/App_Data/{folder}/{item}");
 
@@ -210,8 +185,8 @@ namespace peptak
 
 
 
- public void FillList()
-        {
+        public void FillList()
+         {
             try
             {
 
@@ -239,34 +214,27 @@ namespace peptak
 
             }
         }
+
         public void FillListGraphs()
         {
             try
             {
                 fileNames.Clear();
-                values.Clear();
-
                 string filePath = Server.MapPath("~/App_Data/Dashboards");
-
                 System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
                 System.IO.FileInfo[] fi = di.GetFiles();
-
-
                 foreach (System.IO.FileInfo file in fi)
                 {
                     XDocument doc = XDocument.Load(filePath + "/" + file.Name);
-
                     var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
-
                     graphNames.Add(file.Name + " " + tempXmlName);
                     string trimmedless = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c)));
                     string trimmed = trimmedless.Replace("-", "");
                     fileNames.Add(file.Name);
                     // Refils potential new tables.
                     finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-
                     values.Add(trimmed);
-                    // execute query
+                    // Execute query.
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -277,15 +245,11 @@ namespace peptak
                     }
                     catch (Exception error)
                     {
-
                         continue;
                     }
-
                 }
-
                 graphsFinal.DataSource = graphNames;
                 graphsFinal.DataBind();
-
                 cmd.Dispose();
                 conn.Close();
             }
@@ -299,27 +263,19 @@ namespace peptak
         public void FillListGraphsNames()
         {
             fileNames.Clear();
-            values.Clear();
-
             string filePath = Server.MapPath("~/App_Data/Dashboards");
-
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
             System.IO.FileInfo[] fi = di.GetFiles();
-
-
             foreach (System.IO.FileInfo file in fi)
             {
                 XDocument doc = XDocument.Load(filePath + "/" + file.Name);
-
                 var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
-
                 graphNames.Add(file.Name + " " + tempXmlName);
                 string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
 
                 // Refils potential new tables.
                 // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                 values.Add(trimmed);
-
 
             }
 
@@ -332,14 +288,9 @@ namespace peptak
             conn.Open();
             for (int i = 0; i < graphsFinal.Items.Count; i++)
             {
-
-
                 var tempGraphString = values.ElementAt(i);
                 findId = String.Format($"SELECT id_permisions from Users where uname='{usersPermisions.SelectedValue}'");
-
-
                 // execute query
-
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand(findId, conn);
                 try
@@ -350,8 +301,6 @@ namespace peptak
                 catch (Exception e)
                 {
                     continue;
-
-
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
@@ -371,17 +320,11 @@ namespace peptak
                 catch (Exception e)
                 {
                     continue;
-
-
                 }
 
             }
             cmd.Dispose();
             conn.Close();
-
-
-
-         
         }
       
       
@@ -391,20 +334,12 @@ namespace peptak
             Response.Redirect("logon.aspx", true);
         }
 
-    
-
         protected void Save_Click1(object sender, EventArgs e)
         {
-
-
-            indexList = graphsFinal.SelectedIndices;
             FillListGraphsNames();
             makeSQLquery();
             showConfig();
             copyFiles();
-          
-         
-
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -412,15 +347,10 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
-
-
             var result = cmd.ExecuteScalar();
-
-
             Int32 Total_ID = System.Convert.ToInt32(result);
 
             int next = Total_ID + 1;
-            //pass
             if (TxtPassword.Text != TxtRePassword.Text)
             {
                 Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
@@ -444,7 +374,6 @@ namespace peptak
                 {
 
                     string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
-
                     SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
 
                     try
@@ -453,19 +382,12 @@ namespace peptak
                     }
                     catch (Exception error)
                     {
-                       //pass
+                       
 
 
                     }
-
-
-
-
-
                     string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}')");
-
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-
                     try
                     {
                         createUser.ExecuteNonQuery();
@@ -476,16 +398,18 @@ namespace peptak
                         }
                     }
                     catch (Exception error)
-                    {
-                     
-                        
-                        
+                    {   
                     }
-                    //
                 }
-
-
             }
+        }
+
+        protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FillListGraphsNames();
+            
+            showConfig();
+           
         }
     }
 }
