@@ -32,8 +32,8 @@ namespace peptak
         {
             FormsAuthentication.SignOut();
             Response.Redirect("logon.aspx", true);
-
         }
+
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)
         {
             if (userRole != "Admin")
@@ -45,14 +45,14 @@ namespace peptak
                 admin.Visible = true;
             }
         }
+
         protected void administration_Click(object sender, EventArgs e)
         {
-            //pass
+            // pass
             Response.Redirect("administration.aspx", true);
-          
-
+            
         }
 
-   
+       
     }
 }

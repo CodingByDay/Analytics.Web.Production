@@ -2,17 +2,43 @@
 
 <%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 
+<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="row">
+        <script>
+
+
+
+          function onBeforeRender(sender) {
+        var dashboardControl = sender.GetDashboardControl();
+        // ...
+                dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
+    }
+            
+
+
+
+        </script>>
+
         <div class="col-sm-12">
-        
+        <div style="position: absolute; left: 80px; right: 0; top:0; bottom:30px;">
+ 
+</div>
         </div>
     </div>
     <div class="jumbotron">
+        
 
-        <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" AllowInspectRawData="True" DashboardStorageFolder="~/App_Data/Dashboards" EnableCustomSql="True" EnableTextBoxItemEditor="True" LimitVisibleDataMode="DesignerAndViewer">
-        </dx:ASPxDashboard>
-    </div>
+</div>
+   
+ 
+</div>
+<div style="position: absolute; left: 0; right: 0; top:60px; bottom:0;">
+    <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" AllowInspectRawData="True" DashboardStorageFolder="~/App_Data/Dashboards" EnableCustomSql="True" EnableTextBoxItemEditor="True">
+        <ClientSideEvents BeforeRender="onBeforeRender" />
+    </dx:ASPxDashboard>
+</div>
 
    
 

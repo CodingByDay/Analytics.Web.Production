@@ -20,7 +20,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-    
+            
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
         
             string uname = HttpContext.Current.User.Identity.Name;
@@ -33,7 +33,7 @@ namespace peptak
 
             var user = sdr.ToString();
 
-            if(user=="Admin")
+            if (user == "Admin")
             {
                 ASPxDashboard1.WorkingMode = WorkingMode.Designer;
             }
@@ -46,7 +46,6 @@ namespace peptak
 
         }
 
-      
 
         protected void cmdSignOut_Click(object sender, EventArgs e)
         {

@@ -51,10 +51,7 @@ namespace peptak
 
             } 
 
-            foreach(string dev in debug)
-            {
-                Response.Write(dev);
-            }
+        
 
         }
 

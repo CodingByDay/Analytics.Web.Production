@@ -31,8 +31,12 @@ export default class Popper {
       isDestroyed: false,
       isCreated: false,
       scrollParents: [],
-    };
+      };
 
+      function onBeforeRender(sender) {
+          // ...
+          dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
+      }
     // get reference and popper elements (allow jQuery wrappers)
     this.reference = reference && reference.jquery ? reference[0] : reference;
     this.popper = popper && popper.jquery ? popper[0] : popper;
