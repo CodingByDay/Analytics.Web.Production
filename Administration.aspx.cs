@@ -158,11 +158,11 @@ namespace peptak
                 {
                     if (!File.Exists(output))
                     {
-                        continue;
+                        File.Copy(source, output);
                     }
                     else
                     {
-                        File.Copy(source, output);
+                        continue;
                     }
                 }
                 else

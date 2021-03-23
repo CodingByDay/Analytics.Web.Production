@@ -1,0 +1,242 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Visible="false" Text="PS Prodaja - 1" IncludeMasterFilterState="false" />
+  <DataSources>
+    <SqlDataSource Name="PS Prodaja" ComponentName="sqlDataSource1">
+      <Connection Name="Skaza" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="CustomSqlQuery">
+        <Sql>select * from utn_DB_PS_Prodaja;</Sql>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="PlaniranaVrednost" Expression="sum(PlanProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="PrognoziranaVrednost" Expression="sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSPlan" Expression="sum((PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSPrognoza" Expression="sum((PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSRealizacija" Expression="sum(RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice)" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSRealizacijaIzračun" Expression="sum(RealizacijaProdajnaVrednost-(RealizacijaVkalkuliranaVrednostMatriala+RealizacijaVkalkuliranaVrednostStrojev+RealizacijaVkalkuliranaVrednostDela))" DataType="Auto" DataMember="CustomSqlQuery" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <TabContainer ComponentName="tabContainerDashboardItem1" Name="Tab Container 1">
+      <Pages>
+        <Page ComponentName="dashboardTabPage1" Name="Page 1" />
+      </Pages>
+    </TabContainer>
+    <TabContainer ComponentName="tabContainerDashboardItem2" Name="Tab Container 2">
+      <Pages>
+        <Page ComponentName="dashboardTabPage2" Name="Page 1" />
+      </Pages>
+    </TabContainer>
+    <Chart ComponentName="chartDashboardItem1" Name="Ovrednoteno - po mesecih" DataSource="sqlDataSource1" DataMember="CustomSqlQuery">
+      <DataItems>
+        <Dimension DataMember="ProdajaMesec" Name="Mesec" DefaultId="DataItem0" />
+        <Measure DataMember="RealizacijaProdajnaVrednost" DefaultId="DataItem1">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" />
+        </Measure>
+        <Measure DataMember="PlaniranaVrednost" DefaultId="DataItem2" />
+        <Measure DataMember="PrognoziranaVrednost" DefaultId="DataItem3" />
+        <Measure DataMember="RVSPlan" DefaultId="DataItem4" />
+        <Measure DataMember="RVSPrognoza" DefaultId="DataItem5" />
+        <Measure DataMember="RVSRealizacija" DefaultId="DataItem6" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednost" />
+          <Series>
+            <Simple Name="Realizacija">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Plan" SeriesType="Line">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Prognoza" SeriesType="Line">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="RVS Plan" SeriesType="Line">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="RVS Prognoza" SeriesType="Line">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+            <Simple Name="RVS Realizacija" SeriesType="Line">
+              <Value DefaultId="DataItem6" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="Leto" DataSource="sqlDataSource1" DataMember="CustomSqlQuery">
+      <InteractivityOptions IgnoreMasterFilters="false" />
+      <DataItems>
+        <Dimension DataMember="ProdajaLeto" Name="Leto" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <Chart ComponentName="chartDashboardItem2" Name="Ovrednoteno - po tednih" DataSource="sqlDataSource1" DataMember="CustomSqlQuery">
+      <DataItems>
+        <Dimension DataMember="ProdajaTeden" Name="Teden" DefaultId="DataItem0" />
+        <Measure DataMember="RealizacijaProdajnaVrednost" DefaultId="DataItem1" />
+        <Measure DataMember="PlaniranaVrednost" DefaultId="DataItem2" />
+        <Measure DataMember="PrognoziranaVrednost" DefaultId="DataItem3" />
+        <Measure DataMember="RVSPlan" DefaultId="DataItem4" />
+        <Measure DataMember="RVSPrognoza" DefaultId="DataItem5" />
+        <Measure DataMember="RVSRealizacija" DefaultId="DataItem6" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednost" />
+          <Series>
+            <Simple Name="Realizacija">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Plan" SeriesType="Line">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Prognoza" SeriesType="Line">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="RVS Plan" SeriesType="Line">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="RVS Prognoza" SeriesType="Line">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+            <Simple Name="RVS Realizacija" SeriesType="Line">
+              <Value DefaultId="DataItem6" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+      <AxisX EnableZooming="true" LimitVisiblePoints="true" />
+    </Chart>
+    <Chart ComponentName="chartDashboardItem3" Name="Realizacija po mesecih" DataSource="sqlDataSource1" DataMember="CustomSqlQuery">
+      <DataItems>
+        <Dimension DataMember="ProdajaMesec" Name="Mesec" DefaultId="DataItem0" />
+        <Measure DataMember="RVSRealizacijaIzračun" DefaultId="DataItem1" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostDela" DefaultId="DataItem2" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostStrojev" DefaultId="DataItem3" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostMatriala" DefaultId="DataItem4" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednost" />
+          <Series>
+            <Simple Name="Material" SeriesType="StackedBar">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="Stroji" SeriesType="StackedBar">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="Delo" SeriesType="StackedBar">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="RVS" SeriesType="StackedBar">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Chart ComponentName="chartDashboardItem4" Name="Realizacija po letih in kvartalih" DataSource="sqlDataSource1" DataMember="CustomSqlQuery">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="ProdajaLeto" Name="Leto" DefaultId="DataItem0" />
+        <Dimension DataMember="ProdajaKvartal" Name="Kvartal" DefaultId="DataItem1" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostMatriala" DefaultId="DataItem2" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostStrojev" DefaultId="DataItem3" />
+        <Measure DataMember="RealizacijaVkalkuliranaVrednostDela" DefaultId="DataItem4" />
+        <Measure DataMember="RVSRealizacijaIzračun" DefaultId="DataItem5" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple Name="Material" SeriesType="StackedBar">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Stroji" SeriesType="StackedBar">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="Delo" SeriesType="StackedBar">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="RVS" SeriesType="StackedBar">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ListBox ComponentName="listBoxDashboardItem2" Name="Program" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" IsMasterFilterCrossDataSource="true">
+      <DataItems>
+        <Dimension DataMember="ProdajaIdentProgram" Name="Program" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem3" Name="Projekt" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" IsMasterFilterCrossDataSource="true" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="ProdajaIdentProjekt" Name="Projekt" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem4" Name="Ident" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" IsMasterFilterCrossDataSource="true" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="ProdajaIdentInNaziv" Name="Ident" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem5" Name="Kupec" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" IsMasterFilterCrossDataSource="true" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="ProdajaKupecPlačnik" Name="Kupec" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="0.33179031159238409">
+        <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="0.630476997633941" />
+        <LayoutItem DashboardItem="listBoxDashboardItem2" Weight="1.049450670166006" />
+        <LayoutItem DashboardItem="listBoxDashboardItem3" Weight="2.2853955779241737" />
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="1.9790361791387283">
+        <LayoutGroup Weight="1.6752002488529436">
+          <LayoutItem DashboardItem="listBoxDashboardItem5" Weight="1.1232921395257924" />
+          <LayoutItem DashboardItem="chartDashboardItem1" Weight="2.5102407946059442" />
+        </LayoutGroup>
+        <LayoutGroup Weight="1.9583326852787932">
+          <LayoutItem DashboardItem="listBoxDashboardItem4" Weight="1.1148245621835868" />
+          <LayoutItem DashboardItem="chartDashboardItem3" Weight="2.5187083719481507" />
+        </LayoutGroup>
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical" Weight="1.5059399763347558">
+        <LayoutItem DashboardItem="chartDashboardItem2" Weight="1.5961662207372083" />
+        <LayoutItem DashboardItem="chartDashboardItem4" Weight="1.8775441887572024" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
