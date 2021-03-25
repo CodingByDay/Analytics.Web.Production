@@ -47,12 +47,14 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" runat="server" href="~/">PetPak</a>
+                    <a class="navbar-brand" runat="server" href="~/">Dashboards</a>
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li> <asp:Button type="submit" Value="SignOut" runat="server" ID="cmdSignOut" OnClick="cmdSignOut_Click" Text="Odjava" /></li>
                         <li> <asp:Button type="submit" Value="Admin" runat="server" ID="admin" OnClick="administration_Click" Text="Administracija" /></li>
+                        <li> <asp:Button type="submit" Value="Back" runat="server" ID="back" OnClick="back_Click"  Text="Nazaj"/></li>
+
                     </ul>
                 </div>
                 

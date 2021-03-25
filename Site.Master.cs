@@ -17,6 +17,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -36,7 +37,7 @@ namespace peptak
 
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)
         {
-            if (userRole != "SuperAdmin" || userRole!="Admin" )
+            if (userRole != "SuperAdmin" && userRole != "Admin")
             {
                 admin.Visible = false;
             }
@@ -48,19 +49,27 @@ namespace peptak
 
         protected void administration_Click(object sender, EventArgs e)
         {
-            // pass
+            // Data
             if (userRole == "SuperAdmin")
             {
                 Response.Redirect("administration.aspx", true);
             } else if (userRole == "Admin")
             {
                 Response.Redirect("adminsitrationcompany.aspx", true);
+
             } else
             {
+                ///
                 Response.Redirect("logon.aspx", true); // config for securing data.
             }
         }
 
-       
+        protected void back_Click(object sender, EventArgs e)
+        {
+
+            Response.Redirect("default", true);
+            
+
+        }
     }
 }

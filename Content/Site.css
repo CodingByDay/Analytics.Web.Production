@@ -44,7 +44,7 @@ margin: 0 auto;
 float: right; 
 }
 
-#cmdSignOut, #admin {
+#cmdSignOut, #admin, #back {
     float: right;
     background: #000000;
     color: #ffffff;
@@ -62,7 +62,7 @@ float: right;
 
 
 
-#admin {
+#admin, #back {
     float: right;
     background: #000000;
     color: #ffffff;

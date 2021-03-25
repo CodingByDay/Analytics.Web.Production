@@ -40,22 +40,20 @@ namespace peptak
         private List<String> companies = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
+      
 
             if (!IsPostBack) // Doesn't update the values more than once.
             {
-
+                Button BackButton = (Button)Master.FindControl("back");
+                BackButton.Enabled = true;
+                BackButton.Visible = true;
                 FillList();
                 FillListGraphs();
                 showConfig();
                 fillCompanies();
 
-            } else
-            {
-                foreach(string ev in debug)
-                {
-                    Response.Write(ev);
-                }
-            }
+            } 
+            
 
         
 
@@ -193,7 +191,8 @@ namespace peptak
             try
             {
 
-                string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                string UserNameForChecking
+                    = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
