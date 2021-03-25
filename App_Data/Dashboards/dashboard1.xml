@@ -9,12 +9,12 @@
       </Query>
       <ConnectionOptions CloseConnection="true" />
       <CalculatedFields>
-        <CalculatedField Name="PlaniranaVrednost" Expression="sum(PlanProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
-        <CalculatedField Name="PrognoziranaVrednost" Expression="sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
-        <CalculatedField Name="RVSPlan" Expression="sum((PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="CustomSqlQuery" />
-        <CalculatedField Name="RVSPrognoza" Expression="sum((PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="CustomSqlQuery" />
-        <CalculatedField Name="RVSRealizacija" Expression="sum(RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice)" DataType="Auto" DataMember="CustomSqlQuery" />
-        <CalculatedField Name="RVSRealizacijaIzračun" Expression="sum(RealizacijaProdajnaVrednost-(RealizacijaVkalkuliranaVrednostMatriala+RealizacijaVkalkuliranaVrednostStrojev+RealizacijaVkalkuliranaVrednostDela))" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="PlaniranaVrednost" Expression="PlanProdajnaVrednost*ProdajaFaktorTedna" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="PrognoziranaVrednost" Expression="PrognozaProdajnaVrednost*ProdajaFaktorTedna" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSPlan" Expression="(PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSPrognoza" Expression="(PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna)" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSRealizacija" Expression="RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice" DataType="Auto" DataMember="CustomSqlQuery" />
+        <CalculatedField Name="RVSRealizacijaIzračun" Expression="RealizacijaProdajnaVrednost-(RealizacijaVkalkuliranaVrednostMatriala+RealizacijaVkalkuliranaVrednostStrojev+RealizacijaVkalkuliranaVrednostDela)" DataType="Auto" DataMember="CustomSqlQuery" />
       </CalculatedFields>
     </SqlDataSource>
   </DataSources>
@@ -233,7 +233,7 @@
           <LayoutItem DashboardItem="chartDashboardItem3" Weight="2.5187083719481507" />
         </LayoutGroup>
       </LayoutGroup>
-      <LayoutGroup Orientation="Vertical" Weight="1.5059399763347558">
+      <LayoutGroup Orientation="Vertical" Weight="1.3802380867008497">
         <LayoutItem DashboardItem="chartDashboardItem2" Weight="1.5961662207372083" />
         <LayoutItem DashboardItem="chartDashboardItem4" Weight="1.8775441887572024" />
       </LayoutGroup>

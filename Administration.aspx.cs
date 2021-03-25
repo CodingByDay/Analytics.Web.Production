@@ -49,7 +49,13 @@ namespace peptak
                 showConfig();
                 fillCompanies();
 
-            } 
+            } else
+            {
+                foreach(string ev in debug)
+                {
+                    Response.Write(ev);
+                }
+            }
 
         
 
@@ -385,13 +391,16 @@ namespace peptak
                     }
                     string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}')");
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                    var username = TxtUserName.Text;
                     try
                     {
                         createUser.ExecuteNonQuery();
-                        var output = $"~/App_Data/{TxtUserName}";
-                        if (!Directory.Exists(output))
+                        string filePath = Server.MapPath("~/App_Data/"+username); 
+                        debug.Add(filePath);
+                        if (!Directory.Exists(filePath)) 
                         {
-                            Directory.CreateDirectory(output);
+                            FillList();
+                            Directory.CreateDirectory(filePath);
                         }
                     }
                     catch (Exception error)

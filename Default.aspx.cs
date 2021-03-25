@@ -33,7 +33,7 @@ namespace peptak
 
             var user = sdr.ToString();
 
-            if (user == "Admin")
+            if (user == "SuperAdmin")
             {
                 ASPxDashboard1.WorkingMode = WorkingMode.Designer;
             }

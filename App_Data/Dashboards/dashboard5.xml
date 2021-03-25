@@ -9,28 +9,28 @@
       </Query>
       <ConnectionOptions CloseConnection="true" />
       <CalculatedFields>
-        <CalculatedField Name="PlanVrednost" Expression="sum(PlanProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaVrednost" Expression="sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaJANVrednost" Expression="sum(PrognozaKoličina01)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaFEBVrednost" Expression="sum(PrognozaKoličina02)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaMARVrednost" Expression="sum(PrognozaKoličina03)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaAPRVrednost" Expression="sum(PrognozaKoličina04)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaMAJVrednost" Expression="sum(PrognozaKoličina05)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaJUNVrednost" Expression="sum(PrognozaKoličina06)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaJULVrednost" Expression="sum(PrognozaKoličina07)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaAVGVrednost" Expression="sum(PrognozaKoličina08)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaSEPVrednost" Expression="sum(PrognozaKoličina09)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaOKTVrednost" Expression="sum(PrognozaKoličina10)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaNOVVrednost" Expression="sum(PrognozaKoličina11)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaDECVrednost" Expression="sum(PrognozaKoličina12)*sum(PrognozaProdajnaVrednost)/sum(PrognozaKoličina)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PlanKoličinaKratFaktorTedna" Expression="sum(PlanKoličina*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="PrognozaKoličinaKratFaktorTedna" Expression="sum(PrognozaKoličina*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="RVSPlan" Expression="sum((PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="RVSPlan%" Expression="isnull(sum((PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))/&#xA;sum(PlanProdajnaVrednost*ProdajaFaktorTedna),0)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PlanVrednost" Expression="PlanProdajnaVrednost*ProdajaFaktorTedna" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaVrednost" Expression="PrognozaProdajnaVrednost*ProdajaFaktorTedna" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaJANVrednost" Expression="PrognozaKoličina01*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaFEBVrednost" Expression="PrognozaKoličina02*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaMARVrednost" Expression="PrognozaKoličina03*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaAPRVrednost" Expression="PrognozaKoličina04*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaMAJVrednost" Expression="PrognozaKoličina05*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaJUNVrednost" Expression="PrognozaKoličina06*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaJULVrednost" Expression="PrognozaKoličina07*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaAVGVrednost" Expression="PrognozaKoličina08*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaSEPVrednost" Expression="PrognozaKoličina09*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaOKTVrednost" Expression="PrognozaKoličina10*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaNOVVrednost" Expression="PrognozaKoličina11*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaDECVrednost" Expression="PrognozaKoličina12*PrognozaProdajnaVrednost/iif(PrognozaKoličina&lt;&gt;0,PrognozaKoličina,1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PlanKoličinaKratFaktorTedna" Expression="PlanKoličina*ProdajaFaktorTedna" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="PrognozaKoličinaKratFaktorTedna" Expression="PrognozaKoličina*ProdajaFaktorTedna" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="RVSPlan" Expression="(PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="RVSPlan%" Expression="sum((PlanProdajnaVrednost*ProdajaFaktorTedna)-(PlanVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))/&#xA;Iif(sum(PlanProdajnaVrednost*ProdajaFaktorTedna)&lt;&gt;0, sum(PlanProdajnaVrednost*ProdajaFaktorTedna),1 )" DataType="Auto" DataMember="DB_PS_Prodaja" />
         <CalculatedField Name="RVSProg" Expression="sum((PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="RVSProg%" Expression="sum((PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))/&#xA;sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="RVSProg%" Expression="sum((PrognozaProdajnaVrednost*ProdajaFaktorTedna)-(PrognozaVkalkuliranaVrednostIzSestavnice*ProdajaFaktorTedna))/&#xA;Iif(sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna)&lt;&gt;0,sum(PrognozaProdajnaVrednost*ProdajaFaktorTedna),1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
         <CalculatedField Name="RVSProd" Expression="sum(RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice)" DataType="Auto" DataMember="DB_PS_Prodaja" />
-        <CalculatedField Name="RVSProd%" Expression="sum(RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice)/&#xA;sum(RealizacijaProdajnaVrednost)" DataType="Auto" DataMember="DB_PS_Prodaja" />
+        <CalculatedField Name="RVSProd%" Expression="sum(RealizacijaProdajnaVrednost-RealizacijaVkalkuliranaVrednostIzSestavnice)/&#xA;Iif(sum(RealizacijaProdajnaVrednost)&lt;&gt;0,sum(RealizacijaProdajnaVrednost),1)" DataType="Auto" DataMember="DB_PS_Prodaja" />
       </CalculatedFields>
     </SqlDataSource>
   </DataSources>
@@ -223,70 +223,88 @@
         <Measure DataMember="RVSProd" DefaultId="DataItem10">
           <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
         </Measure>
+        <Measure DataMember="RVSPlan%" DefaultId="DataItem11">
+          <NumericFormat FormatType="Percent" />
+        </Measure>
+        <Measure DataMember="RVSProg%" DefaultId="DataItem12">
+          <NumericFormat FormatType="Percent" />
+        </Measure>
+        <Measure DataMember="RVSProd%" DefaultId="DataItem13">
+          <NumericFormat FormatType="Percent" />
+        </Measure>
       </DataItems>
       <GridColumns>
-        <GridDimensionColumn Name="Iednt">
+        <GridDimensionColumn Name="Iednt" Weight="51.960085531005049">
           <Dimension DefaultId="DataItem0" />
         </GridDimensionColumn>
-        <GridDimensionColumn Name="Naziv">
+        <GridDimensionColumn Name="Naziv" Weight="184.74697077690686">
           <Dimension DefaultId="DataItem1" />
         </GridDimensionColumn>
-        <GridMeasureColumn Name="Količina PLAN">
+        <GridMeasureColumn Name="Količina PLAN" Weight="62.223806129722107">
           <Measure DefaultId="DataItem2" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="Vrednost PLAN">
+        <GridMeasureColumn Name="Vrednost PLAN" Weight="67.355666429080628">
           <Measure DefaultId="DataItem3" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="Količina PROG">
+        <GridMeasureColumn Name="Količina PROG" Weight="65.431218816821186">
           <Measure DefaultId="DataItem4" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="Vrednost PROG">
+        <GridMeasureColumn Name="Vrednost PROG" Weight="69.921596578759889">
           <Measure DefaultId="DataItem5" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="Količina PROD">
+        <GridMeasureColumn Name="Količina PROD" Weight="64.148253741981549">
           <Measure DefaultId="DataItem6" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="Vrednost PROD">
+        <GridMeasureColumn Name="Vrednost PROD" Weight="69.28011404134007">
           <Measure DefaultId="DataItem7" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="RVS PLAN">
+        <GridMeasureColumn Name="RVS PLAN" Weight="59.01639344262302">
           <Measure DefaultId="DataItem8" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="RVS PROG">
+        <GridMeasureColumn Name="%" Weight="48.752672843905977">
+          <Measure DefaultId="DataItem11" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="RVS PROG" Weight="65.431218816821186">
           <Measure DefaultId="DataItem9" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
-        <GridMeasureColumn Name="RVS PROD">
+        <GridMeasureColumn Name="%" Weight="75.000000000000085">
+          <Measure DefaultId="DataItem12" />
+        </GridMeasureColumn>
+        <GridMeasureColumn Name="RVS PROD" Weight="91.732002851033613">
           <Measure DefaultId="DataItem10" />
           <Totals>
             <Total Type="Sum" />
           </Totals>
         </GridMeasureColumn>
+        <GridMeasureColumn Name="%" Weight="75.0000000000001">
+          <Measure DefaultId="DataItem13" />
+        </GridMeasureColumn>
       </GridColumns>
-      <GridOptions />
+      <GridOptions ColumnWidthMode="AutoFitToContents" />
     </Grid>
     <ListBox ComponentName="listBoxDashboardItem3" Name="Program" DataSource="sqlDataSource1" DataMember="DB_PS_Prodaja" IsMasterFilterCrossDataSource="true">
       <DataItems>

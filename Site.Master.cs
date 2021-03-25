@@ -36,7 +36,7 @@ namespace peptak
 
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)
         {
-            if (userRole != "Admin")
+            if (userRole != "SuperAdmin" || userRole!="Admin" )
             {
                 admin.Visible = false;
             }
@@ -49,8 +49,16 @@ namespace peptak
         protected void administration_Click(object sender, EventArgs e)
         {
             // pass
-            Response.Redirect("administration.aspx", true);
-            
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("administration.aspx", true);
+            } else if (userRole == "Admin")
+            {
+                Response.Redirect("adminsitrationcompany.aspx", true);
+            } else
+            {
+                Response.Redirect("logon.aspx", true); // config for securing data.
+            }
         }
 
        

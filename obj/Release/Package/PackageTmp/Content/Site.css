@@ -44,7 +44,25 @@ margin: 0 auto;
 float: right; 
 }
 
-#cmdSignOut {
+#cmdSignOut, #admin {
+    float: right;
+    background: #000000;
+    color: #ffffff;
+    margin-top: 11px;
+    border: 1px solid;
+    border-radius: 13px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#list {
+
+    position:center;
+}
+
+
+
+#admin {
     float: right;
     background: #000000;
     color: #ffffff;
