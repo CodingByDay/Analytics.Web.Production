@@ -6,6 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -470,28 +471,78 @@ namespace peptak
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
             var result = cmd.ExecuteScalar();
-            Int32 next = System.Convert.ToInt32(result);
+            Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website) VALUES({next}, {companyName.Text}, {companyNumber.Text}, {website.Text}, {listAdmin.SelectedValue})", conn);
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}')", conn);
+
             try
             {
                 cmd.ExecuteNonQuery();
+              
 
             } catch (Exception error)
             {
                 // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
             
-            usersPermisions.DataSource = DataUser;
-            usersPermisions.DataBind();
+          
             cmd.Dispose();
             conn.Close();
         }
 
+
+
+        private bool checkIfNumber(string parametar)
+        {
+            var regex = new Regex(@"^-?[0-9][0-9,\.]+$");
+
+           var numeric = regex.IsMatch(parametar);
+
+            if (numeric)
+                return true;
+            else
+                return false;
+
+
+        }
         protected void companyButton_Click(object sender, EventArgs e)
         {
+           
+            if(companyName.Text == "")
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Niste vpisali ime podjetja...'  );</script>");
 
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+            } else if(website.Text=="")
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Niste napisali web page podjetja...'  );</script>");
+
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+
+            } else if(!checkIfNumber(companyNumber.Text))
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
+
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+            }
+            else
+            {
+                insertCompany();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
+
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+           
+            }
         }
     }
 }

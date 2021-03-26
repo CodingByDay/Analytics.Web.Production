@@ -95,17 +95,14 @@
 
         <div id="company">  
               <center><h4>Registracija novega podjetja.</h4></center>
-              <h4>Ime:</h4>
-              <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
-              <h4>Številka</h4>
-              <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
-              <h4>Website podjetja:</h4>        
-              <asp:TextBox ID="website" runat="server"></asp:TextBox>  
-              <h4>Admin</h4>
-              <asp:DropDownList ID="listAdmin" runat="server"  
+        
+             <h4>Ime:</h4> <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
+             <h4>Številka</h4> <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
+              <h4>Website podjetja:</h4><asp:TextBox ID="website" runat="server"></asp:TextBox>  
+             <h4>Admin</h4> <asp:DropDownList ID="listAdmin" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
-               <asp:DropDownList ID="ConnectionStrings" runat="server"  
+              <h4>Baza</h4><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
               <asp:Button ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/>  
