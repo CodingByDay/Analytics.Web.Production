@@ -1,0 +1,99 @@
+/*
+Created: 18/03/2021
+Modified: 25/03/2021
+Model: Microsoft SQL Server 2017
+Database: MS SQL Server 2017
+*/
+
+
+-- Create tables section -------------------------------------------------
+
+-- Table users
+
+CREATE TABLE [users]
+(
+ [id_users] Int IDENTITY(1,1) NOT NULL,
+ [uname] Varchar(120) NULL,
+ [Pwd] Varchar(150) NULL,
+ [userRole] Char(150) NULL,
+ [id_permisions] Int NULL,
+ [id_company] Int NULL
+)
+go
+
+-- Create indexes for table users
+
+CREATE INDEX [IX_Relationship1] ON [users] ([id_permisions])
+go
+
+CREATE INDEX [IX_Relationship1] ON [users] ([id_company])
+go
+
+-- Add keys for table users
+
+ALTER TABLE [users] ADD CONSTRAINT [PK_users] PRIMARY KEY ([id_users])
+go
+
+ALTER TABLE [users] ADD CONSTRAINT [id_users] UNIQUE CLUSTERED ([id_users])
+go
+
+-- Table permisions
+
+CREATE TABLE [permisions]
+(
+ [id_permisions] Int IDENTITY(1,1) NOT NULL
+)
+go
+
+-- Add keys for table permisions
+
+ALTER TABLE [permisions] ADD CONSTRAINT [PK_permisions] PRIMARY KEY ([id_permisions])
+go
+
+ALTER TABLE [permisions] ADD CONSTRAINT [id_permisions] UNIQUE CLUSTERED ([id_permisions])
+go
+
+-- Table companies
+
+CREATE TABLE [companies]
+(
+ [id_company] Int IDENTITY(1,1) NOT NULL,
+ [company_name] Char(200) NULL,
+ [company_number] Bigint NULL,
+ [website] Char(200) NULL,
+ [id_users_admin] Int NULL
+)
+go
+
+-- Create indexes for table companies
+
+CREATE INDEX [IX_Relationship1] ON [companies] ([id_users_admin])
+go
+
+-- Add keys for table companies
+
+ALTER TABLE [companies] ADD CONSTRAINT [PK_companies] PRIMARY KEY ([id_company])
+go
+
+ALTER TABLE [companies] ADD CONSTRAINT [id_companies] UNIQUE CLUSTERED ([id_company])
+go
+
+-- Create foreign keys (relationships) section ------------------------------------------------- 
+
+
+ALTER TABLE [users] ADD CONSTRAINT [one user can have many permisions] FOREIGN KEY ([id_permisions]) REFERENCES [permisions] ([id_permisions]) ON UPDATE NO ACTION ON DELETE NO ACTION
+go
+
+
+
+ALTER TABLE [users] ADD CONSTRAINT [Who works where] FOREIGN KEY ([id_company]) REFERENCES [companies] ([id_company]) ON UPDATE NO ACTION ON DELETE NO ACTION
+go
+
+
+
+ALTER TABLE [companies] ADD CONSTRAINT [admin] FOREIGN KEY ([id_users_admin]) REFERENCES [users] ([id_users]) ON UPDATE NO ACTION ON DELETE NO ACTION
+go
+
+
+
+

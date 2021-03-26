@@ -30,7 +30,6 @@ namespace peptak
         private string[] answer = new string[100];
         private object id;
         private String permisionQuery;
-        private SelectedIndexCollection indexList;
         private List<String> BinaryPermisionList = new List<String>();
         private List<String> columnNames = new List<string>();
         private List<bool> config = new List<bool>();
@@ -41,6 +40,7 @@ namespace peptak
         private List<String> companies = new List<string>();
         private List<String> admins = new List<string>();
         private List<String> strings = new List<string>();
+
         protected void Page_Load(object sender, EventArgs e)
         {
       
@@ -242,8 +242,7 @@ namespace peptak
             try
             {
 
-                string UserNameForChecking
-                    = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -290,7 +289,6 @@ namespace peptak
                     // Execute query.
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
                     try
                     {
                         cmd = new SqlCommand(finalQuery, conn);
@@ -435,9 +433,7 @@ namespace peptak
                     }
                     catch (Exception error)
                     {
-                       
-
-
+                       // Logging module.
                     }
                     string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}')");
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
@@ -477,11 +473,15 @@ namespace peptak
             Int32 next = System.Convert.ToInt32(result);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"insert into companies(id_company, company_name, company_number, website) VALUES({next}, {companyName.Text}, {companyNumber.Text}, {website.Text}, {})", conn);        
-            // Execute command and fetch pwd field into lookupPassword string.
-            SqlDataReader sdr = cmd.ExecuteReader();
-            
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website) VALUES({next}, {companyName.Text}, {companyNumber.Text}, {website.Text}, {listAdmin.SelectedValue})", conn);
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+            } catch (Exception error)
+            {
+                // Implement logging here.
+            }
             
             usersPermisions.DataSource = DataUser;
             usersPermisions.DataBind();
