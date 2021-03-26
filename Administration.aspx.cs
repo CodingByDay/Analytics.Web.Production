@@ -1,6 +1,7 @@
 ﻿using DevExpress.Web;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -38,6 +39,8 @@ namespace peptak
         private int flag;
         private List<String> fileNames = new List<string>();
         private List<String> companies = new List<string>();
+        private List<String> admins = new List<string>();
+        private List<String> strings = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
       
@@ -51,6 +54,7 @@ namespace peptak
                 FillListGraphs();
                 showConfig();
                 fillCompanies();
+                FillListAdmin();
 
             } 
             
@@ -184,7 +188,54 @@ namespace peptak
         }
 
 
+        public void FillListAdmin()
+        {
+            try
+            {
 
+                string UserNameForChecking
+                    = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    admins.Add(sdr["uname"].ToString());
+
+                }
+                listAdmin.DataSource = admins;
+                listAdmin.DataBind();
+                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    strings.Add(reader["company_name"].ToString());
+
+                }
+
+                ConnectionStrings.DataSource = strings;
+                ConnectionStrings.DataBind();
+                // unit test
+
+                cmd.Dispose();
+                conn.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         public void FillList()
          {
@@ -415,6 +466,32 @@ namespace peptak
             
             showConfig();
            
+        }
+
+       private void insertCompany()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
+            var result = cmd.ExecuteScalar();
+            Int32 next = System.Convert.ToInt32(result);
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"insert into companies(id_company, company_name, company_number, website) VALUES({next}, {companyName.Text}, {companyNumber.Text}, {website.Text}, {})", conn);        
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader sdr = cmd.ExecuteReader();
+            
+            
+            usersPermisions.DataSource = DataUser;
+            usersPermisions.DataBind();
+            cmd.Dispose();
+            conn.Close();
+        }
+
+        protected void companyButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

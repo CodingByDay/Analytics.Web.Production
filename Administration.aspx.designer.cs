@@ -132,12 +132,30 @@ namespace peptak
         protected global::System.Web.UI.WebControls.TextBox website;
 
         /// <summary>
-        /// Admin control.
+        /// listAdmin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList Admin;
+        protected global::System.Web.UI.WebControls.DropDownList listAdmin;
+
+        /// <summary>
+        /// ConnectionStrings control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ConnectionStrings;
+
+        /// <summary>
+        /// companyButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button companyButton;
     }
 }

@@ -93,25 +93,23 @@
 
     </div>
 
-        <div id="Company">
-         
-          
-              
-                    <h4>Registracija novega podjetja.</h4>
-             <hr />
-                   <h4>Ime podjetja:</h4>
-                        <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
-            <hr />
-              <h4>Številka:</h4>
-                        <asp:TextBox ID="campanyNumber" runat="server" Text="Številka"></asp:TextBox> 
-            <hr />
-                  
-                <h4>Website podjetja:</h4>        <asp:TextBox ID="website" runat="server" Text="Website"></asp:TextBox>  
-               <hr />
-                    <h4>Admin</h4>
-                 
-                        <asp:DropDownList ID="Admin" runat="server"  
-                                          AppendDataBoundItems="true">  
-                        </asp:DropDownList>  
+        <div id="company">  
+              <center><h4>Registracija novega podjetja.</h4></center>
+              <h4>Ime:</h4>
+              <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
+              <h4>Številka</h4>
+              <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
+              <h4>Website podjetja:</h4>        
+              <asp:TextBox ID="website" runat="server"></asp:TextBox>  
+              <h4>Admin</h4>
+              <asp:DropDownList ID="listAdmin" runat="server"  
+               AppendDataBoundItems="true">  
+              </asp:DropDownList>  
+               <asp:DropDownList ID="ConnectionStrings" runat="server"  
+               AppendDataBoundItems="true">  
+              </asp:DropDownList>  
+              <asp:Button ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/>  
+         <hr />
+
      </div>
 </asp:Content>
