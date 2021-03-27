@@ -13,7 +13,7 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
      <div class='app-layout'>
   <div class='box tweets'>  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
-    <hr />
+      <hr style="color: black;" />
   
   <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>    
 
@@ -40,7 +40,7 @@
   <div class='box replies'>            <table class="style1">  
                 <tr>  
                     <center><h4>Registracija novega uporabnika.</h4></center>
-                    <hr />
+      <hr style="color: black;" />
                     <td>     Ime in priimek</td>  
                     <td>  
                         <asp:TextBox ID="TxtName" runat="server"></asp:TextBox>  
@@ -96,7 +96,8 @@
 
   <div class='box search'> 
       <center><h4>Registracija novega podjetja.</h4></center>  
-      <hr />
+            <hr style="color: black;" />
+
              <h5>Ime:</h5> <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
              <h5>Številka</h5> <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
               <h5>Website podjetja:</h5><asp:TextBox ID="website" runat="server"></asp:TextBox>  
@@ -119,7 +120,7 @@
         <asp:Button ID="delete" runat="server" Text="Obriši" OnClick="delete_Click"/>
 
 
-
+      <hr style="color: black;" />
 
       
      <center><h4>Izbrišite podjetje.</h4></center>
@@ -128,6 +129,19 @@
                AppendDataBoundItems="true">  
         </asp:DropDownList>
         <asp:Button ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/>
+            <hr style="color: black;" />
+       <center><h4>Spremenite admina podjetja</h4></center>
+
+           <asp:DropDownList ID="ChooseCompany" runat="server"  
+               AppendDataBoundItems="true">  
+        </asp:DropDownList>
+
+         <asp:DropDownList ID="ChooseUser" runat="server"  
+               AppendDataBoundItems="true">  
+        </asp:DropDownList>
+
+        <asp:Button ID="Button1" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/>
+
   </div>
 
 </div>

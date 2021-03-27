@@ -42,7 +42,7 @@ namespace peptak
         private List<String> admins = new List<string>();
         private List<String> strings = new List<string>();
         private List<String> deleteUsers = new List<string>();
-        private List<String> DeleteCompany = new List<string>();
+        private List<String> CompanyDestroy = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
       
@@ -575,6 +575,8 @@ namespace peptak
             {
                 insertCompany();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
+                fillCompanies();
+                fillCompanyDelete();
 
                 companyNumber.Text = "";
                 companyName.Text = "";
@@ -593,7 +595,12 @@ namespace peptak
 
                 cmd.ExecuteNonQuery();
                 FillList();
+                FillListGraphs();
+                showConfig();
+                fillCompanies();
                 FillListAdmin();
+                fillUsersDelete();
+                fillCompanyDelete();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
             }
@@ -622,7 +629,7 @@ namespace peptak
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                DeleteCompany.Add(reader["company_name"].ToString());
+                CompanyDestroy.Add(reader["company_name"].ToString());
 
             }
 
@@ -637,6 +644,38 @@ namespace peptak
 
         }
 
-    
+        protected void deleteCompanyButton_Click(object sender, EventArgs e)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{deleteCompany.SelectedValue}'", conn);
+            try
+            {
+
+                cmd.ExecuteNonQuery();
+                FillList();
+                FillListGraphs();
+                showConfig();
+                fillCompanies();
+                FillListAdmin();
+                fillUsersDelete();
+                fillCompanyDelete();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+
+
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+        }
     }
 }

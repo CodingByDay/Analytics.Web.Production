@@ -186,7 +186,7 @@ namespace peptak
         protected global::System.Web.UI.WebControls.DropDownList deleteCompany;
 
         /// <summary>
-        /// deleteCompanyButton control.
+        /// companyDelete control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
