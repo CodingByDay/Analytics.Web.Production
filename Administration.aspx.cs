@@ -41,7 +41,8 @@ namespace peptak
         private List<String> companies = new List<string>();
         private List<String> admins = new List<string>();
         private List<String> strings = new List<string>();
-
+        private List<String> deleteUsers = new List<string>();
+        private List<String> DeleteCompany = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
       
@@ -56,6 +57,8 @@ namespace peptak
                 showConfig();
                 fillCompanies();
                 FillListAdmin();
+                fillUsersDelete();
+                fillCompanyDelete();
 
             } 
             
@@ -442,6 +445,7 @@ namespace peptak
                     try
                     {
                         createUser.ExecuteNonQuery();
+                        fillUsersDelete();
                         string filePath = Server.MapPath("~/App_Data/"+username); 
                         debug.Add(filePath);
                         if (!Directory.Exists(filePath)) 
@@ -452,9 +456,43 @@ namespace peptak
                     }
                     catch (Exception error)
                     {   
+                        // Implement logging here.
                     }
                 }
             }
+        }
+
+
+
+        private void fillUsersDelete()
+        {
+            try
+            {
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    deleteUsers.Add(sdr["uname"].ToString());
+
+                }
+                DeleteUser.DataSource = DataUser;
+                DeleteUser.DataBind();
+                cmd.Dispose();
+                conn.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
         }
 
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
@@ -544,5 +582,61 @@ namespace peptak
            
             }
         }
+
+        protected void delete_Click(object sender, EventArgs e)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{DeleteUser.SelectedValue}'", conn);
+            try
+            {
+
+                cmd.ExecuteNonQuery();
+                FillList();
+                FillListAdmin();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+        }
+
+        private void fillCompanyDelete()
+        {
+
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                DeleteCompany.Add(reader["company_name"].ToString());
+
+            }
+
+            deleteCompany.DataSource = strings;
+            deleteCompany.DataBind();
+            // unit test
+
+            cmd.Dispose();
+            conn.Close();
+
+
+
+        }
+
+    
     }
 }

@@ -11,9 +11,8 @@
    
        <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-     
-   <div id="permisionSettings"> <hr />
-    <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
+     <div class='app-layout'>
+  <div class='box tweets'>  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
     <hr />
   
   <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>    
@@ -29,17 +28,19 @@
 
 
         <hr />
-    <div id="save">
-          <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" />
-   </div>
+    
+         <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" />
+   
     <hr />
-       <hr />
- </div>
-    <div id="registration">
-        <div>  
-            <table class="style1">  
+       <hr /></div>
+
+
+
+
+  <div class='box replies'>            <table class="style1">  
                 <tr>  
                     <center><h4>Registracija novega uporabnika.</h4></center>
+                    <hr />
                     <td>     Ime in priimek</td>  
                     <td>  
                         <asp:TextBox ID="TxtName" runat="server"></asp:TextBox>  
@@ -84,29 +85,51 @@
                     </td>  
                 </tr>  
             </table>  
-        </div>  
-        <asp:Button ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/>  
-
-        <hr />
-        <hr />
-
-
-    </div>
-
-        <div id="company">  
-              <center><h4>Registracija novega podjetja.</h4></center>
         
-             <h4>Ime:</h4> <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
-             <h4>Številka</h4> <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
-              <h4>Website podjetja:</h4><asp:TextBox ID="website" runat="server"></asp:TextBox>  
-             <h4>Admin</h4> <asp:DropDownList ID="listAdmin" runat="server"  
+       <asp:Button ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/>  
+
+        <hr />
+        <hr />  </div>
+
+
+
+
+  <div class='box search'> 
+      <center><h4>Registracija novega podjetja.</h4></center>  
+      <hr />
+             <h5>Ime:</h5> <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
+             <h5>Številka</h5> <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
+              <h5>Website podjetja:</h5><asp:TextBox ID="website" runat="server"></asp:TextBox>  
+             <h5>Admin</h5> <asp:DropDownList ID="listAdmin" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
-              <h4>Baza</h4><asp:DropDownList ID="ConnectionStrings" runat="server"  
+              <h5>Baza</h5><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
               <asp:Button ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/>  
-         <hr />
+</div>
 
-     </div>
+
+
+  <div class='box messages'> <center><h4>Obrišite uporabnika.</h4></center>
+      <hr />
+        <asp:DropDownList ID="DeleteUser" runat="server"  
+               AppendDataBoundItems="true">  
+        </asp:DropDownList>
+        <asp:Button ID="delete" runat="server" Text="Obriši" OnClick="delete_Click"/>
+
+
+
+
+      
+     <center><h4>Izbrišite podjetje.</h4></center>
+
+           <asp:DropDownList ID="deleteCompany" runat="server"  
+               AppendDataBoundItems="true">  
+        </asp:DropDownList>
+        <asp:Button ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/>
+  </div>
+
+</div>
+ 
 </asp:Content>
