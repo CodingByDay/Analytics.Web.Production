@@ -29,7 +29,7 @@
 
         <hr />
     
-         <asp:Button type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" />
+        <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" /></center>
    
     <hr />
        <hr /></div>
@@ -43,7 +43,7 @@
       <hr style="color: black;" />
                     <td>     Ime in priimek</td>  
                     <td>  
-                        <asp:TextBox ID="TxtName" runat="server"></asp:TextBox>  
+                        <asp:TextBox ID="TxtName" placeholder= runat="server" ></asp:TextBox>  
                     </td>  
                 </tr>  
                 <tr>  
@@ -85,9 +85,8 @@
                     </td>  
                 </tr>  
             </table>  
-        
-       <asp:Button ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/>  
-
+        <hr />
+      <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/></center>  
         <hr />
         <hr />  </div>
 
@@ -107,7 +106,8 @@
               <h5>Baza</h5><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
-              <asp:Button ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/>  
+      <hr />
+              <center><asp:Button CssClass="companyButton" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center>  
 </div>
 
 
@@ -117,8 +117,9 @@
         <asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
-        <asp:Button ID="delete" runat="server" Text="Obriši" OnClick="delete_Click"/>
-
+      <hr />
+       <center> <asp:Button CssClass="delete" ID="delete" runat="server" Text="Obriši" OnClick="delete_Click"/></center>
+       
 
       <hr style="color: black;" />
 
@@ -128,19 +129,19 @@
            <asp:DropDownList ID="deleteCompany" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
-        <asp:Button ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/>
+        <center><asp:Button  CssClass="companyButtonDestroy" ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/></center>
             <hr style="color: black;" />
        <center><h4>Spremenite admina podjetja</h4></center>
 
            <asp:DropDownList ID="ChooseCompany" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
-
+      <hr />
          <asp:DropDownList ID="ChooseUser" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
-
-        <asp:Button ID="Button1" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/>
+      <hr />
+        <center><asp:Button CssClass="deleteCompany" ID="changeCompany" runat="server" Text="Spremeni" OnClick="changeCompany_Click"/></center>
 
   </div>
 

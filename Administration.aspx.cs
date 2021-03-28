@@ -43,6 +43,9 @@ namespace peptak
         private List<String> strings = new List<string>();
         private List<String> deleteUsers = new List<string>();
         private List<String> CompanyDestroy = new List<string>();
+        private List<String> changeCompanyUser = new List<string>();
+        private List<String> changeUserCompany = new List<string>();
+
         protected void Page_Load(object sender, EventArgs e)
         {
       
@@ -59,6 +62,7 @@ namespace peptak
                 FillListAdmin();
                 fillUsersDelete();
                 fillCompanyDelete();
+                fillChange();
 
             } 
             
@@ -461,7 +465,47 @@ namespace peptak
                 }
             }
         }
+      private void fillChange()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                changeCompanyUser.Add(reader["company_name"].ToString());
 
+            }
+
+            ChooseCompany.DataSource = changeCompanyUser;
+            ChooseCompany.DataBind();
+            // unit test
+
+            cmd.Dispose();
+            conn.Close();
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand("select uname from Users ", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader2 = cmd.ExecuteReader();
+            while (reader2.Read())
+            {
+                changeUserCompany.Add(reader2["uname"].ToString());
+
+            }
+
+            ChooseUser.DataSource = changeUserCompany;
+            ChooseUser.DataBind();
+            // unit test
+
+            cmd.Dispose();
+            conn.Close();
+
+        }
 
 
         private void fillUsersDelete()
@@ -601,6 +645,7 @@ namespace peptak
                 FillListAdmin();
                 fillUsersDelete();
                 fillCompanyDelete();
+                fillChange();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
             }
@@ -660,6 +705,7 @@ namespace peptak
                 FillListAdmin();
                 fillUsersDelete();
                 fillCompanyDelete();
+                fillChange();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
 
@@ -670,12 +716,34 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
 
 
             cmd.Dispose();
             conn.Close();
         }
+
+        protected void changeCompany_Click(object sender, EventArgs e)
+        {
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"update companies set admin_id='{ChooseUser.SelectedValue}' where company_name='{ChooseCompany.SelectedValue}'", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            try {
+                cmd.ExecuteNonQuery();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki'  );</script>");
+
+            }
+            catch (Exception error)
+            {
+                // Log error
+            }
+            
+            
+            
+            }
     }
 }

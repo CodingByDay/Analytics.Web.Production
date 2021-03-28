@@ -3,6 +3,7 @@
     font-family: Arial;
     background-color: #f2f2f2;
     color: black;
+    
 }
 
 .box {
@@ -14,28 +15,28 @@
 }
 
 .tweets {
-    background-color: #B0B0B0;
+    background-color: wheat;
     color: black;
     text-align: left;
     font-size:larger;
 }
 
 .replies {
-    background-color: #B8B8B8;
+    background-color: wheat;
     color: black;
     text-align: left;
     font-size: larger;
 }
 
 .search {
-    background-color: #C0C0C0;
+    background-color: wheat;
     color: black;
     text-align: left;
     font-size: larger;
 }
 
 .messages {
-    background-color: #C8C8C8;
+    background-color: wheat;
     color: black;
     font-size: larger;
     text-align: left;
@@ -55,4 +56,30 @@
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 50vh 50vh;
     }
+}
+
+
+.save, .registrationButton, .companyButton, .delete, .deleteCompany, .companyButtonDestroy {
+    margin: auto;
+    background-color: black;
+    border-radius: 10px;
+    border: 4px double #cccccc;
+    color: #eeeeee;
+    text-align: center;
+    font-size: 10px;
+    padding: 20px;
+    width: 200pxs -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.save:hover, .registrationButton:hover, .companyButton:hover, .delete:hover, .deleteCompany:hover {
+    background-color: yellow;
+    color:black;
 }
