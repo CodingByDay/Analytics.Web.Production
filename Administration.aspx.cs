@@ -443,7 +443,7 @@ namespace peptak
                     {
                        // Logging module.
                     }
-                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}')");
+                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}','{userType.SelectedValue}' )");
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                     var username = TxtUserName.Text;
                     try
@@ -717,6 +717,7 @@ namespace peptak
                 fillCompanyDelete();
                 fillChange();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+
                 string filePath = Server.MapPath("~/App_Data/" + deleteCompany.SelectedValue);
                 if (!Directory.Exists(filePath))
                 {

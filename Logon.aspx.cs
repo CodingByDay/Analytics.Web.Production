@@ -104,7 +104,7 @@ namespace peptak
                   //  Create SqlCommand to select pwd field from users table given supplied userName.
                     if (txtUserName.Value == "Admin")
                     {
-                        strRedirect = "administrationcompany.aspx";
+                        strRedirect = "default.aspx";
                         Response.Redirect(strRedirect, true);
                     }
                     else

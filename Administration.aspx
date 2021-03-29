@@ -74,6 +74,16 @@
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  
                     </td> 
+
+               <td>Tip uporabnika</td>  
+                    <td>  
+                        <asp:RadioButtonList ID="userType" runat="server">  
+                            <asp:ListItem>Viewer</asp:ListItem>  
+                            <asp:ListItem>Designer</asp:ListItem>  
+                            <asp:ListItem>Viewer&Designer</asp:ListItem>  
+                        </asp:RadioButtonList>  
+                    </td> 
+           
            
                 <tr>  
                    <center><td>     Podjetje:</td></center>  

@@ -13,5 +13,15 @@ namespace peptak
         {
 
         }
+
+        protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Save_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
