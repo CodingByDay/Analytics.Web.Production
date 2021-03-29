@@ -48,11 +48,10 @@ namespace peptak
         private List<String> typesOfViews = new List<string>();
         private int permisionID;
         private string deletedID;
-        private bool newUser = true;
+        private bool newUser;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            debug.Clear();
             /////////////////////////////////////////////////////////////
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
@@ -68,16 +67,15 @@ namespace peptak
                 fillUsersDelete();
                 fillCompanyDelete();
                 fillChange();
+
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
             }
-
-            foreach (string dev in debug) {
-                Response.Write(dev);
-            }
+       
+ 
         
 
         }
@@ -416,6 +414,7 @@ namespace peptak
         {
             if (newUser == true)
             {
+                Response.Write("newUser=True :(");
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
@@ -481,9 +480,15 @@ namespace peptak
                 }
             } else
             {
+
+             
+
+                Response.Write("newUser=false :)");
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName}', where uname='{TxtUserName.Text}'", conn);
+                var dev = $"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+                debug.Add(dev);
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
             
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
@@ -501,7 +506,7 @@ namespace peptak
                             var company = companiesList.SelectedValue;
                             fillUsersDelete();
                             string filePath = Server.MapPath("~/App_Data/" + company + "/" + TxtUserName);
-                            debug.Add(filePath);
+                            Response.Write(filePath);
                             if (!Directory.Exists(filePath))
                             {
                                 FillList();
@@ -510,6 +515,7 @@ namespace peptak
                         }
                         catch (Exception error)
                         {
+                    
                             // Implement logging here.
                         }
                     }
