@@ -40,6 +40,9 @@
   <div class='box replies'>            <table class="style1">  
                 <tr>  
                     <center><h4>Registracija novega uporabnika.</h4></center>
+                    <hr />
+       <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click"/></center>  
+
       <hr style="color: black;" />
                     <td>     Ime in priimek</td>  
                     <td>  

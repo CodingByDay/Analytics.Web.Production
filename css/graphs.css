@@ -59,7 +59,7 @@
 }
 
 
-.save, .registrationButton, .companyButton, .delete, .deleteCompany, .companyButtonDestroy {
+.save, .registrationButton, .companyButton, .delete, .deleteCompany, .companyButtonDestroy, .completelyNewUser {
     margin: auto;
     background-color: black;
     border-radius: 10px;

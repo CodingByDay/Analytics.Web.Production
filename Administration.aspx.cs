@@ -48,6 +48,7 @@ namespace peptak
         private List<String> typesOfViews = new List<string>();
         private int permisionID;
         private string deletedID;
+        private bool newUser = true;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -411,66 +412,134 @@ namespace peptak
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
-            var result = cmd.ExecuteScalar();
-            Int32 Total_ID = System.Convert.ToInt32(result);
-
-            int next = Total_ID + 1;
-            if (TxtPassword.Text != TxtRePassword.Text)
-            {
-                Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
-                TxtPassword.Text = "";
-                TxtRePassword.Text = "";
-            }
-            else
+            if (newUser == true)
             {
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
-                SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
+                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
+                var result = cmd.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
 
-
-                var resultCheck = check.ExecuteScalar();
-                Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                if (resultUsername > 0)
+                int next = Total_ID + 1;
+                if (TxtPassword.Text != TxtRePassword.Text)
                 {
-                    Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
                 }
                 else
                 {
+                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                    conn.Open();
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
 
-                    string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
-                    SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
 
-                    try
+                    var resultCheck = check.ExecuteScalar();
+                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                    if (resultUsername > 0)
                     {
-                        createUserPermisions.ExecuteNonQuery();
+                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
                     }
-                    catch (Exception error)
+                    else
                     {
-                       // Logging module.
-                    }
-                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex+1}','{userType.SelectedValue}' )");
-                    SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-                    var username = TxtUserName.Text;
-                    try
-                    {
-                        createUser.ExecuteNonQuery();
-                        Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
-                        var company = companiesList.SelectedValue;
-                        fillUsersDelete();
-                        string filePath = Server.MapPath("~/App_Data/"+ company+ "/" + username); 
-                        debug.Add(filePath);
-                        if (!Directory.Exists(filePath)) 
+
+                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+                        try
                         {
-                            FillList();
-                            Directory.CreateDirectory(filePath);
+                            createUserPermisions.ExecuteNonQuery();
+                        }
+                        catch (Exception error)
+                        {
+                            // Logging module.
+                        }
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        var username = TxtUserName.Text;
+                        try
+                        {
+                            createUser.ExecuteNonQuery();
+                            Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            var company = companiesList.SelectedValue;
+                            fillUsersDelete();
+                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username);
+                            debug.Add(filePath);
+                            if (!Directory.Exists(filePath))
+                            {
+                                FillList();
+                                Directory.CreateDirectory(filePath);
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            // Implement logging here.
                         }
                     }
-                    catch (Exception error)
-                    {   
-                        // Implement logging here.
+                }
+            } else
+            {
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
+                var result = cmd.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
+
+                int next = Total_ID + 1;
+                if (TxtPassword.Text != TxtRePassword.Text)
+                {
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
+                }
+                else
+                {
+                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                    conn.Open();
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
+
+
+                    var resultCheck = check.ExecuteScalar();
+                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                    if (resultUsername > 0)
+                    {
+                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
+                    }
+                    else
+                    {
+
+                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+                        try
+                        {
+                            createUserPermisions.ExecuteNonQuery();
+                        }
+                        catch (Exception error)
+                        {
+                            // Logging module.
+                        }
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        var username = TxtUserName.Text;
+                        try
+                        {
+                            createUser.ExecuteNonQuery();
+                            Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            var company = companiesList.SelectedValue;
+                            fillUsersDelete();
+                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username);
+                            debug.Add(filePath);
+                            if (!Directory.Exists(filePath))
+                            {
+                                FillList();
+                                Directory.CreateDirectory(filePath);
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            // Implement logging here.
+                        }
                     }
                 }
             }
@@ -560,8 +629,12 @@ namespace peptak
         /// <summary>
         /// Allows superadmin to update the user value. SelectedValue.
         /// </summary>
+        /// 
+
+
         private void updateForm()
         {
+            newUser = false;
             ///
             var userRightNow = usersPermisions.SelectedValue;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -570,10 +643,24 @@ namespace peptak
             SqlDataReader sdr = cmd.ExecuteReader();
             while (sdr.Read())
             {
-            //    deleteUsers.Add(sdr["uname"].ToString());
+                //    deleteUsers.Add(sdr["uname"].ToString());
+                TxtName.Text = sdr["FullName"].ToString();
+                TxtUserName.Text = sdr["uname"].ToString();
+                TxtUserName.Enabled = false;
+                var pass = sdr["Pwd"].ToString();
+                TxtPassword.Text = pass;
+                TxtRePassword.Text = pass;
+                var role = sdr["userRole"].ToString();
+                var type = sdr["ViewState"].ToString();
+                userRole.SelectedIndex= userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                userType.SelectedIndex= userType.Items.IndexOf(userType.Items.FindByValue(type));
+
+
+
 
             }
-
+            sdr.Close();
+            cmd.Dispose();
         }
 
         private void insertCompany()
@@ -838,5 +925,21 @@ namespace peptak
             
             
             }
+
+        protected void completelyNewUser_Click(object sender, EventArgs e)
+        {
+            TxtName.Text = "";
+            TxtUserName.Text = "";
+            TxtPassword.Text = "";
+            TxtRePassword.Text = "";
+
+
+            Response.Write($"<script type=\"text/javascript\">alert('Izpolnite potrebne podatke.'  );</script>");
+            TxtUserName.Enabled = true;
+
+
+            newUser = true;
+
+        }
     }
 }
