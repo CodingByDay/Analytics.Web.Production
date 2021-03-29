@@ -552,13 +552,31 @@ namespace peptak
 
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillListGraphsNames();
-            
+            FillListGraphsNames();            
             showConfig();
-           
+            updateForm();           
         }
 
-       private void insertCompany()
+        /// <summary>
+        /// Allows superadmin to update the user value. SelectedValue.
+        /// </summary>
+        private void updateForm()
+        {
+            ///
+            var userRightNow = usersPermisions.SelectedValue;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
+            SqlDataReader sdr = cmd.ExecuteReader();
+            while (sdr.Read())
+            {
+            //    deleteUsers.Add(sdr["uname"].ToString());
+
+            }
+
+        }
+
+        private void insertCompany()
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -658,7 +676,6 @@ namespace peptak
             var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
             try
             {
-                Response.Write(final);
                 var result = cmd1.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
 
