@@ -48,7 +48,7 @@ namespace peptak
         private List<String> typesOfViews = new List<string>();
         private int permisionID;
         private string deletedID;
-        private bool newUser;
+       
         
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -67,7 +67,6 @@ namespace peptak
                 fillUsersDelete();
                 fillCompanyDelete();
                 fillChange();
-                newUser = true;
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -76,8 +75,7 @@ namespace peptak
             }
             else
             {
-                newUser = false;
-                Response.Write(newUser);
+             
             }
 
         }
@@ -414,9 +412,9 @@ namespace peptak
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            if (newUser == true)
+            if (TxtUserName.Enabled == true)
             {
-                Response.Write("newUser=True :(");
+           
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
@@ -467,7 +465,7 @@ namespace peptak
                             var company = companiesList.SelectedValue;
                             company.Replace(" ", string.Empty);
                             fillUsersDelete();
-                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}"); // potential bug.
+                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ; 
                             debug.Add(filePath);
                             if (!Directory.Exists(filePath))
                             {
@@ -486,7 +484,6 @@ namespace peptak
 
              
 
-                Response.Write("newUser=false :)");
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 var dev = $"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
@@ -508,9 +505,8 @@ namespace peptak
                         cmd.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                             var company = companiesList.SelectedValue;
-                            company.Replace(" ", string.Empty);
                             fillUsersDelete();
-                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}"); // potential bug.
+                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ; 
 
                         Response.Write(filePath);
                             if (!Directory.Exists(filePath))
@@ -608,7 +604,6 @@ namespace peptak
             FillListGraphsNames();            
             showConfig();
             updateForm();
-            newUser = false;
         }
 
         /// <summary>
@@ -627,7 +622,6 @@ namespace peptak
             SqlDataReader sdr = cmd.ExecuteReader();
             while (sdr.Read())
             {
-                //    deleteUsers.Add(sdr["uname"].ToString());
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
@@ -639,9 +633,6 @@ namespace peptak
                 var type = sdr["ViewState"].ToString();
                 userRole.SelectedIndex= userRole.Items.IndexOf(userRole.Items.FindByValue(role));
                 userType.SelectedIndex= userType.Items.IndexOf(userType.Items.FindByValue(type));
-
-
-
 
             }
             sdr.Close();
@@ -922,9 +913,6 @@ namespace peptak
             Response.Write($"<script type=\"text/javascript\">alert('Izpolnite potrebne podatke.'  );</script>");
             TxtUserName.Enabled = true;
 
-
-            newUser = true;
-            Response.Write(newUser);
 
         }
     }
