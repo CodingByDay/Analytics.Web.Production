@@ -52,7 +52,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+            debug.Clear();
             /////////////////////////////////////////////////////////////
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
@@ -465,7 +465,7 @@ namespace peptak
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             var company = companiesList.SelectedValue;
                             fillUsersDelete();
-                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username);
+                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username); // potential bug.
                             debug.Add(filePath);
                             if (!Directory.Exists(filePath))
                             {
@@ -593,6 +593,8 @@ namespace peptak
 
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
         {
+            newUser = false;
+            debug.Add(newUser.ToString());
             FillListGraphsNames();            
             showConfig();
             updateForm();           
