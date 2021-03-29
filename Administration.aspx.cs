@@ -73,9 +73,11 @@ namespace peptak
                 typesOfViews.Add("Viewer&Designer");
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
-            } 
-            
+            }
 
+            foreach (string dev in debug) {
+                Response.Write(dev);
+            }
         
 
         }
@@ -481,11 +483,8 @@ namespace peptak
             {
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
-                var result = cmd.ExecuteScalar();
-                Int32 Total_ID = System.Convert.ToInt32(result);
-
-                int next = Total_ID + 1;
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName}', where uname='{TxtUserName.Text}'", conn);
+            
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
@@ -494,41 +493,14 @@ namespace peptak
                 }
                 else
                 {
-                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                    conn.Open();
-                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
-
-
-                    var resultCheck = check.ExecuteScalar();
-                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                    if (resultUsername > 0)
-                    {
-                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
-                    }
-                    else
-                    {
-
-                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
-                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-
+                   
                         try
                         {
-                            createUserPermisions.ExecuteNonQuery();
-                        }
-                        catch (Exception error)
-                        {
-                            // Logging module.
-                        }
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
-                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-                        var username = TxtUserName.Text;
-                        try
-                        {
-                            createUser.ExecuteNonQuery();
-                            Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            cmd.ExecuteNonQuery();
+                            Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                             var company = companiesList.SelectedValue;
                             fillUsersDelete();
-                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username);
+                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + TxtUserName);
                             debug.Add(filePath);
                             if (!Directory.Exists(filePath))
                             {
@@ -543,7 +515,7 @@ namespace peptak
                     }
                 }
             }
-        }
+        
       private void fillChange()
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -647,6 +619,7 @@ namespace peptak
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
+                companiesList.Enabled = false;
                 var pass = sdr["Pwd"].ToString();
                 TxtPassword.Text = pass;
                 TxtRePassword.Text = pass;
