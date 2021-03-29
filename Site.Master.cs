@@ -14,10 +14,12 @@ namespace peptak
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            cmdSignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();

@@ -505,7 +505,7 @@ namespace peptak
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                             var company = companiesList.SelectedValue;
                             fillUsersDelete();
-                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + TxtUserName);
+                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + TxtUserName.Text);
                             Response.Write(filePath);
                             if (!Directory.Exists(filePath))
                             {

@@ -15,12 +15,22 @@
         // ...
                 dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
     }
-            
+            $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
 
+            $(function () {
 
+                $(':text').bind('keydown', function (e) { //on keydown for all textboxes  
+
+                    if (e.keyCode == 13) //if this is enter key  
+
+                        e.preventDefault();
+
+                });
+
+            });  
 
         </script>>
-
+    
         <div class="col-sm-12">
         <div style="position: absolute; left: 80px; right: 0; top:0; bottom:30px;">
  
