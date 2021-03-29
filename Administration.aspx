@@ -7,28 +7,21 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-   
-   
+
        <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
      <div class='app-layout'>
   <div class='box tweets'>  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
       <hr style="color: black;" />
-  
-  <asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>    
-
+  <center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>></center>    
        <hr />
- 
-    <hr />
-   
-       
+    <hr />  
+      <DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
       <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
         </dx:ASPxCheckBoxList></center>
- 
+          </DIV>
 
-
-        <hr />
-    
+        <hr /> 
         <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" /></center>
    
     <hr />
@@ -37,11 +30,11 @@
 
 
 
-  <div class='box replies'>            <table class="style1">  
+  <div class='box replies'><table class="style1">  
                 <tr>  
-                    <center><h4>Registracija novega uporabnika.</h4></center>
+      <center><h4>Registracija novega uporabnika.</h4></center>
                  
-       <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click"/></center>  
+      <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click"/></center>  
 
       <hr style="color: black;" />
                     <td>     Ime in priimek</td>  
@@ -79,16 +72,8 @@
       <hr />
                 <center><h5>Tip uporabnika</h5></center>
                  <asp:DropDownList ID="userType" autopostback="true" runat="server"  >
-
-                    
-
-
-
                  </asp:DropDownList>    
-
-                   
-           
-           
+        
                 <tr>  
                    <center><td>     Podjetje:</td></center>  
                     <td>  

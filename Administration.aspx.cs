@@ -56,6 +56,7 @@ namespace peptak
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
             {
+                deleteUsers.Clear();
                 Button BackButton = (Button)Master.FindControl("back");
                 BackButton.Enabled = true;
                 BackButton.Visible = true;
@@ -75,7 +76,9 @@ namespace peptak
             }
             else
             {
-             
+                deleteUsers.Clear();
+                fillUsersDelete();
+                fillCompanyDelete();
             }
 
         }
@@ -566,7 +569,6 @@ namespace peptak
 
         }
 
-
         private void fillUsersDelete()
         {
             deleteUsers.Clear();
@@ -583,7 +585,7 @@ namespace peptak
                     deleteUsers.Add(sdr["uname"].ToString());
 
                 }
-                DeleteUser.DataSource = DataUser;
+                DeleteUser.DataSource = deleteUsers;
                 DeleteUser.DataBind();
                 cmd.Dispose();
                 conn.Close();
@@ -773,6 +775,12 @@ namespace peptak
                 deletePermisionEntry();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
+                string filePath = Server.MapPath("~/App_Data/" + DeleteUser.SelectedValue);
+
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.Delete(filePath);
+                }
             }
 
 
@@ -847,7 +855,7 @@ namespace peptak
             SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{deleteCompany.SelectedValue}'", conn);
             try
             {
-
+                deleteUsers.Clear();
                 cmd.ExecuteNonQuery();
                 FillList();
                 FillListGraphs();
