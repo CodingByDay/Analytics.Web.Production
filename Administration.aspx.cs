@@ -45,11 +45,14 @@ namespace peptak
         private List<String> CompanyDestroy = new List<string>();
         private List<String> changeCompanyUser = new List<string>();
         private List<String> changeUserCompany = new List<string>();
+        private List<String> typesOfViews = new List<string>();
+        private int permisionID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-      
-
+          
+            /////////////////////////////////////////////////////////////
+            // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
             {
                 Button BackButton = (Button)Master.FindControl("back");
@@ -63,7 +66,11 @@ namespace peptak
                 fillUsersDelete();
                 fillCompanyDelete();
                 fillChange();
-
+                typesOfViews.Add("Viewer");
+                typesOfViews.Add("Designer");
+                typesOfViews.Add("Viewer&Designer");
+                userType.DataSource = typesOfViews;
+                userType.DataBind();
             } 
             
 
@@ -449,8 +456,10 @@ namespace peptak
                     try
                     {
                         createUser.ExecuteNonQuery();
+                        Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                        var company = companiesList.SelectedValue;
                         fillUsersDelete();
-                        string filePath = Server.MapPath("~/App_Data/"+username); 
+                        string filePath = Server.MapPath("~/App_Data/"+ company+ "/" + username); 
                         debug.Add(filePath);
                         if (!Directory.Exists(filePath)) 
                         {
@@ -510,6 +519,7 @@ namespace peptak
 
         private void fillUsersDelete()
         {
+            deleteUsers.Clear();
             try
             {
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -638,7 +648,50 @@ namespace peptak
                 Directory.CreateDirectory(filePath);
             }
         }
+        private void deletePermisionEntry()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT id_permisions from Users WHERE uname='{DeleteUser.SelectedValue}'", conn);
+            try
+            {
 
+                var result = cmd.ExecuteScalar();
+                permisionID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+
+
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions WHERE id_permisions={permisionID}", conn);
+            try
+            {
+
+                var result = cmd1.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+            }
+        }
+
+        
         protected void delete_Click(object sender, EventArgs e)
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -656,6 +709,7 @@ namespace peptak
                 fillUsersDelete();
                 fillCompanyDelete();
                 fillChange();
+                deletePermisionEntry();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
             }

@@ -69,20 +69,21 @@
                  <td>Pozicija</td>  
                     <td>  
                         <asp:RadioButtonList ID="userRole" runat="server">  
-                            <asp:ListItem>Manager</asp:ListItem>  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  
                     </td> 
+      <hr />
+                <center><h5>Tip uporabnika</h5></center>
+                 <asp:DropDownList ID="userType" autopostback="true" runat="server"  >
 
-               <td>Tip uporabnika</td>  
-                    <td>  
-                        <asp:RadioButtonList ID="userType" runat="server">  
-                            <asp:ListItem>Viewer</asp:ListItem>  
-                            <asp:ListItem>Designer</asp:ListItem>  
-                            <asp:ListItem>Viewer&Designer</asp:ListItem>  
-                        </asp:RadioButtonList>  
-                    </td> 
+                    
+
+
+
+                 </asp:DropDownList>    
+
+                   
            
            
                 <tr>  
@@ -103,32 +104,32 @@
 
 
 
-  <div class='box search'> 
-      <center><h4>Registracija novega podjetja.</h4></center>  
-            <hr style="color: black;" />
+             <div class='box search'> 
+             <center><h4>Registracija novega podjetja.</h4></center>  
+             <hr style="color: black;" />
 
              <h5>Ime:</h5> <asp:TextBox ID="companyName" runat="server"></asp:TextBox>
              <h5>Številka</h5> <asp:TextBox ID="companyNumber" runat="server"></asp:TextBox>                  
-              <h5>Website podjetja:</h5><asp:TextBox ID="website" runat="server"></asp:TextBox>  
-             <h5>Admin</h5> <asp:DropDownList ID="listAdmin" runat="server"  
-               AppendDataBoundItems="true">  
+             <h5>Website podjetja:</h5><asp:TextBox ID="website" runat="server"></asp:TextBox>  
+             <h5>Admin</h5> <asp:DropDownList ID="listAdmin" runat="server" > 
+               <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList>  
               <h5>Baza</h5><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList>  
-      <hr />
-              <center><asp:Button CssClass="companyButton" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center>  
-</div>
+             <hr /> 
+             <center><asp:Button CssClass="companyButton" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center>  
+             </div>
 
 
 
-  <div class='box messages'> <center><h4>Obrišite uporabnika.</h4></center>
+  <div class='box messages'> <center><h4>Brišite uporabnika.</h4></center>
       <hr />
         <asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
       <hr />
-       <center> <asp:Button CssClass="delete" ID="delete" runat="server" Text="Obriši" OnClick="delete_Click"/></center>
+       <center> <asp:Button CssClass="delete" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
        
 
       <hr style="color: black;" />
@@ -140,7 +141,7 @@
                AppendDataBoundItems="true">  
         </asp:DropDownList>
       <hr />
-        <center><asp:Button  CssClass="companyButtonDestroy" ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/></center>
+        <center><asp:Button  CssClass="companyButtonDestroy" ID="companyDelete" runat="server" Text="Briši podjetje"  OnClick="deleteCompanyButton_Click"/></center>
             <hr style="color: black;" />
        <center><h4>Spremenite admina podjetja</h4></center>
 

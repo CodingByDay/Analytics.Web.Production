@@ -705,6 +705,8 @@ C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.pdb
 C:\Users\janko\Desktop\2\peptak\obj\Debug\peptak.csprojAssemblyReference.cache
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.dll.config
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.pdb
@@ -937,9 +939,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraTreeLis
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
