@@ -49,7 +49,7 @@ namespace peptak
         private int permisionID;
         private string deletedID;
         private bool newUser;
-
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             /////////////////////////////////////////////////////////////
@@ -67,16 +67,18 @@ namespace peptak
                 fillUsersDelete();
                 fillCompanyDelete();
                 fillChange();
-
+                newUser = true;
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
             }
-       
- 
-        
+            else
+            {
+                newUser = false;
+                Response.Write(newUser);
+            }
 
         }
 
@@ -463,8 +465,9 @@ namespace peptak
                             createUser.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             var company = companiesList.SelectedValue;
+                            company.Replace(" ", string.Empty);
                             fillUsersDelete();
-                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + username); // potential bug.
+                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}"); // potential bug.
                             debug.Add(filePath);
                             if (!Directory.Exists(filePath))
                             {
@@ -501,12 +504,15 @@ namespace peptak
                    
                         try
                         {
-                            cmd.ExecuteNonQuery();
+                        var username = TxtUserName.Text;
+                        cmd.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                             var company = companiesList.SelectedValue;
+                            company.Replace(" ", string.Empty);
                             fillUsersDelete();
-                            string filePath = Server.MapPath("~/App_Data/" + company + "/" + TxtUserName.Text);
-                            Response.Write(filePath);
+                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}"); // potential bug.
+
+                        Response.Write(filePath);
                             if (!Directory.Exists(filePath))
                             {
                                 FillList();
@@ -599,11 +605,10 @@ namespace peptak
 
         protected void usersPermisions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            newUser = false;
-            debug.Add(newUser.ToString());
             FillListGraphsNames();            
             showConfig();
-            updateForm();           
+            updateForm();
+            newUser = false;
         }
 
         /// <summary>
@@ -614,7 +619,6 @@ namespace peptak
 
         private void updateForm()
         {
-            newUser = false;
             ///
             var userRightNow = usersPermisions.SelectedValue;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -920,6 +924,7 @@ namespace peptak
 
 
             newUser = true;
+            Response.Write(newUser);
 
         }
     }
