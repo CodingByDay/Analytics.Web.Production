@@ -47,6 +47,7 @@ namespace peptak
         private List<String> changeUserCompany = new List<string>();
         private List<String> typesOfViews = new List<string>();
         private int permisionID;
+        private string deletedID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -650,35 +651,14 @@ namespace peptak
         }
         private void deletePermisionEntry()
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT id_permisions from Users WHERE uname='{DeleteUser.SelectedValue}'", conn);
-            try
-            {
-
-                var result = cmd.ExecuteScalar();
-                permisionID = System.Convert.ToInt32(result);
-
-            }
-
-
-            catch (Exception error)
-            {
-                // Implement logging here.
-            }
-
-
-            cmd.Dispose();
-            conn.Close();
-
-
-
+            
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions WHERE id_permisions={permisionID}", conn);
+            var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
             try
             {
-
+                Response.Write(final);
                 var result = cmd1.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
 
@@ -697,9 +677,10 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"delete from Users where uname='{DeleteUser.SelectedValue}'", conn);
+            deletedID = DeleteUser.SelectedValue;
+            getIdPermision();
             try
             {
-
                 cmd.ExecuteNonQuery();
                 FillList();
                 FillListGraphs();
@@ -725,6 +706,32 @@ namespace peptak
             cmd.Dispose();
             conn.Close();
         }
+
+        private void getIdPermision()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_permisions from Users where uname='{deletedID}'", conn);
+
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                permisionID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+        
+    }
 
         private void fillCompanyDelete()
         {
