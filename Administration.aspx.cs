@@ -621,11 +621,21 @@ namespace peptak
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
                 fillCompanies();
                 fillCompanyDelete();
-
+                createFileIfDoesNotExist(companyName.Text);
                 companyNumber.Text = "";
                 companyName.Text = "";
                 website.Text = "";
            
+            }
+        }
+
+        private void createFileIfDoesNotExist(string company)
+        {
+            string filePath = Server.MapPath("~/App_Data/"+company);
+            debug.Add(filePath);
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
             }
         }
 
@@ -707,7 +717,11 @@ namespace peptak
                 fillCompanyDelete();
                 fillChange();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
-
+                string filePath = Server.MapPath("~/App_Data/" + deleteCompany.SelectedValue);
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.Delete(filePath);
+                }
 
 
             }

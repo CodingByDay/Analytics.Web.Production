@@ -129,6 +129,7 @@
            <asp:DropDownList ID="deleteCompany" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList>
+      <hr />
         <center><asp:Button  CssClass="companyButtonDestroy" ID="companyDelete" runat="server" Text="Obriši podjetje"  OnClick="deleteCompanyButton_Click"/></center>
             <hr style="color: black;" />
        <center><h4>Spremenite admina podjetja</h4></center>
