@@ -16,41 +16,44 @@ namespace peptak
         static CustomDashboardStorage dashboardStorage = new CustomDashboardStorage();
         private SqlConnection conn;
         private SqlCommand cmd;
+        private string company;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             ASPxDashboard2.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
 
-            var folder = HttpContext.Current.User.Identity.Name;
 
-            ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{folder}";
             // Custom data storage. 
 
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select userRole from Users where uname='{uname}'", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
-            var sdr = cmd.ExecuteScalar();
+            SqlDataReader reader = cmd.ExecuteReader();
 
-            var user = sdr.ToString();
+            while (reader.Read())
+            {
+               company = (reader["company_name"].ToString());
 
-            if (user != "Manager")
-            {
-                ASPxDashboard2.WorkingMode = WorkingMode.Viewer;
             }
-            else
-            {
-                ASPxDashboard2.WorkingMode = WorkingMode.Designer;
-            }
+
+           
+            // unit test
+
+            cmd.Dispose();
+            conn.Close();
+
+
+            var folder = HttpContext.Current.User.Identity.Name;
+
+            ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}";
+
+
+
 
         }
-/// <summary>
-/// 
-/// </summary>
-/// <param name="sender"></param>
-/// <param name="e"></param>
 
 
         protected void cmdSignOut_Click(object sender, EventArgs e)
