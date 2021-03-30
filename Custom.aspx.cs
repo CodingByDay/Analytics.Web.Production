@@ -29,7 +29,7 @@ namespace peptak
             switch(state)
             {
                 case "Viewer":
-                    ASPxDashboard2.WorkingMode = WorkingMode.ViewerOnly;
+                    ASPxDashboard2.WorkingMode = WorkingMode.ViewerOnly; //
                     break;
                 case "Designer":
                     ASPxDashboard2.WorkingMode = WorkingMode.Designer;
