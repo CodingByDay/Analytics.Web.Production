@@ -36,7 +36,7 @@
 
         <hr />
     
-        <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click" /></center>
+        <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/></center>
    
     <hr />
        <hr />
@@ -47,7 +47,7 @@
                 <tr>  
       <center><h4>Registracija novega uporabnika.</h4></center>
                  
-      <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click"/></center>  
+      <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click" /></center>  
 
       <hr style="color: black;" />
                     <td>     Ime in priimek</td>  
@@ -98,7 +98,7 @@
                 </tr>  
             </table>  
         <hr />
-      <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi" OnClick="Button1_Click"/></center>  
+      <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi" OnClick="registrationButton_Click"/></center>  
         <hr />
         <hr />  </div>
 
