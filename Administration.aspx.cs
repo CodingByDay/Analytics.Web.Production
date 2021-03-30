@@ -568,7 +568,7 @@ namespace peptak
             
 
         }
-        
+
 
 
 
@@ -594,30 +594,30 @@ namespace peptak
                 catch (IOException iox)
                 {
                     Response.Write("Exception is: " + iox);
-               
+
                 }
-                
+
                 // Implement logging here.
-                }
+            }
 
-                // Second update part.
-               string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}").Replace(" ", string.Empty);
+            // Second update part.
+            string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}").Replace(" ", string.Empty);
 
-               fileNames.Clear();
-               System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
-               System.IO.FileInfo[] finfo = di.GetFiles();
-               foreach (System.IO.FileInfo file in finfo)
-               {
+            fileNames.Clear();
+            System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
+            System.IO.FileInfo[] finfo = di.GetFiles();
+            foreach (System.IO.FileInfo file in finfo)
+            {
 
                 XDocument doc = XDocument.Load(destinationFileEdit + "/" + file.Name);
-                var tempXmlName = doc.Root.Element("Connection").Attribute("Name").Value;
-                var target = doc.Elements("Connection")
-                        .Single();
 
-                target.Attribute("Name").Value = database;
+                var first = doc.Root.Element("DataSources");
+
+                first.Element("SqlDataSource").Element("Connection").Attribute("Name").Value=database;
 
 
-               }
+            }
+
 
 
         }
