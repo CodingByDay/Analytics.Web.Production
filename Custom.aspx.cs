@@ -23,7 +23,6 @@ namespace peptak
             Button BackButton = (Button)Master.FindControl("back");
             BackButton.Enabled = false;
             BackButton.Visible = false;
-
             ASPxDashboard2.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");

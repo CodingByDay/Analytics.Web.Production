@@ -50,6 +50,7 @@ namespace peptak
         private string deletedID;
         private string sourceFile;
         private string destinationFile;
+        private string companyInfo;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -169,23 +170,49 @@ namespace peptak
             }
         }
 
+
+
+         private string getCompanyQuery(string uname) {
+     
+            
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    companyInfo = (reader["company_name"].ToString());
+                }
+
+                return companyInfo;
+           
+        }
+
+
+
+
+
         private void copyFiles()
         {
             var filePath = Server.MapPath("~/App_Data/Dashboards");
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
             System.IO.FileInfo[] fi = di.GetFiles();
-            var folder = usersPermisions.SelectedValue;
+            var user = usersPermisions.SelectedValue;
+
+
+            string uname = getCompanyQuery(user);
             for (int i = 0; i < fi.Length; i++)
             {
                 var item = fi[i].Name;
                 var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
-                var output = Server.MapPath($"~/App_Data/{folder}/{item}");
+                var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}");
 
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
                 {
                     if (!File.Exists(output))
                     {
-                        File.Copy(source, output);
+                        File.Copy(source, output, true);
                     }
                     else
                     {

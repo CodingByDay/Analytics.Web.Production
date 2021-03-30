@@ -23,5 +23,25 @@ namespace peptak
         {
 
         }
+
+        protected void Save_Click1(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void completelyNewUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void registrationButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void delete_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -8,7 +8,7 @@
     </asp:PlaceHolder>
 
    
-   
+     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
  <div class="wrapper">
 
