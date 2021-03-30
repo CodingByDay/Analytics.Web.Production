@@ -76,9 +76,7 @@ namespace peptak
             }
             else
             {
-                deleteUsers.Clear();
-                fillUsersDelete();
-                fillCompanyDelete();
+//Pass for now
             }
 
         }
@@ -467,7 +465,7 @@ namespace peptak
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             var company = companiesList.SelectedValue;
                             company.Replace(" ", string.Empty);
-                            fillUsersDelete();
+                          //  fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ; 
                             debug.Add(filePath);
                             if (!Directory.Exists(filePath))
@@ -508,7 +506,7 @@ namespace peptak
                         cmd.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                             var company = companiesList.SelectedValue;
-                            fillUsersDelete();
+                        //    fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ; 
 
                         Response.Write(filePath);
@@ -566,11 +564,14 @@ namespace peptak
 
             cmd.Dispose();
             conn.Close();
+            
 
         }
+        
 
         private void fillUsersDelete()
         {
+            DeleteUser.Items.Clear();
             deleteUsers.Clear();
             try
             {
@@ -714,7 +715,7 @@ namespace peptak
                 insertCompany();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
                 fillCompanies();
-                fillCompanyDelete();
+// fillCompanyDelete();
                 createFileIfDoesNotExist(companyName.Text);
                 companyNumber.Text = "";
                 companyName.Text = "";
@@ -767,10 +768,11 @@ namespace peptak
                 FillList();
                 FillListGraphs();
                 showConfig();
-                fillCompanies();
-                FillListAdmin();
-                fillUsersDelete();
-                fillCompanyDelete();
+                
+                //fillCompanies();
+                //FillListAdmin();
+                //fillUsersDelete();
+                //fillCompanyDelete();
                 fillChange();
                 deletePermisionEntry();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
@@ -823,8 +825,8 @@ namespace peptak
 
         private void fillCompanyDelete()
         {
-
-
+            CompanyDestroy.Clear();
+            deleteCompany.Items.Clear();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -837,7 +839,7 @@ namespace peptak
 
             }
 
-            deleteCompany.DataSource = strings;
+            deleteCompany.DataSource = CompanyDestroy;
             deleteCompany.DataBind();
             // unit test
 
@@ -862,8 +864,8 @@ namespace peptak
                 showConfig();
                 fillCompanies();
                 FillListAdmin();
-                fillUsersDelete();
-                fillCompanyDelete();
+              //fillUsersDelete();
+              //fillCompanyDelete();
                 fillChange();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
