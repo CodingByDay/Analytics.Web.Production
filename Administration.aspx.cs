@@ -48,8 +48,9 @@ namespace peptak
         private List<String> typesOfViews = new List<string>();
         private int permisionID;
         private string deletedID;
-       
-        
+        private string sourceFile;
+        private string destinationFile;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             /////////////////////////////////////////////////////////////
@@ -569,6 +570,59 @@ namespace peptak
         }
         
 
+
+
+        private void XMLmanipulation(string folderName, string database)
+        {
+
+
+
+            var serverRoom = Server.MapPath($"~/App_Data/Dashboards");
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(serverRoom);
+            System.IO.FileInfo[] fi = di.GetFiles();
+
+            for (int i = 0; i < fi.Length; i++)
+            {
+                var item = fi[i].Name;
+                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
+                var output = Server.MapPath($"~/App_Data/{folderName}/{item}");
+
+                try
+                {
+                    File.Copy(source, output, true);
+                }
+                catch (IOException iox)
+                {
+                    Response.Write("Exception is: " + iox);
+               
+                }
+                
+                // Implement logging here.
+                }
+
+                // Second update part.
+               string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}").Replace(" ", string.Empty);
+
+               fileNames.Clear();
+               System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
+               System.IO.FileInfo[] finfo = di.GetFiles();
+               foreach (System.IO.FileInfo file in finfo)
+               {
+
+                XDocument doc = XDocument.Load(destinationFileEdit + "/" + file.Name);
+                var tempXmlName = doc.Root.Element("Connection").Attribute("Name").Value;
+                var target = doc.Elements("Connection")
+                        .Single();
+
+                target.Attribute("Name").Value = database;
+
+
+               }
+
+
+        }
+
+
         private void fillUsersDelete()
         {
             DeleteUser.Items.Clear();
@@ -651,13 +705,17 @@ namespace peptak
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}')", conn);
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
+            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
+            Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {debug}'  );</script>");
+
 
             try
             {
                 cmd.ExecuteNonQuery();
+                XMLmanipulation(companyName.Text, ConnectionStrings.SelectedValue);
               
-
+             
             } catch (Exception error)
             {
                 // Implement logging here.
@@ -712,11 +770,12 @@ namespace peptak
             }
             else
             {
+                createFileIfDoesNotExist(companyName.Text);
                 insertCompany();
+                Response.Write(sourceFile + " " + destinationFile);
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
                 fillCompanies();
-// fillCompanyDelete();
-                createFileIfDoesNotExist(companyName.Text);
+                //fillCompanyDelete();
                 companyNumber.Text = "";
                 companyName.Text = "";
                 website.Text = "";
