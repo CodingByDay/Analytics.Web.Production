@@ -11,6 +11,9 @@ namespace peptak
 {
     public partial class SiteMaster : MasterPage
     {
+        /// <summary>
+        ///  Add a default company entry for the new user and center the buttons. Change the names of all of the so u can change the destination.
+        /// </summary>
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;

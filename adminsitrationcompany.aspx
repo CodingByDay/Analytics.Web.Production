@@ -13,30 +13,25 @@
  <div class="wrapper">
 
 	<header>
-		<h1>3 Column Responsive Layout</h1>
+		<center><asp:Label ID="welcome" runat="server" Text="Label" ></asp:Label></center>
 	</header>
 		
 <section class="columns">
-	
 	<div class="column">
 		  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
       <hr style="color: black;" />
-  
-  <center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList></center>    
 
-       <hr />
- 
+<asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>  
+
+       <hr /> 
     <hr />
    
-       
-      <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
+     <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
         </dx:ASPxCheckBoxList></center>
- 
-
 
         <hr />
     
-        <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/></center>
+    <center></center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/>
    
     <hr />
        <hr />
@@ -98,7 +93,7 @@
                 </tr>  
             </table>  
         <hr />
-      <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi" OnClick="registrationButton_Click"/></center>  
+     <asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="registrationButton_Click1"/>
         <hr />
         <hr />  </div>
 
@@ -107,9 +102,9 @@
   <div class="column">
 		 <center><h4>Brišite uporabnika.</h4></center>
       <hr />
-        <asp:DropDownList ID="DeleteUser" runat="server"  
+        <center><asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
-        </asp:DropDownList>
+        </asp:DropDownList></center>
       <hr />
        <center> <asp:Button CssClass="delete" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
        
@@ -120,8 +115,8 @@
 </section>	
 	
 	<footer>
-		<h3>Footer</h3>
-		<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam, porro. Doloribus vitae non dolores modi dolorum commodi perspiciatis dicta nostrum minus esse, totam officia, quibusdam amet quas tempora? Voluptatibus, esse.</p>
+		<h3></h3>
+		<center><p>Dashboards @2021</p></center>
 	</footer>
 
 </div>

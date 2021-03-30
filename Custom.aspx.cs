@@ -20,6 +20,30 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+
+
+
+
+            var state = getViewState();
+            switch(state)
+            {
+                case "Viewer":
+                    ASPxDashboard2.WorkingMode = WorkingMode.ViewerOnly;
+                    break;
+                case "Designer":
+                    ASPxDashboard2.WorkingMode = WorkingMode.Designer;
+                    break;
+                case "Viewer&Designer":
+                    ASPxDashboard2.WorkingMode = WorkingMode.Designer;
+                    break;
+
+
+
+            }
+
+
+
             Button BackButton = (Button)Master.FindControl("back");
             BackButton.Enabled = false;
             BackButton.Visible = false;
@@ -44,6 +68,23 @@ namespace peptak
 
         }
 
+
+
+        private string getViewState()
+        {
+         
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='user1' ", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            var state = (string)cmd.ExecuteScalar();
+
+
+
+            return state;
+        }
 
         protected void cmdSignOut_Click(object sender, EventArgs e)
         {
