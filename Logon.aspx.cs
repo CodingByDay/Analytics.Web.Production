@@ -14,12 +14,27 @@ namespace peptak
     {
         private SqlConnection conn;
         private SqlCommand cmd;
-        private object role;
+        private string role;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
+
+        private string getRole(string username)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                role = (reader["userRole"].ToString());
+            }
+            return role;
+        }
+
 
         private bool ValidateUser(string userName, string passWord)
         {
@@ -98,11 +113,9 @@ namespace peptak
 
 
                 string strRedirect;
-                  //
-                    // execute query
+                role = getRole(txtUserName.Value);
 
-                  //  Create SqlCommand to select pwd field from users table given supplied userName.
-                    if (txtUserName.Value == "Admin")
+                    if (role == "SuperAdmin")
                     {
                         strRedirect = "default.aspx";
                         Response.Redirect(strRedirect, true);

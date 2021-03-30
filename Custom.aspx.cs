@@ -20,11 +20,11 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            Button BackButton = (Button)Master.FindControl("back");
+            BackButton.Enabled = false;
+            BackButton.Visible = false;
+
             ASPxDashboard2.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
-
-
-            // Custom data storage. 
-
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -36,22 +36,12 @@ namespace peptak
             while (reader.Read())
             {
                company = (reader["company_name"].ToString());
-
             }
-
-           
-            // unit test
 
             cmd.Dispose();
             conn.Close();
-
-
             var folder = HttpContext.Current.User.Identity.Name;
-
             ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}";
-
-
-
 
         }
 
