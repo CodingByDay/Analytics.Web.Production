@@ -26,6 +26,7 @@ namespace peptak
 
 
             var state = getViewState();
+            Response.Write(state);
             switch(state)
             {
                 case "Viewer":
@@ -64,7 +65,7 @@ namespace peptak
             cmd.Dispose();
             conn.Close();
             var folder = HttpContext.Current.User.Identity.Name;
-            ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}";
+            ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/Dashboards";
 
         }
 
@@ -77,7 +78,7 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='user1' ", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='{uname}' ", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             var state = (string)cmd.ExecuteScalar();
 

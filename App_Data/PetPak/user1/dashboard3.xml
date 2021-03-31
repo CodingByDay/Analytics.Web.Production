@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="test querry builder" />
+  <DataSources>
+    <SqlDataSource Name="ItemStock" ComponentName="sqlDataSource2">
+      <Connection Name="Skaza" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="ItemStock">
+        <Tables>
+          <Table Name="ItemStock" />
+          <Table Name="ItemPrice" />
+          <Table Name="Item" />
+          <Relation Type="Inner" Parent="ItemStock" Nested="ItemPrice">
+            <KeyColumn Parent="IDItem" Nested="IDItem" />
+          </Relation>
+          <Relation Type="Inner" Parent="ItemPrice" Nested="Item">
+            <KeyColumn Parent="IDItem" Nested="IDItem" />
+          </Relation>
+        </Tables>
+        <Columns>
+          <Column Table="Item" Name="IDItem" />
+          <Column Table="Item" Name="Title" />
+          <Column Table="ItemStock" Name="anStock" />
+          <Column Table="ItemStock" Name="anOptStock" />
+          <Column Table="ItemStock" Name="anMinStock" />
+          <Column Table="ItemStock" Name="anMaxStock" Alias="items" />
+          <Column Table="ItemPrice" Name="PriceWithoutTax" />
+          <Column Table="ItemPrice" Name="PriceWithTax" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Parameters>
+    <Parameter Name="Parameter1" />
+  </Parameters>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource2" DataMember="ItemStock">
+      <DataItems>
+        <Dimension DataMember="IDItem" DefaultId="DataItem0" />
+        <Measure DataMember="PriceWithoutTax" DefaultId="DataItem1" />
+        <Measure DataMember="PriceWithTax" DefaultId="DataItem2" />
+        <Dimension DataMember="Title" DefaultId="DataItem3" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem0" />
+        <SeriesDimension DefaultId="DataItem3" />
+      </SeriesDimensions>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="chartDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
