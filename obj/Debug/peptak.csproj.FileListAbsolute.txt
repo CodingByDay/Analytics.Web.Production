@@ -1,9 +1,3 @@
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Printing.v20.2.Core.dll
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Web.ASPxPivotGrid.v20.2.xml
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraBars.v20.2.xml
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.RichEdit.v20.2.Core.resources.dll
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraReports.v20.2.resources.dll
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.dll.config
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\peptak.pdb
@@ -69,6 +63,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Map.v20.2.Core
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Office.v20.2.Core.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Pdf.v20.2.Core.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.PivotGrid.v20.2.Core.dll
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Printing.v20.2.Core.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.RichEdit.v20.2.Core.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Sparkline.v20.2.Core.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Utils.v20.2.dll
@@ -116,6 +111,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Printing.v20.2
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.RichEdit.v20.2.Core.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Sparkline.v20.2.Core.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Utils.v20.2.xml
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Web.ASPxPivotGrid.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Web.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Xpo.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraCharts.v20.2.xml
@@ -136,6 +132,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.Desktop.v
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraEditors.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraLayout.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraPrinting.v20.2.xml
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraBars.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraTreeList.v20.2.xml
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.Dashboard.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.Dashboard.v20.2.Core.resources.dll
@@ -173,6 +170,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.Printing.v2
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.Printing.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.Printing.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.Printing.v20.2.Core.resources.dll
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.RichEdit.v20.2.Core.resources.dll
@@ -208,6 +206,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraGauges.
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraGauges.v20.2.Presets.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraGauges.v20.2.Presets.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraGauges.v20.2.Presets.resources.dll
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraReports.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraReports.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraReports.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraReports.v20.2.resources.dll
@@ -232,6 +231,7 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraTreeLis
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
+C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb

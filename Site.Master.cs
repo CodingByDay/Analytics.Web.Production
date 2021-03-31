@@ -75,9 +75,14 @@ namespace peptak
 
         protected void back_Click(object sender, EventArgs e)
         {
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("default", true);
+            } else
+            {
 
-            Response.Redirect("default", true);
-            
+                Response.Redirect("custom", true);
+            }
 
         }
     }
