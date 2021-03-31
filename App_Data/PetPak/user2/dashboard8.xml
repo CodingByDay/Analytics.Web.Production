@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="test" />
+  <DataSources>
+    <SqlDataSource Name="Custom" ComponentName="sqlDataSource1">
+      <Connection Name="PetPak" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="Custom" />
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="Custom">
+      <GridOptions />
+    </Grid>
+    <BoundImage ComponentName="boundImageDashboardItem1" Name="Bound Image 1" DataSource="sqlDataSource1" DataMember="Custom" />
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Range Filter 1" DataSource="sqlDataSource1" DataMember="Custom" />
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup>
+          <LayoutItem DashboardItem="gridDashboardItem1" />
+          <LayoutItem DashboardItem="rangeFilterDashboardItem1" />
+        </LayoutGroup>
+        <LayoutItem DashboardItem="boundImageDashboardItem1" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

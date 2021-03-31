@@ -599,10 +599,14 @@ namespace peptak
 
 
 
-        private void XMLmanipulation(string folderName, string database)
+        private void XMLmanipulation(string folderName, string database, string admin)
         {
+            var adminFolder = Server.MapPath($"~/App_Data/{folderName}/{admin}").Replace(" ", string.Empty);
 
-
+            if (!Directory.Exists(adminFolder))
+            {
+                Directory.CreateDirectory(adminFolder);
+            }
 
             var serverRoom = Server.MapPath($"~/App_Data/Dashboards");
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(serverRoom);
@@ -612,7 +616,7 @@ namespace peptak
             {
                 var item = fi[i].Name;
                 var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
-                var output = Server.MapPath($"~/App_Data/{folderName}/{item}");
+                var output = Server.MapPath($"~/App_Data/{folderName}/{admin}/{item}").Replace(" ", string.Empty);
 
                 try
                 {
@@ -628,7 +632,7 @@ namespace peptak
             }
 
             // Second update part.
-            string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}").Replace(" ", string.Empty);
+            string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}/{admin}").Replace(" ", string.Empty);
 
             fileNames.Clear();
             System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
@@ -735,12 +739,12 @@ namespace peptak
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
             var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
             Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {debug}'  );</script>");
-
+            var adminForCreation = listAdmin.SelectedValue;
 
             try
             {
                 cmd.ExecuteNonQuery();
-                XMLmanipulation(companyName.Text, ConnectionStrings.SelectedValue);
+                XMLmanipulation(companyName.Text, ConnectionStrings.SelectedValue, adminForCreation);
               
              
             } catch (Exception error)

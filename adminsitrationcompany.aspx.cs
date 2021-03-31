@@ -178,19 +178,21 @@ namespace peptak
 
         private void copyFiles()
         {
-            var filePath = Server.MapPath("~/App_Data/Dashboards");
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
-            System.IO.FileInfo[] fi = di.GetFiles();
+         
+            var userAdmin = HttpContext.Current.User.Identity.Name;
+            string uname = getCompanyQuery(userAdmin);
             var user = usersPermisions.SelectedValue;
 
-
-            string uname = getCompanyQuery(user);
+            var filePath = Server.MapPath($"~/App_Data/{uname}/{userAdmin}").Replace(" ", string.Empty);
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            System.IO.FileInfo[] fi = di.GetFiles();
             for (int i = 0; i < fi.Length; i++)
             {
                 var item = fi[i].Name;
-                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
-                var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}");
-
+                var source = Server.MapPath($"~/App_Data/{uname}/{userAdmin}/{item}").Replace(" ", string.Empty);
+                var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}").Replace(" ", string.Empty);
+                Response.Write(source);
+                Response.Write(output);
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
                 {
                     if (!File.Exists(output))
@@ -518,55 +520,11 @@ namespace peptak
 
 
 
-        private void XMLmanipulation(string folderName, string database)
-        {
+      
 
 
 
-            var serverRoom = Server.MapPath($"~/App_Data/Dashboards");
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(serverRoom);
-            System.IO.FileInfo[] fi = di.GetFiles();
-
-            for (int i = 0; i < fi.Length; i++)
-            {
-                var item = fi[i].Name;
-                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
-                var output = Server.MapPath($"~/App_Data/{folderName}/{item}");
-
-                try
-                {
-                    File.Copy(source, output, true);
-                }
-                catch (IOException iox)
-                {
-                    Response.Write("Exception is: " + iox);
-
-                }
-
-                // Implement logging here.
-            }
-
-            // Second update part.
-            string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}").Replace(" ", string.Empty);
-
-            fileNames.Clear();
-            System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
-            System.IO.FileInfo[] finfo = di.GetFiles();
-            foreach (System.IO.FileInfo file in finfo)
-            {
-
-                XDocument doc = XDocument.Load(destinationFileEdit + "/" + file.Name);
-
-                var first = doc.Root.Element("DataSources");
-
-                first.Element("SqlDataSource").Element("Connection").Attribute("Name").Value = database;
-
-
-            }
-
-
-
-        }
+        
         private string getCompanyQuery(string uname)
         {
 
