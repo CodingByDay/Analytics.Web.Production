@@ -184,8 +184,8 @@ namespace peptak
                 {
                     companyInfo = (reader["company_name"].ToString());
                 }
-
-                return companyInfo;
+            var final = companyInfo.Replace(" ", string.Empty);
+            return final;
            
         }
 
@@ -212,7 +212,7 @@ namespace peptak
                 {
                     if (!File.Exists(output))
                     {
-                        File.Copy(source, output, true);
+                        File.Copy(source, output);
                     }
                     else
                     {

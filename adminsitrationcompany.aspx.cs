@@ -59,6 +59,7 @@ namespace peptak
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
             {
+                welcomeFunction();
                 deleteUsers.Clear();
                 Button BackButton = (Button)Master.FindControl("back");
                 BackButton.Enabled = true;
@@ -821,14 +822,120 @@ namespace peptak
 
         }
 
-        protected void registrationButton_Click(object sender, EventArgs e)
-        {
-
-        }
 
         protected void registrationButton_Click1(object sender, EventArgs e)
         {
+            if (TxtUserName.Enabled == true)
+            {
 
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
+                var result = cmd.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
+
+                int next = Total_ID + 1;
+                if (TxtPassword.Text != TxtRePassword.Text)
+                {
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
+                }
+                else
+                {
+                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                    conn.Open();
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
+
+
+                    var resultCheck = check.ExecuteScalar();
+                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                    if (resultUsername > 0)
+                    {
+                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
+                    }
+                    else
+                    {
+
+                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+                        try
+                        {
+                            createUserPermisions.ExecuteNonQuery();
+                        }
+                        catch (Exception error)
+                        {
+                            // Logging module.
+                        }
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        var username = TxtUserName.Text;
+                        try
+                        {
+                            createUser.ExecuteNonQuery();
+                            Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            var company = companiesList.SelectedValue;
+                            company.Replace(" ", string.Empty);
+                            //  fillUsersDelete();
+                            string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
+                            debug.Add(filePath);
+                            if (!Directory.Exists(filePath))
+                            {
+                                FillList();
+                                Directory.CreateDirectory(filePath);
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            // Implement logging here.
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+
+
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                var dev = $"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+                debug.Add(dev);
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{TxtPassword.Text}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+
+                if (TxtPassword.Text != TxtRePassword.Text)
+                {
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
+                }
+                else
+                {
+
+                    try
+                    {
+                        var username = TxtUserName.Text;
+                        cmd.ExecuteNonQuery();
+                        Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
+                        var company = companiesList.SelectedValue;
+                        //    fillUsersDelete();
+                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
+
+                        Response.Write(filePath);
+                        if (!Directory.Exists(filePath))
+                        {
+                            FillList();
+                            Directory.CreateDirectory(filePath);
+                        }
+                    }
+                    catch (Exception error)
+                    {
+
+                        // Implement logging here.
+                    }
+                }
+            }
         }
     }
 }
