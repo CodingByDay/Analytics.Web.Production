@@ -78,7 +78,7 @@ namespace peptak
             }
             else
             {
-//Pass for now
+            
             }
 
         }
@@ -491,20 +491,18 @@ namespace peptak
                         {
                             createUser.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            fillUsersDelete();
                             var company = companiesList.SelectedValue;
                             company.Replace(" ", string.Empty);
                           //  fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ; 
-                            debug.Add(filePath);
                             if (!Directory.Exists(filePath))
                             {
                                 FillList();
-                                fillUsersDelete();
                                 Directory.CreateDirectory(filePath);
                             }
                             else
                             {
-                                fillUsersDelete();
                                 FillList();
                             }
                         }
@@ -561,6 +559,8 @@ namespace peptak
         
       private void fillChange()
         {
+            changeCompanyUser.Clear();
+            changeUserCompany.Clear();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -573,13 +573,12 @@ namespace peptak
 
             }
 
-            ChooseCompany.DataSource = changeCompanyUser;
-            ChooseCompany.DataBind();
             // unit test
 
             cmd.Dispose();
             conn.Close();
-
+            ChooseCompany.DataSource = changeCompanyUser;
+            ChooseCompany.DataBind();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -592,13 +591,12 @@ namespace peptak
 
             }
 
-            ChooseUser.DataSource = changeUserCompany;
-            ChooseUser.DataBind();
             // unit test
 
             cmd.Dispose();
             conn.Close();
-            
+            ChooseUser.DataSource = changeUserCompany;
+            ChooseUser.DataBind();
 
         }
 
@@ -662,8 +660,9 @@ namespace peptak
 
         private void fillUsersDelete()
         {
-            DeleteUser.Items.Clear();
+        
             deleteUsers.Clear();
+            DeleteUser.Items.Clear();
             try
             {
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -677,11 +676,12 @@ namespace peptak
                     deleteUsers.Add(sdr["uname"].ToString());
 
                 }
-                DeleteUser.DataSource = deleteUsers;
-                DeleteUser.DataBind();
+                
                 cmd.Dispose();
                 conn.Close();
 
+                DeleteUser.DataSource = deleteUsers;
+                DeleteUser.DataBind();
 
             }
             catch (Exception ex)
@@ -689,6 +689,7 @@ namespace peptak
 
             }
 
+       
 
 
         }
@@ -853,6 +854,7 @@ namespace peptak
         
         protected void delete_Click(object sender, EventArgs e)
         {
+            
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"delete from Users where uname='{DeleteUser.SelectedValue}'", conn);
@@ -864,25 +866,28 @@ namespace peptak
                 FillList();
                 FillListGraphs();
                 showConfig();
-                
+
                 //fillCompanies();
                 //FillListAdmin();
                 //fillUsersDelete();
                 //fillCompanyDelete();
-                fillChange();
+                //fillChange();
+                fillUsersDelete();
                 deletePermisionEntry();
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
                 string filePath = Server.MapPath("~/App_Data/" + DeleteUser.SelectedValue);
 
                 if (!Directory.Exists(filePath))
                 {
                     Directory.Delete(filePath);
-                    fillUsersDelete();
-                } else
+                 //DeleteUser.Items.Clear();
+                   
+                }
+                else
                 {
-                    fillUsersDelete();
-                    // Logging
+                
+                  //Logging
                 }
             }
 
