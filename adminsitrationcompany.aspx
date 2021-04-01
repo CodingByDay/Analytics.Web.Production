@@ -25,10 +25,10 @@
 
        <hr /> 
     <hr />
-   
+   <DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
      <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
         </dx:ASPxCheckBoxList></center>
-
+       </div>
         <hr />
     
     <center></center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/>
