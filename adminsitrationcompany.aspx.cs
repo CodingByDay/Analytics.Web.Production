@@ -75,7 +75,6 @@ namespace peptak
                 showConfig();
                 fillCompanies();
                 fillUsersDelete();
-                fillCompanyDelete();
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -293,7 +292,8 @@ namespace peptak
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select uname from Users where id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+                cmd = new SqlCommand($"Select uname from Users where id_company={company}", conn); /// Intepolation or the F string. C# > 5.0      
+             
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -599,10 +599,12 @@ namespace peptak
             deleteUsers.Clear();
             try
             {
+                var company = getCompanyId();
+
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                cmd = new SqlCommand($"Select uname from Users where id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
