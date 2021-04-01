@@ -52,9 +52,13 @@ namespace peptak
         private string destinationFile;
         private string companyInfo;
         private int result;
+        private string admin;
+        private int company;
+        private string name;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+          
             /////////////////////////////////////////////////////////////
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
@@ -66,6 +70,8 @@ namespace peptak
                 BackButton.Visible = true;
                 FillList();
                 FillListGraphs();
+           
+
                 showConfig();
                 fillCompanies();
                 fillUsersDelete();
@@ -76,6 +82,8 @@ namespace peptak
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
             }
+
+
             else
             {
                 // Pass for now
@@ -112,7 +120,42 @@ namespace peptak
 
             }
         }
+        public string GetAdminFromCompanyId(int company)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader = cmd.ExecuteReader();
 
+            while (reader.Read())
+            {
+                admin = (reader["admin_id"].ToString());
+            }
+
+            cmd.Dispose();
+            conn.Close();
+            return admin;
+        }
+
+
+
+        public string GetCompanyName(int company)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+           admin = (string)cmd.ExecuteScalar();
+
+            cmd.Dispose();
+            conn.Close();
+            return admin;
+        }
         private List<bool> showConfig()
         {
             debug.Clear();
@@ -226,14 +269,12 @@ namespace peptak
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select id_company from Users where uname='user2'", conn); /// Intepolation or the F string. C# > 5.0       
+                cmd = new SqlCommand($"Select id_company from Users where uname='{UserNameForChecking}'", conn); /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
-
                 var objectInt = cmd.ExecuteScalar();
                 Int32 next = System.Convert.ToInt32(objectInt);
 
-                usersPermisions.DataSource = DataUser;
-                usersPermisions.DataBind();
+              
                 cmd.Dispose();
                 conn.Close();
 
@@ -278,8 +319,14 @@ namespace peptak
         {
             try
             {
+                company = getCompanyId();
+                name = GetCompanyName(company);
+                admin = GetAdminFromCompanyId(company);
                 fileNames.Clear();
-                string filePath = Server.MapPath("~/App_Data/Dashboards");
+                var output = $"~/App_Data/{name}/{admin}".Replace(" ", string.Empty);
+
+                debug.Add(output);
+                string filePath = Server.MapPath($"~/App_Data/{name}/{admin}").Replace(" ", string.Empty);
                 System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
                 System.IO.FileInfo[] fi = di.GetFiles();
                 foreach (System.IO.FileInfo file in fi)
@@ -320,8 +367,11 @@ namespace peptak
 
         public void FillListGraphsNames()
         {
+            var company = getCompanyId();
+            var name = GetCompanyName(company);
+            var admin = GetAdminFromCompanyId(company);
             fileNames.Clear();
-            string filePath = Server.MapPath("~/App_Data/Dashboards");
+            string filePath = Server.MapPath($"~/App_Data/{name}/{admin}").Replace(" ", string.Empty);
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
             System.IO.FileInfo[] fi = di.GetFiles();
             foreach (System.IO.FileInfo file in fi)
@@ -515,16 +565,7 @@ namespace peptak
             }
         }
 
-      
-
-
-
-
-      
-
-
-
-        
+            
         private string getCompanyQuery(string uname)
         {
 
@@ -628,32 +669,6 @@ namespace peptak
         }
 
       
-
-
-        private bool checkIfNumber(string parametar)
-        {
-            var regex = new Regex(@"^-?[0-9][0-9,\.]+$");
-
-            var numeric = regex.IsMatch(parametar);
-
-            if (numeric)
-                return true;
-            else
-                return false;
-
-
-        }
-       
-
-        private void createFileIfDoesNotExist(string company)
-        {
-            string filePath = Server.MapPath("~/App_Data/" + company);
-            debug.Add(filePath);
-            if (!Directory.Exists(filePath))
-            {
-                Directory.CreateDirectory(filePath);
-            }
-        }
         private void deletePermisionEntry()
         {
 
