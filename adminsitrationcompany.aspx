@@ -10,8 +10,23 @@
    
      <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
- <div class="wrapper">
-
+ <body style="font-family: tahoma">
+    <div id="tabs" width="80%" align="center";>
+      <tr>
+        <td>
+          <asp:Button Text="Pravice" BorderStyle="None" ID="Tab1" CssClass="Initial" runat="server"
+              OnClick="Tab1_Click" />
+          <asp:Button Text="Registracija uporabnikov" BorderStyle="None" ID="Tab2" CssClass="Initial" runat="server"
+              OnClick="Tab2_Click" />
+          <asp:Button Text="Brisanje" BorderStyle="None" ID="Tab3" CssClass="Initial" runat="server"
+              OnClick="Tab3_Click" />
+          <asp:MultiView ID="MainView" runat="server">
+            <asp:View ID="View1" runat="server">
+              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid">
+                <tr>
+                  <td>
+                    <h3>
+                    
 	<header>
 		<center><asp:Label ID="welcome" runat="server" Text="Label" ></asp:Label></center>
 	</header>
@@ -21,87 +36,80 @@
 		  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
       <hr style="color: black;" />
 
-<asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>  
+<center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList></center>  
 
        <hr /> 
     <hr />
-   <DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
+   <center><DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
      <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
         </dx:ASPxCheckBoxList></center>
        </div>
+       </center>
         <hr />
     
-    <center></center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/>
+    <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/></center>
    
     <hr />
        <hr />
-	</div>
-	
-	<div class="column">
-		 <div class='box replies'><table class="style1">  
-                <tr>  
-      <center><h4>Registracija novega uporabnika.</h4></center>
+                    </h3>
+                  </td>
+                </tr>
+              </table>
+            </asp:View>
+            <center><asp:View ID="View2" runat="server">
+              <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger;" >
+                     <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
+                   </center>  
+              
+                <center>  
+                
+                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime"></asp:TextBox></center>  
+               
+               </center>  
+              
                  
-      <center><asp:Button CssClass="completelyNewUser" ID="completelyNewUser" runat="server" Text="Novi uporabnik" OnClick="completelyNewUser_Click" /></center>  
-
-      <hr style="color: black;" />
-                    <td>     Ime in priimek</td>  
-                    <td>  
-                        <asp:TextBox ID="TxtName" placeholder= runat="server" ></asp:TextBox>  
-                    </td>  
-                </tr>  
-                <tr>  
-                    <center><td>     Uporabniško ime:</td></center>  
-                    <td>  
-                        <asp:TextBox ID="TxtUserName" runat="server"></asp:TextBox>  
-                    </td>  
-                </tr>  
-                <tr>  
-                    <center><td>     Geslo:</td></center>  
-                    <td>  
-                        <asp:TextBox ID="TxtPassword" runat="server"  
-                                     TextMode="Password"></asp:TextBox>  
-                    </td>  
-                </tr>  
-                <tr>  
-                    <center><td>     Še enkrat:</td></center>  
-                    <td>  
-                        <asp:TextBox ID="TxtRePassword" runat="server"  
-                                     TextMode="Password"></asp:TextBox>  
-                    </td>  
-                </tr>  
-                 <td>Pozicija</td>  
-                    <td>  
-                        <asp:RadioButtonList ID="userRole" runat="server">  
+                       <center> <asp:TextBox ID="TxtPassword" runat="server"  
+                                     TextMode="Password" placeholder="Geslo"></asp:TextBox>  </center>
+              
+                  
+                       <center> <asp:TextBox ID="TxtRePassword" runat="server"  
+                                     TextMode="Password" placeholder="Geslo še enkrat"></asp:TextBox> </center> 
+                 
+            <center><h4>Pozicija</h4></center>
+                  
+                       <center><asp:RadioButtonList ID="userRole" runat="server">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
-                        </asp:RadioButtonList>  
-                    </td> 
-      <hr />
+                        </asp:RadioButtonList>  </center>
+                
+    
                 <center><h5>Tip uporabnika</h5></center>
-                 <asp:DropDownList ID="userType" autopostback="true" runat="server"  >
-                 </asp:DropDownList>    
+                <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
+                 </asp:DropDownList></center    
         
-                <tr>  
-                   <center><td>     Podjetje:</td></center>  
-                    <td>  
-                        <asp:DropDownList ID="companiesList" runat="server"  
+              
+                   <center> <h4>  Podjetje:</h4></center>  
+                   
+                       <center> <asp:DropDownList ID="companiesList" runat="server"  
                                           AppendDataBoundItems="true">  
                            
-                        </asp:DropDownList>  
-                    </td>  
-                </tr>  
-            </table>  
+                        </asp:DropDownList>  </center>
+              
         <hr />
-     <asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="registrationButton_Click1"/>
+     <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="registrationButton_Click1" /></center>
         <hr />
-        <hr />  </div>
-
-	</div>
-  
-
-  <div class="column">
-		 <center><h4>Brišite uporabnika.</h4></center>
+        <hr /> 
+                    </h3>
+                  </td>
+                </tr>
+              </div>
+            </asp:View></center>
+            <asp:View ID="View3" runat="server">
+              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid">
+                <tr>
+                  <td>
+                    <h3>
+                     	 <center><h4>Brišite uporabnika.</h4></center>
       <hr />
         <center><asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
@@ -117,8 +125,16 @@
 	
 	<footer>
 		<h3></h3>
-		<center><p>Dashboards @2021</p></center>
 	</footer>
-
-</div>
+                    </h3>
+                  </td>
+                </tr>
+              </table>
+            </asp:View>
+          </asp:MultiView>
+        </td>
+      </tr>
+    </table>
+</body>
+
 </asp:Content>

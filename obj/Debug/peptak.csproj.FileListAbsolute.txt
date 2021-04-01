@@ -235,4 +235,3 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreC
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
-C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
