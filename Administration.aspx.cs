@@ -492,6 +492,7 @@ namespace peptak
                             createUser.ExecuteNonQuery();
                             Response.Write("<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             fillUsersDelete();
+                            fillChange();
                             var company = companiesList.SelectedValue;
                             company.Replace(" ", string.Empty);
                           //  fillUsersDelete();
@@ -559,6 +560,8 @@ namespace peptak
         
       private void fillChange()
         {
+            ChooseCompany.Items.Clear();
+            ChooseUser.Items.Clear();
             changeCompanyUser.Clear();
             changeUserCompany.Clear();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -873,6 +876,7 @@ namespace peptak
                 //fillCompanyDelete();
                 //fillChange();
                 fillUsersDelete();
+                fillChange();
                 deletePermisionEntry();
                 // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
