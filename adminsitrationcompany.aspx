@@ -58,7 +58,7 @@
             </asp:View>
             <center><asp:View ID="View2" runat="server">
               <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger;" >
-                     <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
+                     <center><asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
                    </center>  
               
                 <center>  

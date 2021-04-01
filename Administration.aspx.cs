@@ -58,6 +58,8 @@ namespace peptak
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
             {
+                Tab1.CssClass = "Clicked";
+                MainView.ActiveViewIndex = 0;
                 deleteUsers.Clear();
                 Button BackButton = (Button)Master.FindControl("back");
                 BackButton.Enabled = true;
@@ -1034,6 +1036,42 @@ namespace peptak
             TxtUserName.Enabled = true;
 
 
+        }
+
+        protected void Tab1_Click(object sender, EventArgs e)
+        {
+            Tab1.CssClass = "Clicked";
+            Tab2.CssClass = "Initial";
+            Tab3.CssClass = "Initial";
+            Tab4.CssClass = "Initial";
+            MainView.ActiveViewIndex = 0;
+        }
+
+        protected void Tab2_Click(object sender, EventArgs e)
+        {
+            Tab1.CssClass = "Initial";
+            Tab2.CssClass = "Clicked";
+            Tab3.CssClass = "Initial";
+            Tab4.CssClass = "Initial";
+            MainView.ActiveViewIndex = 1;
+        }
+
+        protected void Tab3_Click(object sender, EventArgs e)
+        {
+            Tab1.CssClass = "Initial";
+            Tab2.CssClass = "Initial";
+            Tab3.CssClass = "Clicked";
+            Tab4.CssClass = "Initial";
+            MainView.ActiveViewIndex = 2;
+        }
+
+        protected void Button1_Click1(object sender, EventArgs e)
+        {
+            Tab1.CssClass = "Initial";
+            Tab2.CssClass = "Initial";
+            Tab3.CssClass = "Initial";
+            Tab4.CssClass = "Clicked";
+            MainView.ActiveViewIndex = 3;
         }
     }
 }
