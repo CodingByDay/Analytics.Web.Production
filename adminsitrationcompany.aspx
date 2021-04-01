@@ -99,6 +99,7 @@
 
 	</div>
   
+
   <div class="column">
 		 <center><h4>Brišite uporabnika.</h4></center>
       <hr />
