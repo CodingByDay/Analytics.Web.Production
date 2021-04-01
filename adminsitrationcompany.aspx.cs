@@ -234,8 +234,7 @@ namespace peptak
                 var item = fi[i].Name;
                 var source = Server.MapPath($"~/App_Data/{uname}/{userAdmin}/{item}").Replace(" ", string.Empty);
                 var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}").Replace(" ", string.Empty);
-                Response.Write(source);
-                Response.Write(output);
+              
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
                 {
                     if (!File.Exists(output))
@@ -549,7 +548,6 @@ namespace peptak
                         //    fillUsersDelete();
                         string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
 
-                        Response.Write(filePath);
                         if (!Directory.Exists(filePath))
                         {
                             FillList();
@@ -895,7 +893,8 @@ namespace peptak
                         //    fillUsersDelete();
                         string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
 
-                        Response.Write(filePath);
+                    
+
                         if (!Directory.Exists(filePath))
                         {
                             FillList();

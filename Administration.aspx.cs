@@ -499,7 +499,13 @@ namespace peptak
                             if (!Directory.Exists(filePath))
                             {
                                 FillList();
+                                fillUsersDelete();
                                 Directory.CreateDirectory(filePath);
+                            }
+                            else
+                            {
+                                fillUsersDelete();
+                                FillList();
                             }
                         }
                         catch (Exception error)
@@ -872,6 +878,11 @@ namespace peptak
                 if (!Directory.Exists(filePath))
                 {
                     Directory.Delete(filePath);
+                    fillUsersDelete();
+                } else
+                {
+                    fillUsersDelete();
+                    // Logging
                 }
             }
 
