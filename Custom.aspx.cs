@@ -14,7 +14,7 @@ using WebDesigner_CustomDashboardStorage;
 
 namespace peptak
 {
-    public partial class Custom : System.Web.UI.Page, IEditableDashboardStorage
+    public partial class Custom : System.Web.UI.Page
     {
         static CustomDashboardStorage dashboardStorage = new CustomDashboardStorage();
         private string uname;
@@ -22,13 +22,13 @@ namespace peptak
         private SqlCommand cmd;
         private string company;
         private string admin;
-
         protected void Page_Load(object sender, EventArgs e)
         {
-            
+            ASPxDashboard2.DashboardSaving += ASPxDashboard2_DashboardSaving;
             var company = getcompanyForUser();
             var folder = HttpContext.Current.User.Identity.Name;
             ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}".Replace(" ", string.Empty);
+           // ASPxDashboard2.SetDashboardStorage(dashboardStorage);
             var state = getViewState();
 
             switch (state)
@@ -51,13 +51,31 @@ namespace peptak
             ASPxDashboard2.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());     
         }
 
+        private void ASPxDashboard2_DashboardSaving(object sender, DashboardSavingWebEventArgs e)
+        {
+            var dashboard = e.DashboardXml;
+
+
+            var company = getcompanyForUser();
+            var admin = GetAdminFromCompanyName(company);
+            var userName = (string)HttpContext.Current.Session["CurrentUser"];
+            var dashboardID = e.DashboardId;
+            var folder = HttpContext.Current.User.Identity.Name;
+
+
+            var pathAdmin = HttpContext.Current.Server.MapPath($"~/App_Data/{company}/{admin}/" + dashboardID + ".xml").Replace(" ", string.Empty);
+
+            File.WriteAllText(pathAdmin, dashboard.ToString());
+
+        }
+
 
 
         //select admin_id from companies where company_name='PetPak';
 
 
 
-        private string GetAdminFromCompanyName(string company)
+        public string GetAdminFromCompanyName(string company)
         {
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -77,7 +95,7 @@ namespace peptak
             return admin;
         }
 
-        private string getcompanyForUser()
+        public string getcompanyForUser()
         {
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=petpakDash;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -120,37 +138,6 @@ namespace peptak
             Response.Redirect("logon.aspx", true);
         }
 
-        public string AddDashboard(XDocument dashboard, string dashboardName)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
-        {
-            throw new NotImplementedException();
-        }
-
-        public XDocument LoadDashboard(string dashboardID)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveDashboard(string dashboardID, XDocument dashboard)
-        {
-            var company = getcompanyForUser();
-            var admin = GetAdminFromCompanyName(company);
-            var userName = (string)HttpContext.Current.Session["CurrentUser"];
-
-            var folder = HttpContext.Current.User.Identity.Name;
-
-
-            var path = HttpContext.Current.Server.MapPath($"~/App_Data/{company}/{folder}".Replace(" ", string.Empty) + dashboardID + ".xml");
-
-            File.WriteAllText(path, dashboard.ToString());
-
-            var pathAdmin = HttpContext.Current.Server.MapPath($"~/App_Data/{company}/{admin}".Replace(" ", string.Empty) + dashboardID + ".xml");
-
-            File.WriteAllText(path, dashboard.ToString());
-        }
+     
     }
 }
