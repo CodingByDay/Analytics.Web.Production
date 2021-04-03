@@ -11,7 +11,7 @@
        <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
   
-     <body style="font-family: tahoma">
+     <body>
     <table width="80%" align="center">
       <tr>
         <td>
@@ -34,11 +34,13 @@
   <center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>></center>    
        <hr />
     <hr />  
-      <center><DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
-      <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
+         <hr />
+   <center><DIV style="OVERFLOW-Y:scroll; WIDTH:600px; HEIGHT:500px">
+     <center><dx:ASPxCheckBoxList  ID="graphsFinal" runat="server" ValueType="System.String" CaptionSettings-HorizontalAlign="Center" Border-BorderStyle="None">
         </dx:ASPxCheckBoxList></center>
-          </DIV></center>
-                        </center>
+       </div>
+       </center>
+        <hr />
 
         <hr /> 
         <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1" /></center>
