@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
    
-    
+
      <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -22,7 +22,7 @@
               OnClick="Tab3_Click" />
           <asp:MultiView ID="MainView" runat="server">
             <asp:View ID="View1" runat="server">
-              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid">
+              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; background-color: #c5d5cb">
                 <tr>
                   <td>
                     <h3>
@@ -33,7 +33,7 @@
 		
 <section class="columns">
 	<div class="column">
-		  <center><h4>Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
+		  <center><h4 style="font-style: italic;font-weight: bold">Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
       <hr style="color: black;" />
 
 <center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList></center>  
@@ -45,19 +45,19 @@
         </dx:ASPxCheckBoxList></center>
        </div>
        </center>
-        <hr />
     
-    <center><asp:Button CssClass="save" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/></center>
+    <center><asp:Button CssClass="btn btn-primary" type="submit" Value="Save" runat="server" ID="Save" Text="Shrani" OnClick="Save_Click1"/></center>
    
-    <hr />
-       <hr />
+  
                     </h3>
                   </td>
                 </tr>
               </table>
             </asp:View>
             <center><asp:View ID="View2" runat="server">
-              <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger;" >
+              <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger;background-color: #c5d5cb" >
+                                           <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
+
                      <center><asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
                    </center>  
               
@@ -95,27 +95,24 @@
                            
                         </asp:DropDownList>  </center>
               
-        <hr />
-     <center><asp:Button CssClass="registrationButton" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="registrationButton_Click1" /></center>
-        <hr />
-        <hr /> 
+     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="registrationButton_Click1" /></center>
+      
                     </h3>
                   </td>
                 </tr>
               </div>
             </asp:View></center>
             <asp:View ID="View3" runat="server">
-              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid">
+              <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; background-color: #c5d5cb">
                 <tr>
                   <td>
                     <h3>
-                     	 <center><h4>Brišite uporabnika.</h4></center>
+                     	 <center><h2 style="font-style: italic;font-weight: bold">Brišite uporabnika.</h2></center>
       <hr />
         <center><asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
         </asp:DropDownList></center>
-      <hr />
-       <center> <asp:Button CssClass="delete" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
+       <center> <asp:Button CssClass="btn btn-primary" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
        
 
       <hr style="color: black;" />
