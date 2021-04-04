@@ -895,8 +895,9 @@ namespace peptak
             try
             {
                 var company = getCompanyQuery(DeleteUser.SelectedValue);
+                var spacelessCompany = company.Replace(" ", string.Empty);
+
                 cmd.ExecuteNonQuery();
-                var spacelessCompany = company.Replace(" ", string.Empty); 
                 // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
                 string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{DeleteUser.SelectedValue}");
                 string finalPath = filePath.Replace(" ", string.Empty);

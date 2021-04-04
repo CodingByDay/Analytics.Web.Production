@@ -390,11 +390,10 @@ namespace peptak
             var nameless = name.Replace(" ", string.Empty);
             fileNames.Clear();
             var output = Server.MapPath($@"~/App_Data/{nameless}/{admin}");
-
+            
             string filePath = Server.MapPath($@"~/App_Data/{nameless}/{admin}");
             string path = filePath.Replace(" ", string.Empty);
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
-
             System.IO.FileInfo[] fi = di.GetFiles();
             foreach (System.IO.FileInfo file in fi)
             {
@@ -625,9 +624,11 @@ namespace peptak
             getIdPermision();
             try
             {
+
                 var company = getCompanyQuery(DeleteUser.SelectedValue);
-                cmd.ExecuteNonQuery();
                 var spacelessCompany = company.Replace(" ", string.Empty);
+
+                cmd.ExecuteNonQuery();
                 // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
                 string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{DeleteUser.SelectedValue}");
                 string finalPath = filePath.Replace(" ", string.Empty);
