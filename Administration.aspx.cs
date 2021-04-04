@@ -289,7 +289,8 @@ namespace peptak
          {
             try
             {
-
+                DataUser.Clear();
+                DataUser.Add("Izberi");
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
@@ -436,10 +437,18 @@ namespace peptak
 
         protected void Save_Click1(object sender, EventArgs e)
         {
-            FillListGraphsNames();
-            makeSQLquery();
-            showConfig();
-            copyFiles();
+            if (usersPermisions.SelectedValue == "Izberi")
+            {
+                Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
+
+            }
+            else
+            {
+                FillListGraphsNames();
+                makeSQLquery();
+                showConfig();
+                copyFiles();
+            }
         }
 
         protected void Button1_Click(object sender, EventArgs e)

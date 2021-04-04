@@ -63,7 +63,8 @@ namespace peptak
             // Initial "Postback"
             if (!IsPostBack) // Doesn't update the values more than once.
             {
-             
+                defaultCompany();
+
                 Tab1.CssClass = "Clicked";
                 MainView.ActiveViewIndex = 0;
                 welcomeFunction();
@@ -90,7 +91,19 @@ namespace peptak
             }
 
         }
+        private void defaultCompany()
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
 
+            string name = getCompanyQuery(uname);
+
+
+            companiesList.SelectedValue = name;
+
+            companiesList.Enabled = false;
+            
+
+        }
         private void fillCompanies()
         {
             try
@@ -224,16 +237,18 @@ namespace peptak
          
             var userAdmin = HttpContext.Current.User.Identity.Name;
             string uname = getCompanyQuery(userAdmin);
+            string name = uname.Replace(" ", string.Empty);
             var user = usersPermisions.SelectedValue;
 
-            var filePath = Server.MapPath($"~/App_Data/{uname}/{userAdmin}").Replace(" ", string.Empty);
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            var filePath = Server.MapPath($"~/App_Data/{name}/{userAdmin}");
+            string spaceless = filePath.Replace(" ", string.Empty); 
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(spaceless.ToString());
             System.IO.FileInfo[] fi = di.GetFiles();
             for (int i = 0; i < fi.Length; i++)
             {
                 var item = fi[i].Name;
-                var source = Server.MapPath($"~/App_Data/{uname}/{userAdmin}/{item}").Replace(" ", string.Empty);
-                var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}").Replace(" ", string.Empty);
+                var source = Server.MapPath($"~/App_Data/{name}/{userAdmin}/{item}").Replace(" ", string.Empty);
+                var output = Server.MapPath($"~/App_Data/{name}/{user}/{item}").Replace(" ", string.Empty);
               
                 if (graphsFinal.Items.ElementAt(i).Selected == true)
                 {
@@ -287,8 +302,9 @@ namespace peptak
         {
             try
             {
+                DataUser.Clear();
                 var company = getCompanyId();
-              
+                DataUser.Add("Izberi");
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
@@ -329,7 +345,6 @@ namespace peptak
                 string filePath = Server.MapPath($@"~/App_Data/{nameless}/{admin}");
                 string path = filePath.Replace(" ", string.Empty);
                 System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(path);
-                Response.Write(path.ToString());
                 System.IO.FileInfo[] fi = di.GetFiles();
                 foreach (System.IO.FileInfo file in fi)
                 {
@@ -452,10 +467,18 @@ namespace peptak
 
         protected void Save_Click1(object sender, EventArgs e)
         {
-            FillListGraphsNames();
-            makeSQLquery();
-            showConfig();
-            copyFiles();
+            if (usersPermisions.SelectedValue == "Izberi")
+            {
+                Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
+
+            }
+            else
+            {
+                FillListGraphsNames();
+                makeSQLquery();
+                showConfig();
+                copyFiles();
+            }
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -709,9 +732,9 @@ namespace peptak
             conn.Close();
         }
 
-
         protected void delete_Click(object sender, EventArgs e)
         {
+
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"delete from Users where uname='{DeleteUser.SelectedValue}'", conn);
@@ -719,19 +742,44 @@ namespace peptak
             getIdPermision();
             try
             {
+                var company = getCompanyQuery(DeleteUser.SelectedValue);
                 cmd.ExecuteNonQuery();
-                FillList();
-                FillListGraphs();
-                showConfig();
-
-                deletePermisionEntry();
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
-
-                string filePath = Server.MapPath("~/App_Data/" + DeleteUser.SelectedValue);
-
-                if (!Directory.Exists(filePath))
+                var spacelessCompany = company.Replace(" ", string.Empty);
+                // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{DeleteUser.SelectedValue}");
+                string finalPath = filePath.Replace(" ", string.Empty);
+                if (Directory.Exists(finalPath.ToString()))
                 {
-                    Directory.Delete(filePath);
+                    Directory.Delete(finalPath.ToString());
+                    //DeleteUser.Items.Clear();
+                    FillList();
+                    FillListGraphs();
+                    showConfig();
+
+                    //fillCompanies();
+                    //FillListAdmin();
+                    //fillUsersDelete();
+                    //fillCompanyDelete();
+                    //fillChange();
+                    fillUsersDelete();
+                    deletePermisionEntry();
+
+                }
+                else
+                {
+                    FillList();
+                    FillListGraphs();
+                    showConfig();
+
+                    //fillCompanies();
+                    //FillListAdmin();
+                    //fillUsersDelete();
+                    //fillCompanyDelete();
+                    //fillChange();
+                    fillUsersDelete();
+              
+                    deletePermisionEntry();
+                    //Logging
                 }
             }
 
@@ -817,6 +865,7 @@ namespace peptak
 
         protected void registrationButton_Click1(object sender, EventArgs e)
         {
+           
             if (TxtUserName.Enabled == true)
             {
 
