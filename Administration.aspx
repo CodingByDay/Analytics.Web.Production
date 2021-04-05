@@ -28,7 +28,7 @@
                 <tr>
                   <td>
                     <h3>
-                   <center><h4 style="font-style: italic;font-weight: bold">Izberite uporabnika, in odločite katere grafe lahko vidi.</h4></center>
+                   <center><h3 style="font-style: italic;font-weight: bold">Izberite uporabnika, in odločite katere grafe lahko vidi.</h3></center>
       <hr style="color: black;" />
   <center><asp:DropDownList ID="usersPermisions" autopostback="true" runat="server" OnSelectedIndexChanged="usersPermisions_SelectedIndexChanged" ></asp:DropDownList>></center>    
      
@@ -90,6 +90,7 @@
                         </asp:DropDownList>  </center>
               
      <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"   OnClick="Button1_Click" /></center>
+                  <hr />
                     </h3>
                   </td>
                 </tr>
@@ -106,7 +107,7 @@
                 <tr>
                   <td>
                     <h3>
-                     <center><h4 style="text-decoration: solid">Registracija novega podjetja.</h4></center>  
+                     <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h3></center>  
              <hr style="color: black;" />
 
              <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime"></asp:TextBox></center>
@@ -121,7 +122,7 @@
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList></center>  
-             <center><asp:Button CssClass="companyButton" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
+             <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
                     </h3>
                   </td>
                 </tr>
@@ -131,7 +132,7 @@
               <table style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; background-color: #c5d5cb">
                 <tr>
                   <td>
-                    <h3>
+                    <hr />
                      <center><h4 style="text-decoration: solid; font-style: italic;font-weight: bold"">Brišite uporabnika.</h4></center>
         <center><asp:DropDownList ID="DeleteUser" runat="server"  
                AppendDataBoundItems="true">  
@@ -142,12 +143,12 @@
 
       
      <center><h4 style="text-decoration: solid; font-style: italic;font-weight: bold">Izbrišite podjetje.</h4></center>
-
+<hr />
            <center><asp:DropDownList ID="deleteCompany" runat="server"  
                AppendDataBoundItems="true"> 
         </asp:DropDownList></center> 
         <center><asp:Button  CssClass="btn btn-primary" ID="companyDelete" runat="server" Text="Briši podjetje"  OnClick="deleteCompanyButton_Click"/></center>
-            <hr style="color: black;" />
+                        <hr />
        <center><h4 style="text-decoration: solid; font-style: italic;font-weight: bold">Spremenite admina podjetja</h4></center>
 
            <center><asp:DropDownList ID="ChooseCompany" runat="server"  

@@ -80,7 +80,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-                <p>&copy; <%: DateTime.Now.Year %> In-Sist doo <img src="css/logo.png" width="100" height="50"/></p> 
+               <center><p>&copy; <%: DateTime.Now.Year %> In-Sist doo <img src="css/logo.png" width="100" height="50"/></p></center>
             </footer>
         </div>
 
