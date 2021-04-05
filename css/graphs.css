@@ -6,22 +6,22 @@
     
 }
 
-<style type="text/css" >
 .Initial {
     display: block;
     padding: 4px 18px 4px 18px;
     float: left;
     color: Black;
     font-weight: bold;
-    background-color: cadetblue;
+    background-color: #48cfad;
     font-size: x-large;
-    
+    border-radius: 25px;
 }
 
 .Initial:hover {
     background-color: cornflowerblue;
-    font-size:x-large;
+    font-size: x-large;
     color: black;
+    border-radius: 25px;
 }
 
 .Clicked {
@@ -31,7 +31,9 @@
     color: Black;
     font-weight: bold;
     color: black;
-    background-color: greenyellow;
+    font-size: x-large;
+    background-color: #3bafda;
+    border-radius: 25px;
 }
 
 #View1, #View2, #View3 {
@@ -40,6 +42,8 @@
     display: inline-block;
     font-size: x-large;
     background-color: burlywood;
+    border-radius: 25px;
+    font-size: x-large;
 }
 
 .box {
@@ -48,6 +52,7 @@
     text-align: center;
     background-color: #efefef;
     text-align: left;
+    border-radius: 25px;
 }
 
 body {
