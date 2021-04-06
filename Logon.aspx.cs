@@ -97,6 +97,7 @@ namespace peptak
 
         protected void cmdLogin_Click(object sender, EventArgs e)
         {
+
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
                 FormsAuthenticationTicket tkt;
@@ -115,27 +116,37 @@ namespace peptak
                 string strRedirect;
                 role = getRole(txtUserName.Value);
 
-                    if (role == "SuperAdmin")
-                    {
-                        strRedirect = "default.aspx";
-                        Response.Redirect(strRedirect, true);
-                    }
-                    else
-                    {
-                        strRedirect = "custom.aspx";
-                        Response.Redirect(strRedirect, true);
-                    }
-
-
-
-                    conn.Close();
-                    conn.Dispose();
+                if (role == "SuperAdmin")
+                {
+                    strRedirect = "default.aspx";
+                    Response.Redirect(strRedirect, true);
                 }
                 else
-                    Response.Redirect("logon.aspx", true);
+                {
+                    strRedirect = "custom.aspx";
+                    Response.Redirect(strRedirect, true);
+                }
 
+
+
+                conn.Close();
+                conn.Dispose();
             }
+            else
+            {
+                Response.Redirect("logon.aspx", true);
+            }
+
         }
+
+   
+
+        protected void reset_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ResetPassword.aspx");
+
+        }
+    }
     }
 
 

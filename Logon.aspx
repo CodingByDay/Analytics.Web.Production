@@ -28,7 +28,9 @@
                     <div class="center">
                         <span style="color: #808080;">Zapomni si prijavo</span>
                         <asp:CheckBox ID="chkPersistCookie" runat="server" AutoPostBack="false" />
-                        <p>
+                        <img src="pass.png" /><asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
+                      Pozabili ste geslo?
+                     </asp:HyperLink>
                             <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
                     </div>
                     </p>
