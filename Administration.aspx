@@ -53,22 +53,22 @@
               <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
                          <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
 
-                    <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
+                    <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center>  
               
                 <center>  
                 
-                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime"></asp:TextBox></center>  
+                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
                
                </center>  
               
                  
                        <center> <asp:TextBox ID="TxtPassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo"></asp:TextBox>  </center>
+                                     TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
               
                   
                        <center> <asp:TextBox ID="TxtRePassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo še enkrat"></asp:TextBox> </center> 
+                                     TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
                  
             <center><h4>Pozicija</h4></center>
                   
@@ -110,10 +110,10 @@
                      <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h3></center>  
              <hr style="color: black;" />
 
-             <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime"></asp:TextBox></center>
-           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka"></asp:TextBox> </center>                 
-           <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:"></asp:TextBox> </center>
-                        <center><h4 style="text-decoration: solid">Admin</h4></center>
+             <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
+           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
+           <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
+                        <center><h4 style="text-decoration: solid" >Admin</h4></center>
            <center> <asp:DropDownList ID="listAdmin" runat="server" > 
                <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList>  </center>
@@ -158,7 +158,8 @@
                AppendDataBoundItems="true">  
         </asp:DropDownList></center>
         <center><asp:Button CssClass="btn btn-primary" ID="changeCompany" runat="server" Text="Spremeni" OnClick="changeCompany_Click"/></center>
-                    </h3>
+                      
+                    </h3><hr />
                   </td>
                 </tr>
               </table>

@@ -58,22 +58,22 @@
               <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger;background-color: #c5d5cb" >
                                            <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
 
-                     <center><asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" ></asp:TextBox></center>
+                     <center><asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center>  
               
                 <center>  
                 
-                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime"></asp:TextBox></center>  
+                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
                
                </center>  
               
                  
                        <center> <asp:TextBox ID="TxtPassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo"></asp:TextBox>  </center>
+                                     TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>  </center>
               
                   
                        <center> <asp:TextBox ID="TxtRePassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo še enkrat"></asp:TextBox> </center> 
+                                     TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
                  
             <center><h4>Pozicija</h4></center>
                   
@@ -113,6 +113,7 @@
                AppendDataBoundItems="true">  
         </asp:DropDownList></center>
        <center> <asp:Button CssClass="btn btn-primary" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
+                        <hr />
        
 
       <hr style="color: black;" />
