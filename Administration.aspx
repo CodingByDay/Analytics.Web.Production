@@ -70,15 +70,15 @@
                        <center> <asp:TextBox ID="TxtRePassword" runat="server"  
                                      TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
                  
-            <center><h4>Pozicija</h4></center>
+           <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
+
                   
                        <center><asp:RadioButtonList ID="userRole" runat="server">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  </center>
                 
-    
-                <center><h4 style="text-decoration: solid">Tip uporabnika</h4></center>
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
                 <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
                  </asp:DropDownList></center>   
         
@@ -113,11 +113,12 @@
              <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
            <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
            <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
-                        <center><h4 style="text-decoration: solid" >Admin</h4></center>
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center>    
            <center> <asp:DropDownList ID="listAdmin" runat="server" > 
                <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList>  </center>
-              <center><h4>Baza</h4></center>
+              <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Baza.</h3></center>    
+
                   
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  

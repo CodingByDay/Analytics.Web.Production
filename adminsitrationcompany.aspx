@@ -83,7 +83,7 @@
                         </asp:RadioButtonList>  </center>
                 
     
-                <center><h5>Tip uporabnika</h5></center>
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
                 <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
                  </asp:DropDownList></center    
         
