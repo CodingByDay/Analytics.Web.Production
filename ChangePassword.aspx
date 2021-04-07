@@ -60,8 +60,13 @@
             <h3>Spremeni geslo. </h3>
             <form class="pb-3" action="#" runat="server">
                <div class="form-group">
-                   <asp:TextBox ID="pwd" runat="server" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>
-                   <asp:TextBox ID="REpwd" runat="server" placeholder="Še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>
+                   
+                       <center> <asp:TextBox ID="pwd" runat="server"  
+                                     TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
+                   
+                       <center> <asp:TextBox ID="REpwd" runat="server"  
+                                     TextMode="Password" placeholder="Še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
+             
 
                </div>
            

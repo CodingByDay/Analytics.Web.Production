@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
+using System.Web.Security;
 
 namespace peptak
 {
@@ -26,12 +23,26 @@ namespace peptak
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-
+            Response.Redirect("logon.aspx", true);
         }
 
         protected void change_Click(object sender, EventArgs e)
         {
+            if (checkEquality()) {
+                if (ChangeUserPassword())
+                {
+                    Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjena.'  );</script>");
 
+                } else
+                {
+                    Response.Write($"<script type=\"text/javascript\">alert('Link za spremembo gesla je potekal ali ni vejaven.'  );</script>");
+
+                }
+            } else
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Gesla niso ista.'  );</script>");
+
+            }
         }
 
 
@@ -49,7 +60,39 @@ namespace peptak
 
             return ExecuteSP("spIsPasswordResetLinkValid", paramList);
         }
+        private bool ChangeUserPassword()
+        {
+                    List<SqlParameter> paramList = new List<SqlParameter>()
+            {
+                new SqlParameter()
+                {
+                    ParameterName = "@GUID",
+                    Value = Request.QueryString["uid"]
+                },
+                new SqlParameter()
+                {
+                    ParameterName = "@Password",
+                    Value = FormsAuthentication.HashPasswordForStoringInConfigFile(pwd.Text, "SHA1")
+                }
+            };
 
+            return ExecuteSP("spChangePassword", paramList);
+        }
+
+
+
+
+        private bool checkEquality()
+        {
+            if(pwd.Text==REpwd.Text)
+            {
+                return true;
+
+            } else
+            {
+                return false;
+            }
+        }
 
         private bool ExecuteSP(string SPName, List<SqlParameter> SPParameters)
         {
