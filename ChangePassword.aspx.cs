@@ -18,7 +18,7 @@ namespace peptak
             {
                 if (!IsPasswordResetLinkValid())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Cajt za resetiranje je potekal.'  );</script>");
+                    Response.Write($"<script type=\"text/javascript\">alert('Cajt za resetiranje je potekal ali link ni v vredu.'  );</script>");
 
                 }
             }
