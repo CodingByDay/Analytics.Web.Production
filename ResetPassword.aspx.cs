@@ -88,7 +88,7 @@ namespace peptak
             StringBuilder sbEmailBody = new StringBuilder();
             sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
             sbEmailBody.Append("Prosimo sledite link da resetirate geslo.");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost/ChangePassword.aspx?uid=" + UniqueId);
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://dash.in-insist.si:81/ChangePassword.aspx?uid=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>IN SIST doo</b>");
 
