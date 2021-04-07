@@ -91,8 +91,9 @@ namespace peptak
                 return false;
             }
 
+            string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(passWord, "SHA1");
             // Compare lookupPassword and input passWord, using a case-sensitive comparison.
-            return (0 == string.Compare(lookupPassword, passWord, false));
+            return (0 == string.Compare(lookupPassword, HashedPassword, false));
         }
 
         protected void cmdLogin_Click(object sender, EventArgs e)
