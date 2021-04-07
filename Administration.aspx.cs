@@ -507,6 +507,7 @@ namespace peptak
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
                             TxtUserName.Text = "";
+                            email.Text = "";
 
                             var company = companiesList.SelectedValue;
                             var spacelessCompany  = company.Replace(" ", string.Empty);
@@ -562,6 +563,11 @@ namespace peptak
                         var username = TxtUserName.Text;
                         cmd.ExecuteNonQuery();
                         Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
+                        TxtName.Text = "";
+                        TxtPassword.Text = "";
+                        TxtRePassword.Text = "";
+                        TxtUserName.Text = "";
+                        email.Text = "";
                         var company = companiesList.SelectedValue;
                         //    fillUsersDelete();
                         string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;

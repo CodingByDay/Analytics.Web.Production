@@ -12,7 +12,7 @@
         <div id="formContent">
             <form id="form1" runat="server">
                 <div>
-                    <div class="formTitle">PETPAK<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
+                    <div class="formTitle">Dashboards<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
 
                     <input id="txtUserName" type="text" runat="server">
                     <asp:RequiredFieldValidator ControlToValidate="txtUserName"

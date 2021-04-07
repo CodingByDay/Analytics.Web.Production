@@ -576,11 +576,13 @@ namespace peptak
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
                 companiesList.Enabled = false;
-                var pass = sdr["Pwd"].ToString();
+                email.Enabled = false;
+                string pass = sdr["Pwd"].ToString();
                 TxtPassword.Text = pass;
-                TxtRePassword.Text = pass;
-                var role = sdr["userRole"].ToString();
-                var type = sdr["ViewState"].ToString();
+                TxtRePassword.Text = TxtPassword.Text;
+                string role = sdr["userRole"].ToString();
+                string type = sdr["ViewState"].ToString();
+                email.Text = sdr["email"].ToString();
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
                 userType.SelectedIndex = userType.Items.IndexOf(userType.Items.FindByValue(type));
 
@@ -804,6 +806,7 @@ namespace peptak
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
                             TxtUserName.Text = "";
+                            email.Text = "";
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
                             FillList();
@@ -860,6 +863,11 @@ namespace peptak
                         var username = TxtUserName.Text;
                         cmd.ExecuteNonQuery();
                         Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
+                        TxtName.Text = "";
+                        TxtPassword.Text = "";
+                        TxtRePassword.Text = "";
+                        TxtUserName.Text = "";
+                        email.Text = "";
                         var company = companiesList.SelectedValue;
                         //    fillUsersDelete();
                         string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;

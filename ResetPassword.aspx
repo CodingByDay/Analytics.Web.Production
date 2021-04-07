@@ -60,12 +60,16 @@
          <div class="bg-white text-center p-5 mt-3 center">
             <h3>Pozabili geslo? </h3>
             <p>Če ste pozabili geslo, lahko ga resetirate.</p>
-            <form class="pb-3" action="#">
+            <form class="pb-3" action="#" runat="server">
                <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Your Username*" required>
+                   <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox>
+
                </div>
+           
+          <asp:Button ID="reset" runat="server" Text="Resetiraj" type="submit" OnClick="reset_Click" CssClass="btn" />
+          <asp:Button ID="backButton" runat="server" Text="Nazaj" type="submit"  OnClick="backButton_Click" CssClass="btn" />
+
             </form>
-            <button type="button" class="btn">Resetiraj.</button>
          </div>
       </div>
    </body>

@@ -13,5 +13,15 @@ namespace peptak
         {
 
         }
+
+        protected void reset_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void backButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("logon.aspx", true);
+        }
     }
 }
