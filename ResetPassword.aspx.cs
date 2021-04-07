@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net.Mail;
@@ -21,30 +23,48 @@ namespace peptak
 
         protected void reset_Click(object sender, EventArgs e)
         {
-            CheckIfUserExists();
-            SendEmail();
-            UpdateVisualDesign();
+            SendActivationRequest();
         }
 
-        private void UpdateVisualDesign()
-        {
-            throw new NotImplementedException();
-        }
+ 
 
-        private void SendEmail()
-        {
-            throw new NotImplementedException();
-        }
 
-        private void CheckIfUserExists()
+
+
+        /// <summary>
+        /// Stored procedure checking if the user exists and fetching the uuid and an emal.
+        ///  Stored procedure: spResetPassword
+        ///  Parameter/s: @Username
+        /// </summary>
+        private void SendActivationRequest()
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            string sendPassword = String.Format($"select uname, Pwd FROM Users where email='{email.Text}'");
-            SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-            var username = TxtUserName.Text;
-            try
+
+            using (conn)
             {
-                createUser.ExecuteNonQuery();
+                SqlCommand cmd = new SqlCommand("spResetPassword", conn);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);
+
+                cmd.Parameters.Add(paramUsername);
+
+                conn.Open();
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    if (Convert.ToBoolean(rdr["ReturnCode"]))
+                    {
+                        SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
+                        Response.Write($"<script type=\"text/javascript\">alert('Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.'  );</script>");
+
+                    }
+                    else
+                    {
+                        Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake. Uporabniško ime ne obstaja.'  );</script>");
+
+                    }
+                }
             }
 
         }
@@ -53,7 +73,7 @@ namespace peptak
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logon.aspx", true);
+            Response.Redirect("changepassword.aspx", true);
         }
 
 
@@ -61,13 +81,13 @@ namespace peptak
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
             // MailMessage class is present is System.Net.Mail namespace
-            MailMessage mailMessage = new MailMessage("YourEmail@gmail.com", ToEmail);
+            MailMessage mailMessage = new MailMessage("jankojovicic351@gmail.com", ToEmail);
 
 
             // StringBuilder class is present in System.Text namespace
             StringBuilder sbEmailBody = new StringBuilder();
-            sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
-            sbEmailBody.Append("Prosim sledite link da resetirate geslo.");
+            sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
+            sbEmailBody.Append("Prosimo sledite link da resetirate geslo.");
             sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://localhost/ChangePassword.aspx?uid=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>IN SIST doo</b>");
@@ -75,13 +95,13 @@ namespace peptak
             mailMessage.IsBodyHtml = true;
 
             mailMessage.Body = sbEmailBody.ToString();
-            mailMessage.Subject = "Resetirajte geslo.";
+            mailMessage.Subject = "Resetiranje gesla IN SIST";
             SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
 
             smtpClient.Credentials = new System.Net.NetworkCredential()
             {
-                UserName = "YourEmail@gmail.com",
-                Password = "YourPassword"
+                UserName = "jankojovicic351@gmail.com",
+                Password = "taojeveliki123"
             };
 
             smtpClient.EnableSsl = true;

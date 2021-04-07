@@ -58,7 +58,6 @@
       <div class="container d-flex justify-content-center align-items-center vh-100">
          <div class="bg-white text-center p-5 mt-3 center">
             <h3>Spremeni geslo. </h3>
-            <p>Če ste pozabili geslo, lahko ga resetirate.</p>
             <form class="pb-3" action="#" runat="server">
                <div class="form-group">
                    <asp:TextBox ID="pwd" runat="server" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>
@@ -67,6 +66,8 @@
                </div>
            
           <asp:Button ID="change" runat="server" Text="Spremeni" type="submit" OnClick="change_Click" CssClass="btn" />
+                <br />
+                <br />
           <asp:Button ID="backButton" runat="server" Text="Začetna strana" type="submit"  OnClick="backButton_Click" CssClass="btn" />
 
             </form>

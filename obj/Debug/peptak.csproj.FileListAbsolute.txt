@@ -236,13 +236,6 @@ C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyC
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
 C:\Users\janko\Desktop\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Dashboard.v20.2.Web.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.Desktop.v20.2.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.Desktop.v20.2.xml
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.RichEdit.v20.2.Core.resources.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraCharts.v20.2.resources.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraEditors.v20.2.resources.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraPrinting.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\peptak.dll.config
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\peptak.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\peptak.pdb
@@ -300,6 +293,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\AspNet.ScriptManager.bootstra
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\AspNet.ScriptManager.jQuery.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Charts.v20.2.Core.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Dashboard.v20.2.Core.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Dashboard.v20.2.Web.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Dashboard.v20.2.Web.WebForms.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.DataAccess.v20.2.dll
@@ -335,6 +329,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraTreeMap.v20.2.
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.TreeMap.v20.2.Core.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.CodeParser.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Pdf.v20.2.Drawing.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.Desktop.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.DataVisualization.v20.2.Core.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraEditors.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraLayout.v20.2.dll
@@ -371,6 +366,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.CodeDom.Providers.D
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraTreeMap.v20.2.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.TreeMap.v20.2.Core.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Pdf.v20.2.Drawing.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.Data.Desktop.v20.2.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraEditors.v20.2.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraLayout.v20.2.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraPrinting.v20.2.xml
@@ -412,6 +408,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.Printing.v20.2.
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.Printing.v20.2.Core.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.Printing.v20.2.Core.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.Printing.v20.2.Core.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.RichEdit.v20.2.Core.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.RichEdit.v20.2.Core.resources.dll
@@ -435,6 +432,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.Xpo.v20.2.resou
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.Xpo.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.Xpo.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.Xpo.v20.2.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraCharts.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraCharts.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraCharts.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraCharts.v20.2.resources.dll
@@ -450,6 +448,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraReports.v20
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraReports.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraReports.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraReports.v20.2.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraEditors.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraEditors.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraEditors.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraEditors.v20.2.resources.dll
@@ -458,6 +457,7 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraLayout.v20.
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraLayout.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraLayout.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraPrinting.v20.2.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraPrinting.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraPrinting.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraPrinting.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraBars.v20.2.resources.dll
@@ -468,9 +468,9 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraTreeList.v2
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
