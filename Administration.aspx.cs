@@ -496,7 +496,7 @@ namespace peptak
                         {
                             // Logging module.
                         }
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                         var username = TxtUserName.Text;
                         try
@@ -736,7 +736,7 @@ namespace peptak
         /// </summary>
         /// 
 
-
+        
         private void updateForm()
         {
             ///
@@ -751,11 +751,13 @@ namespace peptak
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
                 companiesList.Enabled = false;
-                var pass = sdr["Pwd"].ToString();
+                email.Enabled = false;
+                string pass = sdr["Pwd"].ToString();
                 TxtPassword.Text = pass;
-                TxtRePassword.Text = pass;
-                var role = sdr["userRole"].ToString();
-                var type = sdr["ViewState"].ToString();
+                TxtRePassword.Text = TxtPassword.Text;
+                string role = sdr["userRole"].ToString();
+                string type = sdr["ViewState"].ToString();
+                email.Text = sdr["email"].ToString();
                 userRole.SelectedIndex= userRole.Items.IndexOf(userRole.Items.FindByValue(role));
                 userType.SelectedIndex= userType.Items.IndexOf(userType.Items.FindByValue(type));
 
