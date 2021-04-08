@@ -269,10 +269,16 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraMap.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraReports.v20.2.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.AspNet.FriendlyUrls.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.AspNet.Web.Optimization.WebForms.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.Bcl.AsyncInterfaces.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.ScriptManager.MSAjax.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.ScriptManager.WebForms.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.Web.Infrastructure.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Newtonsoft.Json.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\RestSharp.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Stripe.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Stripe.net.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Runtime.CompilerServices.Unsafe.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Threading.Tasks.Extensions.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Web.Optimization.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\WebGrease.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraTreeMap.v20.2.dll
@@ -308,6 +314,12 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraGauges.v20.2.P
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraGauges.v20.2.Win.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraMap.v20.2.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\DevExpress.XtraReports.v20.2.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Microsoft.Bcl.AsyncInterfaces.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\RestSharp.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Stripe.net.pdb
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Stripe.net.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Threading.Tasks.Extensions.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\System.Web.Optimization.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Newtonsoft.Json.xml
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\Antlr3.Runtime.pdb
@@ -417,7 +429,6 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraTreeList.v2
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete

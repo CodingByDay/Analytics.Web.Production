@@ -7,7 +7,7 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-   
+  <script src="https://js.stripe.com/v3/"></script>
      <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
  <body style="font-family: tahoma">

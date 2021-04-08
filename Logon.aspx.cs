@@ -147,6 +147,16 @@ namespace peptak
             Response.Redirect("ResetPassword.aspx");
 
         }
+
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
+        }
+
+        protected void membership_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
+        }
     }
     }
 

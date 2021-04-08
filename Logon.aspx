@@ -32,9 +32,13 @@
                       Pozabili ste geslo?
                      </asp:HyperLink>
                             <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+
                     </div>
                     </p>
                     <asp:Label ID="lblMsg" ForeColor="red" Font-Name="Verdana" Font-Size="10" runat="server" />
+
+                                                <asp:Button  ID="membership" runat="server" Text="Vrste plačila" type="submit"  OnClick="membership_Click"/>
+
                 </div>
             </form>
         </div>
