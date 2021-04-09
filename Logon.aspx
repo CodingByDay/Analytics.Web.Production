@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="peptak.Logon" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="peptak.Logon" EnableEventValidation="false"%>
 
 <!DOCTYPE html>
 
@@ -8,11 +8,12 @@
     <title></title>
 </head>
 <body>
+    <center><img src="5f31883b507a4399a9cafe7bd10c269c.png"</center>
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <form id="form1" runat="server">
                 <div>
-                    <div class="formTitle">Dashboards<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
+                    <div class="formTitle">Graphs<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
 
                     <input id="txtUserName" type="text" runat="server">
                     <asp:RequiredFieldValidator ControlToValidate="txtUserName"
@@ -37,10 +38,11 @@
                     </p>
                     <asp:Label ID="lblMsg" ForeColor="red" Font-Name="Verdana" Font-Size="10" runat="server" />
 
-                                                <asp:Button  ID="membership" runat="server" Text="Vrste plačila" type="submit"  OnClick="membership_Click"/>
+                                 <img src="stripe.png" width="300px" alt="Powered by Stripe"/><asp:Button  ID="membership" runat="server" Text="Vrste plačila" type="submit"  OnClick="membership_Click" CausesValidation="false"/>
 
                 </div>
             </form>
+
         </div>
     </div>
 </body>
