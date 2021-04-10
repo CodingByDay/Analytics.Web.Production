@@ -6,6 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+    <script src="https://js.stripe.com/v3/"></script>
     <title></title>
 </head>
 <body>
@@ -18,10 +19,45 @@
 
              <h1>Stran za placilo narocnine.</h1>
 
+
+     
+               <p>Z uporabo Stripe lahko placate membership za graph aplikacija ki znasa 3.99e/month. V vsakem trenutku lahko prekinete narocnino.
+                   
+               Kliknite spodaj za checkout.
+
+               </p>
+    
+                    <button type="submit">Naročite</button>
+
+
                 </div>
             </form>
 
         </div>
     </div>
+    <script>
+        var stripe = Stripe('pk_test_51IdsgFI2g0bX7R9apvkiAeJcdqLg64K7BT4GYLbdrgDNV1nYHRqkiw8MAScyKKzklbyKqzPCaMkXOSyS9L9jT9fP00LvSJIMcK');
+        var form = document.getElementById("membershipForm");
+
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            stripe.redirectToCheckout({
+
+                sessionId: "<%= sessionId %>"
+            }); 
+
+
+
+
+        })
+
+
+
+
+
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
 </body>
 </html>

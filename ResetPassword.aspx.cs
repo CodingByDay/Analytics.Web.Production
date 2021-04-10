@@ -73,7 +73,7 @@ namespace peptak
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("changepassword.aspx", true);
+            Response.Redirect("logon.aspx", true);
         }
 
 
