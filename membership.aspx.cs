@@ -1,4 +1,5 @@
-﻿using Stripe;
+﻿using peptak.Session;
+using Stripe;
 using Stripe.BillingPortal;
 using Stripe.Checkout;
 using System;
@@ -26,7 +27,7 @@ namespace peptak
 
             var options = new SessionCreateOptions
             {
-                SuccessUrl = "https://example.com/success",
+                SuccessUrl = "http://dash.in-insist.si:81/Success",
                 CancelUrl = "https://example.com/cancel",
                 PaymentMethodTypes = new List<string>
                 {
@@ -45,11 +46,19 @@ namespace peptak
                 Mode = "subscription",
             };
             var service = new SessionService();
-            Stripe.Checkout.Session session =  service.Create(options);
+            Stripe.Checkout.Session session = service.Create(options);
 
             sessionId = session.Id;
 
 
+            CustomerSessionClass sessionCurrent = new CustomerSessionClass();
+
+            sessionCurrent.email = "test@test.com";
+
+            Session["object"] = sessionCurrent;
+
+
+           
         }
     }
 }
