@@ -56,6 +56,8 @@
       </style>
    </head>
    <body>
+                  <div class="wrapper fadeInDown">
+
       <div class="container d-flex justify-content-center align-items-center vh-100">
          <div class="bg-white text-center p-5 mt-3 center">
             <h3>Spremeni geslo. </h3>
@@ -77,6 +79,7 @@
           <asp:Button ID="backButton" runat="server" Text="Začetna strana" type="submit"  OnClick="backButton_Click" CssClass="btn" />
 
             </form>
+             </div>
          </div>
       </div>
    </body>
