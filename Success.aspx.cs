@@ -16,11 +16,17 @@ namespace peptak
         {
           
 
-            CustomerSessionClass objectSession = (CustomerSessionClass)Session["object"];
-            string email = objectSession.email;
+          var id = Request.QueryString["id"];
 
 
-            Response.Write("Test" + email);
+
+            Response.Write(id.ToString());
+
+
+
+
+
+
         }
     }
 }

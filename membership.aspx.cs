@@ -27,7 +27,7 @@ namespace peptak
 
             var options = new SessionCreateOptions
             {
-                SuccessUrl = "http://dash.in-insist.si:81/Success",
+                SuccessUrl = "http://dash.in-insist.si:81/Success?id={CHECKOUT_SESSION_ID}",
                 CancelUrl = "https://example.com/cancel",
                 PaymentMethodTypes = new List<string>
                 {
@@ -50,12 +50,11 @@ namespace peptak
 
             sessionId = session.Id;
 
-
+            // Service GET(id);
             CustomerSessionClass sessionCurrent = new CustomerSessionClass();
 
-            sessionCurrent.email = "test@test.com";
 
-            Session["object"] = sessionCurrent;
+            Session["object"] = new CustomerSessionClass { name="Janko Persist", surname="Persits", email="janko@in-sist.si", dateOfOrder=DateTime.Now};
 
 
            
