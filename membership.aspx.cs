@@ -51,10 +51,8 @@ namespace peptak
             sessionId = session.Id;
 
             // Service GET(id);
-            CustomerSessionClass sessionCurrent = new CustomerSessionClass();
 
 
-            Session["object"] = new CustomerSessionClass { name="Janko Persist", surname="Persits", email="janko@in-sist.si", dateOfOrder=DateTime.Now};
 
 
            

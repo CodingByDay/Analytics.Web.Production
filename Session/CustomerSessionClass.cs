@@ -10,10 +10,12 @@ namespace peptak.Session
 
 
         public string name { get; set; }
-        public string surname { get; set; }
 
         public string email { get; set; }
 
         public DateTime dateOfOrder { get; set; }
+
+
+        public string address { get; set; }
     }
 }
