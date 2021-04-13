@@ -20,13 +20,14 @@ namespace peptak
        public static NewPayedUserCompany user = new NewPayedUserCompany();
         private SqlConnection conn;
         private int company;
+        private string id;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             // Stripe configuration key. Safe to use like this...
             StripeConfiguration.ApiKey = "sk_test_51IdsgFI2g0bX7R9aOa1atoifUOkT6csUhopE53KQYUA55UZmKVPdWP3BLcZ9UTqF6zVIn0OIpeAXlL5CiiLHFWv900tcoe7Bzt";
             // Getting the query string.
-            var id = Request.QueryString["id"];
+            id = Request.QueryString["id"];
             // testing the query string.
             /// Response.Write(id.ToString());
             /// Page that will show all the data for the session and also write info to the database.
@@ -104,6 +105,8 @@ namespace peptak
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
             // company insert works.
+           // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
+         //   Response.Write(deb);
             try
             {
                 cmd.ExecuteNonQuery();
@@ -178,7 +181,7 @@ namespace peptak
                 }
 
 
-
+                createMembership(company.Replace(" ", string.Empty));
                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
 
 
@@ -215,6 +218,23 @@ namespace peptak
                     Response.Write(error);
 
                 }
+            }
+        }
+
+        private void createMembership(string v)
+        {
+            var idCompany = getCompanyID(v.Replace(" ", string.Empty));
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"insert into memberships(id_company,startDate,endDate,id_types_of_memberships, stripe) VALUES({idCompany}, GETDATE(), GETDATE() + 365,2,'{id}');", conn);
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception error)
+            {
+                // Implement loggin here.
             }
         }
 

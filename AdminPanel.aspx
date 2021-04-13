@@ -12,7 +12,7 @@
      <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
 
-    <dx:ASPxListBox ID="companies" runat="server" ValueType="System.String" FilteringSettings-ShowSearchUI="true"></dx:ASPxListBox>
+    <dx:ASPxListBox ID="companiesView" runat="server" ValueType="System.String" FilteringSettings-ShowSearchUI="true"></dx:ASPxListBox>
 
 
 
