@@ -7,6 +7,8 @@
     <title>Kreiranje podjetja</title>
 <webopt:bundlereference runat="server" path="~/css/success.css" />
 <link href= "~/css/success.css" rel="stylesheet" runat="server" type="text/css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
 </head>
 <body>
     <script>

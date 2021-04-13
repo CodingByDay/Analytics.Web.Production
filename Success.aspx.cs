@@ -72,5 +72,10 @@ namespace peptak
         {
 
         }
+
+        protected void Register_Click2(object sender, EventArgs e)
+        {
+
+        }
     }
 }
