@@ -62,10 +62,10 @@ namespace peptak
         protected void Register_Click(object sender, EventArgs e)
         {
             // if any field is empty.
-           if(String.IsNullOrEmpty(UsernameForm.Text) | String.IsNullOrEmpty(PasswordForm.Text) | 
-           String.IsNullOrEmpty(RePasswordForm.Text) | String.IsNullOrEmpty(CompanyName.Text) | 
-           String.IsNullOrEmpty(NameForm.Text) | String.IsNullOrEmpty(EmailForm.Text) | String.IsNullOrEmpty(PhoneForm.Text)
-           | String.IsNullOrEmpty(WebsiteForm.Text)) {
+           if(UsernameForm.Text == "" | PasswordForm.Text == "" | 
+           RePasswordForm.Text == "" | CompanyName.Text=="" | 
+           NameForm.Text == "" | EmailForm.Text=="" | PhoneForm.Text==""
+           | WebsiteForm.Text == "") {
                 // Show javascript popup
                 Response.Write("<script type=\"text/javascript\">alert('Nekateri podatki Vam manjkajo.');</script>");
             } else

@@ -12,7 +12,6 @@
 <body>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-       <script src="~/Scripts/notify.js"></script>
     <!-- multistep form -->
 <form id="msform" runat="server">
   <!-- progressbar -->
@@ -43,7 +42,7 @@
     <asp:TextBox ID="NameForm" runat="server" placeholder="Ime in priimek"></asp:TextBox>
     <asp:TextBox ID="EmailForm" runat="server" placeholder="Vaš email"></asp:TextBox>
     <asp:TextBox ID="PhoneForm" runat="server" placeholder="Telefon podjetja"></asp:TextBox>
-    <asp:TextBox ID="WebsiteForm" runat="server" placeholder="Website podjetja"></asp:TextBox>
+     <asp:TextBox ID="WebsiteForm" runat="server" placeholder="Website podjetja"></asp:TextBox>
 
    
     <input type="button" name="previous" class="previous action-button" value="Prejšnja" />
@@ -51,7 +50,6 @@
   </fieldset>
 </form>
     <script>
-        $.notify('Uspešno ste plačali naročnino, sedaj lahko registrirate svoje podjetje.');
 
         //jQuery time
         var current_fs, next_fs, previous_fs; // fieldsets
