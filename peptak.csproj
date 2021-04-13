@@ -166,6 +166,7 @@
     <Content Include="css\custom.css" />
     <Content Include="css\graphs.css" />
     <Content Include="css\logo.png" />
+    <Content Include="css\success.css" />
     <Content Include="Custom.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />

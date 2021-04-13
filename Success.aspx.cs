@@ -21,12 +21,12 @@ namespace peptak
             // Getting the query string.
             var id = Request.QueryString["id"];
             // testing the query string.
-            Response.Write(id.ToString());
+            /// Response.Write(id.ToString());
             /// Page that will show all the data for the session and also write info to the database.
             /// 
             var service = new SessionService();
             var session = service.Get(id);
-          //  Response.Write(session.ToJson());
+            // Response.Write(session.ToJson());
 
             // Preparing a nice little object.
             //
@@ -40,22 +40,26 @@ namespace peptak
 
             customer.email = email;
             customer.dateOfOrder = DateTime.Now;
-            customer.name = session.Customer.Name;
-            //customer.address = customerObj.Address.ToString();
-            //customer.company//
-            //customer.name = session.
+            // customer.address = customerObj.Address.ToString();
+            // customer.company//
+            // customer.name = session.
 
             // Finally show the object to the success page.
-            String success = $@"<h1>Uspešno ste naročili storitev. Vaši podatki so: \n IME: {customer.name}\nEMAIL: {customer.email}\nDATUM: {customer.dateOfOrder}\nHvala vam za zaupanje.</h1>";
+            //String success = $@"<h1>Uspešno ste naročili storitev. Vaši podatki so: \n IME: {customer.name}\nEMAIL: {customer.email}\nDATUM: {customer.dateOfOrder}\nHvala vam za zaupanje.</h1>";
 
 
-            Response.Write(success);
+            //Response.Write(success);
 
 
-            Response.Write(customerObj.ToJson());
+            //Response.Write(customerObj.ToJson());
 
 
 
+
+        }
+
+        protected void Register_Click(object sender, EventArgs e)
+        {
 
         }
     }

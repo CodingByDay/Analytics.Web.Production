@@ -11,10 +11,10 @@
 <body>
     <form id="form1" runat="server">
         <div class="container">
-    <div class="title">Registration</div>
+    <div class="title">Regsitracija</div>
     <div class="content">
                    
- #">
+
         <div class="user-details">
           <div class="input-box">
             <span class="details">Full Name</span>
