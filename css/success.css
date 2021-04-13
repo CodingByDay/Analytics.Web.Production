@@ -7,11 +7,13 @@
     padding: 0;
 }
 
+
 html {
     height: 100%;
     /*Image only BG fallback*/
     /*background = gradient + image pattern combo*/
-    background: linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
+    background-color: #6a93cb;
+    background-image: linear-gradient(315deg, #6a93cb 0%, #a4bfef 74%);
 }
 
 body {

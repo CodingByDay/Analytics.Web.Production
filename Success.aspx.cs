@@ -58,24 +58,6 @@ namespace peptak
 
         }
 
-        protected void Register_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void cmdLogin_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Register_Click1(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void Register_Click2(object sender, EventArgs e)
-        {
-
-        }
+   
     }
 }

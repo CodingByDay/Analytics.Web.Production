@@ -34,17 +34,17 @@
     <h2 class="fs-title">Kreiranje podjetja</h2>
     <h3 class="fs-subtitle">Informacije o vašem podjetju</h3>
     <asp:TextBox ID="CompanyName" runat="server" placeholder="Ime podjetja"></asp:TextBox>
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-    <input type="button" name="next" class="next action-button" value="Next" />
+    <input type="button" name="previous" class="previous action-button" value="Prejšnja" />
+    <input type="button" name="next" class="next action-button" value="Naslednja" />
   </fieldset>
   <fieldset>
     <h2 class="fs-title">Detalji</h2>
     <h3 class="fs-subtitle">o kontaktu</h3>
     <asp:TextBox ID="EmailForm" runat="server" placeholder="Vaš email"></asp:TextBox>
-      <asp:TextBox ID="TextBox1" runat="server" placeholder="Vaš telefon"></asp:TextBox>
+      <asp:TextBox ID="PhoneForm" runat="server" placeholder="Vaš telefon"></asp:TextBox>
    
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <asp:Button ID="Register" runat="server" Text="Prijava" type="submit" OnClick="Register_Click2"/>
+    <input type="button" name="previous" class="previous action-button" value="Prejšnja" />
+      <asp:Button ID="Register" runat="server" Text="Prijava" type="submit"  OnClick="Register_Click" CssClass="previous action-button"/>
   </fieldset>
 </form>
     <script>
