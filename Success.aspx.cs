@@ -19,6 +19,7 @@ namespace peptak
        public static CustomerSessionClass customer = new CustomerSessionClass();
        public static NewPayedUserCompany user = new NewPayedUserCompany();
         private SqlConnection conn;
+        private int company;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -81,7 +82,7 @@ namespace peptak
                 insertCompany(Company, Username, Website, Phone);
 
                 if (Password == RePassword) {
-                  //  CreateUser(Username, Password, Name, Email, Phone, Company);
+                  CreateUser(Username, Password, Name, Email, Phone, Company);
                 } else
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Gesla niso enaka.');</script>");
@@ -127,10 +128,18 @@ namespace peptak
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{name}'", conn);
             var result = cmd.ExecuteScalar();
+            if (result != null)
+            {
+                company = (int)result;
 
-            int ID = (int)result;
 
-            return ID;
+            } else
+            {
+                company = -1;
+            }
+            
+
+            return company;
         }
         private void CreateUser(string username, string password, string name, string email, string phone, string company)
         {
