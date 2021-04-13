@@ -189,8 +189,8 @@ namespace peptak
                 {
                     createUser.ExecuteNonQuery();
                     Response.Write($"<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
-              
 
+                    UpdateCompany(username.Replace(" ", string.Empty), company.Replace(" ", string.Empty));
                     var spacelessCompany = company.Replace(" ", string.Empty);
                    
                     //fillUsersDelete();
@@ -216,6 +216,14 @@ namespace peptak
 
                 }
             }
+        }
+
+        private void UpdateCompany(string username, string company)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
+            var result = cmd.ExecuteScalar();
         }
     }      
 }
