@@ -223,7 +223,14 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
-            var result = cmd.ExecuteScalar();
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+            } catch(Exception error)
+            {
+                // Implement loggin here.
+            }
         }
     }      
 }
