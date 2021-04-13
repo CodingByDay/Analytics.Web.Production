@@ -81,7 +81,7 @@ namespace peptak
                 insertCompany(Company, Username, Website, Phone);
 
                 if (Password == RePassword) {
-                    CreateUser(Username, Password, Name, Email, Phone, Company);
+                  //  CreateUser(Username, Password, Name, Email, Phone, Company);
                 } else
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Gesla niso enaka.');</script>");
@@ -101,8 +101,8 @@ namespace peptak
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', '', '')", conn);
-
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
+            // company insert works.
             try
             {
                 cmd.ExecuteNonQuery();
