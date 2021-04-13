@@ -60,6 +60,15 @@ namespace peptak
         protected global::System.Web.UI.WebControls.TextBox CompanyName;
 
         /// <summary>
+        /// NameForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox NameForm;
+
+        /// <summary>
         /// EmailForm control.
         /// </summary>
         /// <remarks>
@@ -76,6 +85,15 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox PhoneForm;
+
+        /// <summary>
+        /// WebsiteForm control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox WebsiteForm;
 
         /// <summary>
         /// Register control.

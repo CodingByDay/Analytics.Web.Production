@@ -12,7 +12,7 @@
 <body>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
-       
+       <script src="~/Scripts/notify.js"></script>
     <!-- multistep form -->
 <form id="msform" runat="server">
   <!-- progressbar -->
@@ -24,10 +24,10 @@
   <!-- fieldsets -->
   <fieldset>
     <h2 class="fs-title">Kreirajte profil admina</h2>
-    <h3 class="fs-subtitle">Ovo je prvi korak</h3>
+    <h3 class="fs-subtitle">Uspešno plačilo!</h3>
     <asp:TextBox ID="UsernameForm" runat="server" placeholder="Uporabniško ime"></asp:TextBox>
-    <asp:TextBox ID="PasswordForm" runat="server" placeholder="Password"></asp:TextBox>
-    <asp:TextBox ID="RePasswordForm" runat="server" placeholder="Ponovite Password"></asp:TextBox>
+    <asp:TextBox ID="PasswordForm" runat="server" placeholder="Geslo" TextMode="Password"></asp:TextBox>
+    <asp:TextBox ID="RePasswordForm" runat="server" placeholder="Ponovite geslo" TextMode="Password"></asp:TextBox>
     <input type="button" name="next" class="next action-button" value="Next" />
   </fieldset>
   <fieldset>
@@ -37,22 +37,26 @@
     <input type="button" name="previous" class="previous action-button" value="Prejšnja" />
     <input type="button" name="next" class="next action-button" value="Naslednja" />
   </fieldset>
-  <fieldset>
+ <fieldset>
     <h2 class="fs-title">Detalji</h2>
     <h3 class="fs-subtitle">o kontaktu</h3>
+    <asp:TextBox ID="NameForm" runat="server" placeholder="Ime in priimek"></asp:TextBox>
     <asp:TextBox ID="EmailForm" runat="server" placeholder="Vaš email"></asp:TextBox>
-      <asp:TextBox ID="PhoneForm" runat="server" placeholder="Vaš telefon"></asp:TextBox>
+    <asp:TextBox ID="PhoneForm" runat="server" placeholder="Telefon podjetja"></asp:TextBox>
+    <asp:TextBox ID="WebsiteForm" runat="server" placeholder="Website podjetja"></asp:TextBox>
+
    
     <input type="button" name="previous" class="previous action-button" value="Prejšnja" />
       <asp:Button ID="Register" runat="server" Text="Prijava" type="submit"  OnClick="Register_Click" CssClass="previous action-button"/>
   </fieldset>
 </form>
     <script>
+        $.notify('Uspešno ste plačali naročnino, sedaj lahko registrirate svoje podjetje.');
 
         //jQuery time
-        var current_fs, next_fs, previous_fs; //fieldsets
-        var left, opacity, scale; //fieldset properties which we will animate
-        var animating; //flag to prevent quick multi-click glitches
+        var current_fs, next_fs, previous_fs; // fieldsets
+        var left, opacity, scale; // fieldset properties which we will animate
+        var animating; // flag to prevent quick multi-click glitches
 
         $(".next").click(function () {
             if (animating) return false;
