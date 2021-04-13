@@ -17,8 +17,7 @@ namespace peptak
         {
             if(!IsPostBack)
             {
-
-
+                fillCompanies();
 
 
 
@@ -43,8 +42,8 @@ namespace peptak
                     companiesData.Add(sdr["company_name"].ToString());
 
                 }
-                companies.DataSource = companiesData;
-                companies.DataBind();
+                companiesView.DataSource = companiesData;
+                companiesView.DataBind();
 
 
                 cmd.Dispose();
