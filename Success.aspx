@@ -6,19 +6,17 @@
 <head runat="server">
     <title></title>
 </head>
-        <webopt:bundlereference runat="server" path="~/css/success.css" />
-<link href= "~/css/success.css" rel="stylesheet" runat="server" type="text/css" />
 <body>
     <form id="form1" runat="server">
         <div class="container">
-    <div class="title">Regsitracija</div>
+    <div class="title">Registration</div>
     <div class="content">
                    
-
+ #">
         <div class="user-details">
           <div class="input-box">
-            <span class="details">Full Name</span>
-            <asp:TextBox ID="NameForm" runat="server" placeholder="Vaše ime"></asp:TextBox>
+            <span class="details">Ime podjetja</span>
+            <asp:TextBox ID="CompanyName" runat="server" placeholder="Ime podjetja"></asp:TextBox>
           </div>
           <div class="input-box">
             <span class="details">Username</span>
@@ -36,12 +34,31 @@
           </div>
           <div class="input-box">
             <span class="details">Confirm Password</span>
-              <asp:TextBox ID="RePasswordForm" runat="server" placeholder="Ponovite Password"></asp:TextBox>
+              <asp:TextBox ID="TextBox1" runat="server" placeholder="Ponovite Password"></asp:TextBox>
           </div>
         </div>
-      
+        <div class="gender-details">
+          <input type="radio" name="gender" id="dot-1">
+          <input type="radio" name="gender" id="dot-2">
+          <input type="radio" name="gender" id="dot-3">
+          <span class="gender-title">Gender</span>
+          <div class="category">
+            <label for="dot-1">
+            <span class="dot one"></span>
+            <span class="gender">Male</span>
+          </label>
+          <label for="dot-2">
+            <span class="dot two"></span>
+            <span class="gender">Female</span>
+          </label>
+          <label for="dot-3">
+            <span class="dot three"></span>
+            <span class="gender">Prefer not to say</span>
+            </label>
+          </div>
+        </div>
         <div class="button">
-        <asp:Button ID="Register" runat="server" Text="Registracija" type="submit" OnClick="Register_Click" />
+                <asp:Button ID="Register" runat="server" Text="Prijava" type="submit"  OnClick="Register_Click1" />
         </div>
  
     </div>
