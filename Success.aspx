@@ -7,10 +7,46 @@
     <title>Kreiranje podjetja</title>
 <webopt:bundlereference runat="server" path="~/css/success.css" />
 <link href= "~/css/success.css" rel="stylesheet" runat="server" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+ 
 </head>
 <body>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+       
+    <!-- multistep form -->
+<form id="msform" runat="server">
+  <!-- progressbar -->
+  <ul id="progressbar">
+    <li class="active">Kreiranje uporabnika</li>
+    <li>Kreiranje podjetja</li>
+    <li>Detalji</li>
+  </ul>
+  <!-- fieldsets -->
+  <fieldset>
+    <h2 class="fs-title">Kreirajte profil admina</h2>
+    <h3 class="fs-subtitle">Ovo je prvi korak</h3>
+    <asp:TextBox ID="UsernameForm" runat="server" placeholder="Uporabniško ime"></asp:TextBox>
+    <asp:TextBox ID="PasswordForm" runat="server" placeholder="Password"></asp:TextBox>
+    <asp:TextBox ID="RePasswordForm" runat="server" placeholder="Ponovite Password"></asp:TextBox>
+    <input type="button" name="next" class="next action-button" value="Next" />
+  </fieldset>
+  <fieldset>
+    <h2 class="fs-title">Kreiranje podjetja</h2>
+    <h3 class="fs-subtitle">Informacije o vašem podjetju</h3>
+    <asp:TextBox ID="CompanyName" runat="server" placeholder="Ime podjetja"></asp:TextBox>
+    <input type="button" name="previous" class="previous action-button" value="Previous" />
+    <input type="button" name="next" class="next action-button" value="Next" />
+  </fieldset>
+  <fieldset>
+    <h2 class="fs-title">Detalji</h2>
+    <h3 class="fs-subtitle">o kontaktu</h3>
+    <asp:TextBox ID="EmailForm" runat="server" placeholder="Vaš email"></asp:TextBox>
+      <asp:TextBox ID="TextBox1" runat="server" placeholder="Vaš telefon"></asp:TextBox>
+   
+    <input type="button" name="previous" class="previous action-button" value="Previous" />
+      <asp:Button ID="Register" runat="server" Text="Prijava" type="submit" OnClick="Register_Click2"/>
+  </fieldset>
+</form>
     <script>
 
         //jQuery time
@@ -96,39 +132,5 @@
         })
 
     </script>
-    <!-- multistep form -->
-<form id="msform" runat="server">
-  <!-- progressbar -->
-  <ul id="progressbar">
-    <li class="active">Kreiranje uporabnika</li>
-    <li>Kreiranje podjetja</li>
-    <li>Detalji</li>
-  </ul>
-  <!-- fieldsets -->
-  <fieldset>
-    <h2 class="fs-title">Kreirajte profil admina</h2>
-    <h3 class="fs-subtitle">Ovo je prvi korak</h3>
-    <asp:TextBox ID="UsernameForm" runat="server" placeholder="Uporabniško ime"></asp:TextBox>
-    <asp:TextBox ID="PasswordForm" runat="server" placeholder="Password"></asp:TextBox>
-    <asp:TextBox ID="RePasswordForm" runat="server" placeholder="Ponovite Password"></asp:TextBox>
-    <input type="button" name="next" class="next action-button" value="Next" />
-  </fieldset>
-  <fieldset>
-    <h2 class="fs-title">Kreiranje podjetja</h2>
-    <h3 class="fs-subtitle">Informacije o vašem podjetju</h3>
-    <asp:TextBox ID="CompanyName" runat="server" placeholder="Ime podjetja"></asp:TextBox>
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-    <input type="button" name="next" class="next action-button" value="Next" />
-  </fieldset>
-  <fieldset>
-    <h2 class="fs-title">Detalji</h2>
-    <h3 class="fs-subtitle">o kontaktu</h3>
-    <asp:TextBox ID="EmailForm" runat="server" placeholder="Vaš email"></asp:TextBox>
-      <asp:TextBox ID="TextBox1" runat="server" placeholder="Vaš telefon"></asp:TextBox>
-   
-    <input type="button" name="previous" class="previous action-button" value="Previous" />
-      <asp:Button ID="Register" runat="server" Text="Prijava" type="submit" OnClick="Register_Click2"/>
-  </fieldset>
-</form>
 </body>
 </html>
