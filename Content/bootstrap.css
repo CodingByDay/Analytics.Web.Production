@@ -2348,7 +2348,10 @@ pre code {
 }
 table {
   background-color: transparent;
-    }
+    margin-top: 62px;
+    margin-left: 6px;
+    margin-bottom: 0px;
+}
 table col[class*="col-"] {
   position: static;
   display: table-column;
@@ -5759,6 +5762,7 @@ button.list-group-item-danger.active:focus {
 }
 .panel-default {
   border-color: #ddd;
+    margin-bottom: 0;
 }
 .panel-default > .panel-heading {
   color: #333333;

@@ -15,22 +15,22 @@ namespace peptak
         private List<String> companiesData = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
                 fillCompanies();
-
-
-
-            } else
+                
+            }
+            else
             {
-
             }
         }
 
         private void fillCompanies()
         {
+
             try
             {
+                companiesData.Clear();
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -42,8 +42,8 @@ namespace peptak
                     companiesData.Add(sdr["company_name"].ToString());
 
                 }
-                companiesView.DataSource = companiesData;
-                companiesView.DataBind();
+                companiesListBox.DataSource = companiesData;
+                companiesListBox.DataBind();
 
 
                 cmd.Dispose();
@@ -56,9 +56,6 @@ namespace peptak
 
             }
         }
-
-
-
 
 
     }
