@@ -10,45 +10,51 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
-
-       <webopt:bundlereference runat="server" path="~/css/graphs.css" />
+       <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
+	
 
 
+	<div id="boot">
+
+		</div>
 	
 <div class="wrapper">
 
 	<header>
-		<h1>3 Column Responsive Layout</h1>
+		<h1></h1>
 	</header>
 		
 <section class="columns">
 	
 	<div class="column">
-		<h2>1st Content Area</h2>
-		<p>Lorem ipsum dolor sit a3 Column Responsive Layout</h1>
+		<h2></h2>
+		<p></h1>
+			
+
 	</header>
 		
 <section class="columns">
 	
 	<div class="column">
-		<h2>1st Content Area</h2>
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ratione architecto necessitatibus cum praesentium dolor totam voluptatibus recusandae?
+		<h2></h2>
+		<p>
         </p>
-		<dx:BootstrapListBox ID="companiesListBox" runat="server" Heigth="150" Width="300px" FilteringSettings-UseCompactView="true" Rows="100">
+		<dx:BootstrapListBox ID="companiesListBox" runat="server" FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ViewStateMode="Disabled" Rows="3">
+        <CssClasses Filter="edit" Control="control" FilterEdit="edit" FilterEditNullText="edit" Item="item" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
-	   
+	
 
 	</div>
 	
 	<div class="column">
-		<h2>2nd Content Areae? Illo quod nemo ratione itaque dolores laudantium error vero laborum blanditiis nostrum.</p>
+		
 	</div>
   
   <div class="column">
 		<h2>3rd Content Area</h2>
-		<p>Illo quod nemo ratione itaque dolores laudantium error vero laborum blanditiis nostrum. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi ratione architecto cum praesentium voluptatibus recusandae?</p>
+		<p></p>
 	</div>
 	
 </section>	
@@ -61,8 +67,14 @@
 </div>
 
  
-     </div>
+     
 
  
+</div>
+     </div>
+     </div>
+</div>
+     </div>
+     </div>
 </asp:Content>
 

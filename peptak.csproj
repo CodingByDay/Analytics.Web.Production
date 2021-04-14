@@ -165,6 +165,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
     <Content Include="css\admincss.css" />
+    <Content Include="css\adminpanel.css" />
     <Content Include="css\custom.css" />
     <Content Include="css\graphs.css" />
     <Content Include="css\logo.png" />
