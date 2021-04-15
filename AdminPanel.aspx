@@ -31,17 +31,13 @@
 		<h2></h2>
 		<p></h1>
 			
-
 	</header>
 		
 <section class="columns">
 	
 	<div class="column">
-		<h2></h2>
-		<p>
-        </p>
-		<dx:BootstrapListBox ID="companiesListBox" runat="server" FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ViewStateMode="Disabled" Rows="3">
-        <CssClasses Filter="edit" Control="control" FilterEdit="edit" FilterEditNullText="edit" Item="item" />
+		<dx:BootstrapListBox ID="companiesListBox" runat="server" FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ViewStateMode="Disabled" Rows="2">
+        <CssClasses Control="companies" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 	
@@ -49,7 +45,10 @@
 	</div>
 	
 	<div class="column">
-		
+		<dx:BootstrapListBox ID="usersListBox" runat="server" FilteringSettings-EditorNullText="Poiščite uporabnika" FilteringSettings-UseCompactView="true" ViewStateMode="Disabled" Rows="6">
+        <CssClasses Control="users" />
+    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+</dx:BootstrapListBox>
 	</div>
   
   <div class="column">
@@ -74,6 +73,10 @@
      </div>
      </div>
 </div>
+     </div>
+     </div>
+     </div>
+     </div>
      </div>
      </div>
 </asp:Content>

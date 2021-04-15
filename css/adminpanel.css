@@ -30,38 +30,10 @@ header {
     justify-content: center;
     margin: 5px 0;
 }
-#boot, #companiesListBox {
-    position: absolute;
-    top: 10px;
-}
 
 
 
 
-
-.edit {
-    line-height: inherit;
-    vertical-align: top;
-}
-
-
-.null {
-    top: -30px
-}
-.filter {
-height: 30%;
-line-height:30%;
-}
-
-
-
-.item {
-    line-height:30%;
-}
-
-.control {
-    width:300px;
-}
 .column {
     flex: 1;
     border: 1px solid gray;
@@ -77,6 +49,8 @@ line-height:30%;
     margin-right: 0;
 }
 
+.users {
+    height: 500px;
 }
 
 footer {
