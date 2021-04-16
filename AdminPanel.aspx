@@ -12,7 +12,34 @@
 
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-	
+	<script>
+        function showOrHideDivCompany() {
+            var v = document.getElementById("companyForm");
+            if (v.style.display === "none") {
+                v.style.display = "block";
+            } else {
+                v.style.display = "none";
+            }
+        }
+        function showOrHideDivUser() {
+            var v = document.getElementById("userForm");
+            if (v.style.display === "none") {
+                v.style.display = "block";
+            } else {
+                v.style.display = "none";
+            }
+        }
+        function showOrHideDivByUser() {
+            var v = document.getElementById("showOrHide");
+            if (v.style.display === "none") {
+                v.style.display = "block";
+            } else {
+                v.style.display = "none";
+            }
+        }
+
+
+    </script>
 
 
 	<div id="boot">
@@ -41,7 +68,8 @@
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 	
-
+		<br />
+		<center><button type="button" class="btn btn-primary" onclick="showOrHideDivCompany()">Kreirajte podjetje</button></center>
 	</div>
 	
 	<div class="column">
@@ -49,30 +77,96 @@
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
+		<br />
+		<center><button type="button" class="btn btn-primary" onclick="showOrHideDivUser()">Kreirajte uporabnika</button></center>
 	</div>
   
   <div class="column">
-		<h2>3rd Content Area</h2>
-		<p></p>
+	<dx:BootstrapListBox ID="graphsListBox" runat="server" SelectionMode="CheckColumn" EnableSelectAll="true" FilteringSettings-UseCompactView="true" FilteringSettings-EditorNullText="Poiščite graf">
+       <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+
+</dx:BootstrapListBox>
+	  		<br />
+	  <center><button type="button" class="btn btn-primary" onclick="showOrHideDivByUser()">byUser</button></center>
 	</div>
 	
 </section>	
 	
-	<footer>
-		<h3>Footer</h3>
-		<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam, porro. Doloribus vitae non dolores modi dolorum commodi perspiciatis dicta nostrum minus esse, totam officia, quibusdam amet quas tempora? Voluptatibus, esse.</p>
-	</footer>
+	<section class="columns">
+	
+	<div class="column" id="companyForm">
+	    <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h3></center>  
+             <hr style="color: black;" />
 
-</div>
+             <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
+           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
+           <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center>    
+           <center> <asp:DropDownList ID="listAdmin" runat="server" > 
+               <%--AppendDataBoundItems="true">--%>  
+              </asp:DropDownList>  </center>
+              <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Baza.</h3></center>    
 
- 
-     
+                  
+                  <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
+               AppendDataBoundItems="true">  
+              </asp:DropDownList></center>  
+             <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
 
- 
-</div>
-     </div>
-     </div>
-</div>
+	</div>
+	
+	<div class="column" id="userForm">
+		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
+                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
+
+                    <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
+                   </center>  
+                  
+                    <center> <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox></center>
+                   </center> 
+              
+                <center>  
+                
+                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
+               
+               </center>  
+              
+                 
+                       <center> <asp:TextBox ID="TxtPassword" runat="server"  
+                                     TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
+              
+                  
+                       <center> <asp:TextBox ID="TxtRePassword" runat="server"  
+                                     TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
+                 
+           <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
+
+                  
+                       <center><asp:RadioButtonList ID="userRole" runat="server">  
+                            <asp:ListItem>Admin</asp:ListItem>  
+                            <asp:ListItem>User</asp:ListItem>  
+                        </asp:RadioButtonList>  </center>
+                
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
+                <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
+                 </asp:DropDownList></center>   
+        
+              
+                   <center> <h4 style="text-decoration: solid"Podjetje:</h4></center>  
+                       <center> <asp:DropDownList ID="companiesList" runat="server"  
+                                          AppendDataBoundItems="true">  
+                           
+                        </asp:DropDownList>  </center>
+              
+     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>
+	</div>
+  
+  <div class="column">
+
+	</div>
+	
+</section>
+
      </div>
      </div>
      </div>
