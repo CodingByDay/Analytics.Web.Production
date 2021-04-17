@@ -63,8 +63,8 @@
 <section class="columns">
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="companiesListBox" runat="server" FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ViewStateMode="Disabled" Rows="2">
-        <CssClasses Control="companies" />
+		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged"  runat="server" SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
+        <CssClasses Control="companies"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 	
@@ -82,7 +82,7 @@
 	</div>
   
   <div class="column">
-	<dx:BootstrapListBox ID="graphsListBox" runat="server" SelectionMode="CheckColumn" EnableSelectAll="true" FilteringSettings-UseCompactView="true" FilteringSettings-EditorNullText="Poiščite graf">
+	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" EnableSelectAll="true" FilteringSettings-UseCompactView="true" FilteringSettings-EditorNullText="Poiščite graf">
        <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
 </dx:BootstrapListBox>
@@ -167,6 +167,12 @@
 	
 </section>
 
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
      </div>
      </div>
      </div>

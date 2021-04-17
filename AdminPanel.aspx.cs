@@ -33,26 +33,21 @@ namespace peptak
             // default select value for the user must be set before render...
             // width must be more, margins, byUser, onSelectedIndexChanged.
 
-
             // Also js function to disable more than one aperent divs......
             if (!IsPostBack)
             {
+                companiesListBox.SelectedIndex = 0; 
                 hideItems();
                 fillCompanies();
-                FillUsers();
+                //FillUsers();
                 FillListGraphs();
                 //showConfig();
             }
-            else
-            {
-                hideItems();
-                fillCompanies();
-                FillUsers();
-            }
+            
         }
 
-       
-    
+        
+
         public void FillListGraphs()
         {
             try
@@ -98,7 +93,22 @@ namespace peptak
             }
         }
 
+        private string GetCompanyName(string Name)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{Name}';", conn);
+          
+                var result = cmd.ExecuteScalar();
+                var company = result.ToString();
 
+            
+
+            cmd.Dispose();
+            conn.Close();
+            return company;
+
+        }
 
 
         private List<bool> showConfig()
@@ -155,7 +165,7 @@ namespace peptak
                 return valuesBool;
             }
         }
-        public void FillUsers()
+        public void FillUsers(string companyID)
         {
             try
             {
@@ -166,7 +176,9 @@ namespace peptak
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                cmd = new SqlCommand($"Select uname from Users where company_id={companyID}", conn);
+                Response.Write($"Select uname from Users where company_id={companyID}");
+                    /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -236,6 +248,14 @@ namespace peptak
         {
 
         }
+
+        protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
+
+        }
+
+
 
 
         //protected void createUser_Click(object sender, EventArgs e)
