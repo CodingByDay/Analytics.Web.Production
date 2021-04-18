@@ -21,6 +21,7 @@ namespace peptak
 
         private SqlConnection conn;
         private string findIdString;
+        private string dev;
         private string permisionQuery;
         private SqlCommand cmd;
         private object idNumber;
@@ -30,23 +31,86 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // default select value for the user must be set before render...
+            // Confirm button, byUser, js function, delete icon, delete event.
             // width must be more, margins, byUser, onSelectedIndexChanged.
 
             // Also js function to disable more than one aperent divs......
             if (!IsPostBack)
             {
-                companiesListBox.SelectedIndex = 0; 
-                hideItems();
+                companiesListBox.SelectedIndex = 0;
+                var beginingID = 1;
+                //Consider this.
+                FillUsers(beginingID);
                 fillCompanies();
                 //FillUsers();
                 FillListGraphs();
+                graphsListBox.Enabled = false;
                 //showConfig();
+            } else
+            {
             }
             
         }
 
-        
+        private List<bool> showConfig()
+        {
+            
+            valuesBool.Clear();
+            columnNames.Clear();
+            config.Clear();
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+            // SET @ColList = ''
+            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
+            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+            // EXEC(@SQLStatment
+            findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+
+
+            // Documentation. This query is for getting all the permision table data from the user
+            cmd = new SqlCommand(findIdString, conn);
+            idNumber = cmd.ExecuteScalar();
+            Int32 Total_Key = System.Convert.ToInt32(idNumber);
+
+            conn.Close();
+            conn.Dispose();
+            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
+            cmd = new SqlCommand(permisionQuery, conn);
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+
+            using (SqlConnection connection = new SqlConnection(
+              "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
+            {
+                SqlCommand command = new SqlCommand(permisionQuery, connection);
+                connection.Open();
+                SqlDataReader reader =
+                command.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
+                {
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
+                        config.Add(bitValueTemp);
+                        if (bitValueTemp == true)
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = true;
+                            valuesBool.Add(true);
+                        }
+                        else
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = false;
+                            valuesBool.Add(false);
+                        }
+                    }
+                }
+
+                conn.Close();
+                conn.Dispose();
+                return valuesBool;
+            }
+        }
+
 
         public void FillListGraphs()
         {
@@ -93,16 +157,16 @@ namespace peptak
             }
         }
 
-        private string GetCompanyName(string Name)
+        private int GetCompanyName(string Name)
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{Name}';", conn);
           
                 var result = cmd.ExecuteScalar();
-                var company = result.ToString();
+                var company = System.Convert.ToInt32(result);
 
-            
+
 
             cmd.Dispose();
             conn.Close();
@@ -111,73 +175,19 @@ namespace peptak
         }
 
 
-        private List<bool> showConfig()
-        {
-            valuesBool.Clear();
-            columnNames.Clear();
-            config.Clear();
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-            // SET @ColList = ''
-            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-            // EXEC(@SQLStatment)
-            findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Value}'");
-            // Documentation. This query is for getting all the permision table data from the user
-            cmd = new SqlCommand(findIdString, conn);
-            idNumber = cmd.ExecuteScalar();
-            Int32 Total_Key = System.Convert.ToInt32(idNumber);
-            conn.Close();
-            conn.Dispose();
-            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
-            cmd = new SqlCommand(permisionQuery, conn);
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-
-            using (SqlConnection connection = new SqlConnection(
-              "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
-            {
-                SqlCommand command = new SqlCommand(permisionQuery, connection);
-                connection.Open();
-                SqlDataReader reader =
-                command.ExecuteReader(CommandBehavior.CloseConnection);
-                while (reader.Read())
-                {
-                    for (int i = 0; i < values.Count; i++)
-                    {
-                        bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
-                        config.Add(bitValueTemp);
-                        if (bitValueTemp == true)
-                        {
-                            graphsListBox.Items.ElementAt(i).Selected = true;
-                            valuesBool.Add(true);
-                        }
-                        else
-                        {
-                            graphsListBox.Items.ElementAt(i).Selected = false;
-                            valuesBool.Add(false);
-                        }
-                    }
-                }
-
-                conn.Close();
-                conn.Dispose();
-                return valuesBool;
-            }
-        }
-        public void FillUsers(string companyID)
+      
+        public void FillUsers(int companyID)
         {
             try
             {
                 usersData.Clear();
-                usersData.Add("Izberi");
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select uname from Users where company_id={companyID}", conn);
-                Response.Write($"Select uname from Users where company_id={companyID}");
+                cmd = new SqlCommand($"Select uname from Users where id_company={companyID}", conn);
+
                     /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
@@ -234,10 +244,7 @@ namespace peptak
         }
 
 
-        private void hideItems()
-        {
-            
-        }
+    
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
@@ -251,9 +258,25 @@ namespace peptak
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
 
+            var id = GetCompanyName(companiesListBox.SelectedItem.Value.ToString());
+            FillUsers(id);
+            // Changes the users acording to the selected value in the CompanyList Box.
         }
+
+        protected void usersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            graphsListBox.Enabled = true;
+            FillListGraphs();
+            showConfig();
+            Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabnika.+ {values.Count()}');</script>");
+         
+            //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
+        }
+
+
+
+
 
 
 
