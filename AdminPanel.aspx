@@ -114,7 +114,7 @@
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" FilteringSettings-EditorNullText="Poiščite uporabnika"  ons FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
@@ -208,6 +208,7 @@
 	
 </section>
 
+     </div>
      </div>
      </div>
      </div>
