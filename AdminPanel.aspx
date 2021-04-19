@@ -12,32 +12,73 @@
 
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
+    <style>
+        #companyForm, #userForm {
+            display:none;
+        }
+    </style>
 	<script>
         function showOrHideDivCompany() {
+          
             var v = document.getElementById("companyForm");
+          
             if (v.style.display === "none") {
-                v.style.display = "block";
+                if (isAllowed()) {
+
+                    v.style.display = "block";
+                } else {
+                    //pass
+                }
             } else {
-                v.style.display = "none";
+                    v.style.display = "none";
+                }
+             
             }
-        }
+        
         function showOrHideDivUser() {
             var v = document.getElementById("userForm");
             if (v.style.display === "none") {
-                v.style.display = "block";
+                if (isAllowed()) {
+
+                    v.style.display = "block";
+                } else {
+                    //pass
+                }
             } else {
                 v.style.display = "none";
             }
+
         }
         function showOrHideDivByUser() {
+
             var v = document.getElementById("showOrHide");
             if (v.style.display === "none") {
-                v.style.display = "block";
+                if (isAllowed()) {
+
+                    v.style.display = "block";
+                } else {
+                    //pass
+                }
             } else {
                 v.style.display = "none";
             }
-        }
 
+        }
+        function isAllowed() {
+            var company = document.getElementById("companyForm");
+            var user = document.getElementById("userForm");
+
+
+
+            if (company.style.display == "block" || user.style.display == "block") {
+                return false;
+
+            } else if (company.style.display == "block" && user.style.display == "block") {
+                return false;
+            } else {
+                return true;
+            }
+        }
 
     </script>
 
@@ -73,7 +114,7 @@
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" FilteringSettings-EditorNullText="Poiščite uporabnika"  OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+		<dx:BootstrapListBox ID="usersListBox" runat="server" FilteringSettings-EditorNullText="Poiščite uporabnika"  ons FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
@@ -167,6 +208,17 @@
 	
 </section>
 
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
+     </div>
      </div>
      </div>
      </div>

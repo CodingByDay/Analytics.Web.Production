@@ -274,6 +274,36 @@ namespace peptak
             //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
         }
 
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void Unnamed_Click1(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void byUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void createUser_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void createCompany_Click(object sender, EventArgs e)
+        {
+           
+        }
+
+        protected void createCompany_Click1(object sender, EventArgs e)
+        {
+
+        }
+
 
 
 
