@@ -13,6 +13,14 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
+
+
+
+        .columns {
+            margin: auto;
+
+        }
+
         #companyForm, #userForm {
             display:none;
         }
@@ -47,6 +55,16 @@
             float:right;
         }
 
+       .wrapper {
+           margin: auto!important;
+       }
+        
+        #by {
+            display: none;
+        }
+        .by {
+            display: none;
+        }
     </style>
 	<script>
 
@@ -85,21 +103,26 @@
         }
         function showOrHideDivByUser() {
 
-            var v = document.getElementById("showOrHide");
+            var v = document.getElementById("by");
+            var button = document.getElementById("byUser");
             if (v.style.display === "none") {
-                if (isAllowed()) {
+               
 
-                    v.style.display = "block";
+                v.style.display = "block";
+                button.innerHTML = "Po grafu";
+
                 } else {
-                    //pass
-                }
-            } else {
+                //pass
                 v.style.display = "none";
-            }
+                button.innerHTML = "Po uporabniku";
 
-        }
+                }
+            } 
+
+        
         function isAllowed() {
             var company = document.getElementById("companyForm");
+
             var user = document.getElementById("userForm");
 
 
@@ -134,7 +157,7 @@
 		<p></h1>
 			
 	</header>
-		
+
 <section class="columns">
 	
 	<div class="column">
@@ -144,20 +167,20 @@
 </dx:BootstrapListBox>
 	
 		<br />
-		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Kreirajte podjetje</button></center>
-        <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Delete">
+		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Novo</button></center>
+        <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 		<br />
-		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Kreirajte uporabnika</button></center>
-           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Delete" OnClick="deleteUser_Click" AutoPostBack="true">
+		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Nov</button></center>
+           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
 	</div>
@@ -170,14 +193,22 @@
 </dx:BootstrapListBox>
       
       <br />
-      <center><button type="button"  id="byUser" class="btn btn-secondary" onclick="showOrHideDivByUser()">byUser</button></center>
+      <center><button type="button"  id="byUser" class="btn btn-secondary" onclick="showOrHideDivByUser()">Po Uporabniku</button></center>
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Primary" />
           </dx:BootstrapButton>
 	</div>
-	
+	 <div class="column" id="by">
+	 <div class="reverse">
+     	<dx:BootstrapListBox ID="byUserListBox" runat="server"  OnSelectedIndexChanged="byUserListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+        <CssClasses Control="users" />
+    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+</dx:BootstrapListBox>
+	</div>
+	</div>
 </section>	
+
 	
 	<section class="columns">
 	
@@ -246,12 +277,13 @@
                                           AppendDataBoundItems="true">  
                            
                         </asp:DropDownList>  </center>
+                    <br />
               
      <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>
 	</div>
   
   <div class="column">
-
+      	
 	</div>
 	
 </section>
@@ -259,43 +291,87 @@
      </div>
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
-     </div>
+   
   
      </div>
   
+   
+  
      </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
   
 </asp:Content>
 
