@@ -60,12 +60,12 @@ namespace peptak
                 // Consider this.
                 FillUsers(beginingID);
                 fillCompanies();
-                // FillUsers();
+                //FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
                 fillCompaniesRegistration();
                 FillListAdmin();
-                // User Types
+                //User Types
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -78,7 +78,6 @@ namespace peptak
             {
                 current = companiesListBox.SelectedItem.Value.ToString();
                 FillUsers(1);
-                FillUsersByUser(1);
 
             }
 
@@ -278,6 +277,8 @@ namespace peptak
                     usersData.Add(sdr["uname"].ToString());
 
                 }
+                byUserListBox.DataSource = usersData;
+                byUserListBox.DataBind();
                 usersListBox.DataSource = usersData;
                 usersListBox.DataBind();
                 cmd.Dispose();
@@ -292,39 +293,7 @@ namespace peptak
             }
 
 
-        public void FillUsersByUser(int companyID)
-        {
-            try
-            {
-                usersData.Clear();
-                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                conn.Open();
-
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select uname from Users where id_company={companyID}", conn);
-
-                /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    usersDataByUser.Add(sdr["uname"].ToString());
-
-                }
-                byUserListBox.DataSource = usersDataByUser;
-                byUserListBox.DataBind();
-                cmd.Dispose();
-                conn.Close();
-
-
-            }
-            catch (Exception ex)
-            {
-                // Logging
-            }
-
-        }
+   
 
         private void fillCompaniesRegistration()
         {
@@ -530,7 +499,6 @@ namespace peptak
                             email.Text = "";
                             FillListAdmin();
                             FillUsers(id);
-                            FillUsersByUser(id);
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
                             
@@ -772,7 +740,6 @@ namespace peptak
             current = companiesListBox.SelectedItem.Value.ToString();
             var id = GetCompanyName(companiesListBox.SelectedItem.Value.ToString());
             FillUsers(id);
-            FillUsersByUser(id);
 
             // Changes the users acording to the selected value in the CompanyList Box.
         }
@@ -1060,7 +1027,6 @@ namespace peptak
 
 
             FillUsers(1);
-            FillUsersByUser(1);
         }
 
         private int getIdCompany(string current)
@@ -1160,7 +1126,6 @@ namespace peptak
                     //  fillChange();
                     deletePermisionEntry();
                     FillUsers(1);
-                    FillUsersByUser(1);
 
                 }
                 else
@@ -1178,7 +1143,6 @@ namespace peptak
                     // fillChange();
                     deletePermisionEntry();
                     FillUsers(1);
-                    FillUsersByUser(1);
                     //Logging
                 }
             }

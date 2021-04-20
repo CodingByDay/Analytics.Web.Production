@@ -60,10 +60,12 @@
        }
         
         #by {
-            display: none;
+            display:none;
+            color: black;
         }
         .by {
-            display: none;
+            display:none;
+            color: black;
         }
     </style>
 	<script>
@@ -105,6 +107,7 @@
 
             var v = document.getElementById("by");
             var button = document.getElementById("byUser");
+            
             if (v.style.display === "none") {
                
 
@@ -289,6 +292,22 @@
 </section>
 
      </div>
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
      </div>
   
    
