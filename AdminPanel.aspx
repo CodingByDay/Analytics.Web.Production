@@ -21,10 +21,32 @@
             display: inline;
         }
 
-        .saveGraphs {
+        #saveGraphs, #byUser {
        
-            float: right;
+       
+       
+            display: inline-block;
+            
         }
+
+        #saveGraphs, #byUser, #deleteCompany, #company, #user, #deleteUser {
+            bottom: auto;
+        }
+        #deleteCompany, #company {
+            display: inline-block;
+        }
+
+
+        #user, #deleteUser {
+            display: inline-block;
+        }
+
+
+
+        #user, #company, #byUser {
+            float:right;
+        }
+
     </style>
 	<script>
 
@@ -116,28 +138,39 @@
 <section class="columns">
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged"  runat="server" SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
+		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
         <CssClasses Control="companies"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 	
 		<br />
-		<center><button type="button" class="btn btn-primary" onclick="showOrHideDivCompany()">Kreirajte podjetje</button></center>
+		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Kreirajte podjetje</button></center>
+        <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Delete">
+    <SettingsBootstrap RenderOption="Danger" />
+</dx:BootstrapButton>
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 		<br />
-		<center><button type="button" class="btn btn-primary" onclick="showOrHideDivUser()">Kreirajte uporabnika</button></center>
+		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Kreirajte uporabnika</button></center>
+           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Delete" OnClick="deleteUser_Click" AutoPostBack="true">
+    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+
 	</div>
   
   <div class="column">
-	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" FilteringSettings-EditorNullText="Poiščite graf">
+	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" AllowCustomValues="true" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" FilteringSettings-EditorNullText="Poiščite graf">
        <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-</dx:BootstrapListBox><center><button type="button" class="btn btn-primary" onclick="showOrHideDivByUser()">byUser</button></center>
+
+       
+</dx:BootstrapListBox>
+      
+      <br />
+      <center><button type="button"  id="byUser" class="btn btn-secondary" onclick="showOrHideDivByUser()">byUser</button></center>
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Primary" />
@@ -224,6 +257,36 @@
 </section>
 
      </div>
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
+     </div>
+  
      </div>
   
      </div>

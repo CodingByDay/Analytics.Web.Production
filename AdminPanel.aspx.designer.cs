@@ -24,6 +24,15 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapListBox companiesListBox;
 
         /// <summary>
+        /// deleteCompany control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteCompany;
+
+        /// <summary>
         /// usersListBox control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,15 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapListBox usersListBox;
+
+        /// <summary>
+        /// deleteUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteUser;
 
         /// <summary>
         /// graphsListBox control.

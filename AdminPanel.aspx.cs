@@ -40,13 +40,19 @@ namespace peptak
         private List<String> typesOfViews = new List<string>();
         private List<String> strings = new List<string>();
         private List<String> admins = new List<string>();
+        private int permisionID;
+        private string deletedID;
+        private string current;
+        private object result;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Redirect to home page after paying...
             // Confirm button, byUser, , delete icon, delete event.
             // Adding create user and create company logic. Adding fforeach for multiple selection listbox.
             if (!IsPostBack)
             {
+                
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
                 // Consider this.
@@ -68,8 +74,11 @@ namespace peptak
             }
             else
             {
+                current = companiesListBox.SelectedItem.Value.ToString();
+                FillUsers(1);
+
             }
-            
+
         }
 
 
@@ -572,9 +581,10 @@ namespace peptak
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            current = companiesListBox.SelectedItem.Value.ToString();
             var id = GetCompanyName(companiesListBox.SelectedItem.Value.ToString());
             FillUsers(id);
+
             // Changes the users acording to the selected value in the CompanyList Box.
         }
 
@@ -726,6 +736,273 @@ namespace peptak
                 showConfig();
                 copyFiles();
             }
+        }
+        private void getIdPermision()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_permisions from Users where uname='{deletedID}'", conn);
+
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                permisionID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+
+        }
+
+
+
+        private void deletePermisionEntry()
+        {
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions WHERE id_permisions={permisionID}", conn);
+            var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
+            try
+            {
+                var result = cmd1.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+            }
+
+            cmd1.Dispose();
+            conn.Close();
+        }
+
+
+
+        private string getCurrentCompany()
+        {
+            var company = companiesListBox.SelectedItem.Text;
+
+
+            return company;
+        }
+
+        protected void delete_Click(object sender, EventArgs e)
+        {
+
+           
+        }
+        protected void deleteCompany_Click(object sender, EventArgs e)
+        {
+
+
+            var id = getIdCompany(current);
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
+
+
+
+            try
+            {
+                user.ExecuteNonQuery();
+
+            } catch(Exception error)
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+            }
+
+
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
+            string dev = $"DELETE FROM companies WHERE company_name='{current}'";
+
+           
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+                //fillUsersDelete();
+                //fillCompanyDelete();
+
+
+
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+
+                string filePath = Server.MapPath("~/App_Data/" + current);
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.Delete(filePath);
+                }
+
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+            }
+
+            FillListGraphs();
+            fillCompanies();
+            FillListAdmin();
+
+            cmd.Dispose();
+            conn.Close();
+
+
+
+            FillUsers(1);
+        }
+
+        private int getIdCompany(string current)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+
+            try
+            {
+                result = cmd.ExecuteScalar();
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+            cmd.Dispose();
+            conn.Close();
+
+            int finalID = System.Convert.ToInt32(result);
+
+            return finalID;
+
+           
+        }
+
+        private void deleteMemberships(int number)
+        {
+
+            var final = getCurrentCompany();
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
+            string dev = $"DELETE FROM companies WHERE company_name='{number}'";
+
+
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+                //fillUsersDelete();
+                //fillCompanyDelete();
+
+
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+            }
+
+      
+
+            cmd.Dispose();
+            conn.Close();
+        }
+
+        protected void deleteUser_Click(object sender, EventArgs e)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersListBox.SelectedItem.Text}'", conn);
+            deletedID = usersListBox.SelectedItem.Text;
+            getIdPermision();
+            try
+            {
+                var company = getCompanyQuery(usersListBox.SelectedItem.Text);
+                var spacelessCompany = company.Replace(" ", string.Empty);
+
+                cmd.ExecuteNonQuery();
+                // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersListBox.SelectedItem.Text}");
+                string finalPath = filePath.Replace(" ", string.Empty);
+                if (Directory.Exists(finalPath.ToString()))
+                {
+                    Directory.Delete(finalPath.ToString());
+                    //DeleteUser.Items.Clear();
+                    //  FillList();
+                    FillListGraphs();
+                    showConfig();
+
+                    //fillCompanies();
+                    //FillListAdmin();
+                    //fillUsersDelete();
+                    //fillCompanyDelete();
+                    //fillChange();
+                    // fillUsersDelete();
+                    //  fillChange();
+                    deletePermisionEntry();
+                    FillUsers(1);
+                    
+
+                }
+                else
+                {
+                    //   FillList();
+                    FillListGraphs();
+                    showConfig();
+
+                    //fillCompanies();
+                    //FillListAdmin();
+                    //fillUsersDelete();
+                    //fillCompanyDelete();
+                    //fillChange();
+                    // fillUsersDelete();
+                    // fillChange();
+                    deletePermisionEntry();
+                    FillUsers(1);
+
+                    //Logging
+                }
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
         }
 
 
