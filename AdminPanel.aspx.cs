@@ -809,7 +809,7 @@ namespace peptak
 
 
             var id = getIdCompany(current);
-
+            deleteMemberships(id);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
