@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
@@ -35,7 +37,9 @@ namespace peptak
         private int flag;
         private string companyInfo;
         private List<String> companies = new List<string>();
-
+        private List<String> typesOfViews = new List<string>();
+        private List<String> strings = new List<string>();
+        private List<String> admins = new List<string>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -51,9 +55,16 @@ namespace peptak
                 // FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
-                fillCompaniesRegistration()
+                fillCompaniesRegistration();
+                FillListAdmin();
+                // User Types
+                typesOfViews.Add("Viewer");
+                typesOfViews.Add("Designer");
+                typesOfViews.Add("Viewer&Designer");
+                userType.DataSource = typesOfViews;
+                userType.DataBind();
 
-                // showConfig();
+
             }
             else
             {
@@ -62,7 +73,54 @@ namespace peptak
         }
 
 
-       
+        public void FillListAdmin()
+        {
+            try
+            {
+
+                string UserNameForChecking
+                    = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    admins.Add(sdr["uname"].ToString());
+
+                }
+                listAdmin.DataSource = admins;
+                listAdmin.DataBind();
+                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    strings.Add(reader["company_name"].ToString());
+
+                }
+
+                ConnectionStrings.DataSource = strings;
+                ConnectionStrings.DataBind();
+                // unit test
+
+                cmd.Dispose();
+                conn.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+            // Implement logging here.    
+            }
+        }
 
         private List<bool> showConfig()
         {
@@ -283,12 +341,228 @@ namespace peptak
             }
         }
 
+        private void updateForm()
+        {
+            ///
+            var userRightNow = usersListBox.SelectedItem.Text;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
+            SqlDataReader sdr = cmd.ExecuteReader();
+            while (sdr.Read())
+            {
+                TxtName.Text = sdr["FullName"].ToString();
+                TxtUserName.Text = sdr["uname"].ToString();
+                TxtUserName.Enabled = false;
+                companiesList.Enabled = false;
+                email.Enabled = false;
+                string pass = sdr["Pwd"].ToString();
+                TxtPassword.Text = pass;
+                TxtRePassword.Text = TxtPassword.Text;
+                string role = sdr["userRole"].ToString();
+                string type = sdr["ViewState"].ToString();
+                email.Text = sdr["email"].ToString();
+                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                userType.SelectedIndex = userType.Items.IndexOf(userType.Items.FindByValue(type));
 
-    
+            }
+            sdr.Close();
+            cmd.Dispose();
+        }
+        //private void fillChange()
+        //{
+        //    ChooseCompany.Items.Clear();
+        //    ChooseUser.Items.Clear();
+        //    changeCompanyUser.Clear();
+        //    changeUserCompany.Clear();
+        //    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+        //    conn.Open();
+        //    // Create SqlCommand to select pwd field from users table given supplied userName.
+        //    cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
+        //    // Execute command and fetch pwd field into lookupPassword string.
+        //    SqlDataReader reader = cmd.ExecuteReader();
+        //    while (reader.Read())
+        //    {
+        //        changeCompanyUser.Add(reader["company_name"].ToString());
+
+        //    }
+
+        //    // unit test
+
+        //    cmd.Dispose();
+        //    conn.Close();
+        //    ChooseCompany.DataSource = changeCompanyUser;
+        //    ChooseCompany.DataBind();
+        //    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+        //    conn.Open();
+        //    // Create SqlCommand to select pwd field from users table given supplied userName.
+        //    cmd = new SqlCommand("select uname from Users ", conn); /// Intepolation or the F string. C# > 5.0       
+        //    // Execute command and fetch pwd field into lookupPassword string.
+        //    SqlDataReader reader2 = cmd.ExecuteReader();
+        //    while (reader2.Read())
+        //    {
+        //        changeUserCompany.Add(reader2["uname"].ToString());
+
+        //    }
+
+        //    // unit test
+
+        //    cmd.Dispose();
+        //    conn.Close();
+        //    ChooseUser.DataSource = changeUserCompany;
+        //    ChooseUser.DataBind();
+
+        //}
+
+
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
+            if (TxtUserName.Enabled == true)
+            {
 
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
+                var result = cmd.ExecuteScalar();
+                Int32 Total_ID = System.Convert.ToInt32(result);
+
+                int next = Total_ID + 1;
+                if (TxtPassword.Text != TxtRePassword.Text)
+                {
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
+                }
+                else
+                {
+                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                    conn.Open();
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
+
+
+                    var resultCheck = check.ExecuteScalar();
+                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                    if (resultUsername > 0)
+                    {
+                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
+                    }
+                    else
+                    {
+
+                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+                        try
+                        {
+                            createUserPermisions.ExecuteNonQuery();
+                        }
+                        catch (Exception error)
+                        {
+                            // Logging module.
+                        }
+
+
+
+                        string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+
+
+
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        var username = TxtUserName.Text;
+                        try
+                        {
+                            createUser.ExecuteNonQuery();
+                            Response.Write($"<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+                            TxtName.Text = "";
+                            TxtPassword.Text = "";
+                            TxtRePassword.Text = "";
+                            TxtUserName.Text = "";
+                            email.Text = "";
+
+                            var company = companiesList.SelectedValue;
+                            var spacelessCompany = company.Replace(" ", string.Empty);
+                            
+                            //fillChange();
+                            //fillUsersDelete();
+                            string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
+                            string replacedPath = filePath.Replace(" ", string.Empty);
+                            if (!Directory.Exists(replacedPath.ToString()))
+                            {
+
+
+                                Directory.CreateDirectory(replacedPath.ToString());
+
+                            }
+                            else
+                            {
+
+
+                            }
+                        }
+                        catch (Exception error)
+                        {
+                            // Implement logging here.
+                            Response.Write(error);
+
+                        }
+                    }
+                }
+            }
+            else
+            {
+
+                string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+
+
+
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+              //  debug.Add(dev);
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+
+                if (TxtPassword.Text != TxtRePassword.Text)
+                {
+                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    TxtPassword.Text = "";
+                    TxtRePassword.Text = "";
+                }
+                else
+                {
+
+                    try
+                    {
+                        var username = TxtUserName.Text;
+                        cmd.ExecuteNonQuery();
+                        Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
+                        TxtName.Text = "";
+                        TxtPassword.Text = "";
+                        TxtRePassword.Text = "";
+                        TxtUserName.Text = "";
+                        email.Text = "";
+                        var company = companiesList.SelectedValue;
+                        //    fillUsersDelete();
+                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
+                        string replacedPath = filePath.Replace(" ", string.Empty);
+
+
+                        if (!Directory.Exists(replacedPath.ToString()))
+                        {
+
+                            Directory.CreateDirectory(replacedPath);
+                           // FillList();
+
+                        }
+                    }
+                    catch (Exception error)
+                    {
+
+                        // Implement logging here.
+                    }
+                }
+            }
         }
 
         protected void companyButton_Click(object sender, EventArgs e)
@@ -309,7 +583,8 @@ namespace peptak
             graphsListBox.Enabled = true;
             FillListGraphs();
             showConfig();
-         
+            updateForm();
+
             //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
         }
 

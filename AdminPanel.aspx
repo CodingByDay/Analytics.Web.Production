@@ -165,6 +165,7 @@
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList></center>  
+        <br />
              <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
 
 	</div>
@@ -200,11 +201,12 @@
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  </center>
-                
+                <br />
 <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
+                    <br />
                 <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
                  </asp:DropDownList></center>   
-        
+        <br />
               
                    <center> <h4 style="text-decoration: solid"Podjetje:</h4></center>  
                        <center> <asp:DropDownList ID="companiesList" runat="server"  
@@ -222,6 +224,10 @@
 </section>
 
      </div>
+     </div>
+  
+     </div>
+  
      </div>
   
      </div>
