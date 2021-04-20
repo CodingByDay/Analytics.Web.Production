@@ -42,6 +42,15 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapListBox graphsListBox;
 
         /// <summary>
+        /// saveGraphs control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton saveGraphs;
+
+        /// <summary>
         /// companyName control.
         /// </summary>
         /// <remarks>

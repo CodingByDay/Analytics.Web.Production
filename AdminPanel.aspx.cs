@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -23,34 +24,45 @@ namespace peptak
         private string findIdString;
         private string dev;
         private string permisionQuery;
+        private string findId;
+        private string finalQuerys;
         private SqlCommand cmd;
         private object idNumber;
         private List<String> companiesData = new List<string>();
         private List<String> usersData = new List<string>();
         private string finalQuery;
+        private object id;
+        private int flag;
+        private string companyInfo;
+        private List<String> companies = new List<string>();
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Confirm button, byUser, js function, delete icon, delete event.
-            // width must be more, margins, byUser, onSelectedIndexChanged.
-
-            // Also js function to disable more than one aperent divs......
+            // Confirm button, byUser, , delete icon, delete event.
+            // Adding create user and create company logic. Adding fforeach for multiple selection listbox.
             if (!IsPostBack)
             {
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
-                //Consider this.
+                // Consider this.
                 FillUsers(beginingID);
                 fillCompanies();
-                //FillUsers();
+                // FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
-                //showConfig();
-            } else
+                fillCompaniesRegistration()
+
+                // showConfig();
+            }
+            else
             {
             }
             
         }
+
+
+       
 
         private List<bool> showConfig()
         {
@@ -209,7 +221,35 @@ namespace peptak
 
             }
 
+        private void fillCompaniesRegistration()
+        {
+            try
+            {
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
+                // Execute command and fetch pwd field into lookupPassword string.
+                SqlDataReader sdr = cmd.ExecuteReader();
+                while (sdr.Read())
+                {
+                    companies.Add(sdr["company_name"].ToString());
 
+                }
+                companiesList.DataSource = companies;
+                companiesList.DataBind();
+
+
+                cmd.Dispose();
+                conn.Close();
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
 
         private void fillCompanies()
         {
@@ -271,6 +311,146 @@ namespace peptak
             showConfig();
          
             //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
+        }
+
+        public void FillListGraphsNames()
+        {
+            fileNames.Clear();
+            string filePath = Server.MapPath("~/App_Data/Dashboards");
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            System.IO.FileInfo[] fi = di.GetFiles();
+            foreach (System.IO.FileInfo file in fi)
+            {
+                XDocument doc = XDocument.Load(filePath + "/" + file.Name);
+                var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
+                graphNames.Add(file.Name + " " + tempXmlName);
+                string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+
+                // Refils potential new tables.
+                // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
+                values.Add(trimmed);
+
+            }
+
+        }
+        private string getCompanyQuery(string uname)
+        {
+
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                companyInfo = (reader["company_name"].ToString());
+            }
+            var final = companyInfo.Replace(" ", string.Empty);
+            return final;
+
+        }
+
+        private void copyFiles()
+        {
+            var filePath = Server.MapPath("~/App_Data/Dashboards");
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            System.IO.FileInfo[] fi = di.GetFiles();
+            var user = usersListBox.SelectedItem.Text;
+
+
+            string uname = getCompanyQuery(user);
+            for (int i = 0; i < fi.Length; i++)
+            {
+                var item = fi[i].Name;
+                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
+                var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}");
+
+                if (graphsListBox.Items.ElementAt(i).Selected == true)
+                {
+                    if (!File.Exists(output))
+                    {
+                        File.Copy(source, output);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (File.Exists(output))
+                    {
+                        File.Delete(output);
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
+            }
+        }
+
+        private void makeSQLquery()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            for (int i = 0; i < graphsListBox.Items.Count; i++)
+            {
+                var tempGraphString = values.ElementAt(i);
+                findId = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+                // execute query
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand(findId, conn);
+                try
+                {
+                    id = cmd.ExecuteScalar();
+
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+                Int32 Total_ID = System.Convert.ToInt32(id);
+                if (graphsListBox.Items.ElementAt(i).Selected == true)
+                {
+                    flag = 1;
+                }
+                else
+                {
+                    flag = 0;
+                }
+                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
+                cmd = new SqlCommand(finalQuerys, conn);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+
+            }
+            cmd.Dispose();
+            conn.Close();
+        }
+
+
+        protected void saveGraphs_Click(object sender, EventArgs e)
+        {
+            if (usersListBox.SelectedItem == null) 
+            {
+                Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
+
+            }
+            else
+            {
+                FillListGraphsNames();
+                makeSQLquery();
+                showConfig();
+                copyFiles();
+            }
         }
 
 

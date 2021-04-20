@@ -16,8 +16,20 @@
         #companyForm, #userForm {
             display:none;
         }
+
+        .column {
+            display: inline;
+        }
+
+        .saveGraphs {
+       
+            float: right;
+        }
     </style>
 	<script>
+
+
+
         function showOrHideDivCompany() {
           
             var v = document.getElementById("companyForm");
@@ -114,7 +126,7 @@
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
+		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
         <CssClasses Control="users" />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
@@ -125,10 +137,11 @@
   <div class="column">
 	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" FilteringSettings-EditorNullText="Poiščite graf">
        <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+</dx:BootstrapListBox><center><button type="button" class="btn btn-primary" onclick="showOrHideDivByUser()">byUser</button></center>
 
-</dx:BootstrapListBox>
-	  		<br />
-	  <center><button type="button" class="btn btn-primary" onclick="showOrHideDivByUser()">byUser</button></center>
+      <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
+    <SettingsBootstrap RenderOption="Primary" />
+          </dx:BootstrapButton>
 	</div>
 	
 </section>	
@@ -210,29 +223,10 @@
 
      </div>
      </div>
+  
      </div>
+  
      </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
-     </div>
+  
 </asp:Content>
 
