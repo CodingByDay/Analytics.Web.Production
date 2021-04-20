@@ -237,7 +237,7 @@
                 <br />
 <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
                     <br />
-                <center><asp:DropDownList ID="userType" autopostback="true" runat="server"  >
+                <center><asp:DropDownList ID="userType" autopostback="false" runat="server"  >
                  </asp:DropDownList></center>   
         <br />
               

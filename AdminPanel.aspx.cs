@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -482,6 +483,7 @@ namespace peptak
                         var username = TxtUserName.Text;
                         try
                         {
+                            var id = getIdCompany(companiesList.SelectedValue);
                             createUser.ExecuteNonQuery();
                             Response.Write($"<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             TxtName.Text = "";
@@ -489,7 +491,8 @@ namespace peptak
                             TxtRePassword.Text = "";
                             TxtUserName.Text = "";
                             email.Text = "";
-
+                            FillListAdmin();
+                            FillUsers(id);
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
                             
@@ -574,9 +577,156 @@ namespace peptak
             }
         }
 
+
+        private bool checkIfNumber(string parametar)
+        {
+            var regex = new Regex(@"^-?[0-9][0-9,\.]+$");
+
+            var numeric = regex.IsMatch(parametar);
+
+            if (numeric)
+                return true;
+            else
+                return false;
+
+
+        }
+
+        private void createFileIfDoesNotExist(string company)
+        {
+            string filePath = Server.MapPath("~/App_Data/" + company);
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+        }
+
+        private void insertCompany()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
+            var result = cmd.ExecuteScalar();
+            Int32 next = System.Convert.ToInt32(result) + 1;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
+            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
+            Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {debug}'  );</script>");
+            var adminForCreation = listAdmin.SelectedValue;
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                XMLmanipulation(companyName.Text, ConnectionStrings.SelectedValue, adminForCreation);
+
+
+            }
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+        }
+
+
+
+        private void XMLmanipulation(string folderName, string database, string admin)
+        {
+            var adminFolder = Server.MapPath($"~/App_Data/{folderName}/{admin}").Replace(" ", string.Empty);
+
+            if (!Directory.Exists(adminFolder))
+            {
+                Directory.CreateDirectory(adminFolder);
+            }
+
+            var serverRoom = Server.MapPath($"~/App_Data/Dashboards");
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(serverRoom);
+            System.IO.FileInfo[] fi = di.GetFiles();
+
+            for (int i = 0; i < fi.Length; i++)
+            {
+                var item = fi[i].Name;
+                var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
+                var output = Server.MapPath($"~/App_Data/{folderName}/{admin}/{item}").Replace(" ", string.Empty);
+
+                try
+                {
+                    File.Copy(source, output, true);
+                }
+                catch (IOException iox)
+                {
+                    Response.Write("Exception is: " + iox);
+
+                }
+
+                // Implement logging here.
+            }
+
+            // Second update part.
+            string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}/{admin}").Replace(" ", string.Empty);
+
+            fileNames.Clear();
+            System.IO.DirectoryInfo edit = new System.IO.DirectoryInfo(destinationFileEdit);
+            System.IO.FileInfo[] finfo = di.GetFiles();
+            foreach (System.IO.FileInfo file in finfo)
+            {
+
+                XDocument doc = XDocument.Load(destinationFileEdit + "/" + file.Name);
+
+                var first = doc.Root.Element("DataSources");
+
+                first.Element("SqlDataSource").Element("Connection").Attribute("Name").Value = database;
+
+
+            }
+
+
+
+        }
         protected void companyButton_Click(object sender, EventArgs e)
         {
+            if (companyName.Text == "")
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Niste vpisali ime podjetja...'  );</script>");
 
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+            }
+            else if (website.Text == "")
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Niste napisali web page podjetja...'  );</script>");
+
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+
+            }
+            else if (!checkIfNumber(companyNumber.Text))
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
+
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+            }
+            else
+            {
+                createFileIfDoesNotExist(companyName.Text);
+                insertCompany();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
+                fillCompanies();
+                //fillCompanyDelete();
+                companyNumber.Text = "";
+                companyName.Text = "";
+                website.Text = "";
+
+            }
         }
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1005,49 +1155,5 @@ namespace peptak
             conn.Close();
         }
 
-
-
-
-
-
-
-
-
-
-        //protected void createUser_Click(object sender, EventArgs e)
-        //{
-        //    if (userForm.Visible == false)
-        //    {
-        //        userForm.Visible = true;
-        //    }
-        //    else
-        //    {
-        //        userForm.Visible = false;
-        //    }
-        //}
-
-        //protected void byUser_Click(object sender, EventArgs e)
-        //{
-        //    if (byUserForm.Visible == false)
-        //    {
-        //        byUserForm.Visible = true;
-        //    }
-        //    else
-        //    {
-        //        byUserForm.Visible = false;
-        //    }
-        //}
-
-        //protected void createCompany_Click(object sender, EventArgs e)
-        //{
-        //    if (companyForm.Visible == false)
-        //    {
-        //        companyForm.Visible = true;
-        //    }
-        //    else
-        //    {
-        //        companyForm.Visible = false;
-        //    }
-        //}
     }
 }
