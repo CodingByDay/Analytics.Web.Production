@@ -15,10 +15,15 @@
     <style>
 
 
-        html {
-            background-color: white!important;
+
+        body {
+            background-color:white!important;
         }
 
+         html {
+            background-color: white!important;
+        }
+        
         .column {
             background-color: none!important;
         }
@@ -212,7 +217,7 @@
 	<section class="columns">
 	
 	
-	<div class="column" id="userForm">
+	<div class="column" id="userForm" style="background-color:white!important;">
 		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
                          <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
 

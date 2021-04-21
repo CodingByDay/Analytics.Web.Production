@@ -590,7 +590,6 @@ namespace peptak
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
             var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
-            Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {debug}'  );</script>");
             var adminForCreation = listAdmin.SelectedValue;
 
             try
@@ -603,7 +602,7 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
 
 
