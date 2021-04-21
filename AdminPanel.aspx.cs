@@ -25,10 +25,11 @@ namespace peptak
 
         private SqlConnection conn;
         private string findIdString;
-        private string dev;
         private string permisionQuery;
         private string findId;
+        private object tempGraphString;
         private string finalQuerys;
+        private string find;
         private SqlCommand cmd;
         private object idNumber;
         private List<String> companiesData = new List<string>();
@@ -45,16 +46,18 @@ namespace peptak
         private string deletedID;
         private string current;
         private object result;
+        private List<String> help = new List<string>();
         private List<String> usersDataByUser = new List<string>();
+        private Exception e;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             // Redirect to home page after paying...
             // Confirm button, byUser, , delete icon, delete event.
-            // Adding create user and create company logic. Adding fforeach for multiple selection listbox.
+            // Adding create user and create company logic. Adding foreach for multiple selection listbox.
             if (!IsPostBack)
             {
-                
+                by.Visible = false;
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
                 // Consider this.
@@ -76,8 +79,8 @@ namespace peptak
             }
             else
             {
-                current = companiesListBox.SelectedItem.Value.ToString();
-                FillUsers(1);
+                current = companiesListBox.SelectedItem.Value.ToString();               
+                FillUsers(getIdCompany(current));
 
             }
 
@@ -146,8 +149,15 @@ namespace peptak
             // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment
-            findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+            if (usersListBox.SelectedItem != null)
+            {
+                findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+            } else
+            {
+                usersListBox.SelectedIndex = 0;
+                findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
 
+            }
 
             // Documentation. This query is for getting all the permision table data from the user
             cmd = new SqlCommand(findIdString, conn);
@@ -876,6 +886,62 @@ namespace peptak
             cmd.Dispose();
             conn.Close();
         }
+        private void makeSQLqueryByUser()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
+            {
+                var tempGraphStringFullOfStuff = byUserListBox.SelectedValues[i].ToString();
+                string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
+                string trimmed = trimmedless.Replace("-", "");
+                find = String.Format($"SELECT id_permisions from Users where uname='{trimmed}'");
+                // execute query
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand(find, conn);
+                try
+                {
+                    id = cmd.ExecuteScalar();
+
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+                Int32 Total_ID = System.Convert.ToInt32(id);
+
+                for (int j = 0; j < graphsListBox.Items.Count;j++) {
+
+                    if (graphsListBox.Items.ElementAt(i).Selected == true)
+                    {
+                        flag = 1;
+                    }
+                    else
+                    {
+                        flag = 0;
+                    }
+
+                    tempGraphString = values.ElementAt(j);
+
+                    finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
+                    var debug = finalQuerys;
+                    help.Add(debug.ToString());
+                    cmd = new SqlCommand(finalQuerys, conn);
+
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabnika. + {e.ToString()}');</script>");
+
+                    }
+                }
+            }
+            cmd.Dispose();
+            conn.Close();
+        }
 
 
         protected void saveGraphs_Click(object sender, EventArgs e)
@@ -1104,43 +1170,23 @@ namespace peptak
             {
                 var company = getCompanyQuery(usersListBox.SelectedItem.Text);
                 var spacelessCompany = company.Replace(" ", string.Empty);
-
                 cmd.ExecuteNonQuery();
-                // Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
                 string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersListBox.SelectedItem.Text}");
                 string finalPath = filePath.Replace(" ", string.Empty);
                 if (Directory.Exists(finalPath.ToString()))
                 {
                     Directory.Delete(finalPath.ToString());
-                    //DeleteUser.Items.Clear();
-                    //  FillList();
                     FillListGraphs();
                     showConfig();
-
-                    //fillCompanies();
-                    //FillListAdmin();
-                    //fillUsersDelete();
-                    //fillCompanyDelete();
-                    //fillChange();
-                    // fillUsersDelete();
-                    //  fillChange();
                     deletePermisionEntry();
                     FillUsers(1);
 
                 }
                 else
                 {
-                    //   FillList();
                     FillListGraphs();
                     showConfig();
-
-                    //fillCompanies();
-                    //FillListAdmin();
-                    //fillUsersDelete();
-                    //fillCompanyDelete();
-                    //fillChange();
-                    // fillUsersDelete();
-                    // fillChange();
                     deletePermisionEntry();
                     FillUsers(1);
                     //Logging
@@ -1163,7 +1209,143 @@ namespace peptak
         {
             // Pass for now
         }
+
+        protected void byUser_Click(object sender, EventArgs e)
+        {
+            if(by.Visible == true)
+            {
+                by.Visible = false;
+            } else
+            {
+                by.Visible = true;
+            }
+        }
+
+        protected void saveByuser_Click(object sender, EventArgs e)
+        {
+     
+                if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
+                {
+                    Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
+                    
+
+                }
+
+                else
+                {
+                    var error = "";
+                    FillListGraphsNames();
+                    makeSQLqueryByUser();
+                    showConfigByUser();
+                    copyFilesByUser();
     
 
+            }
+        }
+
+        private void showConfigByUser()
+        {
+            columnNames.Clear();
+            config.Clear();
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+            // SET @ColList = ''
+            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
+            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+            // EXEC(@SQLStatment
+            if (byUserListBox.SelectedValues[0] != null)
+            {
+                findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
+            }else
+            {
+                byUserListBox.SelectedIndex = 0;
+                findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
+
+            }
+
+            // Documentation. This query is for getting all the permision table data from the user
+            cmd = new SqlCommand(findIdString, conn);
+            idNumber = cmd.ExecuteScalar();
+            Int32 Total_Key = System.Convert.ToInt32(idNumber);
+
+            conn.Close();
+            conn.Dispose();
+            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
+            cmd = new SqlCommand(permisionQuery, conn);
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+
+            using (SqlConnection connection = new SqlConnection(
+              "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
+            {
+                SqlCommand command = new SqlCommand(permisionQuery, connection);
+                connection.Open();
+                SqlDataReader reader =
+                command.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
+                {
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
+                        config.Add(bitValueTemp);
+                        if (bitValueTemp == true)
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = true;
+                            valuesBool.Add(true);
+                        }
+                        else
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = false;
+                            valuesBool.Add(false);
+                        }
+                    }
+                }
+
+                conn.Close();
+                conn.Dispose();
+            }
+        }
+
+        private void copyFilesByUser()
+        {
+            for (int j = 0; j < byUserListBox.SelectedValues.Count; j++)
+            {
+                var filePath = Server.MapPath("~/App_Data/Dashboards");
+                System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+                System.IO.FileInfo[] fi = di.GetFiles();
+                var user = byUserListBox.SelectedValues[j].ToString();
+
+
+                string uname = getCompanyQuery(user);
+                for (int i = 0; i < fi.Length; i++)
+                {
+                    var item = fi[i].Name;
+                    var source = Server.MapPath($"~/App_Data/Dashboards/{item}");
+                    var output = Server.MapPath($"~/App_Data/{uname}/{user}/{item}");
+                    if (graphsListBox.Items.ElementAt(i).Selected == true)
+                    {
+                        if (!File.Exists(output))
+                        {
+                            File.Copy(source, output);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    else
+                    {
+                        if (File.Exists(output))
+                        {
+                            File.Delete(output);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                }
+            }
+        }
     }
-}
+    }

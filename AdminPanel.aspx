@@ -14,8 +14,15 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
 
+        .saveByUser {
+            float: right!important;
+        }
 
 
+        .control {
+            min-height: 300px!important;
+            max-height: 300px!important;
+        }
         .columns {
             margin: auto;
 
@@ -50,6 +57,10 @@
         }
 
 
+        #byUser {
+            float:right;
+        }
+
 
         #user, #company, #byUser {
             float:right;
@@ -60,11 +71,11 @@
        }
         
         #by {
-            display:none;
+            display:block;
             color: black;
         }
         .by {
-            display:none;
+            display:block;
             color: black;
         }
     </style>
@@ -112,7 +123,7 @@
                
 
                 v.style.display = "block";
-                button.innerHTML = "Po grafu";
+                button.innerHTML = "Skrij";
 
                 } else {
                 //pass
@@ -164,8 +175,8 @@
 <section class="columns">
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
-        <CssClasses Control="companies"  />
+		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
+        <CssClasses Control="control"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 	
@@ -177,8 +188,9 @@
 	</div>
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
-        <CssClasses Control="users" />
+		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true" CssClasses-Control="control" ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
+                <CssClasses Control="control"  />
+
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 		<br />
@@ -189,25 +201,34 @@
 	</div>
   
   <div class="column">
-	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" AllowCustomValues="true" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" FilteringSettings-EditorNullText="Poiščite graf">
+	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" AllowCustomValues="true" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf"  Rows="4">
+                <CssClasses Control="control"  />
+
        <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
        
 </dx:BootstrapListBox>
       
-      <br />
-      <center><button type="button"  id="byUser" class="btn btn-secondary" onclick="showOrHideDivByUser()">Po Uporabniku</button></center>
+      <br />       
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Primary" />
+
           </dx:BootstrapButton>
+      <dx:BootstrapButton runat="server" ID ="byUser"  OnClick="byUser_Click" Text="Po uporabniku">
+    <SettingsBootstrap RenderOption="Secondary" />
+</dx:BootstrapButton>
 	</div>
-	 <div class="column" id="by">
+	 <div class="column" id="by" runat="server">
 	 <div class="reverse">
-     	<dx:BootstrapListBox ID="byUserListBox" runat="server"  OnSelectedIndexChanged="byUserListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="6">
-        <CssClasses Control="users" />
+     	<dx:BootstrapListBox ID="byUserListBox" runat="server"  OnSelectedIndexChanged="byUserListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true" CssClasses-Control="control"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
+        <CssClasses Control="control"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
+         <br />
+      <center><dx:BootstrapButton runat="server" ID ="saveByUser" OnClick="saveByuser_Click" Text="Shrani">
+    <SettingsBootstrap RenderOption="Primary" />
+</dx:BootstrapButton></center>
 	</div>
 	</div>
 </section>	
@@ -292,6 +313,22 @@
 </section>
 
      </div>
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
+     </div>
+  
+   
+  
      </div>
   
    
