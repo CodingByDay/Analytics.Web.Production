@@ -1,7 +1,6 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Custom.aspx.cs" Inherits="peptak.Custom" %>
 
 <%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
-<script src="https://js.stripe.com/v3/"></script><asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <script>
           function onBeforeRender(sender) {
         var dashboardControl = sender.GetDashboardControl();

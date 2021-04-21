@@ -381,6 +381,7 @@ namespace peptak
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
+                companiesList.SelectedIndex = (int)sdr["id_company"];
                 companiesList.Enabled = false;
                 email.Enabled = false;
                 string pass = sdr["Pwd"].ToString();
@@ -396,51 +397,7 @@ namespace peptak
             sdr.Close();
             cmd.Dispose();
         }
-        //private void fillChange()
-        //{
-        //    ChooseCompany.Items.Clear();
-        //    ChooseUser.Items.Clear();
-        //    changeCompanyUser.Clear();
-        //    changeUserCompany.Clear();
-        //    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-        //    conn.Open();
-        //    // Create SqlCommand to select pwd field from users table given supplied userName.
-        //    cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
-        //    // Execute command and fetch pwd field into lookupPassword string.
-        //    SqlDataReader reader = cmd.ExecuteReader();
-        //    while (reader.Read())
-        //    {
-        //        changeCompanyUser.Add(reader["company_name"].ToString());
-
-        //    }
-
-        //    // unit test
-
-        //    cmd.Dispose();
-        //    conn.Close();
-        //    ChooseCompany.DataSource = changeCompanyUser;
-        //    ChooseCompany.DataBind();
-        //    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-        //    conn.Open();
-        //    // Create SqlCommand to select pwd field from users table given supplied userName.
-        //    cmd = new SqlCommand("select uname from Users ", conn); /// Intepolation or the F string. C# > 5.0       
-        //    // Execute command and fetch pwd field into lookupPassword string.
-        //    SqlDataReader reader2 = cmd.ExecuteReader();
-        //    while (reader2.Read())
-        //    {
-        //        changeUserCompany.Add(reader2["uname"].ToString());
-
-        //    }
-
-        //    // unit test
-
-        //    cmd.Dispose();
-        //    conn.Close();
-        //    ChooseUser.DataSource = changeUserCompany;
-        //    ChooseUser.DataBind();
-
-        //}
-
+       
 
 
         protected void registrationButton_Click(object sender, EventArgs e)
@@ -1204,10 +1161,7 @@ namespace peptak
             conn.Close();
         }
 
-        protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Pass for now
-        }
+    
 
         protected void byUser_Click(object sender, EventArgs e)
         {

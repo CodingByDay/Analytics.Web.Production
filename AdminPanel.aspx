@@ -181,7 +181,7 @@
 </dx:BootstrapListBox>
 	
 		<br />
-		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Novo</button></center>
+		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Dodaj</button></center>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
@@ -194,7 +194,7 @@
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 		<br />
-		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Nov</button></center>
+		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Dodaj/Spremeni</button></center>
            <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
@@ -216,7 +216,7 @@
 
           </dx:BootstrapButton>
       <dx:BootstrapButton runat="server" ID ="byUser"  OnClick="byUser_Click" Text="Po uporabniku">
-    <SettingsBootstrap RenderOption="Secondary" />
+    <SettingsBootstrap RenderOption="Info" />
 </dx:BootstrapButton>
 	</div>
 	 <div class="column" id="by" runat="server">
