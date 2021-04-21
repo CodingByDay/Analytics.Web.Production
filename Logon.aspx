@@ -39,7 +39,7 @@
                     <asp:Label ID="lblMsg" ForeColor="red" Font-Name="Verdana" Font-Size="10" runat="server" />
 
                                  <img src="stripe.png" width="300px" alt="Powered by Stripe"/><asp:Button  ID="membership" runat="server" Text="Vrste plačila" type="submit"  OnClick="membership_Click" CausesValidation="false"/>
-                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/AdminPanel.aspx" > Testing
+                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/AdminPanelCompany.aspx" > Testing
                         </asp:HyperLink>
                 </div>
             </form>

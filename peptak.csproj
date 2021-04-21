@@ -153,6 +153,7 @@
     <Content Include="About.aspx" />
     <Content Include="Administration.aspx" />
     <Content Include="AdminPanel.aspx" />
+    <Content Include="AdminPanelCompany.aspx" />
     <Content Include="adminsitrationcompany.aspx" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
@@ -324,6 +325,13 @@
     </Compile>
     <Compile Include="AdminPanel.aspx.designer.cs">
       <DependentUpon>AdminPanel.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AdminPanelCompany.aspx.cs">
+      <DependentUpon>AdminPanelCompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminPanelCompany.aspx.designer.cs">
+      <DependentUpon>AdminPanelCompany.aspx</DependentUpon>
     </Compile>
     <Compile Include="adminsitrationcompany.aspx.cs">
       <DependentUpon>adminsitrationcompany.aspx</DependentUpon>

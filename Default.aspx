@@ -29,7 +29,7 @@
 
             });  
 
-        </script>>
+        </script>
     
         <div class="col-sm-12">
         <div style="position: absolute; left: 80px; right: 0; top:0; bottom:30px;">

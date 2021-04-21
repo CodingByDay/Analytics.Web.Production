@@ -61,10 +61,10 @@ namespace peptak
             // Data
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("administration.aspx", true);
+                Response.Redirect("AdminPanel.aspx", true);
             } else if (userRole == "Admin")
             {
-                Response.Redirect("adminsitrationcompany.aspx", true);
+                Response.Redirect("AdminPanelCompany.aspx", true);
 
             } else
             {

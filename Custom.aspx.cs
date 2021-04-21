@@ -63,7 +63,7 @@ namespace peptak
             var folder = HttpContext.Current.User.Identity.Name;
 
 
-            var pathAdmin = HttpContext.Current.Server.MapPath($"~/App_Data/{company}/{admin}/" + dashboardID + ".xml").Replace(" ", string.Empty);
+            var pathAdmin = HttpContext.Current.Server.MapPath($"~/App_Data/{company.Replace(" ", string.Empty)}/{admin.Replace(" ", string.Empty)}/" + dashboardID + ".xml").Replace(" ", string.Empty);
 
             File.WriteAllText(pathAdmin, dashboard.ToString());
 

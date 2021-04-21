@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AdminPanel.aspx.cs" Inherits="peptak.AdminPanel" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="AdminPanelCompany.aspx.cs" Inherits="peptak.AdminPanelCompany" %>
 <%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -14,10 +14,11 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
 
-         html {
+
+        html {
             background-color: white!important;
         }
-        
+
         .column {
             background-color: none!important;
         }
@@ -100,35 +101,17 @@
 
 
 
-        function showOrHideDivCompany() {
-          
-            var v = document.getElementById("companyForm");
-          
-            if (v.style.display === "none") {
-                if (isAllowed()) {
-
-                    v.style.display = "block";
-                } else {
-                    //pass
-                }
-            } else {
-                    v.style.display = "none";
-                }
-             
-            }
         
         function showOrHideDivUser() {
             var v = document.getElementById("userForm");
+         
             if (v.style.display === "none") {
-                if (isAllowed()) {
 
                     v.style.display = "block";
-                } else {
-                    //pass
-                }
             } else {
-                v.style.display = "none";
-            }
+                v.style.display = "none"
+                }
+           
 
         }
         function showOrHideDivByUser() {
@@ -151,22 +134,7 @@
             } 
 
         
-        function isAllowed() {
-            var company = document.getElementById("companyForm");
-
-            var user = document.getElementById("userForm");
-
-
-
-            if (company.style.display == "block" || user.style.display == "block") {
-                return false;
-
-            } else if (company.style.display == "block" && user.style.display == "block") {
-                return false;
-            } else {
-                return true;
-            }
-        }
+       
 
     </script>
 
@@ -191,18 +159,8 @@
 
 <section class="columns">
 	
-	<div class="column">
-		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
-        <CssClasses Control="control"  />
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-</dx:BootstrapListBox>
+
 	
-		<br />
-		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Dodaj</button></center>
-        <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
-    <SettingsBootstrap RenderOption="Danger" />
-</dx:BootstrapButton>
-	</div>
 	
 	<div class="column">
 		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true" CssClasses-Control="control" ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
@@ -253,27 +211,6 @@
 	
 	<section class="columns">
 	
-	<div class="column" id="companyForm">
-	    <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h3></center>  
-             <hr style="color: black;" />
-
-             <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
-           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
-           <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
-<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center>    
-           <center> <asp:DropDownList ID="listAdmin" runat="server" > 
-               <%--AppendDataBoundItems="true">--%>  
-              </asp:DropDownList>  </center>
-              <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Baza.</h3></center>    
-
-                  
-                  <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
-               AppendDataBoundItems="true">  
-              </asp:DropDownList></center>  
-        <br />
-             <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
-
-	</div>
 	
 	<div class="column" id="userForm">
 		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >

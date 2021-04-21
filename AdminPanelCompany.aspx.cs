@@ -14,7 +14,7 @@ using System.Xml.Linq;
 
 namespace peptak
 {
-    public partial class AdminPanel : System.Web.UI.Page
+    public partial class AdminPanelCompany : System.Web.UI.Page
     {
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -48,104 +48,37 @@ namespace peptak
         private object result;
         private List<String> help = new List<string>();
         private List<String> usersDataByUser = new List<string>();
-        private Exception e;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Redirect to home page after paying...
-            // Confirm button, byUser, , delete icon, delete event.
-            // Adding create user and create company logic. Adding foreach for multiple selection listbox.
             if (!IsPostBack)
             {
+                defaultCompany();
                 by.Visible = false;
-                companiesListBox.SelectedIndex = 0;
-                var beginingID = 1;
                 // Consider this.
-                FillUsers(beginingID);
-                fillCompanies();
-                //FillUsers();
+                FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
                 fillCompaniesRegistration();
-                FillListAdmin();
-                //User Types
+                defaultCompany();
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
-
-
             }
             else
             {
-                if (companiesListBox.SelectedItem.Value != null)
-                {
-                    current = companiesListBox.SelectedItem.Value.ToString();
-                    FillUsers(getIdCompany(current));
-                } else
-                {
-                    current = companiesListBox.Items[0].Value.ToString();
-                    FillUsers(getIdCompany(current));
-                }
-
+                FillUsers();
             }
 
         }
 
 
-        public void FillListAdmin()
+      
+        private List<bool> showConfig()
         {
-            try
-            {
 
-                string UserNameForChecking
-                    = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    admins.Add(sdr["uname"].ToString());
-
-                }
-                listAdmin.DataSource = admins;
-                listAdmin.DataBind();
-                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
-                {
-                    strings.Add(reader["company_name"].ToString());
-
-                }
-
-                ConnectionStrings.DataSource = strings;
-                ConnectionStrings.DataBind();
-                // unit test
-
-                cmd.Dispose();
-                conn.Close();
-
-
-            }
-            catch (Exception ex)
-            {
-            // Implement logging here.    
-            }
-        }
-
-        private void showConfig()
-        {
-            
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
@@ -159,52 +92,55 @@ namespace peptak
             if (usersListBox.SelectedItem != null)
             {
                 findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
-                // Documentation. This query is for getting all the permision table data from the user
-                cmd = new SqlCommand(findIdString, conn);
-                idNumber = cmd.ExecuteScalar();
-                Int32 Total_Key = System.Convert.ToInt32(idNumber);
+            }
+            else
+            {
+                usersListBox.SelectedIndex = 0;
+                findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+
+            }
+
+            // Documentation. This query is for getting all the permision table data from the user
+            cmd = new SqlCommand(findIdString, conn);
+            idNumber = cmd.ExecuteScalar();
+            Int32 Total_Key = System.Convert.ToInt32(idNumber);
+
+            conn.Close();
+            conn.Dispose();
+            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
+            cmd = new SqlCommand(permisionQuery, conn);
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+
+            using (SqlConnection connection = new SqlConnection(
+              "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
+            {
+                SqlCommand command = new SqlCommand(permisionQuery, connection);
+                connection.Open();
+                SqlDataReader reader =
+                command.ExecuteReader(CommandBehavior.CloseConnection);
+                while (reader.Read())
+                {
+                    for (int i = 0; i < values.Count; i++)
+                    {
+                        bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
+                        config.Add(bitValueTemp);
+                        if (bitValueTemp == true)
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = true;
+                            valuesBool.Add(true);
+                        }
+                        else
+                        {
+                            graphsListBox.Items.ElementAt(i).Selected = false;
+                            valuesBool.Add(false);
+                        }
+                    }
+                }
 
                 conn.Close();
                 conn.Dispose();
-                permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
-                cmd = new SqlCommand(permisionQuery, conn);
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-
-                using (SqlConnection connection = new SqlConnection(
-                  "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;"))
-                {
-                    SqlCommand command = new SqlCommand(permisionQuery, connection);
-                    connection.Open();
-                    SqlDataReader reader =
-                    command.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < values.Count; i++)
-                        {
-                            bool bitValueTemp = (bool)(reader[values[i]] as bool? ?? false);
-                            config.Add(bitValueTemp);
-                            if (bitValueTemp == true)
-                            {
-                                graphsListBox.Items.ElementAt(i).Selected = true;
-                                valuesBool.Add(true);
-                            }
-                            else
-                            {
-                                graphsListBox.Items.ElementAt(i).Selected = false;
-                                valuesBool.Add(false);
-                            }
-                        }
-                    }
-
-                    conn.Close();
-                    conn.Dispose();
-                }
-            } else
-            {
-                // Logging
+                return valuesBool;
             }
-
-          
         }
 
 
@@ -238,7 +174,7 @@ namespace peptak
                     }
                     catch (Exception error)
                     {
-                        // Logging
+                        // Logging + error
                         continue;
                     }
                 }
@@ -252,39 +188,21 @@ namespace peptak
 
             }
         }
-
-        private int GetCompanyName(string Name)
-        {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{Name}';", conn);
-          
-                var result = cmd.ExecuteScalar();
-                var company = System.Convert.ToInt32(result);
-
-
-
-            cmd.Dispose();
-            conn.Close();
-            return company;
-
-        }
-
-
-      
-        public void FillUsers(int companyID)
+        public void FillUsers()
         {
             try
             {
+                var company = defaultCompany();
+                var id = getIdCompany(company);
                 usersData.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select uname from Users where id_company={companyID}", conn);
+                cmd = new SqlCommand($"Select uname from Users where id_company={id}", conn);
 
-                    /// Intepolation or the F string. C# > 5.0       
+                /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -300,15 +218,16 @@ namespace peptak
                 conn.Close();
 
 
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 // Logging
             }
 
-            }
+        }
 
 
-   
+
 
         private void fillCompaniesRegistration()
         {
@@ -340,38 +259,7 @@ namespace peptak
             }
         }
 
-        private void fillCompanies()
-        {
-
-            try
-            {
-                companiesData.Clear();
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    companiesData.Add(sdr["company_name"].ToString());
-
-                }
-                companiesListBox.DataSource = companiesData;
-                companiesListBox.DataBind();
-
-
-                cmd.Dispose();
-                conn.Close();
-
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
+    
         private void updateForm()
         {
             ///
@@ -385,7 +273,12 @@ namespace peptak
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
-                companiesList.SelectedIndex = (int)sdr["id_company"]-1;
+                var company = defaultCompany();
+                string uname = HttpContext.Current.User.Identity.Name;
+                string name = getCompanyQuery(uname);
+                int id = getIdCompany(name);
+                companiesList.SelectedIndex = id - 1;
+                // Fixes the value problem.
                 companiesList.Enabled = false;
                 email.Enabled = false;
                 string pass = sdr["Pwd"].ToString();
@@ -401,8 +294,25 @@ namespace peptak
             sdr.Close();
             cmd.Dispose();
         }
-       
 
+
+    
+
+        private string defaultCompany()
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+
+            string name = getCompanyQuery(uname);
+
+            int id = getIdCompany(name);
+
+            companiesList.SelectedIndex = id-1;
+
+            companiesList.Enabled = false;
+
+            return name;
+
+        }
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
@@ -449,9 +359,6 @@ namespace peptak
                         {
                             // Logging module.
                         }
-
-
-
                         string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
 
@@ -469,26 +376,20 @@ namespace peptak
                             TxtRePassword.Text = "";
                             TxtUserName.Text = "";
                             email.Text = "";
-                            FillListAdmin();
-                            FillUsers(id);
+                            FillUsers();
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
-                            
+
                             //fillChange();
                             //fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
                             string replacedPath = filePath.Replace(" ", string.Empty);
                             if (!Directory.Exists(replacedPath.ToString()))
                             {
-
-
                                 Directory.CreateDirectory(replacedPath.ToString());
-
                             }
                             else
                             {
-
-
                             }
                         }
                         catch (Exception error)
@@ -502,15 +403,11 @@ namespace peptak
             }
             else
             {
-
                 string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
-
-
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
                 var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
-              //  debug.Add(dev);
+                //  debug.Add(dev);
                 SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 if (TxtPassword.Text != TxtRePassword.Text)
@@ -542,7 +439,7 @@ namespace peptak
                         {
 
                             Directory.CreateDirectory(replacedPath);
-                           // FillList();
+                            // FillList();
 
                         }
                     }
@@ -577,38 +474,6 @@ namespace peptak
             {
                 Directory.CreateDirectory(filePath);
             }
-        }
-
-        private void insertCompany()
-        {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
-            var result = cmd.ExecuteScalar();
-            Int32 next = System.Convert.ToInt32(result) + 1;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
-            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
-            Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {debug}'  );</script>");
-            var adminForCreation = listAdmin.SelectedValue;
-
-            try
-            {
-                cmd.ExecuteNonQuery();
-                XMLmanipulation(companyName.Text, ConnectionStrings.SelectedValue, adminForCreation);
-
-
-            }
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-
-
-            cmd.Dispose();
-            conn.Close();
         }
 
 
@@ -663,58 +528,9 @@ namespace peptak
 
             }
 
-
-
-        }
-        protected void companyButton_Click(object sender, EventArgs e)
-        {
-            if (companyName.Text == "")
-            {
-                Response.Write($"<script type=\"text/javascript\">alert('Niste vpisali ime podjetja...'  );</script>");
-
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-            }
-            else if (website.Text == "")
-            {
-                Response.Write($"<script type=\"text/javascript\">alert('Niste napisali web page podjetja...'  );</script>");
-
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-
-            }
-            else if (!checkIfNumber(companyNumber.Text))
-            {
-                Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
-
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-            }
-            else
-            {
-                createFileIfDoesNotExist(companyName.Text);
-                insertCompany();
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno poslani podatki.'  );</script>");
-                fillCompanies();
-                //fillCompanyDelete();
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-
-            }
         }
 
-        protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            current = companiesListBox.SelectedItem.Value.ToString();
-            var id = GetCompanyName(companiesListBox.SelectedItem.Value.ToString());
-            FillUsers(id);
-
-            // Changes the users acording to the selected value in the CompanyList Box.
-        }
+         
 
         protected void usersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -722,8 +538,6 @@ namespace peptak
             FillListGraphs();
             showConfig();
             updateForm();
-
-            //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
         }
 
         public void FillListGraphsNames()
@@ -872,7 +686,8 @@ namespace peptak
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
 
-                for (int j = 0; j < graphsListBox.Items.Count;j++) {
+                for (int j = 0; j < graphsListBox.Items.Count; j++)
+                {
 
                     if (graphsListBox.Items.ElementAt(i).Selected == true)
                     {
@@ -908,7 +723,7 @@ namespace peptak
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersListBox.SelectedItem == null) 
+            if (usersListBox.SelectedItem == null)
             {
                 Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
 
@@ -975,58 +790,38 @@ namespace peptak
 
 
 
-        private string getCurrentCompany()
-        {
-            var company = companiesListBox.SelectedItem.Text;
-
-
-            return company;
-        }
+      
 
         protected void delete_Click(object sender, EventArgs e)
         {
 
-           
+
         }
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
-
-
             var id = getIdCompany(current);
             deleteMemberships(id);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-
-
-
             try
             {
                 user.ExecuteNonQuery();
 
-            } catch(Exception error)
+            }
+            catch (Exception error)
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
-
-
-
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
             string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-
-           
-
             try
             {
                 cmd.ExecuteNonQuery();
-
                 //fillUsersDelete();
                 //fillCompanyDelete();
-
-
-
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
                 string filePath = Server.MapPath("~/App_Data/" + current);
@@ -1034,8 +829,6 @@ namespace peptak
                 {
                     Directory.Delete(filePath);
                 }
-
-
             }
 
 
@@ -1044,17 +837,10 @@ namespace peptak
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
-
             FillListGraphs();
-            fillCompanies();
-            FillListAdmin();
-
             cmd.Dispose();
             conn.Close();
-
-
-
-            FillUsers(1);
+            FillUsers();
         }
 
         private int getIdCompany(string current)
@@ -1062,61 +848,40 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-
             try
             {
                 result = cmd.ExecuteScalar();
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
             cmd.Dispose();
             conn.Close();
-
             int finalID = System.Convert.ToInt32(result);
-
             return finalID;
-
-           
         }
 
         private void deleteMemberships(int number)
         {
-
-            var final = getCurrentCompany();
+            var final = defaultCompany();
+            int idCompany =  getIdCompany(final);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
-            string dev = $"DELETE FROM companies WHERE company_name='{number}'";
-
-
-
+            SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
+            string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
             try
             {
                 cmd.ExecuteNonQuery();
-
-                //fillUsersDelete();
-                //fillCompanyDelete();
-
-
-
+                // fillUsersDelete();
+                // fillCompanyDelete();
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
-
-      
-
             cmd.Dispose();
             conn.Close();
         }
@@ -1142,14 +907,15 @@ namespace peptak
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-
+                    FillUsers();
                 }
                 else
                 {
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-                    //Logging
+                    FillUsers();
+                    // Logging
                 }
             }
 
@@ -1165,14 +931,15 @@ namespace peptak
             conn.Close();
         }
 
-    
+
 
         protected void byUser_Click(object sender, EventArgs e)
         {
-            if(by.Visible == true)
+            if (by.Visible == true)
             {
                 by.Visible = false;
-            } else
+            }
+            else
             {
                 by.Visible = true;
             }
@@ -1180,23 +947,17 @@ namespace peptak
 
         protected void saveByuser_Click(object sender, EventArgs e)
         {
-     
-                if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
-                {
-                    Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
-                    
 
-                }
-
-                else
-                {
-                    var error = "";
-                    FillListGraphsNames();
-                    makeSQLqueryByUser();
-                    showConfigByUser();
-                    copyFilesByUser();
-    
-
+            if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
+            }
+            else
+            {                
+                FillListGraphsNames();
+                makeSQLqueryByUser();
+                showConfigByUser();
+                copyFilesByUser();
             }
         }
 
@@ -1214,7 +975,8 @@ namespace peptak
             if (byUserListBox.SelectedValues[0] != null)
             {
                 findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
-            }else
+            }
+            else
             {
                 byUserListBox.SelectedIndex = 0;
                 findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
@@ -1310,4 +1072,4 @@ namespace peptak
 
         }
     }
-    }
+}
