@@ -79,7 +79,8 @@ namespace peptak
             }
             else
             {
-                current = companiesListBox.SelectedItem.Value.ToString();               
+                current = companiesListBox.SelectedItem.Value.ToString();  
+                
                 FillUsers(getIdCompany(current));
 
             }
@@ -1180,7 +1181,6 @@ namespace peptak
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-                    FillUsers(1);
 
                 }
                 else
@@ -1188,7 +1188,6 @@ namespace peptak
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-                    FillUsers(1);
                     //Logging
                 }
             }
