@@ -366,9 +366,10 @@ namespace peptak
 
                         conn.Close();
                         createUserPermisions.Dispose();
-
+                        var connRegistration = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                        connRegistration.Open();
                         string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
-                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, connRegistration);
                         var username = TxtUserName.Text;
                         try
                         {

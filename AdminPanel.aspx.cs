@@ -59,12 +59,11 @@ namespace peptak
             if (!IsPostBack)
             {
                 companiesList.SelectedIndex = 0 ;
-
-                companiesList.Enabled = false;
                 by.Visible = false;
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
                 // Consider this.
+                companiesList.Enabled = false;
                 FillUsers(beginingID);
                 fillCompanies();
                 //FillUsers();
@@ -720,6 +719,8 @@ namespace peptak
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            TxtUserName.Enabled = false;
+            email.Enabled = false;
             current = companiesListBox.SelectedItem.Value.ToString();
 
             var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty));
@@ -733,6 +734,8 @@ namespace peptak
 
         protected void usersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            TxtUserName.Enabled = false;
+            email.Enabled = false;
             graphsListBox.Enabled = true;
             FillListGraphs();
             showConfig();           
@@ -1287,6 +1290,15 @@ namespace peptak
 
         }
 
-       
+        protected void newUser_Click(object sender, EventArgs e)
+        {
+            TxtUserName.Enabled = true;
+            email.Enabled = true;
+            TxtUserName.Text = "";
+            TxtName.Text = "";
+            email.Text = "";
+            TxtPassword.Text = "";
+            TxtRePassword.Text = "";
+        }
     }
     }

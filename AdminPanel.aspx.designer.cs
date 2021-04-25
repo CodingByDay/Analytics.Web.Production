@@ -159,6 +159,15 @@ namespace peptak
         protected global::System.Web.UI.WebControls.Button companyButton;
 
         /// <summary>
+        /// newUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton newUser;
+
+        /// <summary>
         /// TxtName control.
         /// </summary>
         /// <remarks>

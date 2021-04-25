@@ -219,31 +219,38 @@
 	
 	<div class="column" id="userForm" style="background-color:white!important;">
 		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
-                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
+                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija/sprememba uporabnika</h3></center>
+                                                    <br />
 
                     <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center>  
-                  
+                                                  <br />
+
                     <center> <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center> 
-              
+                                              <br />
+
                 <center>  
                 
                         <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
                
                </center>  
-              
+                                              <br />
+
                  
                        <center> <asp:TextBox ID="TxtPassword" runat="server"  
                                      TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
               
-                  
+                                                  <br />
+
                        <center> <asp:TextBox ID="TxtRePassword" runat="server"  
                                      TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
-                 
+                                                 <br />
+
            <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
 
-                  
+                                                 <br />
+ 
                        <center><asp:RadioButtonList ID="userRole" runat="server">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
@@ -262,12 +269,10 @@
                         </asp:DropDownList>  </center>
                     <br />
               
-     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>
+     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>                                <br />
+
 	</div>
-  
-  <div class="column">
-      	
-	</div>
+
 	
 </section>
 

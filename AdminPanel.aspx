@@ -102,36 +102,46 @@
     </style>
 	<script>
 
+        $("#newUser").click(function (e) {
 
+            e.preventDefault();
+
+        })
 
         function showOrHideDivCompany() {
           
             var v = document.getElementById("companyForm");
-          
+            var buttonCompany = document.getElementById("company");
             if (v.style.display === "none") {
                 if (isAllowed()) {
 
                     v.style.display = "block";
-                } else {
-                    //pass
-                }
-            } else {
-                    v.style.display = "none";
-                }
-             
-            }
-        
-        function showOrHideDivUser() {
-            var v = document.getElementById("userForm");
-            if (v.style.display === "none") {
-                if (isAllowed()) {
-
-                    v.style.display = "block";
+                    buttonCompany.innerHTML = "Skrij";
                 } else {
                     //pass
                 }
             } else {
                 v.style.display = "none";
+                buttonCompany.innerHTML = "Dodaj";
+                }
+             
+            }
+        
+        function showOrHideDivUser() {
+            var buttonUser = document.getElementById("user");
+            var v = document.getElementById("userForm");
+            if (v.style.display === "none") {
+                if (isAllowed()) {
+
+                    v.style.display = "block";
+                    buttonUser.innerHTML = "Skrij";
+                } else {
+                    //pass
+                }
+            } else {
+                v.style.display = "none";
+                buttonUser.innerHTML = "Dodaj/Spremeni";
+
             }
 
         }
@@ -294,7 +304,9 @@
                          <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija/sprememba uporabnika</h3></center>
                   
                                                 <br />
-
+                   <center> <dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click"  AutoPostBack="false">
+    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center>
+                    <br />
                     <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center>  
                           <br />
@@ -343,62 +355,14 @@
                     <br />
               
      <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>
+                    <br />
 	</div>
   
-  <div class="column">
-      	
-	</div>
+ 
 	
 </section>
 
      </div>
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-   
-  
-   
-  
+     </div> 
 </asp:Content>
 
