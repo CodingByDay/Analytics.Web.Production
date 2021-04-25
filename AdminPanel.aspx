@@ -22,7 +22,11 @@
             background-color: none!important;
         }
 
-
+        .new {
+            float: right;
+            top:0;
+            margin-right:5px;
+        }
         #userForm {
             background-color: none!important;
         }
@@ -192,7 +196,7 @@
 <section class="columns">
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="2">
+		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="5">
         <CssClasses Control="control"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
@@ -212,7 +216,7 @@
 </dx:BootstrapListBox>
 		<br />
 		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Dodaj/Spremeni</button></center>
-           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" AutoPostBack="true">
+           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
 	</div>
@@ -258,13 +262,23 @@
              <hr style="color: black;" />
 
              <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
-           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
+        <br />
+           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>  
+                <br />
+
            <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
-<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center>    
+                <br />
+
+<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center> 
+                <br />
+
            <center> <asp:DropDownList ID="listAdmin" runat="server" > 
                <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList>  </center>
+                <br />
+
               <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Baza.</h3></center>    
+                <br />
 
                   
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
@@ -277,29 +291,37 @@
 	
 	<div class="column" id="userForm">
 		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
-                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija uporabnika</h3></center>
+                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija/sprememba uporabnika</h3></center>
+                  
+                                                <br />
 
                     <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center>  
-                  
+                          <br />
+
                     <center> <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox></center>
                    </center> 
-              
+                      <br />
+
                 <center>  
                 
                         <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
                
                </center>  
-              
+                      <br />
+
                  
                        <center> <asp:TextBox ID="TxtPassword" runat="server"  
                                      TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
-              
+                      <br />
+
                   
                        <center> <asp:TextBox ID="TxtRePassword" runat="server"  
                                      TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
-                 
+                         <br />
+
            <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
+                            <br />
 
                   
                        <center><asp:RadioButtonList ID="userRole" runat="server">  
@@ -374,75 +396,7 @@
   
    
   
-     </div>
-  
    
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
   
    
   

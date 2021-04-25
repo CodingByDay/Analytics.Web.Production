@@ -324,7 +324,8 @@ namespace peptak
                 SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
                 var result = cmd.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
-
+                conn.Close();
+                cmd.Dispose();
                 int next = Total_ID + 1;
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
@@ -340,6 +341,8 @@ namespace peptak
 
 
                     var resultCheck = check.ExecuteScalar();
+                    conn.Close();
+                    check.Dispose();
                     Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                     if (resultUsername > 0)
                     {
@@ -361,7 +364,8 @@ namespace peptak
                         }
                         string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
-
+                        conn.Close();
+                        createUserPermisions.Dispose();
 
                         string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
@@ -379,7 +383,8 @@ namespace peptak
                             FillUsers();
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
-
+                            conn.Close();
+                            createUser.Dispose();
                             //fillChange();
                             //fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
@@ -433,7 +438,8 @@ namespace peptak
                         //    fillUsersDelete();
                         string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
                         string replacedPath = filePath.Replace(" ", string.Empty);
-
+                        conn.Close();
+                        cmd.Dispose();
 
                         if (!Directory.Exists(replacedPath.ToString()))
                         {

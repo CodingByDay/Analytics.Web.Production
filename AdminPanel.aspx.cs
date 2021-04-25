@@ -49,6 +49,7 @@ namespace peptak
         private List<String> help = new List<string>();
         private List<String> usersDataByUser = new List<string>();
         private Exception e;
+        private int idFromString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -57,6 +58,9 @@ namespace peptak
             // Adding create user and create company logic. Adding foreach for multiple selection listbox.
             if (!IsPostBack)
             {
+                companiesList.SelectedIndex = 0 ;
+
+                companiesList.Enabled = false;
                 by.Visible = false;
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
@@ -385,7 +389,9 @@ namespace peptak
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
-                companiesList.SelectedIndex = (int)sdr["id_company"]-1;
+                    var number = (int)sdr["id_company"];
+                companiesList.SelectedIndex = number - 1;
+
                 companiesList.Enabled = false;
                 email.Enabled = false;
                 string pass = sdr["Pwd"].ToString();
@@ -414,7 +420,7 @@ namespace peptak
                 SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
                 var result = cmd.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
-
+                cmd.Dispose();
                 int next = Total_ID + 1;
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
@@ -427,9 +433,10 @@ namespace peptak
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
                     SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
-
+                  
 
                     var resultCheck = check.ExecuteScalar();
+                    check.Dispose();
                     Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                     if (resultUsername > 0)
                     {
@@ -449,20 +456,23 @@ namespace peptak
                         {
                             // Logging module.
                         }
-
+                        createUserPermisions.Dispose();
 
 
                         string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
-
-
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
-                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                        string companyINSERT = companiesList.SelectedItem.Value;
+                        int idCOMPANY = getIdCompany(companyINSERT);
+                        var nonQuery = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                        nonQuery.Open();
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}')");
+                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, nonQuery);
                         var username = TxtUserName.Text;
                         try
                         {
                             var id = getIdCompany(companiesList.SelectedValue);
                             createUser.ExecuteNonQuery();
+                            createUser.Dispose();
                             Response.Write($"<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
                             TxtName.Text = "";
                             TxtPassword.Text = "";
@@ -473,7 +483,7 @@ namespace peptak
                             FillUsers(id);
                             var company = companiesList.SelectedValue;
                             var spacelessCompany = company.Replace(" ", string.Empty);
-                            
+                        
                             //fillChange();
                             //fillUsersDelete();
                             string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
@@ -526,6 +536,8 @@ namespace peptak
                     {
                         var username = TxtUserName.Text;
                         cmd.ExecuteNonQuery();
+                        conn.Close();
+                        cmd.Dispose();
                         Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                         TxtName.Text = "";
                         TxtPassword.Text = "";
@@ -709,9 +721,13 @@ namespace peptak
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             current = companiesListBox.SelectedItem.Value.ToString();
-            var id = GetCompanyName(companiesListBox.SelectedItem.Value.ToString());
-            FillUsers(id);
 
+            var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty));
+            FillUsers(id);
+            companiesList.SelectedValue = companiesListBox.SelectedItem.Value.ToString();
+            companiesList.Enabled = false;
+
+            usersListBox.SelectedIndex = 0;
             // Changes the users acording to the selected value in the CompanyList Box.
         }
 
@@ -719,10 +735,9 @@ namespace peptak
         {
             graphsListBox.Enabled = true;
             FillListGraphs();
-            showConfig();
+            showConfig();           
             updateForm();
-
-            //  Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
+            // Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
         }
 
         public void FillListGraphsNames()
@@ -760,7 +775,6 @@ namespace peptak
             }
             var final = companyInfo.Replace(" ", string.Empty);
             return final;
-
         }
 
         private void copyFiles()
@@ -769,8 +783,6 @@ namespace peptak
             System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
             System.IO.FileInfo[] fi = di.GetFiles();
             var user = usersListBox.SelectedItem.Text;
-
-
             string uname = getCompanyQuery(user);
             for (int i = 0; i < fi.Length; i++)
             {
@@ -847,6 +859,7 @@ namespace peptak
             cmd.Dispose();
             conn.Close();
         }
+
         private void makeSQLqueryByUser()
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -863,7 +876,6 @@ namespace peptak
                 try
                 {
                     id = cmd.ExecuteScalar();
-
                 }
                 catch (Exception e)
                 {
@@ -925,15 +937,11 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_permisions from Users where uname='{deletedID}'", conn);
-
             try
             {
                 var result = cmd.ExecuteScalar();
                 permisionID = System.Convert.ToInt32(result);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
@@ -959,15 +967,11 @@ namespace peptak
             {
                 var result = cmd1.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
             }
-
             cmd1.Dispose();
             conn.Close();
         }
@@ -977,28 +981,17 @@ namespace peptak
         private string getCurrentCompany()
         {
             var company = companiesListBox.SelectedItem.Text;
-
-
             return company;
         }
 
-        protected void delete_Click(object sender, EventArgs e)
-        {
-
-           
-        }
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
-
-
             var id = getIdCompany(current);
             deleteMemberships(id);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-
-
-
+            var deb = $"delete from users where id_company={id}";
             try
             {
                 user.ExecuteNonQuery();
@@ -1007,25 +1000,16 @@ namespace peptak
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
-
-
-
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-            string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-
-           
-
+            string dev = $"DELETE FROM companies WHERE company_name='{current}'";        
             try
             {
                 cmd.ExecuteNonQuery();
 
                 //fillUsersDelete();
                 //fillCompanyDelete();
-
-
-
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
 
                 string filePath = Server.MapPath("~/App_Data/" + current);
@@ -1033,15 +1017,11 @@ namespace peptak
                 {
                     Directory.Delete(filePath);
                 }
-
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... + {error.Message}'  );</script>");
             }
 
             FillListGraphs();
@@ -1131,6 +1111,8 @@ namespace peptak
             {
                 var company = getCompanyQuery(usersListBox.SelectedItem.Text);
                 var spacelessCompany = company.Replace(" ", string.Empty);
+                idFromString = getIdCompany(spacelessCompany);
+
                 cmd.ExecuteNonQuery();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
                 string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersListBox.SelectedItem.Text}");
@@ -1148,10 +1130,10 @@ namespace peptak
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-                    //Logging
+                    // Logging
                 }
             }
-
+            
 
             catch (Exception error)
             {
@@ -1159,7 +1141,7 @@ namespace peptak
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
-
+            FillUsers(idFromString);
             cmd.Dispose();
             conn.Close();
         }
@@ -1182,9 +1164,7 @@ namespace peptak
      
                 if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
-                    
-
+                    Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");                   
                 }
 
                 else
@@ -1193,9 +1173,7 @@ namespace peptak
                     FillListGraphsNames();
                     makeSQLqueryByUser();
                     showConfigByUser();
-                    copyFilesByUser();
-    
-
+                    copyFilesByUser();    
             }
         }
 
@@ -1308,5 +1286,7 @@ namespace peptak
         {
 
         }
+
+       
     }
     }
