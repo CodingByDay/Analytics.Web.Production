@@ -125,7 +125,7 @@
                AppendDataBoundItems="true">  
         </asp:DropDownList></center>
        <center> <asp:Button CssClass="btn btn-primary" ID="delete" runat="server" Text="Briši" OnClick="delete_Click"/></center>
-                        <hr />
+                        <br />
        
 
       <hr style="color: black;" />

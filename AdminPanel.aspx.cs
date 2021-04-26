@@ -393,9 +393,6 @@ namespace peptak
 
                 companiesList.Enabled = false;
                 email.Enabled = false;
-                string pass = sdr["Pwd"].ToString();
-                TxtPassword.Text = pass;
-                TxtRePassword.Text = TxtPassword.Text;
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
