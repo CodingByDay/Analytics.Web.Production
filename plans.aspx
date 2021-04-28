@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="home.aspx.cs" Inherits="peptak.home" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="plans.aspx.cs" Inherits="peptak.plans" %>
 
 <!DOCTYPE html>
 <html>
@@ -61,12 +61,9 @@
 
             <form class="pb-3" action="#" runat="server">
                <div class="form-group">
-                   <h3>Začetna strana za dashboard aplikaciju.</h3>
+                   <h3>Planovi</h3>
                     <asp:Button ID="login" runat="server" Text="Prijava" type="submit" OnClick="login_Click" CssClass="btn" />
                    <br />
-                   <br />
-
-                    <asp:Button ID="plans" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
 
                </div>
  

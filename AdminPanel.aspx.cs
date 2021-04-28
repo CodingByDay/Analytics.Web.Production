@@ -952,7 +952,7 @@ namespace peptak
             }
             catch (Exception error)
             {
-                //Implement logging here.
+          
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
@@ -978,7 +978,7 @@ namespace peptak
             }
             catch (Exception error)
             {
-                //Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.ToString()}'  );</script>");
             }
             cmd1.Dispose();
             conn.Close();
@@ -1006,7 +1006,7 @@ namespace peptak
 
             } catch(Exception error)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.ToString()}'  );</script>");
             }
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -1028,7 +1028,6 @@ namespace peptak
             }
             catch (Exception error)
             {
-                //Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... + {error.Message}'  );</script>");
             }
 
@@ -1049,18 +1048,13 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-
             try
             {
                 result = cmd.ExecuteScalar();
-
             }
-
-
             catch (Exception error)
-            {
-                //Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            {              
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.ToString()}'  );</script>");
             }
 
             cmd.Dispose();
@@ -1087,19 +1081,14 @@ namespace peptak
             try
             {
                 cmd.ExecuteNonQuery();
-
                 //fillUsersDelete();
                 //fillCompanyDelete();
-
-
-
             }
 
 
             catch (Exception error)
             {
-                //Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.ToString()}'  );</script>");
             }
 
       
@@ -1191,11 +1180,13 @@ namespace peptak
             config.Clear();
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
+
             // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
             // SET @ColList = ''
             // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment
+
             if (byUserListBox.SelectedValues[0] != null)
             {
                 findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
@@ -1205,7 +1196,6 @@ namespace peptak
                 findIdString = String.Format($"SELECT id_permisions from Users where uname='{byUserListBox.SelectedValues[0]}'");
 
             }
-
             // Documentation. This query is for getting all the permision table data from the user
             cmd = new SqlCommand(findIdString, conn);
             idNumber = cmd.ExecuteScalar();

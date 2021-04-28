@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace peptak
 {
-    public partial class home : System.Web.UI.Page
+    public partial class plans : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -16,12 +16,9 @@ namespace peptak
 
         protected void login_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logon.aspx"); // Entry point to the application.
+            Response.Redirect("logon.aspx");
         }
 
-        protected void plans_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("plans.aspx");
-        }
+       
     }
 }
