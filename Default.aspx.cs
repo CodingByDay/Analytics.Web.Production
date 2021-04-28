@@ -20,9 +20,9 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            Button BackButton = (Button)Master.FindControl("back");
-            BackButton.Enabled = false;
-            BackButton.Visible = false;
+          // Button BackButton = (Button)Master.FindControl("back");
+          //  BackButton.Enabled = false;
+          //  BackButton.Visible = false;
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
         
             string uname = HttpContext.Current.User.Identity.Name;

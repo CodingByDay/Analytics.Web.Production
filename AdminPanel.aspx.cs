@@ -53,9 +53,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Redirect to home page after paying...
-            // Confirm button, byUser, , delete icon, delete event.
-            // Adding create user and create company logic. Adding foreach for multiple selection listbox.
+
             if (!IsPostBack)
             {
                 companiesList.SelectedIndex = 0 ;
@@ -204,7 +202,7 @@ namespace peptak
                 }
             } else
             {
-                // Logging
+                
             }
 
           
@@ -241,7 +239,7 @@ namespace peptak
                     }
                     catch (Exception error)
                     {
-                        // Logging
+                      
                         continue;
                     }
                 }
@@ -256,22 +254,22 @@ namespace peptak
             }
         }
 
-        private int GetCompanyName(string Name)
-        {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{Name}';", conn);
+        //private int GetCompanyName(string Name)
+        //{
+        //    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+        //    conn.Open();
+        //    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{Name}';", conn);
           
-                var result = cmd.ExecuteScalar();
-                var company = System.Convert.ToInt32(result);
+        //        var result = cmd.ExecuteScalar();
+        //        var company = System.Convert.ToInt32(result);
 
 
 
-            cmd.Dispose();
-            conn.Close();
-            return company;
+        //    cmd.Dispose();
+        //    conn.Close();
+        //    return company;
 
-        }
+        //}
 
 
       
@@ -339,7 +337,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-
+                Response.Write(ex.ToString());
             }
         }
 
@@ -371,7 +369,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-
+                Response.Write(ex.ToString());
             }
         }
 
@@ -428,12 +426,13 @@ namespace peptak
                 {
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
-                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
-                  
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
+                
 
                     var resultCheck = check.ExecuteScalar();
-                    check.Dispose();
+                    
                     Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+                    check.Dispose();
                     if (resultUsername > 0)
                     {
                         Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
@@ -497,10 +496,14 @@ namespace peptak
 
                             }
                         }
-                        catch (Exception error)
+                        catch (Exception ex)
                         {
-                            // Implement logging here.
-                            Response.Write(error);
+                            Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
+                            TxtName.Text = "";
+                            TxtPassword.Text = "";
+                            TxtRePassword.Text = "";
+                            TxtUserName.Text = "";
+                            email.Text = "";
 
                         }
                     }
@@ -530,7 +533,7 @@ namespace peptak
 
                     try
                     {
-                        var username = TxtUserName.Text;
+                        var username = TxtUserName.Text.Replace(" ", string.Empty); ;
                         cmd.ExecuteNonQuery();
                         conn.Close();
                         cmd.Dispose();
@@ -540,9 +543,9 @@ namespace peptak
                         TxtRePassword.Text = "";
                         TxtUserName.Text = "";
                         email.Text = "";
-                        var company = companiesList.SelectedValue;
-                        //    fillUsersDelete();
-                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
+                        var company = companiesList.SelectedValue.Replace(" ", string.Empty); 
+                        //fillUsersDelete();
+                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
                         string replacedPath = filePath.Replace(" ", string.Empty);
 
 
@@ -554,10 +557,15 @@ namespace peptak
 
                         }
                     }
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
+                        Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
+                        TxtName.Text = "";
+                        TxtPassword.Text = "";
+                        TxtRePassword.Text = "";
+                        TxtUserName.Text = "";
+                        email.Text = "";
 
-                        // Implement logging here.
                     }
                 }
             }
@@ -649,10 +657,10 @@ namespace peptak
 
                 }
 
-                // Implement logging here.
+               
             }
 
-            // Second update part.
+           
             string destinationFileEdit = Server.MapPath($"~/App_Data/{folderName}/{admin}").Replace(" ", string.Empty);
 
             fileNames.Clear();
@@ -944,7 +952,7 @@ namespace peptak
             }
             catch (Exception error)
             {
-                // Implement logging here.
+                //Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
@@ -970,7 +978,7 @@ namespace peptak
             }
             catch (Exception error)
             {
-                // Implement logging here.
+                //Implement logging here.
             }
             cmd1.Dispose();
             conn.Close();
@@ -1020,7 +1028,7 @@ namespace peptak
             }
             catch (Exception error)
             {
-                // Implement logging here.
+                //Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... + {error.Message}'  );</script>");
             }
 
@@ -1051,7 +1059,7 @@ namespace peptak
 
             catch (Exception error)
             {
-                // Implement logging here.
+                //Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
@@ -1090,7 +1098,7 @@ namespace peptak
 
             catch (Exception error)
             {
-                // Implement logging here.
+                //Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
 
@@ -1130,14 +1138,14 @@ namespace peptak
                     FillListGraphs();
                     showConfig();
                     deletePermisionEntry();
-                    // Logging
+
                 }
             }
             
 
             catch (Exception error)
             {
-                // Implement logging here.
+
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 

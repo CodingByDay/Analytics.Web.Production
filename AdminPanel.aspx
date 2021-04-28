@@ -4,6 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     
      <asp:PlaceHolder runat="server">
@@ -13,6 +14,14 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
+
+        .container.body-content{
+
+min-width: 100% !important;
+
+}
+
+
 
          html {
             background-color: white!important;

@@ -7,38 +7,40 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace peptak {
-    
-    
-    public partial class Site_Mobile {
-        
+namespace peptak
+{
+
+
+    public partial class Site_Mobile
+    {
+
         /// <summary>
-        /// HeadContent control.
+        /// cmdSignOut control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
-        
+        protected global::System.Web.UI.WebControls.Button cmdSignOut;
+
         /// <summary>
-        /// form1 control.
+        /// admin control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+        protected global::System.Web.UI.WebControls.Button admin;
+
         /// <summary>
-        /// FeaturedContent control.
+        /// back control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder FeaturedContent;
-        
+        protected global::System.Web.UI.WebControls.Button back;
+
         /// <summary>
         /// MainContent control.
         /// </summary>

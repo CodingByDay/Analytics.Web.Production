@@ -73,9 +73,6 @@ namespace peptak
             }
 
         }
-
-
-      
         private List<bool> showConfig()
         {
 
@@ -185,7 +182,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-
+                Response.Write(ex.ToString());
             }
         }
         public void FillUsers()
@@ -221,7 +218,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                // Logging
+                Response.Write(ex.ToString());
             }
 
         }
@@ -255,14 +252,14 @@ namespace peptak
             }
             catch (Exception ex)
             {
-
+                Response.Write(ex.ToString());
             }
         }
 
     
         private void updateForm()
         {
-            ///
+
             var userRightNow = usersListBox.SelectedItem.Text;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
@@ -278,7 +275,6 @@ namespace peptak
                 string name = getCompanyQuery(uname);
                 int id = getIdCompany(name);
                 companiesList.SelectedIndex = id - 1;
-                // Fixes the value problem.
                 companiesList.Enabled = false;
                 email.Enabled = false;
                
@@ -335,13 +331,14 @@ namespace peptak
                 {
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                     conn.Open();
-                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName}'", conn);
+                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
 
 
                     var resultCheck = check.ExecuteScalar();
+                    
+                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                     conn.Close();
                     check.Dispose();
-                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                     if (resultUsername > 0)
                     {
                         Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
@@ -358,7 +355,7 @@ namespace peptak
                         }
                         catch (Exception error)
                         {
-                            // Logging module.
+                            Response.Write(error.ToString());
                         }
                         string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
@@ -396,10 +393,15 @@ namespace peptak
                             {
                             }
                         }
-                        catch (Exception error)
+                        catch (SqlException ex) when (ex.Number == 2627)
                         {
                             // Implement logging here.
-                            Response.Write(error);
+                            Response.Write($"<script type=\"text/javascript\">alert('To uporabniško ime že obstaja, prosimo probajte še enkrat.');</script>");
+                            TxtName.Text = "";
+                            TxtPassword.Text = "";
+                            TxtRePassword.Text = "";
+                            TxtUserName.Text = "";
+                            email.Text = "";
 
                         }
                     }
@@ -425,7 +427,7 @@ namespace peptak
 
                     try
                     {
-                        var username = TxtUserName.Text;
+                        var username = TxtUserName.Text.Replace(" ", string.Empty); ;
                         cmd.ExecuteNonQuery();
                         Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
                         TxtName.Text = "";
@@ -433,9 +435,9 @@ namespace peptak
                         TxtRePassword.Text = "";
                         TxtUserName.Text = "";
                         email.Text = "";
-                        var company = companiesList.SelectedValue;
+                        var company = companiesList.SelectedValue.Replace(" ", string.Empty); ;
                         //    fillUsersDelete();
-                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}").Replace(" ", string.Empty); ;
+                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
                         string replacedPath = filePath.Replace(" ", string.Empty);
                         conn.Close();
                         cmd.Dispose();
@@ -448,10 +450,17 @@ namespace peptak
 
                         }
                     }
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
-
                         // Implement logging here.
+                        Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
+                        // Logging
+                        TxtName.Text = "";
+                        TxtPassword.Text = "";
+                        TxtRePassword.Text = "";
+                        TxtUserName.Text = "";
+                        email.Text = "";
+
                     }
                 }
             }
