@@ -68,6 +68,13 @@
 
                     <asp:Button ID="plans" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
 
+
+
+
+
+                   <asp:Button ID="FTP" runat="server" Text="FTP" type="submit" OnClick="FTP_Click" CssClass="btn" />
+
+
                </div>
  
 

@@ -28,7 +28,8 @@ namespace peptak
             var company = getcompanyForUser();
             var folder = HttpContext.Current.User.Identity.Name;
             ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}".Replace(" ", string.Empty);
-           // ASPxDashboard2.SetDashboardStorage(dashboardStorage);
+         //   ASPxDashboard2.DashboardStorageFolder = "ftp://" + FTPUser + ":" + FTPPassword + "@" + FTPServer + dtLatestArticles.Rows[i]["PictureUrl"].ToString();
+            // ASPxDashboard2.SetDashboardStorage(dashboardStorage);
             var state = getViewState();
 
             switch (state)

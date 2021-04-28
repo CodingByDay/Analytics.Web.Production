@@ -480,3 +480,6 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompi
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\FluentFTP.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\FluentFTP.xml
