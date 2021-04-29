@@ -318,6 +318,7 @@
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
     <Content Include="Site.Master" />
     <Content Include="Success.aspx" />
+    <Content Include="testing.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -386,6 +387,7 @@
     <Compile Include="CustomStorage\DashboardStorageDataSet.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorage.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -456,6 +458,13 @@
     </Compile>
     <Compile Include="Success.aspx.designer.cs">
       <DependentUpon>Success.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="testing.aspx.cs">
+      <DependentUpon>testing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="testing.aspx.designer.cs">
+      <DependentUpon>testing.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

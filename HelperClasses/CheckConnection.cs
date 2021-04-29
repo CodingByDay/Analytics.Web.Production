@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OleDb;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -42,7 +41,7 @@ namespace peptak.HelperClasses
 
             bool result = false;
 
-            OleDbConnection connection = new OleDbConnection(conn);
+            SqlConnection connection = new SqlConnection(conn);
 
             try
 
