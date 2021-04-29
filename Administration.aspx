@@ -1,8 +1,8 @@
-﻿<%@ Page Title="
-    istracija" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Administration.aspx.cs" Inherits="peptak.Administration" %>
+﻿<%@ Page Title="Admistracija" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Administration.aspx.cs" Inherits="peptak.Administration" %>
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     
      <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -13,6 +13,7 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
   
      <body>
+
     <table width="80%" align="center">
       <tr>
         <td>
@@ -116,7 +117,7 @@
              <hr style="color: black;" />
 
              <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
-           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
+           <center> <asp:TextBox ID="companyNumber"  runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>                 
            <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
 <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center>    
            <center> <asp:DropDownList ID="listAdmin" runat="server" > 
@@ -128,6 +129,13 @@
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList></center>  
+
+                <center><asp:Button CssClass="btn btn-primary" ID="Button1"  runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
+
+        
+
+
+
              <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
                     </h3>
                   </td>

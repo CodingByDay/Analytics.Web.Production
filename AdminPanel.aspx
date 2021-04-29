@@ -303,6 +303,11 @@ min-width: 100% !important;
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList></center>  
+
+        <dx:BootstrapButton runat="server" IconCssClass="far fa-plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Like" AutoPostBack="false">
+        <SettingsBootstrap RenderOption="Info" />
+       </dx:BootstrapButton>
+
         <br />
              <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
 

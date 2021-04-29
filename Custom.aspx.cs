@@ -1,9 +1,11 @@
 ﻿using DevExpress.DashboardWeb;
+using FluentFTP;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
@@ -28,7 +30,19 @@ namespace peptak
             var company = getcompanyForUser();
             var folder = HttpContext.Current.User.Identity.Name;
             ASPxDashboard2.DashboardStorageFolder = $"~/App_Data/{company}/{folder}".Replace(" ", string.Empty);
-         //   ASPxDashboard2.DashboardStorageFolder = "ftp://" + FTPUser + ":" + FTPPassword + "@" + FTPServer + dtLatestArticles.Rows[i]["PictureUrl"].ToString();
+            //ASPxDashboard2.DashboardStorageFolder = @"ftp://insistinsist:w3bp4ss!@89.212.55.202/web/dashboards/PetPak/user2";
+            
+
+            //FtpClient client = new FtpClient();
+            //client.Host = "89.212.55.202";
+            //client.Credentials = new NetworkCredential("insistinsist", "w3bp4ss!");
+            //client.Connect();
+
+            //ASPxDashboard2.DashboardStorageFolder = client.GetWorkingDirectory();
+
+          
+
+            // ASPxDashboard2.DashboardStorageFolder = "ftp://insistinsist:w3bp4ss!@89.212.55.202/web/dashboards/PetPak/user2";
             // ASPxDashboard2.SetDashboardStorage(dashboardStorage);
             var state = getViewState();
 

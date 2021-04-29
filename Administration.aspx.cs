@@ -1133,5 +1133,10 @@ namespace peptak
             Tab4.CssClass = "Clicked";
             MainView.ActiveViewIndex = 3;
         }
+
+        protected void AddConnection_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

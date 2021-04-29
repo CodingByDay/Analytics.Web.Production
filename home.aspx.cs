@@ -40,12 +40,11 @@ namespace peptak
             client.Host = "89.212.55.202";
             client.Credentials = new NetworkCredential("insistinsist", "w3bp4ss!");
             client.Connect();
-
+            //client.
             // upload a file
-            
-
+            client.UploadDirectory(@"C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\App_Data\PetPak", "/web/dashboards/PetPak");
             // download the file again
-            client.DownloadFile(@"C:\Users\janko\Desktop\ftp.txt", "/web/dashboards/ftp.txt");
+            //client.DownloadFile(@"C:\Users\janko\Desktop\ftp.txt", "/web/dashboards/ftp.txt");
         }
 
 

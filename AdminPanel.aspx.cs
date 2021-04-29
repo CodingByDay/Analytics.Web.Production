@@ -1,4 +1,5 @@
-﻿using System;
+﻿using peptak.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -1295,5 +1296,45 @@ namespace peptak
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
         }
+
+        protected void AddConnection_Click(object sender, EventArgs e)
+        {
+            var _stringDB = GetResultFromDBTest(@"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name=Dashboard;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            Response.Write($"<script type=\"text/javascript\">alert('{_stringDB.ToString()}');</script>");
+
+
+        }
+
+
+
+        private string GetResultFromDBTest(string connectionString)
+        {
+            CheckConnection TestConnection = new CheckConnection();
+            var _result = TestConnection.check_connection(connectionString);
+            string _textResult;
+
+            if (_result == false)
+
+            {
+
+                _textResult = " ::Napaka v konekciji";
+
+            } else
+            {
+                _textResult = " ::Uspešna konekcija";
+
+
+            }
+
+
+
+
+            return _textResult;
+
+        }
+
+
+
+
     }
     }
