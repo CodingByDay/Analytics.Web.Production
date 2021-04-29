@@ -319,6 +319,8 @@
     <Content Include="Site.Master" />
     <Content Include="Success.aspx" />
     <Content Include="testing.aspx" />
+    <Content Include="testingadministration.aspx" />
+    <Content Include="testingcompanyadmin.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -465,6 +467,20 @@
     </Compile>
     <Compile Include="testing.aspx.designer.cs">
       <DependentUpon>testing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="testingadministration.aspx.cs">
+      <DependentUpon>testingadministration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="testingadministration.aspx.designer.cs">
+      <DependentUpon>testingadministration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="testingcompanyadmin.aspx.cs">
+      <DependentUpon>testingcompanyadmin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="testingcompanyadmin.aspx.designer.cs">
+      <DependentUpon>testingcompanyadmin.aspx</DependentUpon>
     </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>

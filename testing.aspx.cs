@@ -32,55 +32,13 @@ namespace peptak
             ASPxDashboard3.Visible = true;
 
 
-            ASPxButton1.Click += ASPxButton1_Click;
 
 
         }
 
-        private void ASPxButton1_Click(object sender, EventArgs e)
-        {
-            byte[] result = new byte[1000000];
-            string stringedResult = "";
-            string filePath = Server.MapPath("~/App_Data/PetPak/user2");
-            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
-            System.IO.FileInfo[] fi = di.GetFiles();
-            int counter = 2;
-            foreach (System.IO.FileInfo file in fi)
-            {
-                MemoryStream stream = new MemoryStream();
+       
 
-                XDocument doc = XDocument.Load(filePath + "/" + file.Name);
-                AddDashboardS(doc, file.Name);
-             
-
-
-
-            }
-
-
-        }
-
-        public string AddDashboardS(XDocument document, string dashboardName)
-        {
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                MemoryStream stream = new MemoryStream();
-                document.Save(stream);
-                stream.Position = 0;
-
-                SqlCommand InsertCommand = new SqlCommand(
-                    "INSERT INTO Dashboards (Dashboard, Caption) " +
-                    "output INSERTED.ID " +
-                    "VALUES (@Dashboard, @Caption)");
-                InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = dashboardName;
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
-                InsertCommand.Connection = connection;
-                string ID = InsertCommand.ExecuteScalar().ToString();
-                connection.Close();
-                return ID;
-            }
-        }
+     
 
     }
 }
