@@ -48,7 +48,7 @@ namespace peptak
         private object result;
         private List<String> help = new List<string>();
         private List<String> usersDataByUser = new List<string>();
-
+        private List<String> CurrentPermisionID = new List<string>();
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -117,10 +117,10 @@ namespace peptak
                 command.ExecuteReader(CommandBehavior.CloseConnection);
                 while (reader.Read())
                 {
-                    for (int i = 0; i < values.Count; i++)
+                    for (int i = 0; i < CurrentPermisionID.Count; i++)
                     {
-                        int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                     
+                        int bitValueTemp = (int)(reader[CurrentPermisionID[i]] as int? ?? 0);
+                        var debug = CurrentPermisionID[i].ToString();
                         if (bitValueTemp == 1)
                         {
                             graphsListBox.Items.ElementAt(i).Selected = true;
@@ -151,11 +151,11 @@ namespace peptak
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
 
-                // Create SqlCommand to select pwd field from users table given supplied userName.
+               // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
 
-                /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
+                // Intepolation or the F string.C# > 5.0       
+                 //Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -167,7 +167,7 @@ namespace peptak
                     values.Add(trimmed);
                 }
 
-                List<String> CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
+                CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
 
                 graphsListBox.DataSource = CurrentPermisionID;
                 graphsListBox.DataBind();

@@ -166,6 +166,7 @@
     <Content Include="adminsitrationcompany.aspx" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="ChangePassword.aspx" />
+    <Content Include="companycomponent.aspx" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -371,6 +372,13 @@
     <Compile Include="ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="companycomponent.aspx.cs">
+      <DependentUpon>companycomponent.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="companycomponent.aspx.designer.cs">
+      <DependentUpon>companycomponent.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Contact.aspx.cs">
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -390,6 +398,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorage.cs" />
+    <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorageCustom.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

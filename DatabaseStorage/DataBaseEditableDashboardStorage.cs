@@ -1,4 +1,5 @@
 ﻿using DevExpress.DashboardWeb;
+using DevExpress.DataAccess.Native.Web;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -45,13 +46,18 @@ GO
         public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
         {
             private string connectionString;
+        private SqlConnection conn;
+        private int permisionID;
 
-            public DataBaseEditableDashboardStorage(string connectionString)
+        public DataBaseEditableDashboardStorage(string connectionString)
             {
                 this.connectionString = connectionString;
             }
 
-            public string AddDashboard(XDocument document, string dashboardName)
+     
+
+
+        public string AddDashboard(XDocument document, string dashboardName)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
@@ -64,7 +70,8 @@ GO
                         "INSERT INTO Dashboards (Dashboard, Caption) " +
                         "output INSERTED.ID " +
                         "VALUES (@Dashboard, @Caption)");
-                    InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = dashboardName;
+                    string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+                    InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped;
                     InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                     InsertCommand.Connection = connection;
                     string ID = InsertCommand.ExecuteScalar().ToString();

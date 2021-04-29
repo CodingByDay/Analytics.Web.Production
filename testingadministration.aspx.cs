@@ -161,7 +161,7 @@ namespace peptak
             // EXEC(@SQLStatment
             if (usersListBox.SelectedItem != null)
             {
-                findIdString = String.Format($"SELECT id_permisions from Users where uname='{usersListBox.SelectedItem.Text}'");
+                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{usersListBox.SelectedItem.Text}'");
                 // Documentation. This query is for getting all the permision table data from the user
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
