@@ -2,6 +2,7 @@
 using DevExpress.DataAccess.Native.Web;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -16,31 +17,31 @@ namespace peptak.DatabaseStorage
     SET ANSI_NULLS ON
     GO
 
-SET QUOTED_IDENTIFIER ON
-GO
+    SET QUOTED_IDENTIFIER ON
+    GO
 
-SET ANSI_PADDING ON
-GO
+    SET ANSI_PADDING ON
+    GO
 
-CREATE TABLE[dbo].[Dashboards]
+    CREATE TABLE[dbo].[Dashboards]
     (
 
-   [ID][int] IDENTITY(1,1) NOT NULL,
+    [ID][int] IDENTITY(1,1) NOT NULL,
 
-  [Dashboard] [varbinary]
+    [Dashboard] [varbinary]
     (max) NULL,
 
-  [Caption] [nvarchar] (255) NULL,
- CONSTRAINT[PK_Dashboards] PRIMARY KEY CLUSTERED
-(
-   [ID] ASC
-)WITH(PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON[PRIMARY]
-) ON[PRIMARY]
+    [Caption] [nvarchar] (255) NULL,
+    CONSTRAINT[PK_Dashboards] PRIMARY KEY CLUSTERED
+    (
+    [ID] ASC
+    )WITH(PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON[PRIMARY]
+    ) ON[PRIMARY]
 
-GO
+    GO
 
-SET ANSI_PADDING OFF
-GO
+    SET ANSI_PADDING OFF
+    GO
      */
 
         public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
@@ -58,8 +59,13 @@ GO
 
 
         public string AddDashboard(XDocument document, string dashboardName)
+        {
+            List<String> connections = GetConnectionStrings();
+            foreach (String conn in connections)
             {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                PerformXMLManipulation(document);
+            }
+            using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                     MemoryStream stream = new MemoryStream();
@@ -77,10 +83,32 @@ GO
                     string ID = InsertCommand.ExecuteScalar().ToString();
                     connection.Close();
                     return ID;
-                }
             }
+        }
 
-            public XDocument LoadDashboard(string dashboardID)
+        private void PerformXMLManipulation(XDocument document)
+        {
+            throw new NotImplementedException();
+        }
+
+        private List<String> GetConnectionStrings()
+        {
+            // ConnectionStringSetting. Represents a single ConnectionString from the web config.
+            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+            List<String> strings = new List<string>();
+            foreach (ConnectionStringSettings conn in connections)
+            {
+
+                strings.Add(conn.Name);
+
+            }
+            strings.RemoveAt(0);
+            return strings;
+
+
+        }
+
+        public XDocument LoadDashboard(string dashboardID)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {

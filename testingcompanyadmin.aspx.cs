@@ -66,6 +66,16 @@ namespace peptak
                 typesOfViews.Add("Viewer&Designer");
                 userType.DataSource = typesOfViews;
                 userType.DataBind();
+                List<String> values = GetConnectionStrings();
+                string debug = "";
+      
+                foreach(String f in values)
+                {
+                    debug += f + System.Environment.NewLine;
+                }
+
+                Response.Write(debug.ToString());
+
             }
             else
             {
@@ -140,7 +150,22 @@ namespace peptak
             }
         }
 
+        private List<String> GetConnectionStrings()
+        {
+            // ConnectionStringSetting. Represents a single ConnectionString from the web config.
+            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+            List<String> strings = new List<string>();
+            foreach (ConnectionStringSettings conn in connections)
+            {
 
+                strings.Add(conn.Name);
+
+            }
+            strings.RemoveAt(0);
+            return strings;
+
+
+        }
         public void FillListGraphs()
         {
 

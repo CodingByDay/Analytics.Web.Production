@@ -24,6 +24,12 @@ namespace peptak.DatabaseStorage
 
         public string AddDashboard(XDocument document, string dashboardName)
         {
+
+          
+
+
+
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -44,6 +50,8 @@ namespace peptak.DatabaseStorage
                 return ID;
             }
         }
+
+    
 
         public XDocument LoadDashboard(string dashboardID)
         {
