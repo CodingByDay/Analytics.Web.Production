@@ -2,7 +2,6 @@
 using DevExpress.DataAccess.Native.Web;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -59,13 +58,8 @@ namespace peptak.DatabaseStorage
 
 
         public string AddDashboard(XDocument document, string dashboardName)
-        {
-            List<String> connections = GetConnectionStrings();
-            foreach (String conn in connections)
             {
-                PerformXMLManipulation(document);
-            }
-            using (SqlConnection connection = new SqlConnection(connectionString))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
                     MemoryStream stream = new MemoryStream();
@@ -83,32 +77,10 @@ namespace peptak.DatabaseStorage
                     string ID = InsertCommand.ExecuteScalar().ToString();
                     connection.Close();
                     return ID;
+                }
             }
-        }
 
-        private void PerformXMLManipulation(XDocument document)
-        {
-            throw new NotImplementedException();
-        }
-
-        private List<String> GetConnectionStrings()
-        {
-            // ConnectionStringSetting. Represents a single ConnectionString from the web config.
-            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-            List<String> strings = new List<string>();
-            foreach (ConnectionStringSettings conn in connections)
-            {
-
-                strings.Add(conn.Name);
-
-            }
-            strings.RemoveAt(0);
-            return strings;
-
-
-        }
-
-        public XDocument LoadDashboard(string dashboardID)
+            public XDocument LoadDashboard(string dashboardID)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
