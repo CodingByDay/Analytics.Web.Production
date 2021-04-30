@@ -20,6 +20,7 @@ namespace peptak
         private int companyID;
         private int stringID;
         private string stringConnection;
+        private int value;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,7 +29,66 @@ namespace peptak
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
+            ASPxDashboard3.AllowCreateNewDashboard = true;
+            ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
 
+        }
+        /// <summary>
+        /// If database checked disable.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ASPxDashboard3_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
+        {
+            
+            string ID = e.DashboardId;
+            var result = checkDB(ID);
+
+            if (!result)
+            {
+                ASPxDashboard3.WorkingMode = DevExpress.DashboardWeb.WorkingMode.ViewerOnly;
+            } else
+            {
+                ASPxDashboard3.WorkingMode = DevExpress.DashboardWeb.WorkingMode.Designer;
+
+            }
+        }
+
+        private bool checkDB(string ID)
+        {
+                bool flag = false; /* For added security default=false */
+                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
+
+                try
+                {
+                    var result = cmd.ExecuteScalar();
+                    value = System.Convert.ToInt32(result);
+
+                }
+
+
+                catch (Exception error)
+                {
+                    // Implement logging here.
+                    Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                }
+                
+
+                cmd.Dispose();
+                conn.Close();
+             if(value==1)
+            {
+                flag = true;
+            } else
+            {
+                flag = false;
+            }
+
+            return flag;
         }
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
