@@ -119,12 +119,12 @@ namespace peptak
 
                 if (role == "SuperAdmin")
                 {
-                    strRedirect = "default.aspx";
+                    strRedirect = "index.aspx";
                     Response.Redirect(strRedirect, true);
                 }
                 else
                 {
-                    strRedirect = "custom.aspx";
+                    strRedirect = "indextenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }
 
