@@ -16,12 +16,13 @@ min-width: 100% !important;
 }
     </style>
     <script>
-        function onBeforeRender(sender) {
-            var dashboardControl = sender.GetDashboardControl();
-            // ...
-            dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
-        }
-        $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
+       
+        //function onBeforeRender(sender) {
+        //    var dashboardControl = sender.GetDashboardControl();
+        //    // ...
+        //    dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
+        //}
+        //$(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
 
         $(function () {
 
@@ -45,17 +46,14 @@ min-width: 100% !important;
 
    
 
-        <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" MobileLayoutEnabled="Always" AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True" LimitVisibleDataMode="DesignerAndViewer">
-                   <ClientSideEvents BeforeRender="onBeforeRender" />
+        <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" MobileLayoutEnabled="Auto"
+            AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" WorkingMode="ViewerOnly" AllowInspectAggregatedData="True" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
+                  
 
         </dx:ASPxDashboard>
     </div>
 
    
-         <dx:ASPxButton ID="ASPxButton1" runat="server" Text="ASPxButton">
-        </dx:ASPxButton>
-
-
 
 
 

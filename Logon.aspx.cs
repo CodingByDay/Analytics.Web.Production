@@ -120,10 +120,21 @@ namespace peptak
                 if (role == "SuperAdmin")
                 {
                     strRedirect = "index.aspx";
+                    Session["mode"] = "ViewerOnly";
+                    Session["flag"] = "false";
+                    Session["id"] = "2";
+                    Session["InitialPassed"] = "false";
+                    Session["FirstLoad"] = "true";
+
                     Response.Redirect(strRedirect, true);
                 }
                 else
                 {
+                    Session["mode"] = "ViewerOnly";
+                    Session["flag"] = "false";
+                    Session["id"] = "2";
+                    Session["InitialPassed"] = "false";
+                    Session["FirstLoad"] = "true";
                     strRedirect = "indextenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }
