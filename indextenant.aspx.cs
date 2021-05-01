@@ -62,6 +62,8 @@ namespace peptak
         private void ASPxDashboard3_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
             Session["FirstLoad"] = "false";
+
+            string _initial = Session["InitialPassed"].ToString();
             string ID = e.DashboardId;
             var result = checkDB(ID);
             Session["id"] = e.DashboardId.ToString();
@@ -70,35 +72,28 @@ namespace peptak
             
                 if (result)
                 {
-                    if (Session["InitialPassed"].ToString() != "true")
-                    {
+                  
                         Session["mode"] = "ViewerOnly";
                         Session["flag"] = "false";
-                        Session["InitialPassed"] = "true";
 
-                    }
-                    else
-                    {
-                        Session["mode"] = "ViewerOnly";
-                        Session["InitialPassed"] = "false";
-                        Session["flag"] = "true";
+                        if(_initial != "false") { 
+
                         DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
+                        Session["InitialPassed"] = "false";
 
                     }
-
-
                 }
-                else
+                    else
                 {
                     Session["mode"] = "Designer";
                     Session["flag"] = "true";
-                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
-
-
+                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl); 
                 }
             } else
             {
                 Session["flag"] = "false";
+                Session["InitialPassed"] = "true";
+
 
             }
         }

@@ -125,7 +125,6 @@ namespace peptak
                     Session["id"] = "2";
                     Session["InitialPassed"] = "false";
                     Session["FirstLoad"] = "true";
-
                     Response.Redirect(strRedirect, true);
                 }
                 else
@@ -135,6 +134,7 @@ namespace peptak
                     Session["id"] = "2";
                     Session["InitialPassed"] = "false";
                     Session["FirstLoad"] = "true";
+
                     strRedirect = "indextenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }

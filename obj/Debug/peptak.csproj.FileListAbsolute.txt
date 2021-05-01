@@ -477,9 +477,9 @@ C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\de\DevExpress.XtraTreeList.v2
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
+C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll.licenses
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csproj.CopyComplete
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.dll
 C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.pdb
-C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\obj\Debug\peptak.csprojAssemblyReference.cache
