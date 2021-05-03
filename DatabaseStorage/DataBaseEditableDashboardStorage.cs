@@ -76,11 +76,40 @@ namespace peptak.DatabaseStorage
                     InsertCommand.Connection = connection;
                     string ID = InsertCommand.ExecuteScalar().ToString();
                     connection.Close();
+                    InsertPermision(stripped);
                     return ID;
                 }
             }
 
-            public XDocument LoadDashboard(string dashboardID)
+
+
+        private void InsertPermision(string dashboardName)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+
+
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                //fillUsersDelete();
+                //fillCompanyDelete();
+            }
+
+
+            catch (Exception error)
+            {
+
+            }
+
+
+
+            cmd.Dispose();
+            conn.Close();
+        }
+        public XDocument LoadDashboard(string dashboardID)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
