@@ -3,11 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -57,6 +59,7 @@ namespace peptak
 
             if (!IsPostBack)
             {
+                
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
@@ -104,6 +107,8 @@ namespace peptak
         {
             try
             {
+                admins.Clear();
+                strings.Clear();
 
                 string UserNameForChecking
                     = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
@@ -121,22 +126,16 @@ namespace peptak
                 listAdmin.DataSource = admins;
                 listAdmin.DataBind();
                 ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                foreach(ConnectionStringSettings setting in connections)
                 {
-                    strings.Add(reader["company_name"].ToString());
-
+                    strings.Add(setting.Name);
                 }
+                strings.RemoveAt(0);
 
                 ConnectionStrings.DataSource = strings;
                 ConnectionStrings.DataBind();
-                // unit test
+
+               
 
                 cmd.Dispose();
                 conn.Close();
@@ -1002,6 +1001,7 @@ namespace peptak
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersListBox.SelectedItem.Text}'", conn);
+            var debug = $"delete from Users where uname='{usersListBox.SelectedItem.Text}'";
             deletedID = usersListBox.SelectedItem.Text;
             getIdPermision();
             try
@@ -1146,13 +1146,45 @@ namespace peptak
 
         protected void AddConnection_Click(object sender, EventArgs e)
         {
-            var _stringDB = GetResultFromDBTest(@"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name=Dashboard;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            var _stringDB = GetResultFromDBTest(ConnectionString.Text);
             Response.Write($"<script type=\"text/javascript\">alert('{_stringDB.ToString()}');</script>");
+            Response.Write($"<script type=\"text/javascript\">confirm('Ali želite dodati ovu konekciju?');</script>");
+            if (connName.Text == null)
+            {
+                Response.Write($"<script type=\"text/javascript\">alert('Morate napisati ime konekcije.');</script>");
+            } else
+
+            {
+                AddConnectionString(ConnectionString.Text);
+                FillListAdmin();
+                DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
+                // Unit testing.
+            }
 
 
         }
 
+        private void AddConnectionString(string stringConnection)
+        {
 
+            Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+          
+            var builder = new SqlConnectionStringBuilder(stringConnection);
+            ConnectionStringSettings conn = new ConnectionStringSettings();
+            conn.ConnectionString = builder.ConnectionString;
+            conn.Name = connName.Text;
+            
+            config.ConnectionStrings.ConnectionStrings.Add(conn);
+            
+            
+            
+            
+            config.Save(ConfigurationSaveMode.Modified, true);
+
+
+
+
+        }
 
         private string GetResultFromDBTest(string connectionString)
         {
@@ -1181,8 +1213,17 @@ namespace peptak
 
         }
 
+       
 
-
-
+        //protected void AddConnectionString_Click(object sender, EventArgs e)
+        //{
+        //    if(ConnectionStringDiv.Visible == true)
+        //    {
+        //        ConnectionStringDiv.Visible = false;
+        //    } else
+        //    {
+        //        ConnectionStringDiv.Visible = true;
+        //    }
+        //}
     }
 }

@@ -32,7 +32,7 @@ namespace peptak
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
             ASPxDashboard3.AllowCreateNewDashboard = true;
             ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
-            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             if (Session["FirstLoad"].ToString() != "true")
             {
                 ASPxDashboard3.InitialDashboardId = Session["id"].ToString();

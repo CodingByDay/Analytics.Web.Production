@@ -16,6 +16,10 @@ namespace peptak.DatabaseStorage
         private string connectionString;
         private SqlConnection conn;
         private int permisionID;
+        private SqlCommand cmd;
+        private string adminName;
+        private string company;
+        private int adminID;
 
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
@@ -41,8 +45,149 @@ namespace peptak.DatabaseStorage
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
                 connection.Close();
+                InsertPermision(stripped);
+                var company = getcompanyForUser();
+                var admin = GetAdminFromCompanyName(company);
+                int idAdmin = GetPermisionUserID(admin);
+                InsertPermisionAdminAndUser(idAdmin, stripped);
                 return ID;
             }
+        }
+        private int getIdPermision()
+        {
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                permisionID = System.Convert.ToInt32(result);
+            }
+            catch (Exception error)
+            {
+
+            }
+
+            cmd.Dispose();
+            conn.Close();
+
+            return permisionID;
+
+
+        }
+        private void InsertPermisionAdminAndUser(int admin, string name)
+        {
+            var idCurrent = getIdPermision();
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {idCurrent}", conn);
+            try
+            {
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception error)
+            {
+            }
+            cmd.Dispose();
+            conn.Close();
+            // Admin insert...
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmdSecond = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {admin}", conn);
+            try
+            {
+                cmdSecond.ExecuteNonQuery();
+
+            }
+            catch (Exception error)
+            {
+            }
+            cmd.Dispose();
+            conn.Close();
+
+        }
+        public int GetPermisionUserID(string user)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);   
+            // Execute command and fetch pwd field into lookupPassword string.
+            int adminID = (int) cmd.ExecuteScalar();
+
+         
+
+            cmd.Dispose();
+            conn.Close();
+            return adminID;
+        }
+        public string GetAdminFromCompanyName(string company)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                adminName = (reader["admin_id"].ToString());
+            }
+
+            cmd.Dispose();
+            conn.Close();
+            return adminName;
+        }
+
+        public string getcompanyForUser()
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                company = (reader["company_name"].ToString());
+            }
+
+            cmd.Dispose();
+            conn.Close();
+            return company;
+        }
+        private void InsertPermision(string dashboardName)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+
+
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+                //fillUsersDelete();
+                //fillCompanyDelete();
+            }
+
+
+            catch (Exception error)
+            {
+
+            }
+
+
+
+            cmd.Dispose();
+            conn.Close();
         }
 
         public XDocument LoadDashboard(string dashboardID)

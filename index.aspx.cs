@@ -25,11 +25,10 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-
             ASPxDashboard3.Visible = true;
+            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
 
 

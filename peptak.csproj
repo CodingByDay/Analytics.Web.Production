@@ -195,6 +195,7 @@
     <Content Include="indextenant.aspx" />
     <Content Include="membership.aspx" />
     <Content Include="plans.aspx" />
+    <Content Include="plus.svg" />
     <Content Include="ResetPassword.aspx" />
     <Content Include="Responsive Registration Form\index.html" />
     <Content Include="Responsive Registration Form\style.css" />

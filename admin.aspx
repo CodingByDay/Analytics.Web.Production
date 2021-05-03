@@ -20,7 +20,9 @@
 min-width: 100% !important;
 
 }
-
+        .conn, .plus {
+            display: inline-block;
+        }
 
 
          html {
@@ -108,6 +110,9 @@ min-width: 100% !important;
             display:block;
             color: black;
         }
+        #ConnectionStringDiv {
+            display: none;
+        }
     </style>
 	<script>
 
@@ -134,6 +139,18 @@ min-width: 100% !important;
                 buttonCompany.innerHTML = "Dodaj";
             }
 
+        }
+        function showConnection() {
+            
+            var divider = document.getElementById("ConnectionStringDiv");
+            var button = document.getElementById("add");
+            if (divider.style.display === "none") {
+                divider.style.display = "block";
+                button.innerHTML = "Skrij";
+            } else {
+                divider.style.display = "none";
+                button.innerHTML = "Dodaj konekcijo";
+            }
         }
 
         function showOrHideDivUser() {
@@ -302,12 +319,16 @@ min-width: 100% !important;
                   
                   <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
-              </asp:DropDownList></center>  
-
-        <dx:BootstrapButton runat="server" IconCssClass="far fa-plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Like" AutoPostBack="false">
+              </asp:DropDownList></center> 
+        <br />
+        <center><button type="button" id="add" class="btn btn-info" onclick="showConnection()">Dodaj konekcijo</button></center>
+        <br /> <div id="ConnectionStringDiv">
+      <center><dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
         <SettingsBootstrap RenderOption="Info" />
        </dx:BootstrapButton>
-
+        <asp:TextBox ID="ConnectionString" runat="server" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
+                <asp:TextBox ID="connName" runat="server" placeholder="Ime:" Width="500" CssClass="conn"></asp:TextBox></center> 
+            </div>
         <br />
              <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
 

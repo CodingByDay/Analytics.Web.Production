@@ -45,15 +45,14 @@ min-width: 100% !important;
 
    
 
-        <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" MobileLayoutEnabled="Always" AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True" LimitVisibleDataMode="DesignerAndViewer">
+        <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" MobileLayoutEnabled="Auto" AllowCreateNewJsonConnection="True" AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True" LimitVisibleDataMode="DesignerAndViewer">
                    <ClientSideEvents BeforeRender="onBeforeRender" />
 
         </dx:ASPxDashboard>
     </div>
 
    
-         <dx:ASPxButton ID="ASPxButton1" runat="server" Text="ASPxButton">
-        </dx:ASPxButton>
+      
 
 
 

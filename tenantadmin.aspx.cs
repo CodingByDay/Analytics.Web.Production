@@ -55,7 +55,6 @@ namespace peptak
             {
                 defaultCompany();
                 by.Visible = false;
-
                 FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
@@ -224,10 +223,6 @@ namespace peptak
             }
 
         }
-
-
-
-
         private void fillCompaniesRegistration()
         {
             try
@@ -283,7 +278,7 @@ namespace peptak
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role)); //
                 userType.SelectedIndex = userType.Items.IndexOf(userType.Items.FindByValue(type));
 
             }
@@ -1006,5 +1001,7 @@ namespace peptak
         {
 
         }
+
+       
     }
 }
