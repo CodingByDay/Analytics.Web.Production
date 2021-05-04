@@ -369,6 +369,7 @@ namespace peptak
 
         private void updateForm()
         {
+          
             ///
             var userRightNow = usersListBox.SelectedItem.Text;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
@@ -405,7 +406,7 @@ namespace peptak
 
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
                 conn.Open();
-                SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
+                SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
                 var result = cmd.ExecuteScalar();
                 Int32 Total_ID = System.Convert.ToInt32(result);
                 cmd.Dispose();
