@@ -36,6 +36,39 @@ namespace peptak
         }
 
 
+        private bool getCurrentID(string name)
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select id_company from users where uname='{name}';", conn);
+            var result = cmd.ExecuteScalar();
+            int FinalCurrentID = (int)result;
+
+
+
+            var checkingDesigner = new SqlCommand($"select Designer from companies where id_company={FinalCurrentID};", conn);
+
+            var flag = checkingDesigner.ExecuteScalar();
+
+            var flagINT = (int)flag;
+            cmd.Dispose();
+            checkingDesigner.Dispose();
+            conn.Close();
+            if(flagINT==1)
+            {
+                return true;
+            } else
+            {
+             return false;
+            }
+
+        }
+
+
+
+
+
         private bool ValidateUser(string userName, string passWord)
         {
             SqlConnection conn;
@@ -101,6 +134,15 @@ namespace peptak
 
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
+                var isDesigner = getCurrentID(txtUserName.Value);
+                if (isDesigner)
+                {
+                    Session["DesignerPayed"] = "true";
+                }
+                else
+                {
+                    Session["DesignerPayed"] = "false";
+                }
                 FormsAuthenticationTicket tkt;
                 string cookiestr;
                 HttpCookie ck;

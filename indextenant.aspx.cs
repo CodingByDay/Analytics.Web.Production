@@ -33,16 +33,24 @@ namespace peptak
             ASPxDashboard3.AllowCreateNewDashboard = true;
             ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            if (Session["FirstLoad"].ToString() != "true")
+            if (Session["DesignerPayed"].ToString() == "true")
             {
-                ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
-            }
-            if(Session["mode"].ToString() == "ViewerOnly")
-            {
-                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+
+                if (Session["FirstLoad"].ToString() != "true")
+                {
+                    ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
+                }
+                if (Session["mode"].ToString() == "ViewerOnly")
+                {
+                    ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+                }
+                else
+                {
+                    ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                }
             } else
             {
-                ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+
             }
         }
 
@@ -61,39 +69,41 @@ namespace peptak
 
         private void ASPxDashboard3_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            Session["FirstLoad"] = "false";
-
-            string _initial = Session["InitialPassed"].ToString();
-            string ID = e.DashboardId;
-            var result = checkDB(ID);
-            Session["id"] = e.DashboardId.ToString();
-            if (Session["flag"].ToString() == "false")
+            if (Session["DesignerPayed"].ToString() == "true")
             {
-            
-                if (result)
+
+                Session["FirstLoad"] = "false";
+                string _initial = Session["InitialPassed"].ToString();
+                string ID = e.DashboardId;
+                var result = checkDB(ID);
+                Session["id"] = e.DashboardId.ToString();
+                if (Session["flag"].ToString() == "false")
                 {
-                  
+                    if (result)
+                    {
                         Session["mode"] = "ViewerOnly";
                         Session["flag"] = "false";
+                        if (_initial != "false")
+                        {
+                            DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
+                            Session["InitialPassed"] = "false";
 
-                        if(_initial != "false") { 
-
+                        }
+                    }
+                    else
+                    {
+                        Session["mode"] = "Designer";
+                        Session["flag"] = "true";
                         DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
-                        Session["InitialPassed"] = "false";
-
                     }
                 }
-                    else
+                else
                 {
-                    Session["mode"] = "Designer";
-                    Session["flag"] = "true";
-                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl); 
+                    Session["flag"] = "false";
+                    Session["InitialPassed"] = "true";
                 }
             } else
             {
-                Session["flag"] = "false";
-                Session["InitialPassed"] = "true";
-
 
             }
         }
