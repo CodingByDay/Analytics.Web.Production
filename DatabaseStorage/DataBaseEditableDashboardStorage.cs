@@ -45,7 +45,8 @@ namespace peptak.DatabaseStorage
 
         public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
         {
-            private string connectionString;
+        
+        private string connectionString;
         private SqlConnection conn;
         private int permisionID;
 

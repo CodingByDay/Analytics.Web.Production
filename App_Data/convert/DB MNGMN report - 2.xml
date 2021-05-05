@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="DB MNGMT report - 2" />
+  <DataSources>
+    <SqlDataSource Name="DB MNGMT report 2" ComponentName="sqlDataSource1">
+      <Connection Name="eHolding Centralna Baza" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="DB MNGMT report">
+        <Sql>select *
+FROM "PA_eHolding_Centralna_baza".dbo."uTN_Analitika_MNGMT_Detalj_1_SUM" ;</Sql>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="Nivo3" Expression="iif([MngmtIDNivo3]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2" Expression="iif([MngmtIDNivo2]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1" Expression="[MngmtID]+' '+[MngmtIDNaziv]" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1Filter" Expression="iif([MngmtIDNivo1]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Debet" Expression="filter(sum(MngmtDebet) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Kredit" Expression="filter(sum(MngmtKredit) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Saldo" Expression="filter(sum(MngmtSaldo) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo3Prihodek" Expression="iif([MngmtIDNivo3]='T' and [MngmtIDOznaka]='Prihodek',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo3StrošekProdaja" Expression="iif([MngmtIDNivo3]='T' and [MngmtIDOznaka]='Strošek prodaja',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo3StrošekOstalo" Expression="iif([MngmtIDNivo3]='T' and [MngmtIDOznaka]='Strošek ostalo',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2StrošekProdaja" Expression="iif([MngmtIDNivo2]='T' and [MngmtIDOznaka]='Strošek prodaja',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2StrošekOstalo" Expression="iif([MngmtIDNivo2]='T' and [MngmtIDOznaka]='Strošek ostalo',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2Prihodek" Expression="iif([MngmtIDNivo2]='T' and [MngmtIDOznaka]='Prihodek',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1Prihodek" Expression="iif([MngmtIDNivo1]='T' and [MngmtIDOznaka]='Prihodek',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1StrošekOstalo" Expression="iif([MngmtIDNivo1]='T' and [MngmtIDOznaka]='Strošek ostalo',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1StrošekProdaja" Expression="iif([MngmtIDNivo1]='T' and [MngmtIDOznaka]='Strošek prodaja',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2Graf" Expression="iif([MngmtIDNivo2]='T' and [MngmtIDNivo3]&lt;&gt;'T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="NivoFilter" Expression="iif([MngmtIDNivo3]='T','Nivo 3',&#xA;iif([MngmtIDNivo2]='T' and [MngmtIDNivo3]&lt;&gt;'T','Nivo 2',&#xA;iif([MngmtIDNivo1]='T','Nivo 1','')))" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="NivoOpis" Expression="iif([MngmtIDNivo3]='T',[MngmtID]+'-'+[MngmtIDNaziv],&#xA;iif([MngmtIDNivo2]='T' and [MngmtIDNivo3]&lt;&gt;'T',[MngmtID]+'-'+[MngmtIDNaziv],&#xA;iif([MngmtIDNivo1]='T',[MngmtID]+'-'+[MngmtIDNaziv],'')))" DataType="Auto" DataMember="DB MNGMT report" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Poslovno poročilo - 2 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem0] = 'T'">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="Nivo2" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDNivo2" DefaultId="DataItem0" />
+        <Measure DataMember="MngmtIDNivoBarve" SummaryType="Min" DefaultId="DataItem3" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem3" />
+      </HiddenMeasures>
+      <FormatRules>
+        <GridItemFormatRule Name="Format Rule 1" DataItem="DataItem3" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PalePurple" />
+            <Value1 Type="System.String" Value="2" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 2" DataItem="DataItem3" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PalePurple" />
+            <Value1 Type="System.String" Value="2" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 3" DataItem="DataItem3" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 4" DataItem="DataItem3" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis " Weight="119.4206008583691">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="30.5793991416309">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <Grid ComponentName="gridDashboardItem2" Name="Poslovno poročilo - 1 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem0] = 'T' Or [DataItem3] = 'T'">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="Nivo1" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDNivo1" DefaultId="DataItem0" />
+        <Dimension DataMember="MngmtIDNivo2" DefaultId="DataItem3" />
+        <Dimension DataMember="MngmtIDNivo3" DefaultId="DataItem4" />
+        <Measure DataMember="MngmtIDNivoBarve" SummaryType="Min" DefaultId="DataItem5" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+        <Dimension DefaultId="DataItem3" />
+        <Dimension DefaultId="DataItem4" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem5" />
+      </HiddenMeasures>
+      <FormatRules>
+        <GridItemFormatRule Name="Format Rule 1" DataItem="DataItem5" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleBlue" />
+            <Value1 Type="System.String" Value="1" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 2" DataItem="DataItem5" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleBlue" />
+            <Value1 Type="System.String" Value="1" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 3" DataItem="DataItem5" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PalePurple" />
+            <Value1 Type="System.String" Value="2" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 4" DataItem="DataItem5" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 5" DataItem="DataItem5" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PalePurple" />
+            <Value1 Type="System.String" Value="2" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 6" DataItem="DataItem5" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis " Weight="113.25910931174089">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="36.740890688259107">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="Leto" DataSource="sqlDataSource1" DataMember="DB MNGMT report">
+      <DataItems>
+        <Dimension DataMember="MngmtDatumTemeljnice" Name="Leto " DefaultId="DataItem0">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" />
+        </Dimension>
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem3" Name="Mesec" DataSource="sqlDataSource1" DataMember="DB MNGMT report">
+      <DataItems>
+        <Dimension DataMember="MngmtDatumTemeljnice" Name="Mesec " DateTimeGroupInterval="Month" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <Grid ComponentName="gridDashboardItem4" Name="Poslovno poročilo - 3 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem0] = 'T'">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="MngmtIDNivo3" DefaultId="DataItem0" />
+        <Dimension DataMember="Nivo3" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="MngmtIDNivoBarve" SummaryType="Min" DefaultId="DataItem3" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem3" />
+      </HiddenMeasures>
+      <FormatRules>
+        <GridItemFormatRule Name="Format Rule 1" DataItem="DataItem3" DataItemApplyTo="DataItem1">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+        <GridItemFormatRule Name="Format Rule 2" DataItem="DataItem3" DataItemApplyTo="DataItem2">
+          <FormatConditionValue Condition="ContainsText">
+            <AppearanceSettings AppearanceType="PaleGreen" />
+            <Value1 Type="System.String" Value="3" />
+          </FormatConditionValue>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis " Weight="115.40755467196819">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="34.592445328031808">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <Pie ComponentName="pieDashboardItem3" Name="Priodki" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem3] = 'Prihodek'" IsMasterFilterCrossDataSource="true" ShowPieCaptions="false">
+      <InteractivityOptions MasterFilterMode="Multiple" IsDrillDownEnabled="true" />
+      <DataItems>
+        <Measure DataMember="MngmtSaldo" Name="Saldo" FilterString="Not IsNullOrEmpty([DataItem4])" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDOznaka" DefaultId="DataItem3" />
+        <Dimension DataMember="Nivo1Prihodek" DefaultId="DataItem4" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem3" />
+      </HiddenDimensions>
+      <Arguments>
+        <Argument DefaultId="DataItem4" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+    <Pie ComponentName="pieDashboardItem1" Name="Ostali stroški" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem3] = 'Strošek ostalo'" IsMasterFilterCrossDataSource="true" ShowPieCaptions="false">
+      <InteractivityOptions MasterFilterMode="Multiple" IsDrillDownEnabled="true" />
+      <DataItems>
+        <Measure DataMember="MngmtSaldo" Name="Saldo" FilterString="Not IsNullOrEmpty([DataItem4])" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDOznaka" DefaultId="DataItem3" />
+        <Dimension DataMember="Nivo1StrošekOstalo" DefaultId="DataItem4" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem3" />
+      </HiddenDimensions>
+      <Arguments>
+        <Argument DefaultId="DataItem4" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+    <Pie ComponentName="pieDashboardItem2" Name="Strošji prodaje" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem3] = 'Strošek prodaja'" IsMasterFilterCrossDataSource="true" ShowPieCaptions="false">
+      <InteractivityOptions MasterFilterMode="Multiple" />
+      <DataItems>
+        <Measure DataMember="MngmtSaldo" Name="Saldo" FilterString="Not IsNullOrEmpty([DataItem4])" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDOznaka" DefaultId="DataItem3" />
+        <Dimension DataMember="Nivo1StrošekProdaja" DefaultId="DataItem4" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem3" />
+      </HiddenDimensions>
+      <Arguments>
+        <Argument DefaultId="DataItem4" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutGroup Weight="0.921814501908953">
+        <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="0.2144675517508032" />
+        <LayoutItem DashboardItem="listBoxDashboardItem3" Weight="0.29453823160307568" />
+        <LayoutItem DashboardItem="gridDashboardItem2" Weight="1.0058961082236459" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="1.0418140094830433" />
+        <LayoutItem DashboardItem="gridDashboardItem4" Weight="1.1218642994179144" />
+      </LayoutGroup>
+      <LayoutGroup Weight="1.1038289455526762">
+        <LayoutItem DashboardItem="pieDashboardItem1" Weight="1.6906946986086424" />
+        <LayoutItem DashboardItem="pieDashboardItem2" Weight="1.7460232836551803" />
+        <LayoutItem DashboardItem="pieDashboardItem3" Weight="1.8714347430939986" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

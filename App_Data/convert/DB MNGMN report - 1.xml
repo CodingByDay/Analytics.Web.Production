@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="DB MNGMT report - 1" />
+  <DataSources>
+    <SqlDataSource Name="DB MNGMT report" ComponentName="sqlDataSource1">
+      <Connection Name="eHolding Centralna Baza" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="DB MNGMT report">
+        <Sql>select *
+FROM "PA_eHolding_Centralna_baza".dbo."uTN_Analitika_MNGMT_Detalj_1" ;</Sql>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="Nivo3" Expression="iif([MngmtIDNivo3]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo2" Expression="iif([MngmtIDNivo2]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1" Expression="[MngmtID]+' '+[MngmtIDNaziv]" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Nivo1Filter" Expression="iif([MngmtIDNivo1]='T',[MngmtID]+' '+[MngmtIDNaziv],'')" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Debet" Expression="filter(sum(MngmtDebet) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Kredit" Expression="filter(sum(MngmtKredit) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+        <CalculatedField Name="Saldo" Expression="filter(sum(MngmtSaldo) ,MngmtOznaka='T' )" DataType="Auto" DataMember="DB MNGMT report" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Poslovno poročilo - 2 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem0] = 'T'">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="Nivo2" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDNivo2" DefaultId="DataItem0" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </HiddenDimensions>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis" Weight="119.4206008583691">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="30.5793991416309">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <Grid ComponentName="gridDashboardItem2" Name="Poslovno poročilo - 1 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="([DataItem0] = 'T' Or [DataItem3] = 'T')">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="Nivo1" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtIDNivo1" DefaultId="DataItem0" />
+        <Dimension DataMember="MngmtIDNivo2" DefaultId="DataItem3" />
+        <Dimension DataMember="MngmtIDNivo3" DefaultId="DataItem4" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+        <Dimension DefaultId="DataItem3" />
+        <Dimension DefaultId="DataItem4" />
+      </HiddenDimensions>
+      <FormatRules>
+        <GridItemFormatRule Name="Format Rule 1" DataItem="DataItem1">
+          <FormatConditionExpression>
+            <AppearanceSettings AppearanceType="PaleRed" />
+          </FormatConditionExpression>
+        </GridItemFormatRule>
+      </FormatRules>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis" Weight="113.25910931174089">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="36.740890688259107">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="Leto" DataSource="sqlDataSource1" DataMember="DB MNGMT report">
+      <DataItems>
+        <Dimension DataMember="MngmtDatumTemeljnice" Name="Leto" DefaultId="DataItem0">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" />
+        </Dimension>
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <Grid ComponentName="gridDashboardItem3" Name="Poslovno poročilo - 3 nivo" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem0] = 'T'">
+      <InteractivityOptions IsDrillDownEnabled="true" />
+      <DataItems>
+        <Dimension DataMember="MngmtIDNivo3" DefaultId="DataItem0" />
+        <Dimension DataMember="Nivo3" DefaultId="DataItem1" />
+        <Measure DataMember="MngmtSaldo" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </HiddenDimensions>
+      <GridColumns>
+        <GridDimensionColumn Name="Opis" Weight="115.40755467196819">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Name="Saldo" Weight="34.592445328031808">
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions EnableBandedRows="true" ColumnWidthMode="Manual" />
+    </Grid>
+    <Grid ComponentName="gridDashboardItem4" Name="Grid 1" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="[DataItem7] = 'T'">
+      <DataItems>
+        <Dimension DataMember="MngmtŠtevilkaTemeljnice" DefaultId="DataItem0" />
+        <Dimension DataMember="Nivo1" DefaultId="DataItem2" />
+        <Dimension DataMember="MngmtDatumTemeljnice" DateTimeGroupInterval="DayMonthYear" DefaultId="DataItem3" />
+        <Dimension DataMember="MngmtKonto" DefaultId="DataItem4" />
+        <Dimension DataMember="MngmtKontoNaziv" DefaultId="DataItem5" />
+        <Dimension DataMember="MngmtSubjekt" DefaultId="DataItem6" />
+        <Dimension DataMember="MngmtIDNivo1" DefaultId="DataItem7" />
+        <Measure DataMember="Debet" DefaultId="DataItem8">
+          <NumericFormat FormatType="Currency" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="Kredit" DefaultId="DataItem9">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="Saldo" DefaultId="DataItem10">
+          <NumericFormat FormatType="Currency" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Dimension DataMember="MngmtPozicijaTemeljnice" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" />
+        </Dimension>
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem7" />
+      </HiddenDimensions>
+      <GridColumns>
+        <GridDimensionColumn Name="Št.temeljnice" Weight="63.363170462638386">
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="POZ" Weight="31.943416514222658">
+          <Dimension DefaultId="DataItem1" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="MNGMT opis" Weight="115.72942704333127">
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Datum" Weight="38.751029869712738">
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Konto" Weight="32.467079080029592">
+          <Dimension DefaultId="DataItem4" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Opis" Weight="180.66358520339045">
+          <Dimension DefaultId="DataItem5" />
+        </GridDimensionColumn>
+        <GridDimensionColumn Name="Subjekt" Weight="101.5905377665442">
+          <Dimension DefaultId="DataItem6" />
+        </GridDimensionColumn>
+        <GridMeasureColumn Weight="68.59979612070768">
+          <Measure DefaultId="DataItem8" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridMeasureColumn>
+        <GridMeasureColumn Weight="59.17386993618296">
+          <Measure DefaultId="DataItem9" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridMeasureColumn>
+        <GridMeasureColumn Weight="57.718088003239714">
+          <Measure DefaultId="DataItem10" />
+          <Totals>
+            <Total Type="Sum" />
+          </Totals>
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions ColumnWidthMode="Manual" />
+    </Grid>
+    <ListBox ComponentName="listBoxDashboardItem2" Name="Opis" DataSource="sqlDataSource1" DataMember="DB MNGMT report" FilterString="Not IsNullOrEmpty([DataItem0])" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="Nivo1Filter" Name="Nivo1" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem3" Name="Mesec" DataSource="sqlDataSource1" DataMember="DB MNGMT report">
+      <DataItems>
+        <Dimension DataMember="MngmtDatumTemeljnice" Name="Mesec" DateTimeGroupInterval="Month" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutGroup Weight="0.78295159386068469">
+        <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="0.2144675517508032" />
+        <LayoutItem DashboardItem="listBoxDashboardItem3" Weight="0.29453823160307568" />
+        <LayoutItem DashboardItem="gridDashboardItem2" Weight="1.0058961082236459" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="1.0418140094830433" />
+        <LayoutItem DashboardItem="gridDashboardItem3" Weight="1.1218642994179144" />
+      </LayoutGroup>
+      <LayoutGroup Weight="1.3625029515938607">
+        <LayoutItem DashboardItem="listBoxDashboardItem2" Weight="0.16055110459332306" />
+        <LayoutItem DashboardItem="gridDashboardItem4" Weight="0.9962682550071732" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

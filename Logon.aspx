@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="peptak.Logon" EnableEventValidation="false"%>
 
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,7 +35,10 @@
                       Pozabili ste geslo?
                      </asp:HyperLink>
                             <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+                        <center><div id="database" runat="server" visible="false">
+                         <asp:DropDownList ID="databaseList" runat="server" AutoPostBack="true" Width="100px" Height="50px"></asp:DropDownList>
 
+                        </div></center>
                     </div>
                     </p>
                     <asp:Label ID="lblMsg" ForeColor="red" Font-Name="Verdana" Font-Size="10" runat="server" />

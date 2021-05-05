@@ -7,6 +7,7 @@ using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Web.Security;
 using System.Data;
+using System.Configuration;
 
 namespace peptak
 {
@@ -15,10 +16,16 @@ namespace peptak
         private SqlConnection conn;
         private SqlCommand cmd;
         private string role;
+        private List<String> strings = new List<string>();
+        private bool passport = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                FetchDataFillList();
+                Session["passport"] = "false";
+            }
         }
 
         private string getRole(string username)
@@ -35,6 +42,22 @@ namespace peptak
             return role;
         }
 
+        private void FetchDataFillList()
+        {
+            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+            if (connections.Count != 0)
+            {
+                // go trough all available ConnectionStrings in app.config
+                foreach (ConnectionStringSettings connection in connections)
+                {
+                    // reading the ConnectionString
+                    strings.Add(connection.Name);
+                }
+                strings.RemoveAt(0);
+                databaseList.DataSource = strings;
+                databaseList.DataBind();
+            }
+        }
 
         private bool getCurrentID(string name)
         {
@@ -131,9 +154,35 @@ namespace peptak
 
         protected void cmdLogin_Click(object sender, EventArgs e)
         {
+            var role = getRole(txtUserName.Value);
+            if (Session["passport"].ToString() == "true")
+            {
+                Session["conn"] = databaseList.SelectedValue;
+                validate();
+            }
+            else
+            {
 
+                if (role == "SuperAdmin")
+                {
+                    database.Visible = true;
+                    passport = true;
+                    Session["passport"] = "true";
+                }
+                else
+                {
+                    validate();
+                }
+            }
+            
+
+        }
+
+   private void validate()
+        {
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
+
                 var isDesigner = getCurrentID(txtUserName.Value);
                 if (isDesigner)
                 {
@@ -167,10 +216,14 @@ namespace peptak
                     Session["id"] = "2";
                     Session["InitialPassed"] = "false";
                     Session["FirstLoad"] = "true";
+                    // For some reason this doesn't fire.
+                    Session["value"] = "Skaza";
                     Response.Redirect(strRedirect, true);
                 }
                 else
                 {
+                    // For some reason this doesn't fire.
+                    Session["value"] = "Skaza";
                     Session["mode"] = "ViewerOnly";
                     Session["flag"] = "false";
                     Session["id"] = "2";
@@ -190,10 +243,7 @@ namespace peptak
             {
                 Response.Redirect("logon.aspx", true);
             }
-
         }
-
-   
 
         protected void reset_Click(object sender, EventArgs e)
         {
