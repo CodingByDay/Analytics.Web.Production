@@ -31,42 +31,45 @@ namespace peptak
 
             ASPxDashboard3.Visible = true;
 
-            //string filePath = Server.MapPath("~/App_Data/convert");
-            //System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
-            //System.IO.FileInfo[] fi = di.GetFiles();
-            //foreach (System.IO.FileInfo file in fi)
-            //{
-            //    XDocument doc = XDocument.Load(filePath + "/" + file.Name);
-            //    AddDashboard(doc, file.Name);
-            //}
+            string filePath = Server.MapPath("~/App_Data/grafi");
+            System.IO.DirectoryInfo di = new System.IO.DirectoryInfo(filePath);
+            System.IO.FileInfo[] fi = di.GetFiles();
+            foreach (System.IO.FileInfo file in fi)
+            {
+                XDocument doc = XDocument.Load(filePath + "/" + file.Name);
+                AddDashboard(doc, file.Name.Replace(".xml", string.Empty));
+            }
 
 
         }
-                    // Execute query.
-            
-        //public string AddDashboard(XDocument document, string dashboardName)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(ConnectionString))
-        //    {
-        //        connection.Open();
-        //        MemoryStream stream = new MemoryStream();
-        //        document.Save(stream);
-        //        stream.Position = 0;
+        // Execute query.
 
-        //        SqlCommand InsertCommand = new SqlCommand(
-        //            "INSERT INTO Dashboards (Dashboard, Caption) " +
-        //            "output INSERTED.ID " +
-        //            "VALUES (@Dashboard, @Caption)");
-        //        string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-        //        InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped;
-        //        InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
-        //        InsertCommand.Connection = connection;
-        //        string ID = InsertCommand.ExecuteScalar().ToString();
-        //        connection.Close();
-                
-        //        return ID;
-        //    }
-        //}
+     
+
+
+        public string AddDashboard(XDocument document, string dashboardName)
+        {
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                MemoryStream stream = new MemoryStream();
+                document.Save(stream);
+                stream.Position = 0;
+
+                SqlCommand InsertCommand = new SqlCommand(
+                    "INSERT INTO Dashboards (Dashboard, Caption) " +
+                    "output INSERTED.ID " +
+                    "VALUES (@Dashboard, @Caption)");
+                string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+                InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped.Replace(".xml", string.Empty);
+                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                InsertCommand.Connection = connection;
+                string ID = InsertCommand.ExecuteScalar().ToString();
+                connection.Close();
+
+                return ID;
+            }
+        }
 
 
     }

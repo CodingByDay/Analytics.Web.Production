@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="PS Reklamacije - 2" />
+  <DataSources>
+    <SqlDataSource Name="uTN_Analitika_Reklamacije_Osnova" ComponentName="sqlDataSource1">
+      <Connection Name="Skaza" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="uTN_Analitika_Reklamacije_Osnova">
+        <Sql>select "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeVrstaReklamacije","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeZaporednaŠtevilka","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeŠtevilkaDokumenta","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePoslovniDogodek","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePoslovniDogodekNaziv","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeDatumDokumenta","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeDatumVnosa","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeDatumZapiranja","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeTrajanjeDni","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeLeto","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeMesec","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeTeden","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeDan","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeStatus","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePozicija","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeIdent","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeNazivIdenta","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePrimarnaKlasifikacija","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePrimarnaKlasifikacijaNaziv","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeSekundarnaKlasifikacija","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeSekundarnaKlasifikacijaNaziv","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeVrnjenaKolicina","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeSlabiKosi","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeCenaNaDokumentu","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeSkladiščnaVrednostVrnjeniKosi","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeSkladiščnaVrednostSlabiKosi","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeMaterialniStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeAdministrativniStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeTransportniStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeOstaliStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeNeknjiženiStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeZnižaniStroški","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeRazrešenaVsota","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeOddelek","uTN_Analitika_Reklamacije_Osnova"."ReklamacijePrejemnik","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeIzdajatelj","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeOpisNeskladnosti2D","uTN_Analitika_Reklamacije_Osnova"."ReklamacijeOpomba","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeVrstaReklamacije" as "uTN_Analitika_Reklamacije_RealizacijaSUM_ReklamacijeVrstaReklamacije","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeLeto" as "uTN_Analitika_Reklamacije_RealizacijaSUM_ReklamacijeLeto","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeMesec" as "uTN_Analitika_Reklamacije_RealizacijaSUM_ReklamacijeMesec","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeNabavaKoličina","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeNabavaVrednost","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProizvodnjaKoličina","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProizvodnjaVrednost","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProizvodnjaKoličinaIzmet","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProizvodnjaVrednostIzmet","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProdajaKoličina","uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeProdajaVrednost","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeVrstaReklamacije" as "uTN_Analitika_Reklamacije_RealizacijaSUMLeto_ReklamacijeVrstaReklamacije","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeLeto" as "uTN_Analitika_Reklamacije_RealizacijaSUMLeto_ReklamacijeLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeNabavaKoličinaLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeNabavaVrednostLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProizvodnjaKoličinaLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProizvodnjaVrednostLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProizvodnjaKoličinaIzmetLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProizvodnjaVrednostIzmetLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProdajaKoličinaLeto","uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeProdajaVrednostLeto" from (("dbo"."uTN_Analitika_Reklamacije_Osnova" "uTN_Analitika_Reklamacije_Osnova"
+ inner join "dbo"."uTN_Analitika_Reklamacije_RealizacijaSUM" "uTN_Analitika_Reklamacije_RealizacijaSUM" on (("uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeVrstaReklamacije" = "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeVrstaReklamacije") and ("uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeLeto" = "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeLeto") and ("uTN_Analitika_Reklamacije_RealizacijaSUM"."ReklamacijeMesec" = "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeMesec")))
+ inner join "dbo"."uTN_Analitika_Reklamacije_RealizacijaSUMLeto" "uTN_Analitika_Reklamacije_RealizacijaSUMLeto" on (("uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeVrstaReklamacije" = "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeVrstaReklamacije") and ("uTN_Analitika_Reklamacije_RealizacijaSUMLeto"."ReklamacijeLeto" = "uTN_Analitika_Reklamacije_Osnova"."ReklamacijeLeto")))</Sql>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="ReklamacijePrejeto" Expression="CountDistinct(ReklamacijeŠtevilkaDokumenta)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeZaključeno" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),&#xA;ReklamacijeStatus='Zaključena')" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostPoReševanju" Expression="sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostNabaveMesec" Expression="max(ReklamacijeNabavaVrednost)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaNabavoMesec" Expression="Iif(max(ReklamacijeNabavaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeNabavaVrednost),0)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProizvodnjoMesec" Expression="Iif(max(ReklamacijeProizvodnjaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProizvodnjaVrednost),0)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProizvodnjeMesec" Expression="max(ReklamacijeProizvodnjaVrednost)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProdajoMesec" Expression="Iif(max(ReklamacijeProdajaVrednostLeto)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProdajaVrednostLeto),0)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProdajeMesec" Expression="max(ReklamacijeProdajaVrednostLeto)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostNabaveLeto" Expression="max(ReklamacijeNabavaVrednostLeto)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaNabavoLeto" Expression="Iif(max(ReklamacijeNabavaVrednostLeto)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeNabavaVrednostLeto),1)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProizvodnjoLeto" Expression="Iif(max(ReklamacijeProizvodnjaVrednostLeto)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProizvodnjaVrednostLeto),0)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProizvodnjeLeto" Expression="max(ReklamacijeProizvodnjaVrednostLeto)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProdajoLeto" Expression="Iif(max(ReklamacijeProdajaVrednostLeto)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProdajaVrednostLeto),0)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProdajeLeto" Expression="max(ReklamacijeProdajaVrednostLeto)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijePrejetoPretekloLeto" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijePrejetoTekočeLeto" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeZaključenoTekočeLeto" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True and &#xA;ReklamacijeStatus='Zaključena')" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeZaključenoPretekloLeto" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True and &#xA;ReklamacijeStatus='Zaključena')" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostPoReševanjuPretekloLeto" Expression="filter(&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostPoReševanjuTekočeLeto" Expression="filter(&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostPredReševanjemPretekloLeto" Expression="filter(&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostPredReševanjemTekočeLeto" Expression="filter(&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostNabavePretekloLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeNabavaVrednost]),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostNabaveTekočeLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeNabavaVrednost]),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProizvodnjePretekloLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeProizvodnjaVrednost]),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProizvodnjeTekočeLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeProizvodnjaVrednost]),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProdajePretekloLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeProdajaVrednost]),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeVrednostProdajeTekočeLeto" Expression="filter(&#xD;&#xA;max([ReklamacijeProdajaVrednost]),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaNabavoPretekloLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeNabavaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeNabavaVrednost),1),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaNabavoTekočeLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeNabavaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeNabavaVrednost),1),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProdajoPretekloLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeProdajaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProdajaVrednost),1),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProdajoTekočeLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeProdajaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProdajaVrednost),1),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProizvodnjoPretekloLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeProizvodnjaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProizvodnjaVrednost),1),&#xD;&#xA;IsLastYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeDeležNaProizvodnjoTekočeLeto" Expression="filter(&#xD;&#xA;Iif(max(ReklamacijeProizvodnjaVrednost)&lt;&gt;0,&#xD;&#xA;sum(ReklamacijeMaterialniStroški+ReklamacijeAdministrativniStroški+ReklamacijeTransportniStroški+ReklamacijeOstaliStroški+&#xD;&#xA;    ReklamacijeNeknjiženiStroški-ReklamacijeZnižaniStroški-ReklamacijeRazrešenaVsota)/&#xD;&#xA;max(ReklamacijeProizvodnjaVrednost),1),&#xD;&#xA;IsThisYear([ReklamacijeDatumDokumenta])=True)" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeŠteviloPrejetihReklamacij" Expression="CountDistinct([ReklamacijeŠtevilkaDokumenta])" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeReklamator" Expression="Iif([ReklamacijeVrstaReklamacije]='Reklamacije DOBAVITELJI',[ReklamacijePrejemnik],&#xA;Iif([ReklamacijeVrstaReklamacije]='INTERNE reklamacije',[ReklamacijeOddelek], &#xA;Iif([ReklamacijeVrstaReklamacije]='Reklamacije KUPCI',[ReklamacijeIzdajatelj] ,'')))" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="ReklamacijeOdprtih" Expression="[ReklamacijePrejeto]-ReklamacijeZaključeno&#xA;" DataType="Auto" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+        <CalculatedField Name="PretekloLeto" Expression="filter(CountDistinct(ReklamacijeŠtevilkaDokumenta),(GetYear([ReklamacijeDatumDokumenta])+1)=2021)" DataType="Integer" DataMember="uTN_Analitika_Reklamacije_Osnova" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <TabContainer ComponentName="tabContainerDashboardItem2" Name="Tab Container 2">
+      <Pages>
+        <Page ComponentName="dashboardTabPage4" Name="Page 1" />
+      </Pages>
+    </TabContainer>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="Leto" DataSource="sqlDataSource1" DataMember="uTN_Analitika_Reklamacije_Osnova">
+      <DataItems>
+        <Dimension DataMember="ReklamacijeDatumDokumenta" Name="Leto" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <Pie ComponentName="pieDashboardItem1" Name="Prejetih reklmacij v okviru vrste reklamacije" DataSource="sqlDataSource1" DataMember="uTN_Analitika_Reklamacije_Osnova">
+      <DataItems>
+        <Measure DataMember="ReklamacijePrejeto" Name="Prejetih reklamacij " DefaultId="DataItem0" />
+        <Dimension DataMember="ReklamacijeReklamator" DefaultId="DataItem1" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem0" />
+      </Values>
+    </Pie>
+    <ListBox ComponentName="listBoxDashboardItem2" Name="List Box 1" DataSource="sqlDataSource1" DataMember="uTN_Analitika_Reklamacije_Osnova">
+      <DataItems>
+        <Dimension DataMember="ReklamacijeVrstaReklamacije" Name="Dobavitelj" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="uTN_Analitika_Reklamacije_Osnova">
+      <DataItems>
+        <Measure DataMember="ReklamacijePrejeto" DefaultId="DataItem0" />
+        <Measure DataMember="ReklamacijeZaključeno" DefaultId="DataItem1" />
+        <Measure DataMember="ReklamacijeOdprtih" SummaryType="CountDistinct" DefaultId="DataItem2" />
+        <Dimension DataMember="ReklamacijeDatumDokumenta" DateTimeGroupInterval="Month" DefaultId="DataItem3" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem3" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple Name="Prejetih">
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple Name="Zaključenih">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Odprtih">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Chart ComponentName="chartDashboardItem2" Name="Chart 2" DataSource="sqlDataSource1" DataMember="uTN_Analitika_Reklamacije_Osnova">
+      <DataItems>
+        <Measure DataMember="ReklamacijePrejeto" SummaryType="Count" DefaultId="DataItem0" />
+        <Dimension DataMember="ReklamacijeDatumDokumenta" DateTimeGroupInterval="Month" DefaultId="DataItem2" />
+        <Measure DataMember="ReklamacijePrejetoPretekloLeto" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="PretekloLeto" DefaultId="DataItem3" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem2" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem3" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup Weight="0.88571428571428568">
+          <LayoutItem DashboardItem="listBoxDashboardItem1" />
+          <LayoutItem DashboardItem="listBoxDashboardItem2" Weight="0.4946869896570496" />
+          <LayoutItem DashboardItem="chartDashboardItem1" Weight="1.9780402830702231" />
+        </LayoutGroup>
+        <LayoutGroup Weight="1.1142857142857143">
+          <LayoutItem DashboardItem="pieDashboardItem1" Weight="1.1116883116883116" />
+          <LayoutItem DashboardItem="chartDashboardItem2" Weight="1.4727272727272727" />
+        </LayoutGroup>
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

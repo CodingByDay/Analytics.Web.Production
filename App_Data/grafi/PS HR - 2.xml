@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="PS HR - 2" />
+  <DataSources>
+    <SqlDataSource Name="tHE_Analitika_Plače_Skupna" ComponentName="sqlDataSource1">
+      <Connection Name="Skaza" FromAppConfig="true" />
+      <Query Type="CustomSqlQuery" Name="tHE_Analitika_Plače_Skupna">
+        <Sql>select "uTN_Analitika_Plače_Osnova"."PlačeObdobje","uTN_Analitika_Plače_Osnova"."PlačeLeto","uTN_Analitika_Plače_Osnova"."PlačeMesec","uTN_Analitika_Plače_Osnova"."PlačeOsebnaŠtevilka","uTN_Analitika_Plače_Osnova"."PlačeDelavec","uTN_Analitika_Plače_Osnova"."PlačeDelovnoMesto","uTN_Analitika_Plače_Osnova"."PlačeDatumVstopa","uTN_Analitika_Plače_Osnova"."PlačeOsnovniBruto","uTN_Analitika_Plače_Osnova"."PlačeVrstaPlačila","uTN_Analitika_Plače_Osnova"."PlačeVrstaPlačilaNaziv","uTN_Analitika_Plače_Osnova"."PlačeOsnova","uTN_Analitika_Plače_Osnova"."PlačeFaktor","uTN_Analitika_Plače_Osnova"."PlačeBruto","uTN_Analitika_Plače_Osnova"."PlačeNeto","uTN_Analitika_Plače_Osnova"."PlačeUre","uTN_Analitika_Plače_Osnova"."PlačeKredit","uTN_Analitika_Plače_Osnova"."PlačeOddelek","uTN_Analitika_Plače_Osnova"."PlačeStroškovniNosilec","uTN_Analitika_Plače_Osnova"."PlačeUreOznakaFond","uTN_Analitika_Plače_Osnova"."PlačePrispevkiPodjetje","uTN_Analitika_Plače_Osnova"."PlačePrispevkiDelavec","uTN_Analitika_Plače_Osnova"."PlačeDohodnina","uTN_Analitika_Plače_Osnova"."PlačeTipPlačila","uTN_Analitika_Plače_Osnova"."PlačeVrstaDela","uTN_Analitika_Plače_Osnova"."PlačeZmanjšujeFondUr","uTN_Analitika_Plače_Osnova"."PlačeZmanjšujeRazpoložljivKader","uTN_Analitika_Plače_Osnova"."PlačeStrošekDela","uTN_Analitika_Plače_Osnova"."PlačeUreFond","uTN_Analitika_Plače_Osnova"."PlačeTipDelavca","uTN_Analitika_Plače_Prodaja"."PlačeLeto" as "uTN_Analitika_Plače_Prodaja_PlačeLeto","uTN_Analitika_Plače_Prodaja"."PlačeMesec" as "uTN_Analitika_Plače_Prodaja_PlačeMesec","uTN_Analitika_Plače_Prodaja"."PlačePrihodkiOdProdaje","uTN_Analitika_Plače_RVS_RVC"."PlačeLeto" as "uTN_Analitika_Plače_RVS_RVC_PlačeLeto","uTN_Analitika_Plače_RVS_RVC"."PlačeMesec" as "uTN_Analitika_Plače_RVS_RVC_PlačeMesec","uTN_Analitika_Plače_RVS_RVC"."PlačeProdajnaVrednost","uTN_Analitika_Plače_RVS_RVC"."PlačeNabavnaVrednost","uTN_Analitika_Plače_RVS_RVC"."PlačeVrednostIzSestavnice","uTN_Analitika_Plače_RVS_RVC"."PlačeVrednostKOGS" from (("dbo"."uTN_Analitika_Plače_Osnova" "uTN_Analitika_Plače_Osnova"
+ inner join "dbo"."uTN_Analitika_Plače_Prodaja" "uTN_Analitika_Plače_Prodaja" on (("uTN_Analitika_Plače_Prodaja"."PlačeLeto" = "uTN_Analitika_Plače_Osnova"."PlačeLeto") and ("uTN_Analitika_Plače_Prodaja"."PlačeMesec" = "uTN_Analitika_Plače_Osnova"."PlačeMesec")))
+ inner join "dbo"."uTN_Analitika_Plače_RVS_RVC" "uTN_Analitika_Plače_RVS_RVC" on (("uTN_Analitika_Plače_RVS_RVC"."PlačeLeto" = "uTN_Analitika_Plače_Osnova"."PlačeLeto") and ("uTN_Analitika_Plače_RVS_RVC"."PlačeMesec" = "uTN_Analitika_Plače_Osnova"."PlačeMesec")))</Sql>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+      <CalculatedFields>
+        <CalculatedField Name="PlačeBrutoNaOpravljenoDelo" Expression="sum(Iif (PlačeStrošekDela='DA',PlačeBruto,0))/&#xD;&#xA;Iif(sum(Iif (PlačeVrstaDela='OPRAVLJENO DELO',PlačeUreFond,0))&lt;&gt;0,sum(Iif (PlačeVrstaDela='OPRAVLJENO DELO',PlačeUreFond,0)),1)" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeBrutoNaFondUr" Expression="sum(Iif (PlačeStrošekDela='DA',PlačeBruto,0))/&#xD;&#xA;Iif(sum(Iif (PlačeZmanjšujeFondUr&lt;&gt;'DA',PlačeUreFond,0))&lt;&gt;0,sum(Iif (PlačeZmanjšujeFondUr&lt;&gt;'DA',PlačeUreFond,0)),1)" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeRVCNabavnaNaFondUr" Expression="AVG([PlačeProdajnaVrednost]-[PlačeNabavnaVrednost])/&#xA;sum(Iif([PlačeZmanjšujeFondUr]&lt;&gt;'DA',[PlačeUreFond],0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeRVCCogsNaFondUr" Expression="AVG(PlačeProdajnaVrednost-PlačeVrednostKOGS)/&#xD;&#xA;sum(Iif (PlačeZmanjšujeFondUr&lt;&gt;'DA',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeRVSNaFondUr" Expression="AVG(PlačeProdajnaVrednost-PlačeVrednostIzSestavnice)/&#xD;&#xA;sum(Iif (PlačeZmanjšujeFondUr&lt;&gt;'DA',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačePrihodkiOdProdajeNaOpravljenoDelo" Expression="avg(PlačePrihodkiOdProdaje)/&#xD;&#xA;sum(Iif (PlačeVrstaDela='OPRAVLJENO DELO',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačePrihodkiOdProdajeNaFondUr" Expression="avg(PlačePrihodkiOdProdaje)/&#xD;&#xA;sum(Iif (PlačeZmanjšujeFondUr&lt;&gt;'DA',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeOpravljenaProizvodnjaNaOpravljenoDelo" Expression="sum(PlačeProizvodnjaVrednostDobri)/&#xA;sum(Iif (PlačeVrstaDela='OPRAVLJENO DELO',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreOpravljenoDelo" Expression="sum(Iif (PlačeVrstaDela='OPRAVLJENO DELO',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreDopust" Expression="sum(Iif (PlačeVrstaDela='DOPUST',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreIzredneOdsotnosti" Expression="sum(Iif (PlačeVrstaDela='IZREDNE ODSOTNOSTI (SELITEV, POROKA)',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreKratkotrajneOdsotnosti" Expression="sum(Iif (PlačeVrstaDela='KRATKOTRAJNE ODSOTNOSTI',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreDolgotrajneOdsotnosti" Expression="sum(Iif (PlačeVrstaDela='DOLGOTRAJNE ODSOTNOSTI (BOLNIŠKA)',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUrePoškodbePriDelu" Expression="sum(Iif (PlačeVrstaDela='POŠKODBE PRI DELU',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUrePorodniška" Expression="sum(Iif (PlačeVrstaDela='PORODNIŠKE',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreOčetovskiDopust" Expression="sum(Iif (PlačeVrstaDela='OČETOVSKI',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreČakanjeNaDelo" Expression="sum(Iif (PlačeVrstaDela='ČAKANJE NA DELO',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreŠtudentskoDelo" Expression="sum(Iif (PlačeVrstaDela='ŠTUDENTI',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreDeloAgencija" Expression="sum(Iif (PlačeVrstaDela='AGENCIJA',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreVajenci" Expression="sum(Iif (PlačeVrstaDela='VAJENCI',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+        <CalculatedField Name="PlačeUreNeopredeljeno" Expression="sum(Iif (PlačeVrstaDela='Neopredeljeno' or PlačeVrstaDela='DRUGO',PlačeUreFond,0))" DataType="Auto" DataMember="tHE_Analitika_Plače_Skupna" />
+      </CalculatedFields>
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="RVC in RVS glede na opravljeno delo - po mesecih" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna">
+      <DataItems>
+        <Dimension DataMember="PlačeMesec" Name="Mesec" DefaultId="DataItem0" />
+        <Measure DataMember="PlačeBrutoNaOpravljenoDelo" DefaultId="DataItem1">
+          <NumericFormat FormatType="Currency" />
+        </Measure>
+        <Measure DataMember="PlačeBrutoNaFondUr" DefaultId="DataItem2">
+          <NumericFormat FormatType="Currency" />
+        </Measure>
+        <Measure DataMember="PlačeRVCNabavnaNaFondUr" DefaultId="DataItem3">
+          <NumericFormat FormatType="Currency" />
+        </Measure>
+        <Measure DataMember="PlačeRVCCogsNaFondUr" DefaultId="DataItem4">
+          <NumericFormat FormatType="Currency" />
+        </Measure>
+        <Measure DataMember="PlačeRVSNaFondUr" DefaultId="DataItem5">
+          <NumericFormat FormatType="Currency" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednosti" />
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="RVC NC / Fond ur" SeriesType="Line">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="RVC COGS / fond ur" SeriesType="Line">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="RVS / Fond ur" SeriesType="Line">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Chart ComponentName="chartDashboardItem2" Name="Prihodki od prodaje glede na opravljeno delo - po mesecih" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna">
+      <DataItems>
+        <Measure DataMember="PlačePrihodkiOdProdajeNaOpravljenoDelo" DefaultId="DataItem0" />
+        <Dimension DataMember="PlačeMesec" Name="Mesec" DefaultId="DataItem1" />
+        <Measure DataMember="PlačePrihodkiOdProdajeNaFondUr" DefaultId="DataItem2" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem1" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <AxisY Title="Vrednosti" />
+          <Series>
+            <Simple Name="PrihodkiOdProdaje / Opravljeno delo">
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple Name="Prihodki od prodaje / Fond ur">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Chart ComponentName="chartDashboardItem3" Name="Chart 1" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna">
+      <DataItems>
+        <Dimension DataMember="PlačeMesec" Name="Mesec" DefaultId="DataItem0" />
+        <Measure DataMember="PlačeUreOpravljenoDelo" DefaultId="DataItem1">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreDopust" DefaultId="DataItem2">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreIzredneOdsotnosti" DefaultId="DataItem3">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreKratkotrajneOdsotnosti" DefaultId="DataItem4">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreDolgotrajneOdsotnosti" DefaultId="DataItem5">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUrePoškodbePriDelu" DefaultId="DataItem6">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUrePorodniška" DefaultId="DataItem7">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreOčetovskiDopust" DefaultId="DataItem8">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreČakanjeNaDelo" DefaultId="DataItem9">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreŠtudentskoDelo" DefaultId="DataItem10">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreDeloAgencija" DefaultId="DataItem11">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreVajenci" DefaultId="DataItem12">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+        <Measure DataMember="PlačeUreNeopredeljeno" DefaultId="DataItem13">
+          <NumericFormat FormatType="Number" Precision="0" Unit="Ones" IncludeGroupSeparator="true" />
+        </Measure>
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem0" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple Name="Opravljeno delo">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple Name="Dopust" SeriesType="Line">
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple Name="Izredne odsotnsti" SeriesType="Line">
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple Name="Kratkotrajne odsotnosti" SeriesType="Line">
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple Name="Dolgotrajne odsotnosti" SeriesType="Line">
+              <Value DefaultId="DataItem5" />
+            </Simple>
+            <Simple Name="Poškodbe pri delu" SeriesType="Line">
+              <Value DefaultId="DataItem6" />
+            </Simple>
+            <Simple Name="Porodniška" SeriesType="Line">
+              <Value DefaultId="DataItem7" />
+            </Simple>
+            <Simple Name="Očetovski dopust" SeriesType="Line">
+              <Value DefaultId="DataItem8" />
+            </Simple>
+            <Simple Name="Čakanje na delo" SeriesType="Line">
+              <Value DefaultId="DataItem9" />
+            </Simple>
+            <Simple Name="Študentsko delo" SeriesType="Line">
+              <Value DefaultId="DataItem10" />
+            </Simple>
+            <Simple Name="Delo agencija" SeriesType="Line">
+              <Value DefaultId="DataItem11" />
+            </Simple>
+            <Simple Name="Delo vajenci" SeriesType="Line">
+              <Value DefaultId="DataItem12" />
+            </Simple>
+            <Simple Name="Neopredeljeno" SeriesType="Line">
+              <Value DefaultId="DataItem13" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="Leto" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna" IsMasterFilterCrossDataSource="true">
+      <DataItems>
+        <Dimension DataMember="PlačeLeto" Name="Leto" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem2" Name="Oddelek" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna" IsMasterFilterCrossDataSource="true" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="PlačeOddelek" Name="Oddelek" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem3" Name="Tip delavca" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna" IsMasterFilterCrossDataSource="true">
+      <DataItems>
+        <Dimension DataMember="PlačeTipDelavca" Name="Tip delavca" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+    <ListBox ComponentName="listBoxDashboardItem4" Name="Delovno mesto" DataSource="sqlDataSource1" DataMember="tHE_Analitika_Plače_Skupna" IsMasterFilterCrossDataSource="true" EnableSearch="true">
+      <DataItems>
+        <Dimension DataMember="PlačeDelovnoMesto" Name="Delovno mesto" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup Orientation="Vertical">
+      <LayoutGroup Weight="1.1350649350649351">
+        <LayoutGroup Orientation="Vertical" Weight="0.21783164520946438">
+          <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="0.17457094966588985" />
+          <LayoutItem DashboardItem="listBoxDashboardItem3" Weight="0.25587297099267625" />
+        </LayoutGroup>
+        <LayoutItem DashboardItem="listBoxDashboardItem2" Weight="0.49495458666615755" />
+        <LayoutItem DashboardItem="chartDashboardItem1" Weight="1.2410516346574292" />
+        <LayoutItem DashboardItem="chartDashboardItem2" Weight="1.2851045084572283" />
+      </LayoutGroup>
+      <LayoutGroup Weight="1.5066303756124118">
+        <LayoutItem DashboardItem="listBoxDashboardItem4" Weight="0.5241112890480023" />
+        <LayoutItem DashboardItem="chartDashboardItem3" Weight="1.8474541514994745" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
