@@ -15,6 +15,15 @@ namespace peptak
     {
 
         /// <summary>
+        /// toggle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggle;
+
+        /// <summary>
         /// cmdSignOut control.
         /// </summary>
         /// <remarks>
@@ -49,5 +58,14 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+
+        /// <summary>
+        /// LayoutContentPlaceHolder control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ContentPlaceHolder LayoutContentPlaceHolder;
     }
 }

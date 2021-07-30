@@ -6,9 +6,8 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
     <style>
         .container.body-content{
 min-width: 100% !important;
@@ -24,6 +23,7 @@ min-width: 100% !important;
             $(".dx-dashboard-viewer-content").attr('style', 'min-width: 100% !important');
 
         });
+
         $(function () {
             $('.dx-overlay-content').click(function () {
                 $(this).hide();
@@ -40,9 +40,9 @@ min-width: 100% !important;
             var dashboardControl = sender.GetDashboardControl();
             // ...
             dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
-  
+
         }
- 
+
         $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
         $(function () {
             $(':text').bind('keydown', function (e) { // on keydown for all textboxes  

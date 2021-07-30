@@ -15,7 +15,7 @@ namespace peptak
             {
                 if (!IsPasswordResetLinkValid())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Cajt za resetiranje je potekal ali link ni v vredu.'  );</script>");
+                    Response.Write($"<script type=\"text/javascript\">alert('Čas za resetiranje gesla je potekal ali link ni več vredo.'  );</script>");
 
                 }
             }
@@ -31,7 +31,7 @@ namespace peptak
             if (checkEquality()) {
                 if (ChangeUserPassword())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjena.'  );</script>");
+                    Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjeno.'  );</script>");
 
                 } else
                 {

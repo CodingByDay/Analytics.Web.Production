@@ -35,10 +35,11 @@ namespace peptak
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.Visible = true;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
-        
+                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;      
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-            if (!IsPostBack)
+
+                if (!IsPostBack)
+
                 {
           
                 

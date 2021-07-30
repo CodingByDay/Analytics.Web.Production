@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace peptak {
-    
-    
-    public partial class _Default {
-        
+namespace peptak
+{
+
+
+    public partial class _Default
+    {
+
         /// <summary>
         /// ASPxDashboard1 control.
         /// </summary>
