@@ -27,7 +27,7 @@ namespace peptak
 
             var options = new SessionCreateOptions
             {
-                SuccessUrl = "dash.in-insist.si:81/Success?id={CHECKOUT_SESSION_ID}",
+                SuccessUrl = "https://localhost:44339/Success?id={CHECKOUT_SESSION_ID}",
                 CancelUrl = "https://example.com/cancel",
                 PaymentMethodTypes = new List<string>
                 {

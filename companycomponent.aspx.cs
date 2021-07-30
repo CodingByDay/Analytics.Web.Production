@@ -11,7 +11,7 @@ namespace peptak
 {
     public partial class companycomponent : System.Web.UI.Page
     {
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123321!";
+        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123tnet!";
         protected void Page_Load(object sender, EventArgs e)
         {
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());

@@ -22,21 +22,22 @@ namespace peptak
     {
 
 
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123321!";
+        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123tnet!";
         private List<String> strings = new List<string>();
 
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-               
+             
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.Visible = true;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
-               
+        
+                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             if (!IsPostBack)
                 {
           
@@ -45,6 +46,8 @@ namespace peptak
 
             
         }
+
+     
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {

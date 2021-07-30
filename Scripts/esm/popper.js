@@ -240,7 +240,7 @@ function getRoot(node) {
     return getRoot(node.parentNode);
   }
 
-  return node;
+  return node;z
 }
 
 /**

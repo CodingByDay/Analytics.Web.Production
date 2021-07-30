@@ -11,6 +11,7 @@ import Defaults from './methods/defaults';
 import placements from './methods/placements';
 
 export default class Popper {
+
   /**
    * Creates a new Popper.js instance.
    * @class Popper
@@ -79,7 +80,7 @@ export default class Popper {
         );
       }
     });
-
+     
     // fire the first update to position the popper in the right place
     this.update();
 

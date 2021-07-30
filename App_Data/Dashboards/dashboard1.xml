@@ -215,6 +215,8 @@
         <Dimension DefaultId="DataItem0" />
       </FilterDimensions>
     </ListBox>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Range Filter 1" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" />
+    <TextBox ComponentName="textBoxDashboardItem1" Name="Text Box 1" DataSource="sqlDataSource1" DataMember="CustomSqlQuery" />
   </Items>
   <LayoutTree>
     <LayoutGroup>
@@ -230,12 +232,18 @@
         </LayoutGroup>
         <LayoutGroup Weight="1.9583326852787932">
           <LayoutItem DashboardItem="listBoxDashboardItem4" Weight="1.1148245621835868" />
-          <LayoutItem DashboardItem="chartDashboardItem3" Weight="2.5187083719481507" />
+          <LayoutGroup Orientation="Vertical" Weight="2.5187083719481507">
+            <LayoutItem DashboardItem="chartDashboardItem3" Weight="2.5187083719481507" />
+            <LayoutItem DashboardItem="textBoxDashboardItem1" Weight="2.5187083719481507" />
+          </LayoutGroup>
         </LayoutGroup>
       </LayoutGroup>
       <LayoutGroup Orientation="Vertical" Weight="1.3802380867008497">
         <LayoutItem DashboardItem="chartDashboardItem2" Weight="1.5961662207372083" />
-        <LayoutItem DashboardItem="chartDashboardItem4" Weight="1.8775441887572024" />
+        <LayoutGroup Weight="1.8775441887572024">
+          <LayoutItem DashboardItem="chartDashboardItem4" Weight="1.8775441887572024" />
+          <LayoutItem DashboardItem="rangeFilterDashboardItem1" Weight="1.8775441887572024" />
+        </LayoutGroup>
       </LayoutGroup>
     </LayoutGroup>
   </LayoutTree>

@@ -96,12 +96,12 @@ namespace peptak
 
         private void insertCompany(string company, string username, string website, string phone)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
             var result = cmd.ExecuteScalar();
             Int32 next = System.Convert.ToInt32(result) + 1;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
             // company insert works.
@@ -127,7 +127,7 @@ namespace peptak
 
         private int getCompanyID(string name)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{name}'", conn);
             var result = cmd.ExecuteScalar();
@@ -146,7 +146,7 @@ namespace peptak
         }
         private void CreateUser(string username, string password, string name, string email, string phone, string company)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
             var result = cmd.ExecuteScalar();
@@ -154,7 +154,7 @@ namespace peptak
 
             int next = Total_ID + 1;
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{username}'", conn);
 
@@ -224,7 +224,7 @@ namespace peptak
         private void createMembership(string v)
         {
             var idCompany = getCompanyID(v.Replace(" ", string.Empty));
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"insert into memberships(id_company,startDate,endDate,id_types_of_memberships, stripe) VALUES({idCompany}, GETDATE(), GETDATE() + 365,2,'{id}');", conn);
             try
@@ -240,7 +240,7 @@ namespace peptak
 
         private void UpdateCompany(string username, string company)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
             try

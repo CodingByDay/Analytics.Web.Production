@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="_3PL_Move" ComponentName="sqlDataSource1">
+      <Connection Name="Skaza" FromAppConfig="true" />
+      <Query Type="StoredProcQuery" Name="_3PL_Move">
+        <Parameter Name="@source" Type="System.String"></Parameter>
+        <Parameter Name="@dest" Type="System.String"></Parameter>
+        <ProcName>_3PL_Move</ProcName>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <GeoPointMap ComponentName="geoPointMapDashboardItem1" Name="Geo Point Map 1" DataSource="sqlDataSource1" DataMember="_3PL_Move" ShapefileArea="Custom">
+      <ViewArea TopLatitude="83.645130000000009" BottomLatitude="-55.611829999999962" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="1.4210854715202004E-13" />
+      <MapLegend />
+      <WeightedLegend />
+    </GeoPointMap>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="geoPointMapDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

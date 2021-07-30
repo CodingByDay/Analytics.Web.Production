@@ -38,7 +38,7 @@ namespace peptak
         /// </summary>
         private void SendActivationRequest()
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123321!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
 
             using (conn)
             {
@@ -88,7 +88,7 @@ namespace peptak
             StringBuilder sbEmailBody = new StringBuilder();
             sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
             sbEmailBody.Append("Prosimo sledite link da resetirate geslo.");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("http://dash.in-sist.si:81/ChangePassword.aspx?uid=" + UniqueId);
+            sbEmailBody.Append("<br/>"); sbEmailBody.Append("https://localhost:44339/ChangePassword.aspx?uid=" + UniqueId);
             sbEmailBody.Append("<br/><br/>");
             sbEmailBody.Append("<b>IN SIST d.o.o.</b>");
 
