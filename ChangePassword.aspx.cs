@@ -8,7 +8,7 @@ namespace peptak
     public partial class ChangePassword : System.Web.UI.Page
     {
         private SqlConnection conn;
-
+        // Comment
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
