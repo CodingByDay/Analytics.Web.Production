@@ -47,7 +47,7 @@ textarea {
 }
 
 .logout {
-    width: 70px;
+    float:right!important;
     height: 25px;
     color: white !important;
     display: flex;
@@ -192,23 +192,9 @@ span {
     content: none !important; /*Border disappears*/
 }
 
-#cmdSignOut, #admin {
-    position: absolute !important;
-    float: right !important;
-    right: 5px !important;
-    top: 2px;
-    max-height: 25px !important;
-    margin-top: 1px !important;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: dodgerblue !important;
-    font-weight: bold !important;
-}
 
-    #cmdSignOut:hover {
-        background-color: blue;
-    }
+
+
 
 
 
@@ -335,12 +321,25 @@ body {
     top: 11px;
     transition: all 150ms ease-in;
 }
+.logout {
+    
 
+    float: right!important;
+    margin-right:5px!important;
+
+    max-height: 25px !important;
+    margin-top: 1px !important;
+    border: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: dodgerblue !important;
+    font-weight: bold !important;
+}
 
 .switch {
     position: absolute !important;
-    top: -2px !important;
-    right: 200px !important;
+    top: 3px !important;
+    right: 700px !important;
     padding: 10px;
     width: 130px;
     height: 28px;
@@ -571,13 +570,4 @@ body {
 
 
 
-#admin {
-    float: right;
-    background: #000000;
-    color: #ffffff;
-    margin-top: 11px;
-    border: 1px solid;
-    border-radius: 13px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
+

@@ -24,15 +24,6 @@ namespace peptak
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggle;
 
         /// <summary>
-        /// cmdSignOut control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdSignOut;
-
-        /// <summary>
         /// admin control.
         /// </summary>
         /// <remarks>
@@ -49,6 +40,15 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button back;
+
+        /// <summary>
+        /// cmdSignOut control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button cmdSignOut;
 
         /// <summary>
         /// MainContent control.

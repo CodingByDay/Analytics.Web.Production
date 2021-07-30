@@ -375,6 +375,8 @@
     <Content Include="Scripts\WebForms\WebForms.js" />
     <Content Include="Scripts\WebForms\WebParts.js" />
     <Content Include="Scripts\WebForms\WebUIValidation.js" />
+    <Content Include="show.PNG" />
+    <Content Include="sist.png" />
     <Content Include="Site.Master" />
     <Content Include="Success.aspx" />
     <Content Include="tenantadmin.aspx" />
