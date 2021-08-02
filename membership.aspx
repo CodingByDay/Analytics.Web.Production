@@ -12,20 +12,19 @@
     <title></title>
 </head>
 <body>
-    <center><img src="5f31883b507a4399a9cafe7bd10c269c.png"</center>
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <form id="membershipForm" runat="server">
                 <div>
                     <div class="formTitle">Graphs<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
 
-             <h1>Stran za placilo narocnine.</h1>
+             <h1>Stripe</h1>
 
 
      
-               <p>Z uporabo Stripe lahko placate membership za graph aplikacija ki znasa 3.99e/month. V vsakem trenutku lahko prekinete narocnino.
-                   
-               Kliknite spodaj za checkout.
+               <p>
+
+                   Placeholder for now.
 
                </p>
     
