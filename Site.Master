@@ -45,6 +45,15 @@
 
 
 
+
+    .navbar-nav ml-auto {
+        float: right!important;
+        position:absolute!important;
+        right: 5px!important;
+        top:2px!important;
+    }
+
+
       
 
         #mobile-button {
@@ -64,7 +73,10 @@
         margin-right:5px!important; 
         }
 
-
+        #float {
+            position: absolute!important;
+            right: 5px!important;
+        }
 
         .toggle--checkbox:checked ~ .background {
             background: var(--indigo-background);
@@ -378,21 +390,18 @@
           <span class="navbar-toggler-icon"></span>
         </button>
     <div class="collapse navbar-collapse" id="navbarResponsive">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item active">s
-                <span class="sr-only">(current)</span>
-              </a>
-        </li>
+      
+      
                        
+                       
+             <div id="float">
+                <asp:Button type="submit" Value="SignOut" runat="server" ID="cmdSignOut" OnClick="cmdSignOut_Click" Text="Odjava" CssClass="logout"/>
+                <asp:Button type="submit" Value="Back" runat="server" ID="back" OnClick="back_Click" Text="Nazaj"  CssClass="logout"/>
+                <asp:Button type="submit" Value="Admin" runat="server" ID="admin" OnClick="administration_Click" Text="Administracija"  CssClass="logout"/>
+                
+             </div>
 
-                    
-                        <li> <asp:Button type="submit" Value="Admin" runat="server" ID="admin" OnClick="administration_Click" Text="Administracija"  CssClass="logout"/></li>
-                        <li> <asp:Button type="submit" Value="Back" runat="server" ID="back" OnClick="back_Click"  Text="Nazaj"  CssClass="logout"/></li>
-                        <li> <asp:Button type="submit" Value="SignOut" runat="server" ID="cmdSignOut" OnClick="cmdSignOut_Click" Text="Odjava" CssClass="logout"/></li>
 
-
-
-      </ul>
     </div>
   </div>
 </nav>

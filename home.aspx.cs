@@ -15,12 +15,31 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
             // testing the ftp class
-
-
-
             login.Click += Login_Click;
+            plans.Click += Plans_Click;
+            Button1.Click += Button1_Click;
+            Button2.Click += Button2_Click;
+            Button3.Click += Button3_Click;
+        }
 
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
+        }
 
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
+        }
+
+        private void Plans_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("membership.aspx", true);
         }
 
         private void Login_Click(object sender, EventArgs e)
@@ -30,7 +49,6 @@ namespace peptak
 
         protected void Login(object sender, EventArgs e)
         {
-
             Response.Redirect("logon.aspx"); // Entry point to the application.
         }
 
@@ -41,22 +59,10 @@ namespace peptak
 
         protected void plans_Click(object sender, EventArgs e)
         {
-            Response.Redirect("plans.aspx");
+            Response.Redirect("membership.aspx");
         }
 
-        protected void FTP_Click(object sender, EventArgs e)
-        {
-
-            FtpClient client = new FtpClient();
-            client.Host = "89.212.55.202";
-            client.Credentials = new NetworkCredential("insistinsist", "w3bp4ss!");
-            client.Connect();
-            //client.
-            // upload a file
-            client.UploadDirectory(@"C:\inetpub\wwwroot\Dashboard-DevExpress-Graphs\App_Data\PetPak", "/web/dashboards/PetPak");
-            // download the file again
-            //client.DownloadFile(@"C:\Users\janko\Desktop\ftp.txt", "/web/dashboards/ftp.txt");
-        }
+       
 
 
     }

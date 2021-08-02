@@ -37,7 +37,7 @@ namespace peptak
         protected void cmdSignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("logon.aspx", true);
+            Response.Redirect("home.aspx", true);
         }
 
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)

@@ -12,6 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
@@ -24,8 +25,7 @@ namespace peptak
 
         public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123tnet!";
         private List<String> strings = new List<string>();
-
-
+        private string state;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -41,11 +41,39 @@ namespace peptak
                 if (!IsPostBack)
 
                 {
-          
-                
+
+                ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
+
+
+                if (Request.Cookies.Get("state") is null)
+                {
+                    Response.Cookies["state"].Value = "light";
+
+                }
+                else
+                {
+                    state = Request.Cookies.Get("state").Value;
+
+                    switch (state)
+                    {
+                        case "light":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                            break;
+                        case "dark":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                            break;
+
+                    }
                 }
 
-            
+
+
+
+            }
+
+
         }
 
      

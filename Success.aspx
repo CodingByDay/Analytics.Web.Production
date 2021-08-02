@@ -8,8 +8,7 @@
 <webopt:bundlereference runat="server" path="~/css/success.css" />
 <link href= "~/css/success.css" rel="stylesheet" runat="server" type="text/css" />
         <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
+>
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
  
 </head>

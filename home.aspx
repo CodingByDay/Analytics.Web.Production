@@ -182,7 +182,8 @@
 		                <ul class="item-list">
 		                    <li>Personal License</li>
 		                </ul>
-		                <button type="button" class="btn btn-default rounded">purchase</button>
+						<asp:Button ID="plans" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
+
 		            </div>
 		            <div class="plan">
 		                <div class="head">
@@ -195,7 +196,7 @@
 		                       <li>Professional License</li>
 		                       <li>Email Support</li>
 		                    </ul>
-		                <button type="button" class="btn btn-default rounded">purchase</button>
+						<asp:Button ID="Button1" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
 		            </div>
 		            <div class="plan recommended">
 		                <div class="head">
@@ -208,7 +209,7 @@
 		                        <li>1-12 Team Members</li>
 		                        <li>Phone Support</li>
 		                    </ul>
-		                <button type="button" class="btn btn-default rounded">purchase</button>
+						<asp:Button ID="Button2" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
 		            </div>
 		            <div class="plan">
 		                <div class="head">
@@ -221,7 +222,7 @@
 		                    <li>Unlimited Team Members</li>
 		                    <li>24/ 7 Phone Support</li>
 		                </ul>
-		                <button type="button" class="btn btn-default rounded">purchase</button>
+						<asp:Button ID="Button3" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
 		            </div>
 				</div>
            <p>By purchasing in you agree to the <a href="http://squizmail.com/c9-legal-terms/legal-terms/" target="_blank">Terms &amp; Conditions</a>,              <a href="http://squizmail.com/c9-legal-terms/anti-spam-policy/" target="_blank">Anti-Spam Policy</a>,             <a href="http://squizmail.com/c9-legal-terms/privacy-policy/" target="_blank">Privacy Policy</a> and             <a href="http://squizmail.com/c9-legal-terms/termination-policy/" target="_blank">Termination Policy</a>.</p>			</div>
@@ -283,5 +284,17 @@
 <script src="js/bootstrap.js"></script>
 <script src="js/jquery.main.js"></script>
 </form>
+
+
+	<!-- Cookie Consent by https://www.FreePrivacyPolicy.com -->
+<script type="text/javascript" src="//www.freeprivacypolicy.com/public/cookie-consent/4.0.0/cookie-consent.js" charset="UTF-8"></script>
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({"notice_banner_type":"standalone","consent_type":"express","palette":"dark","language":"en","page_load_consent_levels":["strictly-necessary"],"notice_banner_reject_button_hide":false,"preferences_center_close_button_hide":false});
+});
+</script>
+
+<noscript>Cookie Consent by <a href="https://www.FreePrivacyPolicy.com/free-cookie-consent/" rel="nofollow noopener">FreePrivacyPolicy.com</a></noscript>
+<!-- End Cookie Consent -->
 </body>
 </html>
