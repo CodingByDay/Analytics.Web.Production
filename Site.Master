@@ -43,6 +43,29 @@
         /** Change the label color **/
     }
 
+
+
+      
+
+        #mobile-button {
+            
+        color: white !important;
+        font-size: initial!important;
+        font-weight: bold!important;
+        margin-right:5px!important;
+            
+
+        }
+
+        #desktop-button {
+         color: white !important;
+        font-size: initial!important;
+        font-weight: bold!important;
+        margin-right:5px!important; 
+        }
+
+
+
         .toggle--checkbox:checked ~ .background {
             background: var(--indigo-background);
         }
@@ -182,16 +205,7 @@
         width: 20px;
     }
 }
-#mobile-button, #desktop-button {
-    position:absolute;
-    right: 1000px!important;
-    background-color: dodgerblue !important;
-    color: white !important;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+
 @keyframes reverse {
     0% {
         left: 26px;
@@ -323,6 +337,11 @@
     <script src="Content/sidebar/sidebar.js?v=2013"></script>
         <script src="Content/scripts.js?v=2013"></script>
 
+
+
+
+     <link href="Content/styles.css?v=2013" rel="stylesheet" />
+    <link href="Content/sidebar/sidebar.css" rel="stylesheet" />
     <form runat="server">
 
         <asp:ScriptManager runat="server" EnablePageMethods="true">
@@ -350,7 +369,10 @@
         </a>
       <img src="show.PNG"  id="pic" style="width:25px;height:25px;"/>
       <input id="toggle" type="checkbox" name="checkbox" class="switch" runat="server" onchange="postback();">
-     
+       <div id ="desktop_div">
+                       <a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>Desktop</a>
+                       <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)"><i class="fa fa-mobile" aria-hidden="true"></i>Mobile</a>
+                        </div>
                   
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -361,8 +383,9 @@
                 <span class="sr-only">(current)</span>
               </a>
         </li>
-                        <li><a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected">Desktop</a></li>
-                        <li><a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)">Mobile</a></li>
+                       
+
+                    
                         <li> <asp:Button type="submit" Value="Admin" runat="server" ID="admin" OnClick="administration_Click" Text="Administracija"  CssClass="logout"/></li>
                         <li> <asp:Button type="submit" Value="Back" runat="server" ID="back" OnClick="back_Click"  Text="Nazaj"  CssClass="logout"/></li>
                         <li> <asp:Button type="submit" Value="SignOut" runat="server" ID="cmdSignOut" OnClick="cmdSignOut_Click" Text="Odjava" CssClass="logout"/></li>

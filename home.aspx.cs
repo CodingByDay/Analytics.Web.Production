@@ -18,9 +18,20 @@ namespace peptak
 
 
 
+            login.Click += Login_Click;
 
 
+        }
 
+        private void Login_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("logon.aspx"); // Entry point to the application.
+        }
+
+        protected void Login(object sender, EventArgs e)
+        {
+
+            Response.Redirect("logon.aspx"); // Entry point to the application.
         }
 
         protected void login_Click(object sender, EventArgs e)
