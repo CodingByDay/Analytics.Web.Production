@@ -336,13 +336,14 @@ body {
     font-weight: bold !important;
 }
 
+
+
 .switch {
-    position: absolute !important;
-    top: 3px !important;
-    right: 700px !important;
-    padding: 10px;
-    width: 130px;
-    height: 28px;
+    position:absolute;
+    right: 400px!important;
+    top:2px!important;
+    width: 65px;
+    height: 25px;
     margin: 0px;
     appearance: none;
     -webkit-appearance: none;
@@ -366,8 +367,8 @@ body {
 
     .switch:after {
         content: '';
-        width: 46px;
-        height: 46px;
+        width: 23px;
+        height: 23px;
         border-radius: 50%;
         background-color: #fff;
         position: absolute;
@@ -381,17 +382,17 @@ body {
 @keyframes off {
     0% {
         transform: translateX(80px);
-        width: 46px;
+        width: 23px;
     }
 
     50% {
-        width: 75px;
-        border-radius: 25px;
+        width: 38px;
+        border-radius: 12.5px;
     }
 
     100% {
         transform: translateX(0px);
-        width: 46px;
+        width: 23px;
     }
 }
 
@@ -405,30 +406,30 @@ body {
 @keyframes on {
     0% {
         transform: translateX(0px);
-        width: 46px;
+        width: 23px;
     }
 
     50% {
-        width: 75px;
-        border-radius: 25px;
+        width: 37.5px;
+        border-radius: 12.5px;
     }
 
     100% {
-        transform: translateX(80px);
-        width: 46px;
+        transform: translateX(40px);
+        width: 23px;
     }
 }
 
 
 .switch:checked:before {
     content: '';
-    width: 15px;
-    height: 15px;
+    width: 7.5px;
+    height: 7.5px;
     border-radius: 50%;
     position: absolute;
-    left: 15px;
-    top: 5px;
-    transform-origin: 53px 10px;
+    left: 7.5px;
+    top: 2.5px;
+    transform-origin: 26.5px 10px;
     background-color: transparent;
     box-shadow: 5px -1px 0px #fff;
     filter: blur(0px);
@@ -467,11 +468,11 @@ body {
 
 .switch:before {
     content: '';
-    width: 15px;
-    height: 15px;
+    width: 7.5px;
+    height: 7.5px;
     border-radius: 50%;
     position: absolute;
-    left: 15px;
+    left: 7.5px;
     top: 5px;
     filter: blur(1px);
     background-color: #f5daaa;
@@ -503,8 +504,17 @@ body {
         filter: blur(0px);
     }
 }
+    
 
+@keyframes youtubeAnim {
+    0%,100% {
+        color: #c9110f;
+    }
 
+    50% {
+        color: #ff0000;
+    }
+}
 
 
 

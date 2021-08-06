@@ -30,21 +30,35 @@
                     <br />
 
                     <div class="center">
+
                         <span style="color: #808080;">Zapomni si prijavo</span>
+
                         <asp:CheckBox ID="chkPersistCookie" runat="server" AutoPostBack="false" />
-                        <img src="pass.png" /><asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
-                      Pozabili ste geslo?
-                     </asp:HyperLink>
-                            <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
-                        <center><div id="database" runat="server" visible="false">
+
+                        <img src="pass.png" />
+
+                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
+
+                                     Pozabili ste geslo?
+
+                        </asp:HyperLink>
+
+
+                        <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+
+                        <center>
+
+                         <div id="database" runat="server" visible="false">
+
                          <asp:DropDownList ID="databaseList" runat="server" AutoPostBack="true" Width="100px" Height="50px"></asp:DropDownList>
 
-                        </div></center>
+                        </div>
+
+                        </center>
                     </div>
-                    </p>
+                    
                     <asp:Label ID="lblMsg" ForeColor="red" Font-Name="Verdana" Font-Size="10" runat="server" />
 
-                                <asp:Button  ID="membership" runat="server" Text="Vrste plačila" type="submit"  OnClick="membership_Click" CausesValidation="false"/>
                     
                 </div>
             </form>

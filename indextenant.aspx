@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="peptak._Default" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="indextenant.aspx.cs" Inherits="peptak.indextenant" %>
 
 <%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 
@@ -15,16 +15,16 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
-       
-          
 
-         
 
-          function onBeforeRender(sender) {
-        var dashboardControl = sender.GetDashboardControl();
-        // ...
+
+
+
+            function onBeforeRender(sender) {
+                var dashboardControl = sender.GetDashboardControl();
+                // ...
                 dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
-    }
+            }
             $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
 
             $(function () {
@@ -37,7 +37,7 @@
 
                 });
 
-            }); 
+            });
 
             odd = 0;
             $(document).ready(function () {
@@ -66,7 +66,7 @@
                 $('.dx-overlay-content').hide();
                 console.log("hide");
                 $(".dx-dashboard-surface").attr('style', 'left: 10px !important');
-             
+
             }
 
 
@@ -77,7 +77,7 @@
                 console.log("Testi");
 
 
-            });  
+            });
 
 
         </script>
@@ -95,7 +95,7 @@
    
  
 <div style="position: absolute; left: 0; right: 0; top:60px; bottom:0;">
-    <dx:ASPxDashboard ID="ASPxDashboard1" runat="server" AllowCreateNewJsonConnection="True"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True"    MobileLayoutEnabled="Auto" AllowInspectRawData="True" DashboardStorageFolder="~/App_Data/Dashboards" EnableCustomSql="True" EnableTextBoxItemEditor="True">
+    <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender" />
     </dx:ASPxDashboard>
 </div>

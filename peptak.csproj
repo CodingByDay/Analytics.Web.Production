@@ -530,6 +530,7 @@
     <Content Include="Site.Master" />
     <Content Include="Success.aspx" />
     <Content Include="tenantadmin.aspx" />
+    <Content Include="tenantindex.aspx" />
     <Content Include="testing.aspx" />
     <Content Include="testingadministration.aspx" />
     <Content Include="testingcompanyadmin.aspx" />
@@ -708,6 +709,13 @@
     </Compile>
     <Compile Include="tenantadmin.aspx.designer.cs">
       <DependentUpon>tenantadmin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="tenantindex.aspx.cs">
+      <DependentUpon>tenantindex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="tenantindex.aspx.designer.cs">
+      <DependentUpon>tenantindex.aspx</DependentUpon>
     </Compile>
     <Compile Include="testing.aspx.cs">
       <DependentUpon>testing.aspx</DependentUpon>

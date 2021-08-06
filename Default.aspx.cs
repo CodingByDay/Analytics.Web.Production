@@ -15,8 +15,6 @@ namespace peptak
     {
         private SqlConnection conn;
         private SqlCommand cmd;
-        private string userRole;
-        private object userName;
 
         protected void Page_Load(object sender, EventArgs e)
         {

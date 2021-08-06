@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace peptak
@@ -23,37 +24,88 @@ namespace peptak
         private string stringConnection;
         private int value;
         private bool flag = false;
+        private string state;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
-            var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
-            ASPxDashboard3.AllowCreateNewDashboard = true;
-            ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
-            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+            //if (!IsPostBack)
+            //{
+            //    ASPxDashboard1.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+            //    var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+            //    ASPxDashboard1.SetDashboardStorage(dataBaseDashboardStorage);
+            //    ASPxDashboard1.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+            //    ASPxDashboard1.AllowCreateNewDashboard = true;
+            //    // Here is the code for the initial PostBack.
+            //    ASPxDashboard1.DashboardLoading += ASPxDashboard1_DashboardLoading;
+            //    ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+            //    ASPxDashboard1.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
-            if (Session["DesignerPayed"].ToString() == "true")
-            {
+            //    HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
 
-                if (Session["FirstLoad"].ToString() != "true")
+
+            //    if (Request.Cookies.Get("state") is null)
+            //    {
+            //        Response.Cookies["state"].Value = "light";
+
+            //    }
+            //    else
+            //    {
+            //        state = Request.Cookies.Get("state").Value;
+
+            //        switch (state)
+            //        {
+            //            case "light":
+            //                ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeLight;
+            //                break;
+            //            case "dark":
+            //                ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+            //                break;
+
+            //        }
+            //    }
+
+            //}
+            //else
+            //{
+
+                 /* Here is what happens if it is a PostBack. */  // 8.2.2021.
+
+
+            
+                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+                ASPxDashboard3.AllowCreateNewDashboard = true;
+                ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
+                if (Session["DesignerPayed"].ToString() == "true")
                 {
-                    ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
-                }
-                if (Session["mode"].ToString() == "ViewerOnly")
-                {
-                    ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+
+                    if (Session["FirstLoad"].ToString() != "true")
+                    {
+                        ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
+                    }
+                    if (Session["mode"].ToString() == "ViewerOnly")
+                    {
+                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+                    }
+                    else
+                    {
+                        ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                    }
                 }
                 else
                 {
-                    ASPxDashboard3.WorkingMode = WorkingMode.Designer;
-                }
-            } else
-            {
 
-            }
+                }
+
+
+
+           // }
         }
 
    
@@ -69,7 +121,7 @@ namespace peptak
         ///
         ///
 
-        private void ASPxDashboard3_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
+        private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
             if (Session["DesignerPayed"].ToString() == "true")
             {
@@ -147,7 +199,7 @@ namespace peptak
             return flag;
         }
 
-        private void ASPxDashboard3_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
+        private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
             ConnectionStringSettings conn = GetConnectionString();
 
@@ -194,7 +246,11 @@ namespace peptak
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public int get_id_string(int id)
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */

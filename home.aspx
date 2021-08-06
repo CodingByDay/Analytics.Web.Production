@@ -72,9 +72,9 @@
 						<ul>
 							<li class="active visible-sm visible-xs"><a href="#">Home</a></li>
 							<li><a href="#">Overview</a></li>
-							<li><a href="#">About Analytics</a></li>
-							<li><a href="#">Buying Options</a></li>
-							<li><a href="#">Support</a></li>
+							<li><a href="#cta">About Analytics</a></li>
+							<li><a href="#pricing-tables">Buying Options</a></li>
+							<li><a href="#footer">Support</a></li>
 						</ul>
 					
 					</div>
@@ -170,7 +170,7 @@
 		<div class="visual-area">
 			<div class="container">
 				<h2>Analytics Subscription Pricing</h2>
-				<div class="pricing-tables">
+				<div class="pricing-tables" id="pricing-tables">
 					<div class="plan">
 		                <div class="head">
 		                    <h3>Students</h3>

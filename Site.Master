@@ -34,9 +34,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-    <style>.toggle--checkbox {
-    display: none;
-}
+
+    <style>
+
+    .toggle--checkbox {
+     display: none;
+    }
 
     .toggle--checkbox:checked {
         /** This will all flip from sun to moon **/
@@ -313,11 +316,7 @@
             }
 
 
-                
-
-
-
-            
+               
 
 
 
@@ -385,7 +384,7 @@
                        <a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>Desktop</a>
                        <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)"><i class="fa fa-mobile" aria-hidden="true"></i>Mobile</a>
                         </div>
-                  
+     
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>

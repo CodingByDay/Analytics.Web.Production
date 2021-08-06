@@ -19,7 +19,6 @@ namespace peptak.DatabaseStorage
         private SqlCommand cmd;
         private string adminName;
         private string company;
-        private int adminID;
 
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
@@ -234,7 +233,7 @@ namespace peptak.DatabaseStorage
         {
             List<String> available = getIdPermisionCurrentUser();
             string FinalString = "(";
-            //Getting the final string
+            // Getting the final string
             for (int i = 0; i < available.Count; i++)
             {
                 if (i != available.Count - 1)
@@ -262,6 +261,7 @@ namespace peptak.DatabaseStorage
                     string ID = reader.GetInt32(0).ToString();
                     string Caption = reader.GetString(1);
                     list.Add(new DashboardInfo() { ID = ID, Name = Caption });
+                    var debug = "Happiness";
                 }
                 connection.Close();
             }
