@@ -17,21 +17,22 @@ namespace peptak
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;
-        
+
         protected void Page_Load(object sender, EventArgs e)
         {
+
             cmdSignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
-
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"Select userRole from Users where uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
+
         }
 
         protected void cmdSignOut_Click(object sender, EventArgs e)
@@ -53,7 +54,7 @@ namespace peptak
         }
 
 
-       
+
 
 
         protected void administration_Click(object sender, EventArgs e)
@@ -62,13 +63,15 @@ namespace peptak
             if (userRole == "SuperAdmin")
             {
                 Response.Redirect("admin.aspx", true);
-            } else if (userRole == "Admin")
+            }
+            else if (userRole == "Admin")
             {
                 Response.Redirect("tenantadmin.aspx", true);
 
-            } else
+            }
+            else
             {
-                ///
+
                 Response.Redirect("logon.aspx", true); // config for securing data.
             }
         }
@@ -78,12 +81,36 @@ namespace peptak
             if (userRole == "SuperAdmin")
             {
                 Response.Redirect("index", true);
-            } else
+            }
+            else
             {
 
                 Response.Redirect("indextenant", true);
             }
 
+        }
+
+        protected void desktop_button_Click(object sender, EventArgs e)
+        {
+            var test = userRole;
+
+
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("index", true);
+
+            }
+            else
+            {
+
+                Response.Redirect("indextenant", true);
+
+            }
+        }
+
+        protected void mobile_button_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Emulator", true);
         }
     }
 }

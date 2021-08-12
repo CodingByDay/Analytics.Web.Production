@@ -7,7 +7,6 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using FluentFTP;
-using peptak.ftp;
 namespace peptak
 {
     public partial class home : System.Web.UI.Page
