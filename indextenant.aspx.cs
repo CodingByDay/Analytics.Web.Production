@@ -29,48 +29,6 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            //if (!IsPostBack)
-            //{
-            //    ASPxDashboard1.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-            //    var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-            //    ASPxDashboard1.SetDashboardStorage(dataBaseDashboardStorage);
-            //    ASPxDashboard1.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
-            //    ASPxDashboard1.AllowCreateNewDashboard = true;
-            //    // Here is the code for the initial PostBack.
-            //    ASPxDashboard1.DashboardLoading += ASPxDashboard1_DashboardLoading;
-            //    ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            //    ASPxDashboard1.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
-            //    HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
-
-
-            //    if (Request.Cookies.Get("state") is null)
-            //    {
-            //        Response.Cookies["state"].Value = "light";
-
-            //    }
-            //    else
-            //    {
-            //        state = Request.Cookies.Get("state").Value;
-
-            //        switch (state)
-            //        {
-            //            case "light":
-            //                ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeLight;
-            //                break;
-            //            case "dark":
-            //                ASPxDashboard1.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
-            //                break;
-
-            //        }
-            //    }
-
-            //}
-            //else
-            //{
-
-                 /* Here is what happens if it is a PostBack. */  // 8.2.2021.
-
 
             
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -100,7 +58,7 @@ namespace peptak
                 }
                 else
                 {
-                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
                 }
 

@@ -28,12 +28,15 @@ namespace peptak
             }
         }
 
-        private string getRole(string username)
+        private string getRole(string username, string password)
+
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
+            var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            cmd = new SqlCommand($"select userRole from Users where uname='{username}' and Pwd='{hashed}';", conn);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -154,7 +157,8 @@ namespace peptak
 
         protected void cmdLogin_Click(object sender, EventArgs e)
         {
-            var role = getRole(txtUserName.Value);
+            var role = getRole(txtUserName.Value, txtUserPass.Value);
+
             if (Session["passport"].ToString() == "true")
             {
                 Session["conn"] = databaseList.SelectedValue;
@@ -206,7 +210,7 @@ namespace peptak
 
 
                 string strRedirect;
-                role = getRole(txtUserName.Value);
+                role = getRole(txtUserName.Value, txtUserPass.Value);
 
                 if (role == "SuperAdmin")
                 {
@@ -222,7 +226,6 @@ namespace peptak
                 }
                 else
                 {
-                    // For some reason this doesn't fire.
                     Session["value"] = "Skaza";
                     Session["mode"] = "ViewerOnly";
                     Session["flag"] = "false";
