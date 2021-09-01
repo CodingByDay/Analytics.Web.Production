@@ -94,7 +94,6 @@
 
 
             /* Jquery function to handle hamburger clicked */
-
             $(document).ready(function () {
                 $("#pic").mouseover(function () {
 
@@ -102,11 +101,18 @@
                     if (expand == "true") {
                         onExpand();
                     } else {
-                        onCollapse();
+                        var control = dashboard.GetDashboardControl();
+                        design = control.isDesignMode();
+                        alert(`Design value is ${design}`);
+                        if (design == false) {
+                            onCollapse();
+                        }
                     }
 
 
                 });
+
+            });
 
             });
 
@@ -183,7 +189,7 @@
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True"  ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True"    MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True" >
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          ItemSelectionChanged="onCollapse"
+                          
                           DashboardInitialized="onCollapse"                      
                               />
 
