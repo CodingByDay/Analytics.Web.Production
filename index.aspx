@@ -32,6 +32,34 @@
 
             }
 
+            function setCookie(cname, cvalue, exdays) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                let expires = "expires=" + d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+            }
+
+
+
+            /**
+             * Getting the cookie value.
+             * @param cname
+             */
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
 
 
 
@@ -64,20 +92,24 @@
             }
 
 
+
             /* Jquery function to handle hamburger clicked */
 
             $(document).ready(function () {
                 $("#pic").mouseover(function () {
 
-
-
-                    onExpand();
-
+                    var expand = getCookie("expand");
+                    if (expand == "true") {
+                        onExpand();
+                    } else {
+                        onCollapse();
+                    }
 
 
                 });
 
             });
+
 
 
 
@@ -100,15 +132,16 @@
             }
 
 
-
             function onExpand() {
                 var control = dashboard.GetDashboardControl();
                 extension.showPanelAsync({}).done(function (e) {
                     control.surfaceLeft(e.surfaceLeft);
 
-                    // Change the visibility
+                    // Helper cookie.
 
-                    toggleVisibilityHide(true);
+                    setCookie("expand", "false", 365);
+
+                    // toggleVisibilityHide(true);
 
                 });
             }
@@ -122,6 +155,7 @@
                 extension.hidePanelAsync({}).done(function (e) {
                     control.surfaceLeft(e.surfaceLeft);
                     toggleVisibilityHide(false);
+                    setCookie("expand", "true", 365);
                 });
             }
 

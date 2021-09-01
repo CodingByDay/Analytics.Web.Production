@@ -23,7 +23,7 @@ namespace peptak
     {
 
 
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = petpakn; Password=net123tnet!";
+        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = dashboards; Password=Cporje?%ofgGHH$984d4L";
         private List<String> strings = new List<string>();
         private string state;
 
@@ -42,9 +42,11 @@ namespace peptak
 
                 {
 
-                ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
-                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
+                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+
+                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+
+                 HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
 
 
                 if (Request.Cookies.Get("state") is null)

@@ -77,7 +77,7 @@ namespace WebDesigner_CustomDashboardStorage
         public string GetAdminFromCompanyName(string company)
         {
             string uname = HttpContext.Current.User.Identity.Name;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
@@ -97,7 +97,7 @@ namespace WebDesigner_CustomDashboardStorage
         public string getcompanyForUser()
         {
             string uname = HttpContext.Current.User.Identity.Name;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       

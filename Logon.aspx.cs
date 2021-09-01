@@ -30,7 +30,7 @@ namespace peptak
 
         private string getRole(string username)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
@@ -61,7 +61,7 @@ namespace peptak
 
         private bool getCurrentID(string name)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"select id_company from users where uname='{name}';", conn);
@@ -118,7 +118,7 @@ namespace peptak
             {
                 // Consult with your SQL Server administrator for an appropriate connection
                 // string to use to connect to your local SQL Server.
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.

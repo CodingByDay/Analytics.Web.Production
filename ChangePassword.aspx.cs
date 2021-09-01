@@ -97,7 +97,7 @@ namespace peptak
         private bool ExecuteSP(string SPName, List<SqlParameter> SPParameters)
         {
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
 
             using(conn)
             {

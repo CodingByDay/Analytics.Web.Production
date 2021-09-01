@@ -26,7 +26,7 @@ namespace peptak
             admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
 
             // Create SqlCommand to select pwd field from users table given supplied userName.
