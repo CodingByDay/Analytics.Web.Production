@@ -24,14 +24,27 @@ namespace peptak
 
 
         public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = dashboards; Password=Cporje?%ofgGHH$984d4L";
+
         private List<String> strings = new List<string>();
         private string state;
+        private SqlConnection conn;
+        private SqlCommand cmd;
+        private string role;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            
-                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
+
+
+                 authenticate();
+                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+
+
+
+                // Hide the back button.  
+                Button admin = this.Master.FindControl("back") as Button;
+
+                admin.Visible = false;
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
 
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
@@ -57,6 +70,7 @@ namespace peptak
 
                 if (Request.Cookies.Get("state") is null)
                 {
+
                     Response.Cookies["state"].Value = "light";
 
                 }
@@ -84,7 +98,35 @@ namespace peptak
 
         }
 
-     
+
+        private void authenticate()
+
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            var username = HttpContext.Current.User.Identity.Name;
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                role = (reader["userRole"].ToString());
+            }
+           
+
+
+
+            if(role=="SuperAdmin")
+            {
+
+            } else
+            {
+                Response.Redirect("logon.aspx", true);
+            }
+        }
+
+
+
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
@@ -92,7 +134,7 @@ namespace peptak
 
             ConnectionStringSettings conn = GetConnectionString();          
             CustomStringConnectionParameters parameters =
-                  (CustomStringConnectionParameters)e.ConnectionParameters;
+            (CustomStringConnectionParameters)e.ConnectionParameters;
 
             parameters.ConnectionString = conn.ConnectionString;
         }
@@ -100,12 +142,7 @@ namespace peptak
         private ConnectionStringSettings GetConnectionString()
         {
             var ConnectionName = Session["conn"].ToString();
-
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
-            // debug
-
-
-
             return stringFinal;
         }
 

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+
+    <link rel="icon" type="image/png" href="Content/favicon.ico" />
+    <title>Web Dashboard - ASP.NET Dashboard Demo | DevExpress</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href="Content/styles.css?v=2013" rel="stylesheet" />
+    <link href="Content/sidebar/sidebar.css" rel="stylesheet" />
+    <script>window.dxDemoName = "WebFormsDashboardDemo";window.dxDemoPlatform = "an ASP.NET Web Forms application";</script>
+    <script src="Content/feedback.js?v=2013"></script>
+    <script src="Content/sidebar/sidebar.js?v=2013"></script>
+</head>
+<body>
+    <form runat="server">
+
+    <asp:ContentPlaceHolder id="LayoutContentPlaceHolder" runat="server">
+        
+    </asp:ContentPlaceHolder>
+    
+    <script src="Content/scripts.js?v=2013"></script>
+    <!-- #include file="~/Content/sidebar/sidebar.html" -->
+
+
+    </form>
+</body>
+</html>

@@ -50,8 +50,6 @@
                 document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
             }
 
-
-
             /**
              * Getting the cookie value.
              * @param cname
@@ -89,8 +87,6 @@
 
             });
 
-
-
             /**
              * Change the visibility of the collapsable hamburger menu. */
             function toggleVisibilityHide(toHide) {
@@ -103,8 +99,6 @@
                     picture.style.visibility = "visible"
                 }
             }
-
-
 
             /* Jquery function to handle hamburger clicked */
             $(document).ready(function () {
@@ -127,11 +121,6 @@
 
             });
 
-
-
-
-
-
             function show() {
                 $('.dx-overlay-content').show();
                 console.log("Show");
@@ -150,11 +139,9 @@
 
             }
 
-
             function onExpand() {
 
                 var control = dashboard.GetDashboardControl();
-
                 extension.showPanelAsync({}).done(function (e) {
 
                     control.surfaceLeft(e.surfaceLeft);

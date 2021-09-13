@@ -49,10 +49,16 @@ namespace peptak
         private List<String> help = new List<string>();
         private List<String> usersDataByUser = new List<string>();
         private List<String> CurrentPermisionID = new List<string>();
+        private string role;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+
+                authenticate();
+                Button admin = this.Master.FindControl("back") as Button;
+                admin.Visible = true;
                 defaultCompany();
                 by.Visible = false;
                 FillUsers();
@@ -68,11 +74,49 @@ namespace peptak
             }
             else
             {
+                Button admin = this.Master.FindControl("back") as Button;
+                admin.Visible = true;
                 FillUsers();
             }
 
         }
-        private List<bool> showConfig()
+
+
+
+
+
+
+        private void authenticate()
+
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            var username = HttpContext.Current.User.Identity.Name;
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                role = (reader["userRole"].ToString());
+            }
+
+
+
+
+            if (role == "Admin")
+            {
+
+            }
+            else
+            {
+                Response.Redirect("logon.aspx", true);
+            }
+        }
+
+
+
+
+                private List<bool> showConfig()
         {
 
             valuesBool.Clear();
@@ -278,7 +322,7 @@ namespace peptak
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role)); //
+                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role)); 
                 userType.SelectedIndex = userType.Items.IndexOf(userType.Items.FindByValue(type));
 
             }

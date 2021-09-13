@@ -29,9 +29,10 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
+                Button admin = this.Master.FindControl("back") as Button;
+                  admin.Visible = false;
 
-            
-                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
@@ -61,10 +62,7 @@ namespace peptak
                 ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
                 }
-
-
-
-            // }
+        
         }
 
    

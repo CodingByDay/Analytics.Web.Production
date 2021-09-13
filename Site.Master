@@ -38,7 +38,9 @@
     <style>
 
     .toggle--checkbox {
+
      display: none;
+
     }
 
     .toggle--checkbox:checked {
@@ -300,29 +302,12 @@
                     setCookie("state", "light", 365);
 
                 } else {
-
                     setCookie("state", "dark", 365);
                 }
 
-
-
-
                 window.location.reload(true); // Reloads the page causing validation
 
-
-
-
-
             }
-
-
-
-
-
-
-
-
-            $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
 
 
             $(function () {
@@ -336,6 +321,7 @@
                 });
 
             });
+
         </script>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <webopt:bundlereference runat="server" path="~/Content/css" />

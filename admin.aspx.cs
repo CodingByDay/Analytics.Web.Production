@@ -53,6 +53,7 @@ namespace peptak
         private List<String> usersDataByUser = new List<string>();
         private Exception e;
         private int idFromString;
+        private string role;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,6 +61,10 @@ namespace peptak
             if (!IsPostBack)
             {
 
+
+                authenticate();
+                Button admin = this.Master.FindControl("back") as Button;
+                admin.Visible =true;
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
@@ -85,6 +90,8 @@ namespace peptak
             }
             else
             {
+                Button admin = this.Master.FindControl("back") as Button;
+                admin.Visible = true;
                 FillListGraphs();
 
                 if (companiesListBox.SelectedItem.Value != null)
@@ -102,8 +109,34 @@ namespace peptak
 
         }
 
+        private void authenticate()
 
-        public void FillListAdmin()
+        {
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            var username = HttpContext.Current.User.Identity.Name;
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                role = (reader["userRole"].ToString());
+            }
+
+
+
+
+            if (role == "SuperAdmin")
+            {
+
+            }
+            else
+            {
+                Response.Redirect("logon.aspx", true);
+            }
+        }
+
+                public void FillListAdmin()
         {
             try
             {

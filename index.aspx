@@ -15,8 +15,6 @@
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
 
-
-
             var extension;
 
             /**
@@ -77,6 +75,8 @@
 
             });
 
+
+
             /**
              * Change the visibility of the collapsable hamburger menu. */
 
@@ -103,7 +103,6 @@
                     } else {
                         var control = dashboard.GetDashboardControl();
                         design = control.isDesignMode();
-                        alert(`Design value is ${design}`);
                         if (design == false) {
                             onCollapse();
                         }
@@ -114,7 +113,7 @@
 
             });
 
-            });
+        
 
 
 

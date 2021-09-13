@@ -161,6 +161,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="admin.aspx" />
+    <Content Include="administrationcompany.aspx" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="Contact.aspx" />
@@ -224,6 +225,7 @@
     <Content Include="dashboard-extensions\src\webpage-item\webpage-viewer.js" />
     <Content Include="dashboard-extensions\webpack.config.js" />
     <Content Include="Default.aspx" />
+    <Content Include="Emulator.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="favicons\android-chrome-144x144.png" />
     <Content Include="favicons\android-chrome-192x192.png" />
@@ -289,8 +291,8 @@
     <Content Include="js\jquery-1.11.2.min.js" />
     <Content Include="js\jquery.main.js" />
     <Content Include="membership.aspx" />
+    <Content Include="MobileDashboard.aspx" />
     <Content Include="plans.aspx" />
-    <Content Include="plus.svg" />
     <Content Include="ResetPassword.aspx" />
     <Content Include="Responsive Registration Form\index.html" />
     <Content Include="Responsive Registration Form\style.css" />
@@ -421,6 +423,7 @@
     <Content Include="fonts\font-awesome-4.3.0\fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\font-awesome-4.3.0\fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\font-awesome-4.3.0\fonts\FontAwesome.otf" />
+    <Content Include="Extension.Master" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -538,6 +541,13 @@
     <Compile Include="admin.aspx.designer.cs">
       <DependentUpon>admin.aspx</DependentUpon>
     </Compile>
+    <Compile Include="administrationcompany.aspx.cs">
+      <DependentUpon>administrationcompany.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="administrationcompany.aspx.designer.cs">
+      <DependentUpon>administrationcompany.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
       <DependentUpon>About.aspx</DependentUpon>
@@ -581,6 +591,20 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Emulator.aspx.cs">
+      <DependentUpon>Emulator.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Emulator.aspx.designer.cs">
+      <DependentUpon>Emulator.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Extension.Master.cs">
+      <DependentUpon>Extension.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Extension.Master.designer.cs">
+      <DependentUpon>Extension.Master</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -620,6 +644,13 @@
     </Compile>
     <Compile Include="membership.aspx.designer.cs">
       <DependentUpon>membership.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MobileDashboard.aspx.cs">
+      <DependentUpon>MobileDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MobileDashboard.aspx.designer.cs">
+      <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="plans.aspx.cs">
       <DependentUpon>plans.aspx</DependentUpon>
