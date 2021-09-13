@@ -367,8 +367,8 @@
       <img src="show.PNG"  id="pic" style="width:25px;height:25px;"/>
       <input id="toggle" type="checkbox" name="checkbox" class="switch" runat="server" onchange="postback();">
        <div id ="desktop_div">
-                       <a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>Desktop</a>
-                       <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)"><i class="fa fa-mobile" aria-hidden="true"></i>Mobile</a>
+                       <a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>  Desktop</a>
+                       <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)"><i class="fa fa-mobile" aria-hidden="true"></i>  Mobile</a>
                         </div>
      
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
