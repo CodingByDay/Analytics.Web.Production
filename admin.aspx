@@ -43,6 +43,7 @@
                 } else {
                
                 }
+
             } else {
                 v.style.display = "none";
                 buttonCompany.innerHTML = "Dodaj";
@@ -50,23 +51,6 @@
 
         }
 
-
-        // user, company 
-
-
-        $("#user").on("click", function () {
-            alert("Heello");
-        });
-
-        // Shorthand for $( document ).ready()
-        $(function () {
-            alert("Heello");
-        });
-
-
-        $("#company").on("click", function () {
-            alert("Heello");
-        });
 
         function showConnection() {
             
@@ -206,25 +190,29 @@
 </dx:BootstrapListBox>
 
 
-       <dx:ASPxGridView ID="graphsBox" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" DataSourceID="SqlDataSource1" Theme="Office2003Blue">
-           <Settings ShowFilterRow="True" />
-<SettingsPopup>
-<FilterControl AutoUpdatePosition="False"></FilterControl>
-</SettingsPopup>
-           <SettingsSearchPanel Visible="True" />
-        <Columns>
-            <dx:GridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
-            </dx:GridViewCommandColumn>
-            <dx:GridViewDataTextColumn FieldName="Caption" VisibleIndex="1">
-            </dx:GridViewDataTextColumn>
-            <dx:GridViewDataTextColumn FieldName="belongsTo" VisibleIndex="2">
-            </dx:GridViewDataTextColumn>
-            <dx:GridViewDataTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="3">
-                <EditFormSettings Visible="False" />
-            </dx:GridViewDataTextColumn>
-        </Columns>
-    </dx:ASPxGridView>
-	
+       
+      <dx:BootstrapGridView ID="BootstrapGridView1" runat="server" AutoGenerateColumns="False" DataSourceID="query" KeyFieldName="ID">
+          <Settings ShowFilterRow="True" />
+          <SettingsDataSecurity AllowEdit="True" />
+          <Columns>
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowClearFilterButton="True" ShowEditButton="True" ShowSelectCheckbox="True" VisibleIndex="0">
+              </dx:BootstrapGridViewCommandColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false"  ReadOnly="True" VisibleIndex="1">
+                  <SettingsEditForm Visible="False" />
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="Caption" Caption="Naziv" VisibleIndex="2">
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Caption="Naziv" VisibleIndex="3">
+              </dx:BootstrapGridViewTextColumn>
+          </Columns>
+          <SettingsSearchPanel Visible="True" />
+      </dx:BootstrapGridView>
+      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT ID, Caption, belongsTo FROM Dashboards;" UpdateCommand="UPDATE Dashboards SET belongsTo=@belongsTo WHERE ID=@ID">
+          <UpdateParameters>
+              <asp:Parameter Name="belongsTo" />
+              <asp:Parameter Name="ID" />
+          </UpdateParameters>
+      </asp:SqlDataSource>
       <br />       
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
@@ -358,11 +346,8 @@
 
      </div>
      </div> 
+ 
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    </div>
+ 
 </asp:Content>
 

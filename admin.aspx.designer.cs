@@ -69,13 +69,22 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapListBox graphsListBox;
 
         /// <summary>
-        /// graphsBox control.
+        /// BootstrapGridView1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxGridView graphsBox;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView BootstrapGridView1;
+
+        /// <summary>
+        /// query control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource query;
 
         /// <summary>
         /// saveGraphs control.
