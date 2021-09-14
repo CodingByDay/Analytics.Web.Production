@@ -60,7 +60,7 @@ namespace peptak
 
             if (!IsPostBack)
             {
-
+               
 
                 authenticate();
                 Button admin = this.Master.FindControl("back") as Button;
@@ -1090,7 +1090,6 @@ namespace peptak
 
             else
             {
-                var error = "";
                 FillListGraphsNames();
                 makeSQLqueryByUser();
                 showConfigByUser();

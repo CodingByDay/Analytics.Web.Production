@@ -33,6 +33,15 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteCompany;
 
         /// <summary>
+        /// SqlDataSource1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource1;
+
+        /// <summary>
         /// usersListBox control.
         /// </summary>
         /// <remarks>
@@ -58,6 +67,15 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapListBox graphsListBox;
+
+        /// <summary>
+        /// graphsBox control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.ASPxGridView graphsBox;
 
         /// <summary>
         /// saveGraphs control.

@@ -5,8 +5,11 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
 
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+          <webopt:bundlereference runat="server" path="~/css/shared.css" />
+
+<link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     
@@ -18,104 +21,7 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
 
-        .container.body-content{
-
-min-width: 100% !important;
-
-}
-        .conn, .plus {
-            display: inline-block;
-        }
-
-
-         html {
-            background-color: white!important;
-        }
-        
-        .column {
-            background-color: none!important;
-        }
-
-        .new {
-            float: right;
-            top:0;
-            margin-right:5px;
-        }
-        #userForm {
-            background-color: none!important;
-        }
-        .saveByUser {
-            float: right!important;
-        }
-
-        .user {
-            float: right!important;
-        }
-
-        .control {
-            min-height: 300px!important;
-            max-height: 300px!important;
-        }
-        .columns {
-            margin: auto;
-
-        }
-
-        #companyForm, #userForm {
-            display:none;
-        }
-
-        .column {
-            display: inline;
-        }
-
-        #saveGraphs, #byUser {
-       
-       
-       
-            display: inline-block;
-            
-        }
-
-        #saveGraphs, #byUser, #deleteCompany, #company, #user, #deleteUser {
-            bottom: auto;
-        }
-        #deleteCompany, #company {
-            display: inline-block;
-        }
-
-
-        #user, #deleteUser {
-            display: inline-block;
-        }
-
-        #byUser, #saveGraphs {
-            display: inline-block!important;
-        }
-        #byUser {
-            float:right!important;
-        }
-
-
-        #user, #company, #byUser {
-            float:right!important;
-        }
-
-       .wrapper {
-           margin: auto!important;
-       }
-        
-        #by {
-            display:block;
-            color: black;
-        }
-        .by {
-            display:block;
-            color: black;
-        }
-        #ConnectionStringDiv {
-            display: none;
-        }
+      
     </style>
 	<script>
 
@@ -135,7 +41,7 @@ min-width: 100% !important;
                     v.style.display = "block";
                     buttonCompany.innerHTML = "Skrij";
                 } else {
-                    //pass
+               
                 }
             } else {
                 v.style.display = "none";
@@ -143,6 +49,25 @@ min-width: 100% !important;
             }
 
         }
+
+
+        // user, company 
+
+
+        $("#user").on("click", function () {
+            alert("Heello");
+        });
+
+        // Shorthand for $( document ).ready()
+        $(function () {
+            alert("Heello");
+        });
+
+
+        $("#company").on("click", function () {
+            alert("Heello");
+        });
+
         function showConnection() {
             
             var divider = document.getElementById("ConnectionStringDiv");
@@ -165,7 +90,6 @@ min-width: 100% !important;
                     v.style.display = "block";
                     buttonUser.innerHTML = "Skrij";
                 } else {
-                    //pass
                 }
             } else {
                 v.style.display = "none";
@@ -179,15 +103,15 @@ min-width: 100% !important;
             var v = document.getElementById("by");
             var button = document.getElementById("byUser");
 
-            if (v.style.display === "none") {
+            if (v.style.display == "none") {
 
-
+                console.log("none")
                 v.style.display = "block";
                 button.innerHTML = "Skrij";
 
             } else {
-                //pass
                 v.style.display = "none";
+                console.log("other")
                 button.innerHTML = "Po uporabniku";
 
             }
@@ -246,14 +170,26 @@ min-width: 100% !important;
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
 	</div>
+
+
+   
+	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT Dashboards.Caption, Dashboards.belongsTo, Dashboards.ID FROM Dashboards " UpdateCommand="UPDATE Dashboards SET belongsTo = @belongsTo WHERE (ID = @ID)">
+        <UpdateParameters>
+            <asp:Parameter Name="belongsTo" />
+            <asp:Parameter Name="ID" />
+        </UpdateParameters>
+    </asp:SqlDataSource>
 	
 	<div class="column">
 		<dx:BootstrapListBox ID="usersListBox" runat="server"  OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true" CssClasses-Control="control" ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
                 <CssClasses Control="control"  />
 
+
+
+
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
-		<br />
+		<br />    
 		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Dodaj/Spremeni</button></center>
            <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
@@ -268,7 +204,27 @@ min-width: 100% !important;
 
        
 </dx:BootstrapListBox>
-      
+
+
+       <dx:ASPxGridView ID="graphsBox" runat="server" AutoGenerateColumns="False" KeyFieldName="ID" DataSourceID="SqlDataSource1" Theme="Office2003Blue">
+           <Settings ShowFilterRow="True" />
+<SettingsPopup>
+<FilterControl AutoUpdatePosition="False"></FilterControl>
+</SettingsPopup>
+           <SettingsSearchPanel Visible="True" />
+        <Columns>
+            <dx:GridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
+            </dx:GridViewCommandColumn>
+            <dx:GridViewDataTextColumn FieldName="Caption" VisibleIndex="1">
+            </dx:GridViewDataTextColumn>
+            <dx:GridViewDataTextColumn FieldName="belongsTo" VisibleIndex="2">
+            </dx:GridViewDataTextColumn>
+            <dx:GridViewDataTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="3">
+                <EditFormSettings Visible="False" />
+            </dx:GridViewDataTextColumn>
+        </Columns>
+    </dx:ASPxGridView>
+	
       <br />       
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
@@ -402,5 +358,11 @@ min-width: 100% !important;
 
      </div>
      </div> 
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
 </asp:Content>
 
