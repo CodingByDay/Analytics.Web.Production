@@ -60,22 +60,13 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteUser;
 
         /// <summary>
-        /// graphsListBox control.
+        /// graphsGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox graphsListBox;
-
-        /// <summary>
-        /// BootstrapGridView1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapGridView BootstrapGridView1;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView graphsGridView;
 
         /// <summary>
         /// query control.

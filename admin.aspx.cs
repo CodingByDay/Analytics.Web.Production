@@ -61,7 +61,9 @@ namespace peptak
 
             if (!IsPostBack)
             {
-               // BootstrapGridView1.Selection.
+               
+                graphsGridView.Enabled = true;
+                 // BootstrapGridView1.Selection.
                 authenticate();
                 Button admin = this.Master.FindControl("back") as Button;
                 admin.Visible =true;
@@ -76,7 +78,6 @@ namespace peptak
                 fillCompanies();
                 //FillUsers();
                 FillListGraphs();
-                graphsListBox.Enabled = false;
                 fillCompaniesRegistration();
                 FillListAdmin();
                 //User Types
@@ -223,17 +224,14 @@ namespace peptak
                             int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
                             if (bitValueTemp == 1)
                             {
-                                BootstrapGridView1.Selection.SetSelection(i, true);
 
-
-                                graphsListBox.Items.ElementAt(i).Selected = true;
+                                
+                                graphsGridView.Selection.SetSelection(i, true);
                                 valuesBool.Add(true);
                             }
                             else
                             {
-                                BootstrapGridView1.Selection.SetSelection(i, false);
-
-                                graphsListBox.Items.ElementAt(i).Selected = false;
+                                graphsGridView.Selection.SetSelection(i, false);
                                 valuesBool.Add(false);
                             }
                         }
@@ -273,8 +271,8 @@ namespace peptak
                     graphList.Add(sdr["Caption"].ToString());
 
                 }
-                graphsListBox.DataSource = graphList;
-                graphsListBox.DataBind();
+              //  graphsGridView.DataSource = graphList;
+             //   graphsGridView.DataBind();
 
 
             }
@@ -620,6 +618,7 @@ namespace peptak
             }
             catch (Exception error)
             {
+                string debugValue = error.Message;
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
             }
@@ -690,12 +689,11 @@ namespace peptak
         {
             TxtUserName.Enabled = false;
             email.Enabled = false;
-            graphsListBox.Enabled = true;
+            graphsGridView.Enabled = true;
             FillListGraphs();
             List<String> values = FillListGraphsNames();
             showConfig(values);
             updateForm();
-            // Response.Write($"<script type=\"text/javascript\">alert('{}');</script>");
         }
 
         public List<String> FillListGraphsNames()
@@ -724,14 +722,12 @@ namespace peptak
                     // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(stripped);
                 }
-                graphsListBox.DataSource = graphList;
-                graphsListBox.DataBind();
+       
 
 
             }
             catch (Exception ex)
             {
-                // Logging
             }
 
             return values;
@@ -758,11 +754,11 @@ namespace peptak
         }
 
 
-        private void makeSQLquery()
+        private void makeSQLquery(int numberOfRows)
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
-            for (int i = 0; i < graphsListBox.Items.Count; i++)
+            for (int i = 0; i < numberOfRows; i++)
             {
                 var tempGraphString = values.ElementAt(i);
                 findId = String.Format($"SELECT id_permision_user from Users where uname='{usersListBox.SelectedItem.Text}'");
@@ -781,7 +777,7 @@ namespace peptak
                     // error handling
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
-                if (graphsListBox.Items.ElementAt(i).Selected == true)
+                if (graphsGridView.Selection.IsRowSelected(i) == true)
                 {
                     flag = 1;
                 }
@@ -828,10 +824,10 @@ namespace peptak
                 }
                 Int32 Total_ID = System.Convert.ToInt32(id);
 
-                for (int j = 0; j < graphsListBox.Items.Count; j++)
+                for (int j = 0; j < graphsGridView.VisibleRowCount; j++)
                 {
 
-                    if (graphsListBox.Items.ElementAt(i).Selected == true)
+                    if (graphsGridView.Selection.IsRowSelected(i) == true)
                     {
                         flag = 1;
                     }
@@ -873,7 +869,7 @@ namespace peptak
             else
             {
                 List<String> values = FillListGraphsNames();
-                makeSQLquery();
+                makeSQLquery(values.Count);
                 showConfig(values);
             }
         }
@@ -1088,7 +1084,7 @@ namespace peptak
         protected void saveByuser_Click(object sender, EventArgs e)
         {
 
-            if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
+            if (graphsGridView.GetSelectedFieldValues() == null | byUserListBox.SelectedValues == null)
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
             }
@@ -1149,12 +1145,13 @@ namespace peptak
                         int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
                         if (bitValueTemp == 1)
                         {
-                            graphsListBox.Items.ElementAt(i).Selected = true;
+
+                            graphsGridView.Selection.SetSelection(i, true);
                             valuesBool.Add(true);
                         }
                         else
                         {
-                            graphsListBox.Items.ElementAt(i).Selected = false;
+                            graphsGridView.Selection.SetSelection(i, false);
                             valuesBool.Add(false);
                         }
                     }

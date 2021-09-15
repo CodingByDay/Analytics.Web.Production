@@ -20,7 +20,32 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
+        .other {
 
+            flex: 1;
+            width: 50%;
+        }
+        #userForm {
+
+            display: flex;
+            max-width: 1100px!important;
+            min-width: 1100px!important;
+        }
+
+        .auth {
+            flex: 1;
+          
+        }
+        .auth {
+            margin-right: 20px;
+            width: 50%;
+        }
+        .grid {
+
+
+            min-height: 100px!important;
+            max-height: 100px!important;
+        }
       
     </style>
 	<script>
@@ -38,7 +63,7 @@
             if (v.style.display === "none") {
                 if (isAllowed()) {
 
-                    v.style.display = "block";
+                    v.style.display = "inline-flex";
                     buttonCompany.innerHTML = "Skrij";
                 } else {
                
@@ -57,7 +82,7 @@
             var divider = document.getElementById("ConnectionStringDiv");
             var button = document.getElementById("add");
             if (divider.style.display === "none") {
-                divider.style.display = "block";
+                divider.style.display = "inline-flex";
                 button.innerHTML = "Skrij";
             } else {
                 divider.style.display = "none";
@@ -71,7 +96,7 @@
             if (v.style.display === "none") {
                 if (isAllowed()) {
 
-                    v.style.display = "block";
+                    v.style.display = "inline-flex";
                     buttonUser.innerHTML = "Skrij";
                 } else {
                 }
@@ -90,7 +115,7 @@
             if (v.style.display == "none") {
 
                 console.log("none")
-                v.style.display = "block";
+                v.style.display = "inline-flex";
                 button.innerHTML = "Skrij";
 
             } else {
@@ -109,10 +134,10 @@
 
 
 
-            if (company.style.display == "block" || user.style.display == "block") {
+            if (company.style.display == "inline-flex" || user.style.display == "inline-flex") {
                 return false;
 
-            } else if (company.style.display == "block" && user.style.display == "block") {
+            } else if (company.style.display == "inline-flex" && user.style.display == "inline-flex") {
                 return false;
             } else {
                 return true;
@@ -181,18 +206,13 @@
 	</div>
   
   <div class="column">
-	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" AllowCustomValues="true" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf"  Rows="4">
-                <CssClasses Control="control"  />
+	   
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
+<CssClasses Control="grid"></CssClasses>
 
-       <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-
-       
-</dx:BootstrapListBox>
-
-
-       
-      <dx:BootstrapGridView ID="BootstrapGridView1" runat="server" AutoGenerateColumns="False" DataSourceID="query" KeyFieldName="ID">
-          <Settings ShowFilterRow="True" />
+          <Settings ShowFilterRow="True" VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="5" Visible="False">
+          </SettingsPager>
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowClearFilterButton="True" ShowEditButton="True" ShowSelectCheckbox="True" VisibleIndex="0">
@@ -205,8 +225,13 @@
               <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Caption="Podjetje" VisibleIndex="3">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
-          <SettingsSearchPanel Visible="True" />
+          <SettingsSearchPanel Visible="True"  />
       </dx:BootstrapGridView>
+
+       
+
+
+    
       <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT ID, Caption, belongsTo FROM Dashboards;" UpdateCommand="UPDATE Dashboards SET belongsTo=@belongsTo WHERE ID=@ID">
           <UpdateParameters>
               <asp:Parameter Name="belongsTo" />
@@ -281,62 +306,93 @@
 
 	</div>
 	
-	<div class="column" id="userForm">
-		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
-                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija/sprememba uporabnika</h3></center>
+	<div class="column" id="userForm" style="display: none">
+                       
+                    <br />
+                   <div class ="auth">
                   
                                                 <br />
-                   <center> <dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click"  AutoPostBack="false">
-    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center>
-                    <br />
-                    <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
-                   </center>  
+                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click"  AutoPostBack="false">
+                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center>
+                  <br />
+                       <br />
+                       <br />
+    <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
+                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox>
+          </div>            
                           <br />
 
-                    <center> <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox></center>
-                   </center> 
-                      <br />
 
-                <center>  
-                
-                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
-               
-               </center>  
-                      <br />
 
-                 
-                       <center> <asp:TextBox ID="TxtPassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
+     <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Email</label>
+                 <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox>
+          </div>
+                    
                       <br />
-
+<div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+                        <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>  
+          </div>
                   
-                       <center> <asp:TextBox ID="TxtRePassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
-                         <br />
+                
+               
+                 
+                      <br />
+                       <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
 
-           <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
+                       </div>
+                 
+         
+                      <br />
+                        <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+                        <asp:TextBox ID="TxtRePassword" runat="server"  TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
+
+                       </div>
+                  
+                         <br />
+            </div>
+        <div class="other">
+
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+
+
+           <h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Vloga uporabnika</h3>    
                             <br />
 
                   
-                       <center><asp:RadioButtonList ID="userRole" runat="server">  
+                       <asp:RadioButtonList ID="userRole" runat="server">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
-                        </asp:RadioButtonList>  </center>
+                        </asp:RadioButtonList>  
                 <br />
-<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
+          
+<h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pravice uporabnika.</h3>    
                     <br />
-                <center><asp:DropDownList ID="userType" autopostback="false" runat="server"  >
-                 </asp:DropDownList></center>   
+                <asp:DropDownList ID="userType" autopostback="false" runat="server"  >
+                 </asp:DropDownList>   
+        <br />
         <br />
               
-                   <center> <h4 style="text-decoration: solid"Podjetje:</h4></center>  
-                       <center> <asp:DropDownList ID="companiesList" runat="server"  
+                    <h4 style="text-decoration: solid"Podjetje:</h4>  
+                        <asp:DropDownList ID="companiesList" runat="server"  
                                           AppendDataBoundItems="true">  
                            
-                        </asp:DropDownList>  </center>
+                        </asp:DropDownList>  
                     <br />
-              
-     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>
+                    <br />
+                 <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
+
+              </div>
                     <br />
 	</div>
   
@@ -346,8 +402,16 @@
 
      </div>
      </div> 
+
  
     </div>
+
+ 
+    </div>
+
+ 
+    </div>
+
  
 </asp:Content>
 
