@@ -1,4 +1,5 @@
-﻿using peptak.HelperClasses;
+﻿using DevExpress.Web.Bootstrap;
+using peptak.HelperClasses;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -60,8 +61,7 @@ namespace peptak
 
             if (!IsPostBack)
             {
-               
-
+               // BootstrapGridView1.Selection.
                 authenticate();
                 Button admin = this.Master.FindControl("back") as Button;
                 admin.Visible =true;
@@ -177,7 +177,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                // Implement logging here.    
+                    
             }
         }
 
@@ -223,11 +223,16 @@ namespace peptak
                             int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
                             if (bitValueTemp == 1)
                             {
+                                BootstrapGridView1.Selection.SetSelection(i, true);
+
+
                                 graphsListBox.Items.ElementAt(i).Selected = true;
                                 valuesBool.Add(true);
                             }
                             else
                             {
+                                BootstrapGridView1.Selection.SetSelection(i, false);
+
                                 graphsListBox.Items.ElementAt(i).Selected = false;
                                 valuesBool.Add(false);
                             }
@@ -275,7 +280,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                // Logging
+               
             }
 
         }
@@ -330,7 +335,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                // Logging
+               
             }
 
         }
@@ -403,7 +408,7 @@ namespace peptak
         private void updateForm()
         {
 
-            ///
+  
             var userRightNow = usersListBox.SelectedItem.Text;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
@@ -477,7 +482,7 @@ namespace peptak
                         }
                         catch (Exception error)
                         {
-                            // Logging module.
+                            
                         }
                         createUserPermisions.Dispose();
 
