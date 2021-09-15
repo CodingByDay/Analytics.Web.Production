@@ -20,6 +20,34 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
+
+        #companyForm {
+            display: none;
+
+            max-width: 1100px!important;
+            min-width: 1100px!important;    
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            top: 20px!important;
+            z-index: 1; /* Sit on top */
+            background-color: gray;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
+        }
+
+        .companyPart {
+
+            flex: 1!important;
+            width: 50px!important
+        }
+
+        .connectionPart {
+            flex: 1!important;
+            width: 50px!important;
+        }
+
         .other {
 
             flex: 1;
@@ -27,9 +55,18 @@
         }
         #userForm {
 
-            display: flex;
+            display: none;
+            top: 20px!important;
             max-width: 1100px!important;
-            min-width: 1100px!important;
+            min-width: 1100px!important;    
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            background-color: gray;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; 
         }
 
         .auth {
@@ -48,103 +85,8 @@
         }
       
     </style>
-	<script>
 
-        $("#newUser").click(function (e) {
-
-            e.preventDefault();
-
-        })
-
-        function showOrHideDivCompany() {
-
-            var v = document.getElementById("companyForm");
-            var buttonCompany = document.getElementById("company");
-            if (v.style.display === "none") {
-                if (isAllowed()) {
-
-                    v.style.display = "inline-flex";
-                    buttonCompany.innerHTML = "Skrij";
-                } else {
-               
-                }
-
-            } else {
-                v.style.display = "none";
-                buttonCompany.innerHTML = "Dodaj";
-            }
-
-        }
-
-
-        function showConnection() {
-            
-            var divider = document.getElementById("ConnectionStringDiv");
-            var button = document.getElementById("add");
-            if (divider.style.display === "none") {
-                divider.style.display = "inline-flex";
-                button.innerHTML = "Skrij";
-            } else {
-                divider.style.display = "none";
-                button.innerHTML = "Dodaj konekcijo";
-            }
-        }
-
-        function showOrHideDivUser() {
-            var buttonUser = document.getElementById("user");
-            var v = document.getElementById("userForm");
-            if (v.style.display === "none") {
-                if (isAllowed()) {
-
-                    v.style.display = "inline-flex";
-                    buttonUser.innerHTML = "Skrij";
-                } else {
-                }
-            } else {
-                v.style.display = "none";
-                buttonUser.innerHTML = "Dodaj/Spremeni";
-
-            }
-
-        }
-        function showOrHideDivByUser() {
-
-            var v = document.getElementById("by");
-            var button = document.getElementById("byUser");
-
-            if (v.style.display == "none") {
-
-                console.log("none")
-                v.style.display = "inline-flex";
-                button.innerHTML = "Skrij";
-
-            } else {
-                v.style.display = "none";
-                console.log("other")
-                button.innerHTML = "Po uporabniku";
-
-            }
-        }
-
-
-        function isAllowed() {
-            var company = document.getElementById("companyForm");
-
-            var user = document.getElementById("userForm");
-
-
-
-            if (company.style.display == "inline-flex" || user.style.display == "inline-flex") {
-                return false;
-
-            } else if (company.style.display == "inline-flex" && user.style.display == "inline-flex") {
-                return false;
-            } else {
-                return true;
-            }
-        }
-
-    </script>
+	
 
 
 	<div id="boot">
@@ -174,7 +116,7 @@
 </dx:BootstrapListBox>
 	
 		<br />
-		<center><button type="button" class="btn btn-primary" id="company" onclick="showOrHideDivCompany()">Dodaj</button></center>
+		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
@@ -199,7 +141,7 @@
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
 		<br />    
-		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Dodaj/Spremeni</button></center>
+		<center><button type="button" id="user" class="btn btn-primary">Dodaj/Spremeni</button></center>
            <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
@@ -265,47 +207,123 @@
 	
 	<section class="columns">
 	
-	<div class="column" id="companyForm">
-	    <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h3></center>  
+
+
+
+
+
+<!-- COMPANY FORM -->
+
+
+
+	<div class="column" id="companyForm"  >
+
+        <div class="companyPart">
+	    <h5 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h5>
              <hr style="color: black;" />
 
-             <center><asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox></center>
-        <br />
-           <center> <asp:TextBox ID="companyNumber" runat="server" placeholder="Številka" CssClass="form-control"></asp:TextBox> </center>  
+
+
+                   <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Naziv podjetja</label>
+           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox>
+                       </div>
+
+
+           <br />
+
+                 <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Kontaktna številka</label>
+            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control"></asp:TextBox>   
+                       </div>
+
+
+
                 <br />
 
-           <center><asp:TextBox ID="website" runat="server" placeholder="Website podjetja:" CssClass="form-control"></asp:TextBox> </center>
-                <br />
+                 <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Spletna stran</label>
+           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control"></asp:TextBox> 
+                       </div>
 
-<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Admin</h3></center> 
-                <br />
 
-           <center> <asp:DropDownList ID="listAdmin" runat="server" > 
+
+                <br />
+                <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Admin</label>
+      
+            <asp:DropDownList ID="listAdmin" runat="server" > 
                <%--AppendDataBoundItems="true">--%>  
-              </asp:DropDownList>  </center>
+              </asp:DropDownList> 
+                       </div>
+
+
+           
                 <br />
 
-              <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Baza.</h3></center>    
-                <br />
-
-                  
-                  <center><asp:DropDownList ID="ConnectionStrings" runat="server"  
+               <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Izberite bazo</label>
+            <asp:DropDownList ID="ConnectionStrings" runat="server"  
                AppendDataBoundItems="true">  
-              </asp:DropDownList></center> 
-        <br />
-        <center><button type="button" id="add" class="btn btn-info" onclick="showConnection()">Dodaj konekcijo</button></center>
-        <br /> <div id="ConnectionStringDiv">
-      <center><dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
+              </asp:DropDownList> 
+                       </div>
+
+       
+            </div>
+      <div class="connectionPart">
+          <br />
+          <br />
+       
+        
+            <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Connection string</label>
+        <asp:TextBox ID="ConnectionString" runat="server" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
+                       </div>
+
+            <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
+                <asp:TextBox ID="connName" runat="server" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
+                       </div>
+
+
+     
+      <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
         <SettingsBootstrap RenderOption="Info" />
        </dx:BootstrapButton>
-        <asp:TextBox ID="ConnectionString" runat="server" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
-                <asp:TextBox ID="connName" runat="server" placeholder="Ime:" Width="500" CssClass="conn"></asp:TextBox></center> 
-            </div>
         <br />
-             <center><asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/></center> 
+        <br />
 
+             <asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+        <br />
+        <br />
+      
 	</div>
 	
+
+
+                    </div>
+
+
+
+
+        <!-- -USER FORM-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	<div class="column" id="userForm" style="display: none">
                        
                     <br />
@@ -404,13 +422,57 @@
      </div> 
 
  
-    </div>
+
+ 
+<script>
+
+    $("#newUser").click(function (e) {
+
+        e.preventDefault();
+
+    })
+
+
+    function user() {
+
+        var userForm = $("#userForm");
+        userForm.show();
+    }
+
+    function company() {
+        var userForm = $("#companyForm");
+        userForm.css('display', 'flex');
+    }
+
+    $(document).ready(function () {
+        $("#user").click(function () {
+            $("#userForm").css('display', 'flex');
+
+        });
+    });
+
+
+    $(document).ready(function () {
+        $("#company").click(function () {
+            $("#companyForm").css('display', 'flex');
+        });
+    });
+
+
+</script>
+ 
 
  
     </div>
+ 
 
  
     </div>
+ 
+
+ 
+    </div>
+ 
 
  
 </asp:Content>

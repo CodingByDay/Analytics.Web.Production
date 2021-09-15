@@ -168,15 +168,6 @@ namespace peptak
         protected global::System.Web.UI.WebControls.DropDownList ConnectionStrings;
 
         /// <summary>
-        /// AddConnection control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton AddConnection;
-
-        /// <summary>
         /// ConnectionString control.
         /// </summary>
         /// <remarks>
@@ -193,6 +184,15 @@ namespace peptak
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox connName;
+
+        /// <summary>
+        /// AddConnection control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton AddConnection;
 
         /// <summary>
         /// companyButton control.
