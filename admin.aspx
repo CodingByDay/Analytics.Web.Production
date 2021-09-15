@@ -22,28 +22,41 @@
     <style>
 
         #companyForm {
-            display: none;
 
-            max-width: 1100px!important;
-            min-width: 1100px!important;    
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            top: 20px!important;
-            z-index: 1; /* Sit on top */
-            background-color: gray;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
+              display: none;
+              padding:50px;
+              max-width: 1100px!important;
+              min-width: 1100px!important;    
+              display: none; /* Hidden by default */
+              position: fixed; /* Stay in place */
+              top: 310px!important;
+              z-index: 1; /* Sit on top */
+              opacity: 1;
+              background-color: gray;
+              margin: 15% auto; /* 15% from the top and centered */
+              padding: 20px;
+              border: 1px solid #888;
+              width: 80%; 
+              background-color: #fefefe;
+              margin: auto;
+              padding: 0;
+              border: 1px solid #888;
+              width: 80%;
+              box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+              animation-name: animatetop;
+              animation-duration: 0.8s
         }
 
         .companyPart {
 
+            margin: 10px!important;
             flex: 1!important;
             width: 50px!important
         }
 
         .connectionPart {
+
+            margin: 30px!important;
             flex: 1!important;
             width: 50px!important;
         }
@@ -53,28 +66,44 @@
             flex: 1;
             width: 50%;
         }
+
+
+
         #userForm {
 
-            display: none;
-            top: 20px!important;
-            max-width: 1100px!important;
-            min-width: 1100px!important;    
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            background-color: gray;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; 
+
+              opacity: 1;
+              padding:20px;
+              display: none;
+              top: 310px!important;
+              max-width: 1100px!important;
+              min-width: 1100px!important;    
+              display: none; /* Hidden by default */
+              position: fixed; /* Stay in place */
+              z-index: 1; /* Sit on top */
+              margin: 15% auto; /* 15% from the top and centered */
+              padding: 20px;
+              border: 1px solid #888;
+              width: 80%; 
+              background-color: #fefefe;
+              margin: auto;
+              padding: 0;
+              border: 1px solid #888;
+              width: 80%;
+              box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+              animation-name: animatetop;
+              animation-duration: 0.8s
         }
 
         .auth {
             flex: 1;
+            margin: 30px!important;
+            padding-left: 10px!important;
           
         }
         .auth {
-            margin-right: 20px;
+                        margin: 10px!important;
+
             width: 50%;
         }
         .grid {
@@ -83,7 +112,14 @@
             min-height: 100px!important;
             max-height: 100px!important;
         }
-      
+   
+
+
+@keyframes animatetop {
+
+  from {top: -300px; }
+  to {top: 300px; opacity: 1!important;}
+}
     </style>
 
 	
@@ -292,8 +328,11 @@
        </dx:BootstrapButton>
         <br />
         <br />
+                      <div id="btnsCompany" style="position:absolute;float:right">
 
              <asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+          <button type="button" class="btn btn-danger" id="closeCompany" style="padding: 3px;">Zapri</button>
+                          </div>
         <br />
         <br />
       
@@ -330,7 +369,7 @@
                    <div class ="auth">
                   
                                                 <br />
-                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click"  AutoPostBack="false">
+                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center>
                   <br />
                        <br />
@@ -359,7 +398,7 @@
                  
                       <br />
                        <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
 <asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
 
                        </div>
@@ -367,7 +406,7 @@
          
                       <br />
                         <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+             <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
                         <asp:TextBox ID="TxtRePassword" runat="server"  TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
 
                        </div>
@@ -408,8 +447,13 @@
                         </asp:DropDownList>  
                     <br />
                     <br />
+            <div id="btns" style="position:absolute;float:right">
                  <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
 
+
+
+                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">Zapri</button>
+                </div>
               </div>
                     <br />
 	</div>
@@ -459,21 +503,94 @@
     });
 
 
+    $(document).ready(function () {
+        $("#closeCompany").click(function () {
+            $("#companyForm").css('display', 'none');
+        });
+    });
+
+    $(document).ready(function () {
+        $("#closeUser").click(function () {
+            $("#userForm").css('display', 'none');
+        });
+    });
+
+
+
 </script>
  
 
  
-    </div>
- 
-
  
     </div>
  
 
  
+ 
     </div>
  
 
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
  
 </asp:Content>
 

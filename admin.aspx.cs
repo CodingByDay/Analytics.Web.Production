@@ -72,15 +72,14 @@ namespace peptak
                 by.Visible = false;
                 companiesListBox.SelectedIndex = 0;
                 var beginingID = 1;
-                // Consider this.
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
                 fillCompanies();
-                //FillUsers();
+                // FillUsers();
                 FillListGraphs();
                 fillCompaniesRegistration();
                 FillListAdmin();
-                //User Types
+                // User Types
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -678,7 +677,7 @@ namespace peptak
 
             var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty));
             FillUsers(id);
-            companiesList.SelectedValue = companiesListBox.SelectedItem.Value.ToString();
+            companiesList.SelectedValue = companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty);
             companiesList.Enabled = false;
 
             usersListBox.SelectedIndex = 0;
@@ -708,9 +707,11 @@ namespace peptak
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
+
                 cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
 
-                /// Intepolation or the F string. C# > 5.0       
+                // Intepolation or the F string. C# > 5.0    
+                
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -1170,6 +1171,7 @@ namespace peptak
 
         protected void newUser_Click(object sender, EventArgs e)
         {
+            usersListBox.SelectedIndex = -1;
             TxtUserName.Enabled = true;
             email.Enabled = true;
             TxtUserName.Text = "";
