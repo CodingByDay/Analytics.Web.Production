@@ -59,6 +59,10 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            Button adminButton = this.Master.FindControl("admin") as Button;
+            adminButton.Visible = false;
+
+
             if (!IsPostBack)
             {
                
@@ -353,6 +357,8 @@ namespace peptak
                 while (sdr.Read())
                 {
                     companies.Add(sdr["company_name"].ToString());
+                    var debug = sdr["company_name"].ToString();
+                    var d = 1;
 
                 }
                 companiesList.DataSource = companies;
@@ -671,13 +677,16 @@ namespace peptak
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+         
+
             TxtUserName.Enabled = false;
             email.Enabled = false;
             current = companiesListBox.SelectedItem.Value.ToString();
 
             var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty));
             FillUsers(id);
-            companiesList.SelectedValue = companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty);
+            var without = companiesListBox.SelectedItem.Value.ToString();
+            companiesList.SelectedValue = without;
             companiesList.Enabled = false;
 
             usersListBox.SelectedIndex = 0;
@@ -686,6 +695,7 @@ namespace peptak
 
         protected void usersListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;

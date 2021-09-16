@@ -173,6 +173,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Site.css" />
+    <Content Include="css\admin.css" />
     <Content Include="css\admincss.css" />
     <Content Include="css\adminpanel.css" />
     <Content Include="css\all.css" />
@@ -287,6 +288,7 @@
     <Content Include="images\user-03.jpg" />
     <Content Include="index.aspx" />
     <Content Include="indextenant.aspx" />
+    <Content Include="js\app.js" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\jquery-1.11.2.min.js" />
     <Content Include="js\jquery.main.js" />

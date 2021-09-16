@@ -5,14 +5,15 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
+    	<link rel="stylesheet" href="css/admin.css" />
 
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
           <webopt:bundlereference runat="server" path="~/css/shared.css" />
 
 <link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
 
-    
      <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
@@ -21,105 +22,8 @@
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
 
-        #companyForm {
 
-              display: none;
-              padding:50px;
-              max-width: 1100px!important;
-              min-width: 1100px!important;    
-              display: none; /* Hidden by default */
-              position: fixed; /* Stay in place */
-              top: 310px!important;
-              z-index: 1; /* Sit on top */
-              opacity: 1;
-              background-color: gray;
-              margin: 15% auto; /* 15% from the top and centered */
-              padding: 20px;
-              border: 1px solid #888;
-              width: 80%; 
-              background-color: #fefefe;
-              margin: auto;
-              padding: 0;
-              border: 1px solid #888;
-              width: 80%;
-              box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-              animation-name: animatetop;
-              animation-duration: 0.8s
-        }
-
-        .companyPart {
-
-            margin: 10px!important;
-            flex: 1!important;
-            width: 50px!important
-        }
-
-        .connectionPart {
-
-            margin: 30px!important;
-            flex: 1!important;
-            width: 50px!important;
-        }
-
-        .other {
-
-            flex: 1;
-            width: 50%;
-        }
-
-
-
-        #userForm {
-
-
-              opacity: 1;
-              padding:20px;
-              display: none;
-              top: 310px!important;
-              max-width: 1100px!important;
-              min-width: 1100px!important;    
-              display: none; /* Hidden by default */
-              position: fixed; /* Stay in place */
-              z-index: 1; /* Sit on top */
-              margin: 15% auto; /* 15% from the top and centered */
-              padding: 20px;
-              border: 1px solid #888;
-              width: 80%; 
-              background-color: #fefefe;
-              margin: auto;
-              padding: 0;
-              border: 1px solid #888;
-              width: 80%;
-              box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-              animation-name: animatetop;
-              animation-duration: 0.8s
-        }
-
-        .auth {
-            flex: 1;
-            margin: 30px!important;
-            padding-left: 10px!important;
-          
-        }
-        .auth {
-                        margin: 10px!important;
-
-            width: 50%;
-        }
-        .grid {
-
-
-            min-height: 100px!important;
-            max-height: 100px!important;
-        }
-   
-
-
-@keyframes animatetop {
-
-  from {top: -300px; }
-  to {top: 300px; opacity: 1!important;}
-}
+      
     </style>
 
 	
@@ -310,28 +214,31 @@
           <br />
           <br />
        
-        
+       
+          <br />
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Connection string</label>
         <asp:TextBox ID="ConnectionString" runat="server" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
                        </div>
-
+          <br />
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
                 <asp:TextBox ID="connName" runat="server" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
                        </div>
 
-
+          <br />
      
       <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
         <SettingsBootstrap RenderOption="Info" />
        </dx:BootstrapButton>
         <br />
         <br />
-                      <div id="btnsCompany" style="position:absolute;float:right">
 
-             <asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
-          <button type="button" class="btn btn-danger" id="closeCompany" style="padding: 3px;">Zapri</button>
+                       <asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+
+                      <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
+
+          <button type="button" class="btn btn-danger" id="closeCompany" style="padding: 3px;">X</button>
                           </div>
         <br />
         <br />
@@ -369,11 +276,11 @@
                    <div class ="auth">
                   
                                                 <br />
+                       <div id="new" style="position:absolute;left:0px;top:0px;">
                    <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
-                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center>
-                  <br />
-                       <br />
-                       <br />
+                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center></div>
+               
+                       <hr />
     <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox>
@@ -417,10 +324,11 @@
 
                             <br />
                             <br />
+                          
                             <br />
                             <br />
                             <br />
-
+                            <br />
 
 
            <h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Vloga uporabnika</h3>    
@@ -447,12 +355,12 @@
                         </asp:DropDownList>  
                     <br />
                     <br />
-            <div id="btns" style="position:absolute;float:right">
                  <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
 
 
+                        <div id="btns" style="position:absolute;float:right; right:0px;top:0px;">
 
-                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">Zapri</button>
+                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
                 </div>
               </div>
                     <br />
@@ -470,6 +378,49 @@
  
 <script>
 
+    dragElement(document.getElementById("userForm"));
+    dragElement(document.getElementById("companyForm"));
+
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
     $("#newUser").click(function (e) {
 
         e.preventDefault();
