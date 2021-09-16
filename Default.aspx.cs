@@ -47,7 +47,7 @@ namespace peptak
         }
 
 
-        protected void cmdSignOut_Click(object sender, EventArgs e)
+        protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("logon.aspx", true);

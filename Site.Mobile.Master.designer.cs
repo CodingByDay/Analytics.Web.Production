@@ -15,13 +15,13 @@ namespace peptak
     {
 
         /// <summary>
-        /// cmdSignOut control.
+        /// cmdsignOut control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdSignOut;
+        protected global::System.Web.UI.WebControls.Button cmdsignOut;
 
         /// <summary>
         /// admin control.

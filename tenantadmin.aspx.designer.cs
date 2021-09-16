@@ -87,6 +87,15 @@ namespace peptak
         protected global::DevExpress.Web.Bootstrap.BootstrapButton saveByUser;
 
         /// <summary>
+        /// newUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton newUser;
+
+        /// <summary>
         /// TxtName control.
         /// </summary>
         /// <remarks>
@@ -141,13 +150,13 @@ namespace peptak
         protected global::System.Web.UI.WebControls.RadioButtonList userRole;
 
         /// <summary>
-        /// userType control.
+        /// userTypeRadio control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList userType;
+        protected global::System.Web.UI.WebControls.RadioButtonList userTypeRadio;
 
         /// <summary>
         /// companiesList control.

@@ -6,6 +6,15 @@
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+    <link rel="stylesheet" href="css/all.css" />
+    <link rel="stylesheet" href="css/admin.css" />
+
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+    <webopt:bundlereference runat="server" path="~/css/shared.css" />
+
+    <link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
 
 
     
@@ -217,66 +226,190 @@
 	
 	<section class="columns">
 	
-	
-	<div class="column" id="userForm" style="background-color:white!important;">
-		        <div style="width: 100%; border-width: 1px; border-color: #666; border-style: solid; align-items:center; display:inline-block; font-size:larger; background-color: #c5d5cb" >
-                         <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija/sprememba uporabnika</h3></center>
-                                                    <br />
-
-                    <center> <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox></center>
-                   </center>  
-                                                  <br />
-
-                    <center> <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox></center>
-                   </center> 
-                                              <br />
-
-                <center>  
-                
-                        <center><asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox></center>  
+	<div class="column" id="userForm" style="display: none">
+                       
+                    <br />
+                   <div class ="auth">
+                  
+                                                <br />
+                       <div id="new" style="position:absolute;left:0px;top:0px;">
+                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
+                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center></div>
                
-               </center>  
-                                              <br />
+                       <hr />
+    <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
+                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox>
+          </div>            
+                          <br />
 
+
+
+     <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Email</label>
+                 <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox>
+          </div>
+                    
+                      <br />
+<div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
+                        <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>  
+          </div>
+                  
+                
+               
                  
-                       <center> <asp:TextBox ID="TxtPassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>  </center>
-              
-                                                  <br />
+                      <br />
+                       <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
+<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
 
-                       <center> <asp:TextBox ID="TxtRePassword" runat="server"  
-                                     TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox> </center> 
-                                                 <br />
+                       </div>
+                 
+         
+                      <br />
+                        <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
+                        <asp:TextBox ID="TxtRePassword" runat="server"  TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
 
-           <center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pozicija</h3></center>    
+                       </div>
+                  
+                         <br />
+            </div>
+        <div class="other">
 
-                                                 <br />
- 
-                       <center><asp:RadioButtonList ID="userRole" runat="server">  
+                            <br />
+                            <br />
+                          
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+
+
+           <h3 >Vloga uporabnika</h3>    
+                            <br />
+
+                  
+                       <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal"  CellPadding="5">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
-                        </asp:RadioButtonList>  </center>
+                        </asp:RadioButtonList>  
                 <br />
-<center><h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Tip uporabnika.</h3></center>    
+          
+<h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-                <center><asp:DropDownList ID="userType" autopostback="false" runat="server"  >
-                 </asp:DropDownList></center>   
+               <asp:RadioButtonList ID="userTypeRadio" runat="server" RepeatDirection="Horizontal" CellPadding="5">  
+                            <asp:ListItem>Viewer</asp:ListItem>  
+                            <asp:ListItem>Designer</asp:ListItem>  
+                            <asp:ListItem>Viewer&Designer</asp:ListItem>  
+                        </asp:RadioButtonList>  
         <br />
+        <br />
+             
               
-                   <center> <h4 style="text-decoration: solid"Podjetje:</h4></center>  
-                       <center> <asp:DropDownList ID="companiesList" runat="server"  
+                    <h4 style="text-decoration: solid"Podjetje:</h4>  
+                        <asp:DropDownList ID="companiesList" runat="server"  
                                           AppendDataBoundItems="true">  
                            
-                        </asp:DropDownList>  </center>
+                        </asp:DropDownList>  
                     <br />
-              
-     <center><asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" /></center>                                <br />
+                    <br />
+                 <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
 
+
+                        <div id="btns" style="position:absolute;float:right; right:0px;top:0px;">
+
+                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
+                </div>
+              </div>
+                    <br />
 	</div>
 
 	
 </section>
+            <script>
+ dragElement(document.getElementById("userForm"));
 
+    function dragElement(elmnt) {
+        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+        if (document.getElementById(elmnt.id + "header")) {
+            // if present, the header is where you move the DIV from:
+            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+        } else {
+            // otherwise, move the DIV from anywhere inside the DIV:
+            elmnt.onmousedown = dragMouseDown;
+        }
+
+        function dragMouseDown(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // get the mouse cursor position at startup:
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            document.onmouseup = closeDragElement;
+            // call a function whenever the cursor moves:
+            document.onmousemove = elementDrag;
+        }
+
+        function elementDrag(e) {
+            e = e || window.event;
+            e.preventDefault();
+            // calculate the new cursor position:
+            pos1 = pos3 - e.clientX;
+            pos2 = pos4 - e.clientY;
+            pos3 = e.clientX;
+            pos4 = e.clientY;
+            // set the element's new position:
+            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+        }
+
+        function closeDragElement() {
+            // stop moving when mouse button is released:
+            document.onmouseup = null;
+            document.onmousemove = null;
+        }
+    }
+    $("#newUser").click(function (e) {
+
+        e.preventDefault();
+
+    })
+
+
+    function user() {
+
+        var userForm = $("#userForm");
+        userForm.show();
+    }
+
+  
+
+    $(document).ready(function () {
+        $("#user").click(function () {
+            $("#userForm").css('display', 'flex');
+
+        });
+    });
+
+
+   
+
+
+    $(document).ready(function () {
+        $("#closeCompany").click(function () {
+            $("#companyForm").css('display', 'none');
+        });
+    });
+
+    $(document).ready(function () {
+        $("#closeUser").click(function () {
+            $("#userForm").css('display', 'none');
+        });
+    });
+
+            </script>
      </div>
      </div>
   

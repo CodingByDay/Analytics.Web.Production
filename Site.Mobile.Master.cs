@@ -19,10 +19,10 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            cmdSignOut.Click += CmdSignOut_Click;
+            cmdsignOut.Click += CmdsignOut_Click;
             admin.Click += Admin_Click;
             back.Click += Back_Click;
-            cmdSignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            cmdsignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
@@ -67,7 +67,7 @@ namespace peptak
             }
         }
 
-        private void CmdSignOut_Click(object sender, EventArgs e)
+        private void CmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("home.aspx", true);
@@ -90,7 +90,7 @@ namespace peptak
 
 
 
-        protected void cmdSignOut_Click1(object sender, EventArgs e)
+        protected void cmdsignOut_Click1(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("logon.aspx", true);

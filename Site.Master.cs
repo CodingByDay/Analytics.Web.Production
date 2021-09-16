@@ -21,9 +21,9 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            cmdSignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
@@ -35,7 +35,7 @@ namespace peptak
 
         }
 
-        protected void cmdSignOut_Click(object sender, EventArgs e)
+        protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("home.aspx", true);
@@ -45,11 +45,11 @@ namespace peptak
         {
             if (userRole != "SuperAdmin" && userRole != "Admin")
             {
-                admin.Visible = false;
+                adminButtonAnchor.Visible = false;
             }
             else
             {
-                admin.Visible = true;
+                adminButtonAnchor.Visible = true;
             }
         }
 

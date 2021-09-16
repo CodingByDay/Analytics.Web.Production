@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
@@ -68,8 +69,7 @@ namespace peptak
                 MainView.ActiveViewIndex = 0;
                 welcomeFunction();
                 deleteUsers.Clear();
-                Button BackButton = (Button)Master.FindControl("back");
-                BackButton.Enabled = true;
+                HtmlAnchor BackButton = (HtmlAnchor)Master.FindControl("backButtonA");
                 BackButton.Visible = true;
                 FillList();
                 FillListGraphs();

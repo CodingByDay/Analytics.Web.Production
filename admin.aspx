@@ -92,19 +92,17 @@
       <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
-          <Settings ShowFilterRow="True" VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="5" Visible="False">
+          <Settings VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
           </SettingsPager>
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowClearFilterButton="True" ShowEditButton="True" ShowSelectCheckbox="True" VisibleIndex="0">
-              </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false"  ReadOnly="True" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="0">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Caption" Caption="Naziv" VisibleIndex="2">
+              <dx:BootstrapGridViewTextColumn FieldName="Caption" Name="Graf" VisibleIndex="1">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Caption="Podjetje" VisibleIndex="3">
+              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="2">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True"  />
@@ -331,22 +329,26 @@
                             <br />
 
 
-           <h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Vloga uporabnika</h3>    
+           <h3 >Vloga uporabnika</h3>    
                             <br />
 
                   
-                       <asp:RadioButtonList ID="userRole" runat="server">  
+                       <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal"  CellPadding="5">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  
                 <br />
           
-<h3 style="text-decoration: solid; font-style: italic;font-weight: bold">Pravice uporabnika.</h3>    
+<h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-                <asp:DropDownList ID="userType" autopostback="false" runat="server"  >
-                 </asp:DropDownList>   
+               <asp:RadioButtonList ID="userTypeRadio" runat="server" RepeatDirection="Horizontal" CellPadding="5">  
+                            <asp:ListItem>Viewer</asp:ListItem>  
+                            <asp:ListItem>Designer</asp:ListItem>  
+                            <asp:ListItem>Viewer&Designer</asp:ListItem>  
+                        </asp:RadioButtonList>  
         <br />
         <br />
+             
               
                     <h4 style="text-decoration: solid"Podjetje:</h4>  
                         <asp:DropDownList ID="companiesList" runat="server"  
@@ -469,6 +471,36 @@
 
 
 </script>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
  
 
  

@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
@@ -59,7 +60,7 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            Button adminButton = this.Master.FindControl("admin") as Button;
+            HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
 
 
@@ -69,7 +70,7 @@ namespace peptak
                 graphsGridView.Enabled = true;
                  // BootstrapGridView1.Selection.
                 authenticate();
-                Button admin = this.Master.FindControl("back") as Button;
+                HtmlAnchor admin = this.Master.FindControl("backButtonAnchor") as HtmlAnchor;
                 admin.Visible =true;
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
@@ -87,14 +88,14 @@ namespace peptak
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
-                userType.DataSource = typesOfViews;
-                userType.DataBind();
+         
 
 
             }
             else
             {
-                Button admin = this.Master.FindControl("back") as Button;
+
+                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 FillListGraphs();
 
@@ -430,8 +431,8 @@ namespace peptak
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
+                userTypeRadio.SelectedIndex = userRole.Items.IndexOf(userTypeRadio.Items.FindByValue(role));
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                userType.SelectedIndex = userType.Items.IndexOf(userType.Items.FindByValue(type));
 
             }
             sdr.Close();
@@ -496,7 +497,7 @@ namespace peptak
                         int idCOMPANY = getIdCompany(companyINSERT);
                         var nonQuery = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
                         nonQuery.Open();
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userType.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, nonQuery);
                         var username = TxtUserName.Text;
                         try
@@ -539,9 +540,9 @@ namespace peptak
 
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
                 conn.Open();
-                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
                 //  debug.Add(dev);
-                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userType.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {

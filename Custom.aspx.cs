@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using WebDesigner_CustomDashboardStorage;
@@ -60,8 +61,7 @@ namespace peptak
                     break;
 
             }
-            Button BackButton = (Button)Master.FindControl("back");
-            BackButton.Enabled = false;
+            HtmlAnchor BackButton = (HtmlAnchor)Master.FindControl("backButtonA");
             BackButton.Visible = false;
             ASPxDashboard2.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());     
         }
@@ -147,7 +147,7 @@ namespace peptak
      
 
 
-        protected void cmdSignOut_Click(object sender, EventArgs e)
+        protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("logon.aspx", true);

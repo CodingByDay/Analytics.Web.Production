@@ -29,8 +29,8 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-                Button admin = this.Master.FindControl("back") as Button;
-                  admin.Visible = false;
+                  HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                 admin.Visible = false;
 
                  ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
@@ -62,10 +62,34 @@ namespace peptak
                 ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
                 }
-        
+
+               if (Request.Cookies.Get("state") is null)
+               {
+
+                Response.Cookies["state"].Value = "light";
+
+              }
+              else
+              {
+                state = Request.Cookies.Get("state").Value;
+
+                switch (state)
+                {
+                    case "light":
+                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                        break;
+                    case "dark":
+                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                        break;
+
+                }
+            }
+
+
+
         }
 
-   
+
 
         /// <summary>
         /// If database checked disable.

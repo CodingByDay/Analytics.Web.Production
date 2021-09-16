@@ -3,13 +3,15 @@
 }
 
 #companyForm {
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
     display: none;
     padding: 50px;
     max-width: 1100px !important;
     min-width: 1100px !important;
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    top: 330px !important;
+    top: 360px !important;
     z-index: 1; /* Sit on top */
     opacity: 1;
     background-color: gray;
@@ -47,10 +49,12 @@
 
 
 #userForm {
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
     opacity: 1;
     padding: 20px;
     display: none;
-    top: 330px !important;
+    top: 360px !important;
     max-width: 1100px !important;
     min-width: 1100px !important;
     display: none; /* Hidden by default */
