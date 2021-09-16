@@ -89,7 +89,7 @@
   
   <div class="column">
 	   
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False"  DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
           <Settings VerticalScrollBarMode="Visible" />
@@ -100,9 +100,9 @@
               <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="0">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Caption" Name="Graf" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="1" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="2">
+              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="2" Caption="Podjetje" >
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True"  />

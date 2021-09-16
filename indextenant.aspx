@@ -25,7 +25,7 @@
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
         
-        <style>
+<style>
 #MainContent_ASPxDashboard3 {
 
 height: 100% !important;

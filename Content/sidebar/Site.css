@@ -31,24 +31,25 @@ textarea {
 }
 
 .jumbotron {
-width: 100%; }
+    width: 100%;
+}
+
 .container.body-content {
     width: 100%;
 }
 
 .formCenter {
-margin: 0 auto; 
+    margin: 0 auto;
 }
 
 .nav.navbar-nav {
-float: right; 
+    float: right;
 }
 
 .logout {
-    top: 1px!important;
-    width: 70px;
+    float:right!important;
     height: 25px;
-    color:white!important;
+    color: white !important;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -114,57 +115,57 @@ span {
 
 /* Button 2 styles */
 
-.logout a{
+.logout a {
     color: #ffffff;
     transition: all 0.5s ease-in-out;
 }
 
-    .logout button:hover {
-        color: #000000;
-        transition: all 0.5s ease-in-out;
-    }
+.logout button:hover {
+    color: #000000;
+    transition: all 0.5s ease-in-out;
+}
 
-    .logout button::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: #000;
-        transition: all 0.5s ease-in-out;
-        transform: scaleY(1);
-    }
+.logout button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    transition: all 0.5s ease-in-out;
+    transform: scaleY(1);
+}
 
-    .logout button::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: black;
-        transition: all 0.5s ease-in-out;
-        transform: scaleX(1);
-    }
-
-
+.logout button::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    transition: all 0.5s ease-in-out;
+    transform: scaleX(1);
+}
 
 
 
 
-    .logout button::before {
-        content: " " !important;
-        position: absolute !important;
-        bottom: -5px !important;
-        left: -1px !important;
-        width: 0 !important;
-        height: 0 !important;
-        border-width: 0 6px 6px 0px !important;
-        border-style: solid !important;
-        border-color: transparent !important;
-        border-bottom-color: #FFF !important;
-    }
+
+
+.logout button::before {
+    content: " " !important;
+    position: absolute !important;
+    bottom: -5px !important;
+    left: -1px !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-width: 0 6px 6px 0px !important;
+    border-style: solid !important;
+    border-color: transparent !important;
+    border-bottom-color: #FFF !important;
+}
 
 .logout button::after {
     content: " " !important;
@@ -186,26 +187,14 @@ span {
     transform: translate(6px,6px) !important; /*move LowerRight*/
 }
 
-        .logout:active:after,
-        .logout:active:before { /*on click*/
-            content: none !important; /*Border disappears*/
-        }
-#cmdSignOut, #admin {
-    position: absolute !important;
-    float: right !important;
-    right: 5px !important;
-    top: -13px;
-    max-height: 25px !important;
-    margin-top: -13px !important;
-    border: 1px solid;
-    padding-left: 10px;
-    padding-right: 10px;
-    background-color: dodgerblue!important;
-    font-weight: bold!important;
+.logout:active:after,
+.logout:active:before { /*on click*/
+    content: none !important; /*Border disappears*/
 }
-    #cmdSignOut:hover {
-        background-color: blue;
-    }
+
+
+
+
 
 
 
@@ -233,8 +222,10 @@ span {
 }
 
 * {
-    margin: 0;
     padding: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-bottom: 0;
 }
 
 body {
@@ -332,15 +323,29 @@ body {
     top: 11px;
     transition: all 150ms ease-in;
 }
+.logout {
+    
+
+    float: right!important;
+    margin-right:5px!important;
+
+    max-height: 25px !important;
+    margin-top: 1px !important;
+    border: 1px solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: dodgerblue !important;
+    font-weight: bold !important;
+}
+
 
 
 .switch {
-    position: absolute!important;
-    top:-2px!important;
-    right: 200px!important;
-    padding:10px;
-    width: 130px;
-    height: 28px;
+    position:absolute;
+    right: 400px!important;
+    top:2px!important;
+    width: 65px;
+    height: 25px;
     margin: 0px;
     appearance: none;
     -webkit-appearance: none;
@@ -364,8 +369,8 @@ body {
 
     .switch:after {
         content: '';
-        width: 46px;
-        height: 46px;
+        width: 23px;
+        height: 23px;
         border-radius: 50%;
         background-color: #fff;
         position: absolute;
@@ -379,17 +384,17 @@ body {
 @keyframes off {
     0% {
         transform: translateX(80px);
-        width: 46px;
+        width: 23px;
     }
 
     50% {
-        width: 75px;
-        border-radius: 25px;
+        width: 38px;
+        border-radius: 12.5px;
     }
 
     100% {
         transform: translateX(0px);
-        width: 46px;
+        width: 23px;
     }
 }
 
@@ -403,30 +408,30 @@ body {
 @keyframes on {
     0% {
         transform: translateX(0px);
-        width: 46px;
+        width: 23px;
     }
 
     50% {
-        width: 75px;
-        border-radius: 25px;
+        width: 37.5px;
+        border-radius: 12.5px;
     }
 
     100% {
-        transform: translateX(80px);
-        width: 46px;
+        transform: translateX(40px);
+        width: 23px;
     }
 }
 
 
 .switch:checked:before {
     content: '';
-    width: 15px;
-    height: 15px;
+    width: 7.5px;
+    height: 7.5px;
     border-radius: 50%;
     position: absolute;
-    left: 15px;
-    top: 5px;
-    transform-origin: 53px 10px;
+    left: 7.5px;
+    top: 2.5px;
+    transform-origin: 26.5px 10px;
     background-color: transparent;
     box-shadow: 5px -1px 0px #fff;
     filter: blur(0px);
@@ -465,11 +470,11 @@ body {
 
 .switch:before {
     content: '';
-    width: 15px;
-    height: 15px;
+    width: 7.5px;
+    height: 7.5px;
     border-radius: 50%;
     position: absolute;
-    left: 15px;
+    left: 7.5px;
     top: 5px;
     filter: blur(1px);
     background-color: #f5daaa;
@@ -501,8 +506,17 @@ body {
         filter: blur(0px);
     }
 }
+    
 
+@keyframes youtubeAnim {
+    0%,100% {
+        color: #c9110f;
+    }
 
+    50% {
+        color: #ff0000;
+    }
+}
 
 
 
@@ -510,9 +524,9 @@ body {
 
 
 #pic {
-    position: absolute!important;
+    position: absolute !important;
     left: 10px !important;
-    top:2px!important;
+    top: 2px !important;
 }
 
 .link {
@@ -527,19 +541,24 @@ body {
     right: 300px;
     padding-right: 10px;
 }
+
 .navbar {
-    min-height: 35px!important;
-    max-height:35px!important;
+    min-height: 35px !important;
+    max-height: 35px !important;
 }
+
 .bg-dark {
-    background-color: black!important;
+    background-color: black !important;
 }
+
 #resize {
-    max-height:30px!important;
+    max-height: 30px !important;
 }
+
 .navigation {
-    max-height: 30px!important;
+    max-height: 30px !important;
 }
+
 .navbar {
     z-index: 1;
     position: fixed !important;
@@ -548,9 +567,9 @@ body {
     left: 0 !important;
     max-height: 0px !important;
 }
-#list {
 
-    position:center;
+#list {
+    position: center;
 }
 
 
@@ -563,13 +582,4 @@ body {
 
 
 
-#admin {
-    float: right;
-    background: #000000;
-    color: #ffffff;
-    margin-top: 11px;
-    border: 1px solid;
-    border-radius: 13px;
-    padding-left: 10px;
-    padding-right: 10px;
-}
+

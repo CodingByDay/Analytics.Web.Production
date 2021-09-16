@@ -100,7 +100,7 @@
             right: 5px!important;
         }
 
-        .toggle--checkbox:checked ~ .background {
+    .toggle--checkbox:checked ~ .background {
             background: var(--indigo-background);
         }
 
@@ -223,7 +223,9 @@
     border-radius: 50%;
     opacity: 0;
 }
-
+#toggle {
+    margin-right: 200px!important;
+}
 @keyframes switch {
     0% {
         left: 1px;

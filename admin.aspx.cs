@@ -70,8 +70,8 @@ namespace peptak
                 graphsGridView.Enabled = true;
                  // BootstrapGridView1.Selection.
                 authenticate();
-                HtmlAnchor admin = this.Master.FindControl("backButtonAnchor") as HtmlAnchor;
-                admin.Visible =true;
+                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                admin.Visible = true;
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
