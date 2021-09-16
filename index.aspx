@@ -13,6 +13,13 @@
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <style>
+#MainContent_ASPxDashboard3 {
+
+height: 100% !important;
+
+}</style>
         <script>
 
             var extension;

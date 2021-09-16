@@ -312,3 +312,9 @@ input[type=text], input[type=password] {
 * {
     box-sizing: border-box;
 }
+
+
+
+#MainContent_ASPxDashboard1{
+   min-height: 27.5vw !important;}
+}
