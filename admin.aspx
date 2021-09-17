@@ -21,6 +21,8 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
+
+
         #overlay {
             width: 100%!important;
             height: 100%!important;
@@ -50,11 +52,15 @@
 	<header>
 		<h1></h1>
 	</header>
+
+
 		<div id="overlay">
 
 
 
 		</div>
+
+
 <section class="columns">
 	
 	<div class="column">
@@ -648,6 +654,12 @@
 
  
  
+    </div>
+ 
+
+ 
+ 
+</div>
     </div>
  
 
