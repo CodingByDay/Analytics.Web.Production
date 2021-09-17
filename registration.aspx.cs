@@ -14,10 +14,10 @@ using System.Web.UI.WebControls;
 
 namespace peptak
 {
-    public partial class Success : System.Web.UI.Page
+    public partial class registration : System.Web.UI.Page
     {
-       public static CustomerSessionClass customer = new CustomerSessionClass();
-       public static NewPayedUserCompany user = new NewPayedUserCompany();
+        public static CustomerSessionClass customer = new CustomerSessionClass();
+        public static NewPayedUserCompany user = new NewPayedUserCompany();
         private SqlConnection conn;
         private int company;
         private string id;
@@ -25,55 +25,29 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            // Archived page for Stripe API.
-
-
-
-            // Stripe configuration key. Safe to use like this...
-            StripeConfiguration.ApiKey = "sk_test_51IdsgFI2g0bX7R9aOa1atoifUOkT6csUhopE53KQYUA55UZmKVPdWP3BLcZ9UTqF6zVIn0OIpeAXlL5CiiLHFWv900tcoe7Bzt";
-            // Getting the query string.
-            id = Request.QueryString["id"];
-            // testing the query string.
-            /// Response.Write(id.ToString());
-            /// Page that will show all the data for the session and also write info to the database.
-            var service = new SessionService();
-            var session = service.Get(id);
-          
-            var email = session.CustomerDetails.Email;
-            var customerObject = new CustomerService();
-            var customerObj = customerObject.Get(session.CustomerId);
-            customer.email = email;
-            customer.dateOfOrder = DateTime.Now;
-
-            // Functionality
-            DefaultEmailFill();
        
 
 
 
 
+
         }
 
-        /// <summary>
-        ///  Fill in the email form field with the stripe related email and disable it.
-        /// </summary>
-        private void DefaultEmailFill()
-        {
-            EmailForm.Text = customer.email;
-            EmailForm.Enabled = false;
-        }
+    
 
 
         protected void Register_Click(object sender, EventArgs e)
         {
             // if any field is empty.
-           if(UsernameForm.Text == "" | PasswordForm.Text == "" | 
-           RePasswordForm.Text == "" | CompanyName.Text=="" | 
-           NameForm.Text == "" | EmailForm.Text=="" | PhoneForm.Text==""
-           | WebsiteForm.Text == "") {
+            if (UsernameForm.Text == "" | PasswordForm.Text == "" |
+            RePasswordForm.Text == "" | CompanyName.Text == "" |
+            NameForm.Text == "" | EmailForm.Text == "" | PhoneForm.Text == ""
+            | WebsiteForm.Text == "")
+            {
                 // Show javascript popup
                 Response.Write("<script type=\"text/javascript\">alert('Nekateri podatki Vam manjkajo.');</script>");
-            } else
+            }
+            else
             {
                 var Username = UsernameForm.Text;
                 var Password = PasswordForm.Text;
@@ -85,9 +59,11 @@ namespace peptak
                 var Website = WebsiteForm.Text;
                 insertCompany(Company, Username, Website, Phone);
 
-                if (Password == RePassword) {
-                  CreateUser(Username, Password, Name, Email, Phone, Company);
-                } else
+                if (Password == RePassword)
+                {
+                    CreateUser(Username, Password, Name, Email, Phone, Company);
+                }
+                else
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Gesla niso enaka.');</script>");
                     PasswordForm.Text = "";
@@ -108,9 +84,9 @@ namespace peptak
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
 
-           // company insert works.
-           // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
-           // Response.Write(deb);
+            // company insert works.
+            // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
+            // Response.Write(deb);
 
             try
             {
@@ -141,11 +117,12 @@ namespace peptak
                 company = (int)result;
 
 
-            } else
+            }
+            else
             {
                 company = -1;
             }
-            
+
 
             return company;
         }
@@ -186,7 +163,6 @@ namespace peptak
                 }
 
 
-                createMembership(company.Replace(" ", string.Empty));
                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
 
 
@@ -200,7 +176,7 @@ namespace peptak
 
                     UpdateCompany(username.Replace(" ", string.Empty), company.Replace(" ", string.Empty));
                     var spacelessCompany = company.Replace(" ", string.Empty);
-                   
+
                     //fillUsersDelete();
                     string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
                     string replacedPath = filePath.Replace(" ", string.Empty);
@@ -226,12 +202,12 @@ namespace peptak
             }
         }
 
-        private void createMembership(string v)
+    
+        private void UpdateCompany(string username, string company)
         {
-            var idCompany = getCompanyID(v.Replace(" ", string.Empty));
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"insert into memberships(id_company,startDate,endDate,id_types_of_memberships, stripe) VALUES({idCompany}, GETDATE(), GETDATE() + 365,2,'{id}');", conn);
+            SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
             try
             {
                 cmd.ExecuteNonQuery();
@@ -242,20 +218,5 @@ namespace peptak
                 // Implement loggin here.
             }
         }
-
-        private void UpdateCompany(string username, string company)
-        {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
-            try
-            {
-                cmd.ExecuteNonQuery();
-
-            } catch(Exception error)
-            {
-                // Implement loggin here.
-            }
-        }
-    }      
+    }
 }

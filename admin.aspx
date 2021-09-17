@@ -29,6 +29,12 @@
             
         }
 
+
+
+        .radio input[type="radio"] {
+             margin-left: 3px;
+             margin-right: 3px;
+        }
       
     </style>
 
@@ -351,7 +357,7 @@
                             <br />
 
                   
-                       <asp:RadioButtonList ID="userRole" runat="server" Enabled="true" RepeatDirection="Horizontal"  CellPadding="5">  
+                       <asp:RadioButtonList ID="userRole" runat="server" Enabled="true" RepeatDirection="Horizontal" CellSpacing="8"  CssClass="radio">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  
@@ -359,7 +365,7 @@
           
 <h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-               <asp:RadioButtonList ID="userTypeRadio" runat="server" Enabled="true" RepeatDirection="Horizontal" CellPadding="5">  
+               <asp:RadioButtonList ID="userTypeRadio" runat="server" Enabled="true" RepeatDirection="Horizontal" CellSpacing="8" CssClass="radio">  
                             <asp:ListItem>Viewer</asp:ListItem>  
                             <asp:ListItem>Designer</asp:ListItem>  
                             <asp:ListItem>Viewer&Designer</asp:ListItem>  
@@ -478,6 +484,41 @@
 
 
 </script>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
  
 
  

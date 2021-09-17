@@ -36,10 +36,48 @@
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 </head>
 <body>
+	
+
+	<div id="cookieNotice" class="light display-right" style="display: none;">
+    <div id="closeIcon" style="display: none;">
+    </div>
+    <div class="title-wrap">
+        <h4>Cookie Consent</h4>
+    </div>
+    <div class="content-wrap">
+        <div class="msg-wrap">
+            <p>This website uses cookies or similar technologies, to enhance your browsing experience and provide personalized recommendations. By continuing to use our website, you agree to our  <a style="color:#115cfa;" href="/privacy-policy">Privacy Policy</a></p>
+            <div class="btn-wrap">
+                <button class="btn-primary" onclick="acceptCookieConsent();">Accept</button>
+            </div>
+        </div>
+    </div>
+</div>
 	<form runat="server">
 
 <div id="wrapper">
 	<style>
+
+
+
+	 #cookieNotice {
+		 min-width:600px!important;
+		 max-width:600px!important;
+		 min-height: 300px!important;
+		 max-height: 300px!important;
+		 position:absolute;
+
+		 background-color: white;
+		 right: 0!important;
+		 bottom: 0!important;
+		 z-index: 1;
+		 opacity: 1;
+
+
+
+	 }
+
+
 
 	 .btn {
 		 background-color: #236fc4!important; 
@@ -73,7 +111,7 @@
 							<li class="active visible-sm visible-xs"><a href="#">Home</a></li>
 							<li><a href="#">Overview</a></li>
 							<li><a href="#cta">About Analytics</a></li>
-							<li><a href="#pricing-tables">Buying Options</a></li>
+							<li><a href="<%= Page.ResolveUrl("/registration.aspx") %>">Registration</a></li>
 							<li><a href="#footer">Support</a></li>
 						</ul>
 					
@@ -96,8 +134,7 @@
 	<section class="main">
 		<div class="container">
 			<div id="cta">
-				<a href="http://tympanus.net/codrops/?p=23525" class="btn btn-primary rounded">Start For Free Now</a>
-				<p>Unlimited 30-Days Trial Period</p>
+				<a href="<%= Page.ResolveUrl("/registration.aspx") %>" class="btn btn-primary rounded">Start For Free Now</a>
 			</div>
 			<div class="row">
 				<div class="text-box col-md-offset-1 col-md-10">
@@ -162,73 +199,7 @@
 		</div>
 	</section>
 	
-	<section class="visual-container">
-		<div class="visual-area">
-			
-			<img src="images/img-decor-02.jpg" height="764" width="1380" alt="" class="bg-stretch">
-		</div>
-		<div class="visual-area">
-			<div class="container">
-				<h2>Analytics Subscription Pricing</h2>
-				<div class="pricing-tables" id="pricing-tables">
-					<div class="plan">
-		                <div class="head">
-		                    <h3>Students</h3>
-		                </div>
-		                <div class="price">
-		                    <span class="price-main"><span class="symbol">$</span>8</span>
-		                    <span class="price-additional">per month</span>
-		                </div>
-		                <ul class="item-list">
-		                    <li>Personal License</li>
-		                </ul>
-						<asp:Button ID="plans" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
-
-		            </div>
-		            <div class="plan">
-		                <div class="head">
-		                    <h3>professional</h3> </div>
-		                <div class="price">
-		                    <span class="price-main"><span class="symbol">$</span>19</span>
-		                    <span class="price-additional">per month</span>
-		                </div>
-		                    <ul class="item-list">
-		                       <li>Professional License</li>
-		                       <li>Email Support</li>
-		                    </ul>
-						<asp:Button ID="Button1" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
-		            </div>
-		            <div class="plan recommended">
-		                <div class="head">
-		                    <h3>agency</h3> </div>
-		                <div class="price">
-		                    <span class="price-main"><span class="symbol">$</span>49</span>
-		                    <span class="price-additional">per month</span>
-		                </div>
-		                    <ul class="item-list">
-		                        <li>1-12 Team Members</li>
-		                        <li>Phone Support</li>
-		                    </ul>
-						<asp:Button ID="Button2" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
-		            </div>
-		            <div class="plan">
-		                <div class="head">
-		                    <h3>enterprise</h3> </div>
-		                <div class="price">
-		                    <span class="price-main"><span class="symbol">$</span>79</span>
-		                    <span class="price-additional">per month</span>
-		                </div>
-		                <ul class="item-list">
-		                    <li>Unlimited Team Members</li>
-		                    <li>24/ 7 Phone Support</li>
-		                </ul>
-						<asp:Button ID="Button3" runat="server" Text="Paketi" type="submit" OnClick="plans_Click" CssClass="btn" />
-		            </div>
-				</div>
-           <p>By purchasing in you agree to the <a href="http://squizmail.com/c9-legal-terms/legal-terms/" target="_blank">Terms &amp; Conditions</a>,              <a href="http://squizmail.com/c9-legal-terms/anti-spam-policy/" target="_blank">Anti-Spam Policy</a>,             <a href="http://squizmail.com/c9-legal-terms/privacy-policy/" target="_blank">Privacy Policy</a> and             <a href="http://squizmail.com/c9-legal-terms/termination-policy/" target="_blank">Termination Policy</a>.</p>			</div>
-			<img src="images/img-decor-03.jpg" height="1175" width="1380" alt="" class="bg-stretch">
-		</div>
-	</section>
+	
 	<section class="area">
 		<div class="container">
 			<div class="subscribe">
@@ -266,7 +237,7 @@
 						<div class="text-holder">
 							<strong class="phone"><a href="tel:3475677890">347 567 78 90</a></strong>
 							<span class="available">Available from 7:30 PM - 15:30 PM</span>
-							<address>TrendNET d.o.o., Šlandrova cesta 6A, 3320 Velenje, Slovenia, EU | Tel: +386 35 863 033 | Fax: +386 35 861 970 |</address>
+							<address>IN SIST d.o.o., Koroška cesta 62b, 3320 Velenje, Slovenia, EU | Tel: +386 35 863 033 | Fax: +386 35 861 970 |</address>
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -293,7 +264,57 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 </script>
 
-<noscript>Cookie Consent by <a href="https://www.FreePrivacyPolicy.com/free-cookie-consent/" rel="nofollow noopener">FreePrivacyPolicy.com</a></noscript>
 <!-- End Cookie Consent -->
+	<script>
+        function setCookie(cname, cvalue, exdays) {
+            const d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+        // Delete cookie
+        function deleteCookie(cname) {
+            const d = new Date();
+            d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+            let expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=;" + expires + ";path=/";
+        }
+
+        // Read cookie
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        // Set cookie consent
+        function acceptCookieConsent() {
+            deleteCookie('user_cookie_consent');
+            setCookie('user_cookie_consent', 1, 30);
+            document.getElementById("cookieNotice").style.display = "none";
+		}
+
+
+
+
+        let cookie_consent = getCookie("user_cookie_consent");
+        if (cookie_consent != "") {
+            document.getElementById("cookieNotice").style.display = "none";
+        } else {
+            document.getElementById("cookieNotice").style.display = "block";
+        }
+    </script>
 </body>
+
 </html>
