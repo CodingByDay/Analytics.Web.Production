@@ -20,14 +20,44 @@
 
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
+
+
+    <script>
+
+        function showDialogSync() {
+
+
+            $("#userForm").css('display', 'flex');
+
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                document.getElementById('overlay').style.backgroundColor = "gray";
+
+            }, 100);
+
+        }
+
+     
+        
+
+    </script>
     <style>
+
+        #new_userD {
+
+            position: absolute!important;
+            float: right;
+            margin: 30px;
+        }
 
 
         #overlay {
+
             width: 100%!important;
             height: 100%!important;
-            z-index: 0!important;
-            
+            z-index: 0!important;            
             
         }
 
@@ -103,10 +133,23 @@
 
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 </dx:BootstrapListBox>
-		<br />    
-		<center><button type="button" id="user" class="btn btn-primary">Dodaj/Spremeni</button></center>
-           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
-    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+		<br />  
+        
+		<center>
+            <button type="button" id="user" class="btn btn-primary">Spremeni</button>
+
+		</center>
+
+        <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
+
+        <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+
+        <div id="new_userD">
+
+		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user" class="btn btn-success">Registracija</button>
+              
+        </div>
+        
 
 	</div>
   
@@ -266,7 +309,7 @@
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 
-          <button type="button" class="btn btn-danger" Enabled="true" id="closeCompany" style="padding: 3px;">X</button>
+          <button type="button" class="btn btn-danger"  id="closeCompany" style="padding: 3px;">X</button>
                           </div>
         <br />
         <br />
@@ -286,27 +329,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 	<div class="column" id="userForm" style="display: none" tabindex="0">
                        
                     <br />
                    <div class ="auth">
                   
                                                 <br />
-                       <div id="new" style="position:absolute;left:0px;top:0px;">
-                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" Enabled="true" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
-                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center></div>
+                     
                
                        <hr />
     <div class="form-row">
@@ -494,174 +523,7 @@
 
  
  
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-    </div>
- 
-
- 
- 
-</div>
-    </div>
- 
+  
 
  
  

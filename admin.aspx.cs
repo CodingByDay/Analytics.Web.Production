@@ -66,9 +66,11 @@ namespace peptak
 
             if (!IsPostBack)
             {
-               
-                graphsGridView.Enabled = true;
-                 // BootstrapGridView1.Selection.
+                // BootstrapGridView1.Selection.
+
+
+
+             
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -113,6 +115,8 @@ namespace peptak
             }
 
         }
+
+     
 
         private void authenticate()
 
@@ -1259,6 +1263,27 @@ namespace peptak
 
 
             return _textResult;
+
+        }
+
+    
+
+        protected void new_user_ServerClick2(object sender, EventArgs e)
+        {
+
+            usersListBox.SelectedIndex = -1;
+            TxtUserName.Enabled = true;
+            email.Enabled = true;
+            TxtUserName.Text = "";
+            TxtName.Text = "";
+            email.Text = "";
+            TxtPassword.Text = "";
+            TxtRePassword.Text = "";
+
+
+            // Call the client.
+
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
 
         }
 
