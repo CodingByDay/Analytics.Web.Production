@@ -21,7 +21,13 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
-
+        #overlay {
+            width: 100%!important;
+            height: 100%!important;
+            z-index: 0!important;
+            
+            
+        }
 
       
     </style>
@@ -38,7 +44,11 @@
 	<header>
 		<h1></h1>
 	</header>
-		
+		<div id="overlay">
+
+
+
+		</div>
 <section class="columns">
 	
 	<div class="column">
@@ -50,11 +60,12 @@
 <section class="columns">
 	
 	<div class="column">
+        <div class="inv" style="z-index:0!important">
 		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="5">
         <CssClasses Control="control"  />
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused"  />
 </dx:BootstrapListBox>
-	
+	</div>
 		<br />
 		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
@@ -89,20 +100,27 @@
   
   <div class="column">
 	   
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False"  DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
+
+<CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
           <Settings VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
           </SettingsPager>
+
+<SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="0">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
+              </dx:BootstrapGridViewCommandColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="1" Caption="Naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="2" Caption="Podjetje" >
+              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="3" Caption="Podjetje" >
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True"  />
@@ -154,7 +172,7 @@
 
 
 
-	<div class="column" id="companyForm"  >
+	<div class="column" id="companyForm" tabindex="0" >
 
         <div class="companyPart">
 	    <h5 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h5>
@@ -164,7 +182,7 @@
 
                    <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Naziv podjetja</label>
-           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control"></asp:TextBox>
+           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true"></asp:TextBox>
                        </div>
 
 
@@ -172,7 +190,7 @@
 
                  <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Kontaktna številka</label>
-            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control"></asp:TextBox>   
+            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true"></asp:TextBox>   
                        </div>
 
 
@@ -181,7 +199,7 @@
 
                  <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Spletna stran</label>
-           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control"></asp:TextBox> 
+           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control" Enabled="true"></asp:TextBox> 
                        </div>
 
 
@@ -190,7 +208,7 @@
                 <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Admin</label>
       
-            <asp:DropDownList ID="listAdmin" runat="server" > 
+            <asp:DropDownList ID="listAdmin" runat="server" Enabled="true"> 
                <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList> 
                        </div>
@@ -201,7 +219,7 @@
 
                <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Izberite bazo</label>
-            <asp:DropDownList ID="ConnectionStrings" runat="server"  
+            <asp:DropDownList ID="ConnectionStrings" Enabled="true" runat="server"  
                AppendDataBoundItems="true">  
               </asp:DropDownList> 
                        </div>
@@ -216,12 +234,12 @@
           <br />
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Connection string</label>
-        <asp:TextBox ID="ConnectionString" runat="server" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
+        <asp:TextBox ID="ConnectionString" runat="server" Enabled="true" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
                        </div>
           <br />
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
-                <asp:TextBox ID="connName" runat="server" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
+                <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
                        </div>
 
           <br />
@@ -232,11 +250,11 @@
         <br />
         <br />
 
-                       <asp:Button CssClass="btn btn-primary" ID="companyButton" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+                       <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 
-          <button type="button" class="btn btn-danger" id="closeCompany" style="padding: 3px;">X</button>
+          <button type="button" class="btn btn-danger" Enabled="true" id="closeCompany" style="padding: 3px;">X</button>
                           </div>
         <br />
         <br />
@@ -268,20 +286,20 @@
 
 
 
-	<div class="column" id="userForm" style="display: none">
+	<div class="column" id="userForm" style="display: none" tabindex="0">
                        
                     <br />
                    <div class ="auth">
                   
                                                 <br />
                        <div id="new" style="position:absolute;left:0px;top:0px;">
-                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
+                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" Enabled="true" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center></div>
                
                        <hr />
     <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
-                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox>
+                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" Enabled="true" CssClass="form-control form-control-lg"></asp:TextBox>
           </div>            
                           <br />
 
@@ -289,13 +307,13 @@
 
      <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Email</label>
-                 <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox>
+                 <asp:TextBox ID="email" runat="server" placeholder="Email" Enabled="true" CssClass="form-control form-control-lg"></asp:TextBox>
           </div>
                     
                       <br />
 <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
-                        <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>  
+                        <asp:TextBox ID="TxtUserName" runat="server" Enabled="true" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>  
           </div>
                   
                 
@@ -304,7 +322,7 @@
                       <br />
                        <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
+<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" Enabled="true" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
 
                        </div>
                  
@@ -312,7 +330,7 @@
                       <br />
                         <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
-                        <asp:TextBox ID="TxtRePassword" runat="server"  TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
+                        <asp:TextBox ID="TxtRePassword" runat="server" Enabled="true" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
 
                        </div>
                   
@@ -333,7 +351,7 @@
                             <br />
 
                   
-                       <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal"  CellPadding="5">  
+                       <asp:RadioButtonList ID="userRole" runat="server" Enabled="true" RepeatDirection="Horizontal"  CellPadding="5">  
                             <asp:ListItem>Admin</asp:ListItem>  
                             <asp:ListItem>User</asp:ListItem>  
                         </asp:RadioButtonList>  
@@ -341,7 +359,7 @@
           
 <h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-               <asp:RadioButtonList ID="userTypeRadio" runat="server" RepeatDirection="Horizontal" CellPadding="5">  
+               <asp:RadioButtonList ID="userTypeRadio" runat="server" Enabled="true" RepeatDirection="Horizontal" CellPadding="5">  
                             <asp:ListItem>Viewer</asp:ListItem>  
                             <asp:ListItem>Designer</asp:ListItem>  
                             <asp:ListItem>Viewer&Designer</asp:ListItem>  
@@ -351,18 +369,18 @@
              
               
                     <h4 style="text-decoration: solid"Podjetje:</h4>  
-                        <asp:DropDownList ID="companiesList" runat="server"  
+                        <asp:DropDownList ID="companiesList" Enabled="true" runat="server"  
                                           AppendDataBoundItems="true">  
                            
                         </asp:DropDownList>  
                     <br />
                     <br />
-                 <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
+                 <asp:Button CssClass="btn btn-primary" Enabled="true" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
 
 
                         <div id="btns" style="position:absolute;float:right; right:0px;top:0px;">
 
-                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
+                      <button type="button"  class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
                 </div>
               </div>
                     <br />
@@ -380,49 +398,7 @@
  
 <script>
 
-    dragElement(document.getElementById("userForm"));
-    dragElement(document.getElementById("companyForm"));
 
-    function dragElement(elmnt) {
-        var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
-        if (document.getElementById(elmnt.id + "header")) {
-            // if present, the header is where you move the DIV from:
-            document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
-        } else {
-            // otherwise, move the DIV from anywhere inside the DIV:
-            elmnt.onmousedown = dragMouseDown;
-        }
-
-        function dragMouseDown(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // get the mouse cursor position at startup:
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            document.onmouseup = closeDragElement;
-            // call a function whenever the cursor moves:
-            document.onmousemove = elementDrag;
-        }
-
-        function elementDrag(e) {
-            e = e || window.event;
-            e.preventDefault();
-            // calculate the new cursor position:
-            pos1 = pos3 - e.clientX;
-            pos2 = pos4 - e.clientY;
-            pos3 = e.clientX;
-            pos4 = e.clientY;
-            // set the element's new position:
-            elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-            elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-        }
-
-        function closeDragElement() {
-            // stop moving when mouse button is released:
-            document.onmouseup = null;
-            document.onmousemove = null;
-        }
-    }
     $("#newUser").click(function (e) {
 
         e.preventDefault();
@@ -445,6 +421,14 @@
         $("#user").click(function () {
             $("#userForm").css('display', 'flex');
 
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                document.getElementById('overlay').style.backgroundColor = "gray";
+
+            }, 100);
+
         });
     });
 
@@ -452,18 +436,41 @@
     $(document).ready(function () {
         $("#company").click(function () {
             $("#companyForm").css('display', 'flex');
+            var x = document.getElementsByTagName("BODY")[0]
+            var elem = document.getElementById("companyForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                document.getElementById('overlay').style.backgroundColor = "gray";
+            }, 100);
         });
     });
 
 
     $(document).ready(function () {
         $("#closeCompany").click(function () {
+            var elem = document.getElementById("companyForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 0;
+            }, 100);
+
+
+
             $("#companyForm").css('display', 'none');
+
         });
     });
 
     $(document).ready(function () {
         $("#closeUser").click(function () {
+
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 0;
+            }, 100);
+
             $("#userForm").css('display', 'none');
         });
     });
@@ -471,6 +478,36 @@
 
 
 </script>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+    </div>
  
 
  
