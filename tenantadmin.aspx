@@ -115,11 +115,26 @@
             color: black;
         }
 
-
+        .delete {
+            float:right!important;
+        }
 
     </style>
 	<script>
+        function showDialogSync() {
 
+
+            $("#userForm").css('display', 'flex');
+
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                document.getElementById('overlay').style.backgroundColor = "gray";
+
+            }, 100);
+
+        }
 
 
         
@@ -184,14 +199,45 @@
 	
 	
 	<div class="column">
-		<dx:BootstrapListBox ID="usersListBox" runat="server" OnSelectedIndexChanged="usersListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika" SelectionMode="Single" FilteringSettings-UseCompactView="true" CssClasses-Control="control" ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
-                <CssClasses Control="control"  />
+		          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+<CssClasses Control="grid"></CssClasses>
+
+<CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+
+          <Settings VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+          </SettingsPager>
+
+<SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
+
+          <SettingsDataSecurity AllowEdit="True" />
+          <Columns>
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
+              </dx:BootstrapGridViewCommandColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
+                  <SettingsEditForm Visible="False" />
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="userRole" Visible="false" Name="UserRole" VisibleIndex="3" Caption="UserRole" >
+              </dx:BootstrapGridViewTextColumn>
+			   <dx:BootstrapGridViewTextColumn FieldName="ViewState" Visible="false" Name="ViewState" VisibleIndex="3" Caption="ViewState" >
+              </dx:BootstrapGridViewTextColumn>
+			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="Email" VisibleIndex="3" Caption="Email" >
+              </dx:BootstrapGridViewTextColumn>
+			 
+          </Columns>
+          <SettingsSearchPanel Visible="True"  />
+      </dx:BootstrapGridView>
+
+
+
+
 
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-</dx:BootstrapListBox>
 		<br />
-		<center><button type="button" id="user" class="btn btn-primary" onclick="showOrHideDivUser()">Dodaj/Spremeni</button></center>
-           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" AutoPostBack="true">
+		<button type="button"  runat="server" onserverclick="new_user_ServerClick" id="new_user" class="btn btn-success">Registracija</button>
+           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" CssClasses-Control="delete" OnClick="deleteUser_Click" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
 	</div>
