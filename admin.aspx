@@ -126,7 +126,7 @@
 	
 	<div class="column">
 	
-          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" OnSelectionChanged="usersGridView_SelectionChanged"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -201,7 +201,7 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="ID" Visible="false" ReadOnly="True" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">

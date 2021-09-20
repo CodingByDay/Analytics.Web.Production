@@ -63,18 +63,19 @@ namespace peptak
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
 
-
+            usersGridView.SettingsBehavior.AllowFocusedRow = true;
+            usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+            usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
+            usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            usersGridView.EnableCallBacks = false;
             if (!IsPostBack)
             {
+                graphsGridView.Enabled = true;
                 // BootstrapGridView1.Selection.
-
-                usersGridView.SettingsBehavior.AllowFocusedRow = true;
-                usersGridView.SettingsBehavior.AllowSelectSingleRowOnly= true;
-                usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
-                usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-                usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-
-                usersGridView.FocusedRowChanged += UsersGridView_FocusedRowChanged;
+              
+               
+                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -94,13 +95,12 @@ namespace peptak
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
-         
 
 
             }
             else
             {
-
+                graphsGridView.Enabled = true;
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 FillListGraphs();
@@ -120,7 +120,7 @@ namespace peptak
 
         }
 
-        private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
+        private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
             TxtUserName.Enabled = false;
             email.Enabled = false;
@@ -129,6 +129,11 @@ namespace peptak
             List<String> values = FillListGraphsNames();
             showConfig(values);
             updateForm();
+        }
+
+        private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
+        {
+     
         }
 
         private void authenticate()
@@ -217,14 +222,18 @@ namespace peptak
             // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment
-            if (usersGridView.Selection.Count != 0)
+            if (usersGridView.FocusedRowIndex >= 0)
             {
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'");
+
+
+                var namePlural = usersGridView.GetSelectedFieldValues("uname");
+                string name = namePlural[0].ToString();
+                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
                 // Documentation. This query is for getting all the permision table data from the user
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
                 Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
+                
                 conn.Close();
                 conn.Dispose();
                 permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
@@ -264,7 +273,7 @@ namespace peptak
             }
             else
             {
-
+                var debug = true;
             }
 
 
@@ -292,14 +301,17 @@ namespace peptak
                     graphList.Add(sdr["Caption"].ToString());
 
                 }
+
+
+
               //  graphsGridView.DataSource = graphList;
-             //   graphsGridView.DataBind();
+              //  graphsGridView.DataBind();
 
 
             }
             catch (Exception ex)
             {
-               
+                var log = ex;
             }
 
         }
@@ -346,9 +358,6 @@ namespace peptak
                     User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
                     var test = user.uname;
                     usersList.Add(user);
-
-
-
                     byUserList.Add(sdr["uname"].ToString());
 
                 }
@@ -369,7 +378,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-               
+                var log = ex;
             }
 
         }
