@@ -56,20 +56,35 @@
 	<form runat="server">
 
 <div id="wrapper">
+	<script>
+
+        window.onscroll = function (e) {
+            var vertical_position = 0;
+            if (pageYOffset) //usual
+                vertical_position = pageYOffset;
+            else if (document.documentElement.clientHeight)//ie
+                vertical_position = document.documentElement.scrollTop;
+            else if (document.body)//ie quirks
+                vertical_position = document.body.scrollTop;
+
+            var your_div = document.getElementById('cookieNotice');
+            your_div.style.bottom = 0;
+        }
+    </script>
 	<style>
 
 
 
 	 #cookieNotice {
 		 min-width:600px!important;
+
 		 max-width:600px!important;
-		 min-height: 300px!important;
-		 max-height: 300px!important;
-		 position:absolute;
+
+		 position:fixed;
 
 		 background-color: white;
 		 right: 0!important;
-		 bottom: 0!important;
+		 bottom: 10px!important;
 		 z-index: 1;
 		 opacity: 1;
 
