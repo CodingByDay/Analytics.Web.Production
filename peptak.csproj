@@ -655,6 +655,7 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="ORM\User.cs" />
     <Compile Include="plans.aspx.cs">
       <DependentUpon>plans.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

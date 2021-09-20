@@ -1233,7 +1233,6 @@ C:\Users\janko\Desktop\nw\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.Core
 C:\Users\janko\Desktop\nw\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\nw\DevExpressDatabaseStorage\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\nw\DevExpressDatabaseStorage\obj\Debug\peptak.pdb
-C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csprojAssemblyReference.cache
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.dll.licenses
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\peptak.dll.config
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\peptak.dll
@@ -1480,3 +1479,4 @@ C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.pdb
+C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.AssemblyReference.cache

@@ -1,5 +1,6 @@
 ﻿using DevExpress.Web.Bootstrap;
 using peptak.HelperClasses;
+using peptak.ORM;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -21,6 +22,7 @@ namespace peptak
 {
     public partial class admin : System.Web.UI.Page
     {
+        private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
         private List<bool> config = new List<bool>();
@@ -38,8 +40,6 @@ namespace peptak
         private SqlCommand cmd;
         private object idNumber;
         private List<String> companiesData = new List<string>();
-        private List<String> usersData = new List<string>();
-        private string finalQuery;
         private object id;
         private int flag;
         private string companyInfo;
@@ -56,7 +56,7 @@ namespace peptak
         private Exception e;
         private int idFromString;
         private string role;
-
+        private List<User> usersList =  new List<User>();
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -67,8 +67,9 @@ namespace peptak
             if (!IsPostBack)
             {
                 // BootstrapGridView1.Selection.
-
-
+                usersGridView.SettingsBehavior.AllowFocusedRow = true;
+                usersGridView.SettingsBehavior.AllowSelectSingleRowOnly= true;
+                
 
              
                 authenticate();
@@ -204,9 +205,9 @@ namespace peptak
             // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
             // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
             // EXEC(@SQLStatment
-            if (usersListBox.SelectedItem != null)
+            if (usersGridView.Selection.Count != 0)
             {
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{usersListBox.SelectedItem.Text}'");
+                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'");
                 // Documentation. This query is for getting all the permision table data from the user
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
@@ -314,7 +315,8 @@ namespace peptak
         {
             try
             {
-                usersData.Clear();
+                byUserList.Clear();
+                usersList.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
                 conn.Open();
@@ -325,15 +327,29 @@ namespace peptak
                 /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
+
                 while (sdr.Read())
                 {
-                    usersData.Add(sdr["uname"].ToString());
+
+                    User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
+                    var test = user.uname;
+                    usersList.Add(user);
+
+
+
+                    byUserList.Add(sdr["uname"].ToString());
 
                 }
-                byUserListBox.DataSource = usersData;
+
+
+                byUserListBox.DataSource = byUserList;
                 byUserListBox.DataBind();
-                usersListBox.DataSource = usersData;
-                usersListBox.DataBind();
+
+
+                usersGridView.DataSource = usersList;
+                usersGridView.DataBind();
+
+
                 cmd.Dispose();
                 conn.Close();
 
@@ -347,6 +363,8 @@ namespace peptak
         }
 
 
+
+     
 
 
         private void fillCompaniesRegistration()
@@ -417,7 +435,7 @@ namespace peptak
         {
 
   
-            var userRightNow = usersListBox.SelectedItem.Text;
+            var userRightNow = usersGridView.GetSelectedFieldValues("uname");
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
@@ -694,11 +712,10 @@ namespace peptak
             companiesList.SelectedValue = without;
             companiesList.Enabled = false;
 
-            usersListBox.SelectedIndex = 0;
-            // Changes the users acording to the selected value in the CompanyList Box.
+            usersGridView.Selection.SetSelection(-1, true);
         }
 
-        protected void usersListBox_SelectedIndexChanged(object sender, EventArgs e)
+        protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
         {
 
             TxtUserName.Enabled = false;
@@ -777,7 +794,7 @@ namespace peptak
             for (int i = 0; i < numberOfRows; i++)
             {
                 var tempGraphString = values.ElementAt(i);
-                findId = String.Format($"SELECT id_permision_user from Users where uname='{usersListBox.SelectedItem.Text}'");
+                findId = String.Format($"SELECT id_permision_user from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'");
                 // execute query
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand(findId, conn);
@@ -877,7 +894,7 @@ namespace peptak
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersListBox.SelectedItem == null)
+            if (usersGridView.Selection.Count == 0)
             {
                 Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
 
@@ -1051,19 +1068,19 @@ namespace peptak
         {
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersListBox.SelectedItem.Text}'", conn);
-            var debug = $"delete from Users where uname='{usersListBox.SelectedItem.Text}'";
-            deletedID = usersListBox.SelectedItem.Text;
+            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'", conn);
+            var debug = $"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'";
+            deletedID = usersGridView.GetSelectedFieldValues("uname").ToString();
             getIdPermision();
             try
             {
-                var company = getCompanyQuery(usersListBox.SelectedItem.Text);
+                var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname").ToString());
                 var spacelessCompany = company.Replace(" ", string.Empty);
                 idFromString = getIdCompany(spacelessCompany);
 
                 cmd.ExecuteNonQuery();
                 Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
-                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersListBox.SelectedItem.Text}");
+                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersGridView.GetSelectedFieldValues("uname")}");
                 string finalPath = filePath.Replace(" ", string.Empty);
                 FillListGraphs();
                 List<String> values = FillListGraphsNames();
@@ -1186,7 +1203,7 @@ namespace peptak
 
         protected void newUser_Click(object sender, EventArgs e)
         {
-            usersListBox.SelectedIndex = -1;
+            usersGridView.Selection.SetSelection(-1, true);
             TxtUserName.Enabled = true;
             email.Enabled = true;
             TxtUserName.Text = "";
@@ -1271,7 +1288,7 @@ namespace peptak
         protected void new_user_ServerClick2(object sender, EventArgs e)
         {
 
-            usersListBox.SelectedIndex = -1;
+            usersGridView.Selection.SetSelection(-1, true);
             TxtUserName.Enabled = true;
             email.Enabled = true;
             TxtUserName.Text = "";
