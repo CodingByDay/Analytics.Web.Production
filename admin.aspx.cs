@@ -22,6 +22,9 @@ namespace peptak
 {
     public partial class admin : System.Web.UI.Page
     {
+
+
+        private string connection = "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;";
         private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -56,7 +59,7 @@ namespace peptak
         private Exception e;
         private int idFromString;
         private string role;
-        private List<User> usersList =  new List<User>();
+        private List<User> usersList = new List<User>();
         private bool isEditing;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -83,9 +86,9 @@ namespace peptak
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
-                // BootstrapGridView1.Selection.
-              
-               
+                
+
+
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
@@ -132,9 +135,9 @@ namespace peptak
         }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        { 
+        {
             var name = e.EditingKeyValue;
-            // Call js function here if the test passes.
+            // Call js. function here if the test passes.
             updateFormName(name.ToString());
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
 
@@ -152,18 +155,19 @@ namespace peptak
             showConfig(values);
             updateForm();
 
-          
+
         }
 
         private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
         {
-     
+
         }
 
         private void authenticate()
 
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+
+            conn = new SqlConnection(connection);
             conn.Open();
             var username = HttpContext.Current.User.Identity.Name;
             // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -174,7 +178,8 @@ namespace peptak
                 role = (reader["userRole"].ToString());
             }
 
-
+            conn.Close();
+            cmd.Dispose();
 
 
             if (role == "SuperAdmin")
@@ -187,7 +192,7 @@ namespace peptak
             }
         }
 
-                public void FillListAdmin()
+        public void FillListAdmin()
         {
             try
             {
@@ -196,7 +201,7 @@ namespace peptak
 
                 string UserNameForChecking
                     = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
@@ -228,7 +233,7 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                    
+
             }
         }
 
@@ -239,7 +244,7 @@ namespace peptak
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
             // SET @ColList = ''
@@ -257,15 +262,15 @@ namespace peptak
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
                 Int32 Total_Key = System.Convert.ToInt32(idNumber);
-                
+
                 conn.Close();
                 conn.Dispose();
                 permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
                 cmd = new SqlCommand(permisionQuery, conn);
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
 
                 using (SqlConnection connection = new SqlConnection(
-                  "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;"))
+                  this.connection))
                 {
                     SqlCommand command = new SqlCommand(permisionQuery, connection);
                     connection.Open();
@@ -279,7 +284,7 @@ namespace peptak
                             if (bitValueTemp == 1)
                             {
 
-                                
+
                                 graphsGridView.Selection.SetSelection(i, true);
                                 valuesBool.Add(true);
                             }
@@ -312,7 +317,8 @@ namespace peptak
             {
                 graphList.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
+
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -328,9 +334,11 @@ namespace peptak
                 }
 
 
+                cmd.Dispose();
+                conn.Dispose();
 
-              //  graphsGridView.DataSource = graphList;
-              //  graphsGridView.DataBind();
+                //  graphsGridView.DataSource = graphList;
+                //  graphsGridView.DataBind();
 
 
             }
@@ -367,7 +375,7 @@ namespace peptak
                 byUserList.Clear();
                 usersList.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -410,14 +418,14 @@ namespace peptak
 
 
 
-     
+
 
 
         private void fillCompaniesRegistration()
         {
             try
             {
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
@@ -450,7 +458,7 @@ namespace peptak
             try
             {
                 companiesData.Clear();
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
@@ -479,9 +487,9 @@ namespace peptak
         private void updateForm()
         {
 
-  
+
             var userRightNow = usersGridView.GetSelectedFieldValues("uname");
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
             SqlDataReader sdr = cmd.ExecuteReader();
@@ -511,7 +519,7 @@ namespace peptak
         {
 
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
             SqlDataReader sdr = cmd.ExecuteReader();
@@ -542,7 +550,7 @@ namespace peptak
             if (TxtUserName.Enabled == true)
             {
 
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
                 var result = cmd.ExecuteScalar();
@@ -557,7 +565,7 @@ namespace peptak
                 }
                 else
                 {
-                    conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                    conn = new SqlConnection(connection);
                     conn.Open();
                     SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
 
@@ -582,7 +590,7 @@ namespace peptak
                         }
                         catch (Exception error)
                         {
-                            
+
                         }
                         createUserPermisions.Dispose();
 
@@ -591,7 +599,7 @@ namespace peptak
 
                         string companyINSERT = companiesList.SelectedItem.Value;
                         int idCOMPANY = getIdCompany(companyINSERT);
-                        var nonQuery = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                        var nonQuery = new SqlConnection(connection);
                         nonQuery.Open();
                         string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, nonQuery);
@@ -625,6 +633,8 @@ namespace peptak
 
                         }
                     }
+                    cmd.Dispose();
+                    conn.Close();
                 }
             }
             else
@@ -634,7 +644,7 @@ namespace peptak
 
 
 
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
                 var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
                 //  debug.Add(dev);
@@ -678,6 +688,8 @@ namespace peptak
                         email.Text = "";
 
                     }
+                    cmd.Dispose();
+                    conn.Close();
                 }
             }
         }
@@ -701,12 +713,12 @@ namespace peptak
 
         private void insertCompany()
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
             var result = cmd.ExecuteScalar();
             Int32 next = System.Convert.ToInt32(result) + 1;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
             var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
@@ -771,10 +783,45 @@ namespace peptak
 
             }
         }
+        protected void deleteUser_Click(object sender, EventArgs e)
+        {
+            conn = new SqlConnection(connection);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'", conn);
+            var debug = $"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'";
+            deletedID = usersGridView.GetSelectedFieldValues("uname").ToString();
+            getIdPermision();
+            try
+            {
+                var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname").ToString());
+                var spacelessCompany = company.Replace(" ", string.Empty);
+                idFromString = getIdCompany(spacelessCompany);
+
+                cmd.ExecuteNonQuery();
+                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersGridView.GetSelectedFieldValues("uname")}");
+                string finalPath = filePath.Replace(" ", string.Empty);
+                FillListGraphs();
+                List<String> values = FillListGraphsNames();
+                showConfig(values);
+                deletePermisionEntry();
+            }
+
+
+            catch (Exception error)
+            {
+
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+            FillUsers(idFromString);
+            cmd.Dispose();
+            conn.Close();
+        }
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-         
+
 
             TxtUserName.Enabled = false;
             email.Enabled = false;
@@ -809,7 +856,7 @@ namespace peptak
             {
                 graphList.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(connection);
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
@@ -817,7 +864,7 @@ namespace peptak
                 cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
 
                 // Intepolation or the F string. C# > 5.0    
-                
+
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -829,7 +876,8 @@ namespace peptak
                     // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(stripped);
                 }
-       
+                cmd.Dispose();
+                conn.Close();
 
 
             }
@@ -847,7 +895,7 @@ namespace peptak
         {
 
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
@@ -863,7 +911,7 @@ namespace peptak
 
         private void makeSQLquery(int numberOfRows)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             for (int i = 0; i < numberOfRows; i++)
             {
@@ -913,7 +961,7 @@ namespace peptak
 
         private void makeSQLqueryByUser()
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
             {
@@ -971,7 +1019,7 @@ namespace peptak
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersGridView.GetSelectedFieldValues()==null)
+            if (usersGridView.GetSelectedFieldValues() == null)
             {
                 Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
 
@@ -985,7 +1033,7 @@ namespace peptak
         }
         private void getIdPermision()
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
             try
@@ -1010,7 +1058,7 @@ namespace peptak
         private void deletePermisionEntry()
         {
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
             var final = $"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}";
@@ -1039,9 +1087,10 @@ namespace peptak
         {
             var id = getIdCompany(current);
             deleteMemberships(id);
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
+
             var deb = $"delete from users where id_company={id}";
             try
             {
@@ -1052,7 +1101,8 @@ namespace peptak
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.ToString()}'  );</script>");
             }
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
+
             conn.Open();
             SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
             string dev = $"DELETE FROM companies WHERE company_name='{current}'";
@@ -1089,7 +1139,7 @@ namespace peptak
 
         private int getIdCompany(string current)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
             try
@@ -1115,7 +1165,7 @@ namespace peptak
         {
 
             var final = getCurrentCompany();
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
             string dev = $"DELETE FROM companies WHERE company_name='{number}'";
@@ -1137,42 +1187,6 @@ namespace peptak
 
 
 
-            cmd.Dispose();
-            conn.Close();
-        }
-
-        protected void deleteUser_Click(object sender, EventArgs e)
-        {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'", conn);
-            var debug = $"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'";
-            deletedID = usersGridView.GetSelectedFieldValues("uname").ToString();
-            getIdPermision();
-            try
-            {
-                var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname").ToString());
-                var spacelessCompany = company.Replace(" ", string.Empty);
-                idFromString = getIdCompany(spacelessCompany);
-
-                cmd.ExecuteNonQuery();
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
-                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{usersGridView.GetSelectedFieldValues("uname")}");
-                string finalPath = filePath.Replace(" ", string.Empty);
-                FillListGraphs();
-                List<String> values = FillListGraphsNames();
-                showConfig(values);
-                deletePermisionEntry();
-            }
-
-
-            catch (Exception error)
-            {
-
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-
-            FillUsers(idFromString);
             cmd.Dispose();
             conn.Close();
         }
@@ -1211,7 +1225,7 @@ namespace peptak
         {
             columnNames.Clear();
             config.Clear();
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
 
             // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
@@ -1239,10 +1253,10 @@ namespace peptak
             conn.Dispose();
             permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
             cmd = new SqlCommand(permisionQuery, conn);
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
 
             using (SqlConnection connection = new SqlConnection(
-              "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;"))
+              this.connection))
             {
                 SqlCommand command = new SqlCommand(permisionQuery, connection);
                 connection.Open();
@@ -1360,7 +1374,7 @@ namespace peptak
 
         }
 
-    
+
 
         protected void new_user_ServerClick2(object sender, EventArgs e)
         {

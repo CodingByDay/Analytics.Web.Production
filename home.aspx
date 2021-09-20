@@ -35,6 +35,19 @@
 	<link rel="stylesheet" href="css/all.css">
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 </head>
+	<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    (function () {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/61486979d326717cb6826050/1fg1do0lk';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+</script>
+<!--End of Tawk.to Script-->
 <body>
 	
 
@@ -58,24 +71,14 @@
 <div id="wrapper">
 	<script>
 
-        window.onscroll = function (e) {
-            var vertical_position = 0;
-            if (pageYOffset) //usual
-                vertical_position = pageYOffset;
-            else if (document.documentElement.clientHeight)//ie
-                vertical_position = document.documentElement.scrollTop;
-            else if (document.body)//ie quirks
-                vertical_position = document.body.scrollTop;
-
-            var your_div = document.getElementById('cookieNotice');
-            your_div.style.bottom = 0;
-        }
+        
     </script>
 	<style>
 
 
 
 	 #cookieNotice {
+
 		 min-width:600px!important;
 
 		 max-width:600px!important;
@@ -83,7 +86,7 @@
 		 position:fixed;
 
 		 background-color: white;
-		 right: 0!important;
+		 left: 10px!important;
 		 bottom: 10px!important;
 		 z-index: 1;
 		 opacity: 1;
