@@ -67,11 +67,14 @@ namespace peptak
             if (!IsPostBack)
             {
                 // BootstrapGridView1.Selection.
+
                 usersGridView.SettingsBehavior.AllowFocusedRow = true;
                 usersGridView.SettingsBehavior.AllowSelectSingleRowOnly= true;
-                
+                usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
 
-             
+                usersGridView.FocusedRowChanged += UsersGridView_FocusedRowChanged;
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -117,7 +120,16 @@ namespace peptak
 
         }
 
-     
+        private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
+        {
+            TxtUserName.Enabled = false;
+            email.Enabled = false;
+            graphsGridView.Enabled = true;
+            FillListGraphs();
+            List<String> values = FillListGraphsNames();
+            showConfig(values);
+            updateForm();
+        }
 
         private void authenticate()
 
@@ -322,7 +334,7 @@ namespace peptak
                 conn.Open();
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select uname from Users where id_company={companyID}", conn);
+                cmd = new SqlCommand($"Select * from Users where id_company={companyID}", conn);
 
                 /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
@@ -1302,6 +1314,17 @@ namespace peptak
 
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
 
+        }
+
+        protected void usersGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            TxtUserName.Enabled = false;
+            email.Enabled = false;
+            graphsGridView.Enabled = true;
+            FillListGraphs();
+            List<String> values = FillListGraphsNames();
+            showConfig(values);
+            updateForm();
         }
 
 
