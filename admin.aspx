@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="peptak.admin" %>
+﻿<%@ Page Title="Admin" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="peptak.admin" %>
 <%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -45,12 +45,11 @@
     </script>
     <style>
 
-        #new_userD {
+     .delete {
 
-            position: absolute!important;
-            float: right;
-            margin: 30px;
-        }
+         float: right!important;
+
+     }
 
 
         #overlay {
@@ -126,7 +125,7 @@
 	
 	<div class="column">
 	
-          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -141,7 +140,7 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
@@ -166,20 +165,15 @@
      
 		<br />  
         
-		<center>
-            <button type="button" id="user" class="btn btn-primary">Spremeni</button>
+		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"  class="btn btn-success">Registracija</button>
 
-		</center>
+	
 
-        <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click">
+        <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="delete">
 
         <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
-        <div id="new_userD">
-
-		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user" class="btn btn-success">Registracija</button>
-              
-        </div>
+  
         
 
 	</div>
@@ -550,6 +544,79 @@
 
 
 </script>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+</div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
  
 
  

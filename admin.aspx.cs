@@ -57,18 +57,29 @@ namespace peptak
         private int idFromString;
         private string role;
         private List<User> usersList =  new List<User>();
+        private bool isEditing;
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
 
+
+            // All of this config is neccessary.
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
+
+
+            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+
+            // Keep this.
+
+
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
@@ -120,6 +131,17 @@ namespace peptak
 
         }
 
+        private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
+        { 
+            var name = e.EditingKeyValue;
+            // Call js function here if the test passes.
+            updateFormName(name.ToString());
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
+
+
+            e.Cancel = true;
+        }
+
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
             TxtUserName.Enabled = false;
@@ -129,6 +151,8 @@ namespace peptak
             List<String> values = FillListGraphsNames();
             showConfig(values);
             updateForm();
+
+          
         }
 
         private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
@@ -273,7 +297,8 @@ namespace peptak
             }
             else
             {
-                var debug = true;
+
+
             }
 
 
@@ -402,7 +427,6 @@ namespace peptak
                 {
                     companies.Add(sdr["company_name"].ToString());
                     var debug = sdr["company_name"].ToString();
-                    var d = 1;
 
                 }
                 companiesList.DataSource = companies;
@@ -482,6 +506,35 @@ namespace peptak
             cmd.Dispose();
         }
 
+
+        private void updateFormName(string name)
+        {
+
+
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
+            SqlDataReader sdr = cmd.ExecuteReader();
+            while (sdr.Read())
+            {
+                TxtName.Text = sdr["FullName"].ToString();
+                TxtUserName.Text = sdr["uname"].ToString();
+                TxtUserName.Enabled = false;
+                var number = (int)sdr["id_company"];
+                companiesList.SelectedIndex = number - 1;
+
+                companiesList.Enabled = false;
+                email.Enabled = false;
+                string role = sdr["userRole"].ToString();
+                string type = sdr["ViewState"].ToString();
+                email.Text = sdr["email"].ToString();
+                userTypeRadio.SelectedIndex = userRole.Items.IndexOf(userTypeRadio.Items.FindByValue(role));
+                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+
+            }
+            sdr.Close();
+            cmd.Dispose();
+        }
 
 
         protected void registrationButton_Click(object sender, EventArgs e)
@@ -733,7 +786,7 @@ namespace peptak
             companiesList.SelectedValue = without;
             companiesList.Enabled = false;
 
-            usersGridView.Selection.SetSelection(-1, true);
+            usersGridView.Selection.SetSelection(0, true);
         }
 
         protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
@@ -815,7 +868,10 @@ namespace peptak
             for (int i = 0; i < numberOfRows; i++)
             {
                 var tempGraphString = values.ElementAt(i);
-                findId = String.Format($"SELECT id_permision_user from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'");
+
+                var name = usersGridView.GetSelectedFieldValues("uname");
+                var singular = name[0].ToString();
+                findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
                 // execute query
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand(findId, conn);
@@ -915,7 +971,7 @@ namespace peptak
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersGridView.Selection.Count == 0)
+            if (usersGridView.GetSelectedFieldValues()==null)
             {
                 Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
 
@@ -1069,8 +1125,8 @@ namespace peptak
             try
             {
                 cmd.ExecuteNonQuery();
-                //fillUsersDelete();
-                //fillCompanyDelete();
+                // fillUsersDelete();
+                // fillCompanyDelete();
             }
 
 
@@ -1309,7 +1365,6 @@ namespace peptak
         protected void new_user_ServerClick2(object sender, EventArgs e)
         {
 
-            usersGridView.Selection.SetSelection(-1, true);
             TxtUserName.Enabled = true;
             email.Enabled = true;
             TxtUserName.Text = "";
