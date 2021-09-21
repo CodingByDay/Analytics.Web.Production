@@ -3,14 +3,32 @@
 <%@ Register Assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <!DOCTYPE html>
-
+<meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
 
     <title></title>
 </head>
+
+
 <body>
+     <style>
+         /* Smartphones (portrait and landscape) ----------- */
+
+.login {
+    text-align: center!important;
+    min-width: 60%!important;
+    max-width: 60%!important;
+}
+
+     #form1 {
+         width: 100%!important;
+         height: 100%!important;
+     }
+
+    </style>
+   
  
     <div class="wrapper fadeInDown">
         <div id="formContent">
@@ -44,7 +62,7 @@
                         </asp:HyperLink>
 
 
-                        <asp:Button ID="cmdLogin" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
 
                         <center>
 

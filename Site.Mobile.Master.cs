@@ -12,62 +12,28 @@ namespace peptak
     public partial class Site_Mobile : System.Web.UI.MasterPage
     {
         ///  Add a default company entry for the new user and center the buttons. Change the names of all of the so u can change the destination.
-        /// </summary>
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            cmdsignOut.Click += CmdsignOut_Click;
-            admin.Click += Admin_Click;
-            back.Click += Back_Click;
-            cmdsignOut.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            admin.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            back.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+
+            signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
-
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"Select userRole from Users where uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
+
         }
 
-        private void Back_Click(object sender, EventArgs e)
-        {
-            if (userRole == "SuperAdmin")
-            {
-                Response.Redirect("default", true);
-            }
-            else
-            {
-
-                Response.Redirect("custom", true);
-            }
-        }
-
-        private void Admin_Click(object sender, EventArgs e)
-        {
-            if (userRole == "SuperAdmin")
-            {
-                Response.Redirect("AdminPanel.aspx", true);
-            }
-            else if (userRole == "Admin")
-            {
-                Response.Redirect("AdminPanelCompany.aspx", true);
-
-            }
-            else
-            {
-                ///
-                Response.Redirect("logon.aspx", true); // config for securing data.
-            }
-        }
-
-        private void CmdsignOut_Click(object sender, EventArgs e)
+        protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Response.Redirect("home.aspx", true);
@@ -77,11 +43,11 @@ namespace peptak
         {
             if (userRole != "SuperAdmin" && userRole != "Admin")
             {
-                admin.Visible = false;
+                adminButtonAnchor.Visible = false;
             }
             else
             {
-                admin.Visible = true;
+                adminButtonAnchor.Visible = true;
             }
         }
 
@@ -89,42 +55,97 @@ namespace peptak
 
 
 
-
-        protected void cmdsignOut_Click1(object sender, EventArgs e)
+        protected void administration_Click(object sender, EventArgs e)
         {
-            FormsAuthentication.SignOut();
-            Response.Redirect("logon.aspx", true);
-        }
-
-        protected void admin_Click(object sender, EventArgs e)
-        {
+            // Data
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("AdminPanel.aspx", true);
+                Response.Redirect("admin.aspx", true);
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("AdminPanelCompany.aspx", true);
+                Response.Redirect("tenantadmin.aspx", true);
 
             }
             else
             {
-                ///
+
                 Response.Redirect("logon.aspx", true); // config for securing data.
             }
         }
 
-        protected void back_Click1(object sender, EventArgs e)
+        protected void back_Click(object sender, EventArgs e)
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("default", true);
+                Response.Redirect("index", true);
             }
             else
             {
 
-                Response.Redirect("custom", true);
+                Response.Redirect("indextenant", true);
             }
+
+        }
+
+        protected void desktop_button_Click(object sender, EventArgs e)
+        {
+            var test = userRole;
+
+
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("index", true);
+
+            }
+            else
+            {
+
+                Response.Redirect("indextenant", true);
+
+            }
+        }
+
+        protected void mobile_button_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Emulator", true);
+        }
+
+        protected void adminButtonAnchor_ServerClick(object sender, EventArgs e)
+        {
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("admin.aspx", true);
+            }
+            else if (userRole == "Admin")
+            {
+                Response.Redirect("tenantadmin.aspx", true);
+
+            }
+            else
+            {
+
+                Response.Redirect("logon.aspx", true); // config for securing data.
+            }
+        }
+
+        protected void backButtonA_ServerClick(object sender, EventArgs e)
+        {
+            if (userRole == "SuperAdmin")
+            {
+                Response.Redirect("index", true);
+            }
+            else
+            {
+
+                Response.Redirect("indextenant", true);
+            }
+        }
+
+        protected void signOutAnchor_ServerClick(object sender, EventArgs e)
+        {
+            FormsAuthentication.SignOut();
+            Response.Redirect("home.aspx", true);
         }
     }
 }

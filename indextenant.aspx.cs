@@ -30,16 +30,27 @@ namespace peptak
         {
 
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+
                 admin.Visible = false;
+
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+
                 ASPxDashboard3.AllowCreateNewDashboard = true;
+
                 ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
                 if (Session["DesignerPayed"].ToString() == "true")
                 {
 
@@ -57,7 +68,9 @@ namespace peptak
                     }
                 }
                 else
+
                 {
+
                 ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
                 }
@@ -67,9 +80,12 @@ namespace peptak
 
                 Response.Cookies["state"].Value = "light";
 
-              }
+               }
+
               else
+
               {
+
                 state = Request.Cookies.Get("state").Value;
 
                 switch (state)
@@ -82,9 +98,7 @@ namespace peptak
                         break;
 
                 }
-            }
-
-
+              }
 
         }
 
@@ -107,6 +121,7 @@ namespace peptak
             {
 
                 Session["FirstLoad"] = "false";
+
                 string _initial = Session["InitialPassed"].ToString();
                 string ID = e.DashboardId;
                 var result = checkDB(ID);
@@ -128,12 +143,14 @@ namespace peptak
                     {
                         Session["mode"] = "Designer";
                         Session["flag"] = "true";
+
                         DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
                     }
                 }
                 else
                 {
                     Session["flag"] = "false";
+
                     Session["InitialPassed"] = "true";
                 }
             } else
@@ -145,6 +162,7 @@ namespace peptak
         private bool checkDB(string ID)
         {
                 bool flag = false; /* For added security default=false */
+
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
 
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");

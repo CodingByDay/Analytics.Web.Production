@@ -15,31 +15,31 @@ namespace peptak
     {
 
         /// <summary>
-        /// cmdsignOut control.
+        /// adminButtonAnchor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdsignOut;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButtonAnchor;
 
         /// <summary>
-        /// admin control.
+        /// backButtonA control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button admin;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButtonA;
 
         /// <summary>
-        /// back control.
+        /// signOutAnchor control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button back;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor signOutAnchor;
 
         /// <summary>
         /// MainContent control.

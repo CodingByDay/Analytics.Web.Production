@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -18,7 +19,8 @@ namespace peptak
 
         private void Login_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logon.aspx", true);
+            var version = ConfigurationManager.AppSettings["version"];
+            Response.Redirect($"logon.aspx?version={version}", true);
         }
     }
 }

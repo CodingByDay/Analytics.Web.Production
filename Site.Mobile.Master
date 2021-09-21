@@ -116,11 +116,21 @@
                 <span class="sr-only">(current)</span>
               </a>
         </li>
-                        <li> <asp:Button type="submit" Value="signOut" runat="server" ID="cmdsignOut"  Text="Odjava" CssClass="link"/></li>
-                        <li> <asp:Button type="submit" Value="Admin" runat="server" ID="admin"   Text="Administracija"  CssClass="link"/></li>
-                        <li> <asp:Button type="submit" Value="Back" runat="server" ID="back"  Text="Nazaj"  CssClass="link"/></li>
+              
 
       </ul>
+        
+                     <div class="inner"><a runat="server" id="adminButtonAnchor" onserverclick="adminButtonAnchor_ServerClick"  title="Administration">
+                     <i class="fa fa-wrench"></i> Nastavitve
+                    </a></div>
+
+
+                           <div class="inner">   <a runat="server" id="backButtonA" onserverclick="backButtonA_ServerClick"  title="Back">
+                     <i class="fa fa-reply"></i> Nazaj
+                    </a></div>
+                     <div class="inner"> <a runat="server" id="signOutAnchor" onserverclick="signOutAnchor_ServerClick"  title="Logout">
+                     <i class="fa fa-chevron-right"></i> Odjava
+                    </a></div>
     </div>
   </div>
 </nav>
