@@ -21,6 +21,8 @@ namespace peptak
     {
 
         private string connection = "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;";
+
+
         private List<User> userObjectList = new List<User>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -89,7 +91,14 @@ namespace peptak
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
-          
+
+
+
+                if (userObjectList.Count != 0)
+                {
+                    usersGridView.Selection.SetSelection(0, true);
+                }
+
             }
             else
             {
@@ -292,8 +301,9 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
+                var log = ex;
             }
             finally
             {
@@ -446,7 +456,8 @@ namespace peptak
                 int next = Total_ID + 1;
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
-                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
+
                     TxtPassword.Text = "";
                     TxtRePassword.Text = "";
                 }
@@ -464,7 +475,8 @@ namespace peptak
                     check.Dispose();
                     if (resultUsername > 0)
                     {
-                        Response.Write("<script type=\"text/javascript\">alert('Uporabniško ime že obstaja.');</script>");
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
+
                     }
                     else
                     {
@@ -493,7 +505,9 @@ namespace peptak
                         {
                             var id = getIdCompany(companiesList.SelectedValue);
                             createUser.ExecuteNonQuery();
-                            Response.Write($"<script type=\"text/javascript\">alert('Uspešno kreiran uporabnik.');</script>");
+
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
+
                             TxtName.Text = "";
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
@@ -513,7 +527,8 @@ namespace peptak
                         catch (SqlException ex) when (ex.Number == 2627)
                         {
                             // Implement logging here.
-                            Response.Write($"<script type=\"text/javascript\">alert('To uporabniško ime že obstaja, prosimo probajte še enkrat.');</script>");
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'To uporabniško ime že obstaja, prosimo probajte še enkrat.')", true);
+
                             TxtName.Text = "";
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
@@ -537,7 +552,7 @@ namespace peptak
 
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
-                    Response.Write("<script type=\"text/javascript\">alert('Gesla niso ista. Poskusite še enkrat!');</script>");
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
                     TxtPassword.Text = "";
                     TxtRePassword.Text = "";
                 }
@@ -548,7 +563,7 @@ namespace peptak
                     {
                         var username = TxtUserName.Text.Replace(" ", string.Empty); ;
                         cmd.ExecuteNonQuery();
-                        Response.Write("<script type=\"text/javascript\">alert('Uspešno spremenjeni podatki.');</script>");
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno spremenjeni podatki.')", true);
                         TxtName.Text = "";
                         TxtPassword.Text = "";
                         TxtRePassword.Text = "";
@@ -566,7 +581,7 @@ namespace peptak
                     catch (Exception ex)
                     {
                         // Implement logging here.
-                        Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
+                        Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.Message}');</script>");
                         // Logging
                         TxtName.Text = "";
                         TxtPassword.Text = "";
@@ -645,8 +660,8 @@ namespace peptak
             }
             catch (Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.ToString()}');</script>");
-
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                var log = ex;    
             }
             finally
             {
@@ -774,8 +789,9 @@ namespace peptak
                     }
                     catch (Exception e)
                     {
-                        Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabnika. + {e.ToString()}');</script>");
 
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                        var log = e;
                     }
                 }
             }
@@ -788,8 +804,7 @@ namespace peptak
         {
             if (usersGridView.FocusedRowIndex >= 0)
             {
-                Response.Write("<script type=\"text/javascript\">alert('Morate izbrati uporabnika.');</script>");
-
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
             }
             else
             {
@@ -815,7 +830,8 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                var log = error;
             }
 
 
@@ -843,8 +859,10 @@ namespace peptak
 
             catch (Exception error)
             {
+                var log = error;
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+
             }
             int idUser = permisionID;
             cmd.Dispose();
@@ -900,6 +918,7 @@ namespace peptak
 
             catch (Exception error)
             {
+                var log = error;
                 // Implement logging here.
             }
 
@@ -930,7 +949,8 @@ namespace peptak
             }
             catch (Exception error)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                var log = error;
             }
             conn = new SqlConnection(connection);
             conn.Open();
@@ -940,7 +960,7 @@ namespace peptak
             {
                 cmd.ExecuteNonQuery();
 
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
 
 
             }
@@ -949,7 +969,10 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake...'  );</script>");
+                var log = error;
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+
             }
             FillListGraphs();
             cmd.Dispose();
@@ -968,8 +991,9 @@ namespace peptak
             }
             catch (Exception error)
             {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                var log = error;
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
             }
             cmd.Dispose();
             conn.Close();
@@ -993,7 +1017,9 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.Message}');</script>");
+                var log = error;
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
             }
             cmd.Dispose();
             conn.Close();
@@ -1013,7 +1039,8 @@ namespace peptak
                 var company = getCompanyQuery(singular);
                 var spacelessCompany = company.Replace(" ", string.Empty);
                 cmd.ExecuteNonQuery();
-                Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno brisanje.')", true);
                 string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{singular}");
                 string finalPath = filePath.Replace(" ", string.Empty);
 
@@ -1029,7 +1056,9 @@ namespace peptak
             catch (Exception error)
             {
                 // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error.Message}'  );</script>");
+                var log = error;
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
             }
 
 
@@ -1056,7 +1085,8 @@ namespace peptak
 
             if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Morate izbrati uporabike in graf.');</script>");
+
+                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, Morate izbrati uporabnika in graf.')", true);
             }
             else
             {

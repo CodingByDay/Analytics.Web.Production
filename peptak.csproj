@@ -182,6 +182,7 @@
     <Content Include="css\graphs.css" />
     <Content Include="css\logo.png" />
     <Content Include="css\success.css" />
+    <Content Include="css\website.css" />
     <Content Include="Custom.aspx" />
     <Content Include="dashboard-extensions\dist\dashboard-panel.css" />
     <Content Include="dashboard-extensions\dist\dashboard-panel.html" />

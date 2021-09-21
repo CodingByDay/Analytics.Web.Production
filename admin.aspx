@@ -24,6 +24,27 @@
 
     <script>
 
+
+        /**
+         *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
+         * @param isError
+         * @param message
+         */
+        function notify(isError, message) {
+            if (isError) {
+                Swal.fire(
+                    'Napaka',
+                    message,
+                    'error'
+                )
+            } else {
+                Swal.fire(
+                    'Uspeh!',
+                    message,
+                    'success'
+                )
+            }
+        }
         function showDialogSync() {
 
 
@@ -39,11 +60,7 @@
 
         }
 
-        Swal.fire(
-            'Good job!',
-            'New popup design!',
-            'success'
-        )
+      
         
 
     </script>
@@ -142,7 +159,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*" >
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
                   <SettingsEditForm Visible="False" />
@@ -327,11 +344,13 @@
                        </div>
 
           <br />
-     
+        <p style="font-size:xx-small;">Primer: Data Source=10.10.10.10\?;Initial Catalog=?;Persist Security Info=True;User ID=?;Password=?</p>
+
       <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
         <SettingsBootstrap RenderOption="Info" />
        </dx:BootstrapButton>
         <br />
+
         <br />
 
                        <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 

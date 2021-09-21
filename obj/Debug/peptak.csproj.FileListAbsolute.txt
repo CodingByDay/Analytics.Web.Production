@@ -1,5 +1,5 @@
+C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.AssemblyReference.cache
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.dll.licenses
-C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\peptak.dll.config
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\peptak.dll
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\peptak.pdb
@@ -241,7 +241,7 @@ C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\de\DevExpress.XtraT
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.AssemblyReference.cache
+C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\newuser\DevExpressDatabaseStorage\obj\Debug\peptak.pdb

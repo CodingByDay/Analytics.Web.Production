@@ -1,8 +1,12 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="tenantadmin.aspx.cs" Inherits="peptak.tenantadmin" %>
 <%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-        <link rel="stylesheet" href="css/bootstrap.css" />
+
+
+    <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
@@ -12,7 +16,9 @@
     <webopt:bundlereference runat="server" path="~/css/shared.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
 
     <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
 
@@ -123,11 +129,7 @@
 	<script>
 
 
-        Swal.fire(
-            'Good job!',
-            'New popup design!',
-            'success'
-        )
+    
 
 
         function showDialogSync() {
