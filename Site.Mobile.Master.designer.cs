@@ -15,24 +15,6 @@ namespace peptak
     {
 
         /// <summary>
-        /// adminButtonAnchor control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButtonAnchor;
-
-        /// <summary>
-        /// backButtonA control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButtonA;
-
-        /// <summary>
         /// signOutAnchor control.
         /// </summary>
         /// <remarks>

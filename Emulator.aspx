@@ -1,7 +1,9 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Emulator.aspx.cs" Inherits="peptak.Emulator" %>
+﻿<%@ Page Title="Emulator" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Emulator.aspx.cs" Inherits="peptak.Emulator" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
       ﻿<script src="http://code.jquery.com/jquery-3.3.1.min.js"  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
+     <link href= "~/fonts/css/font-awesome.css" rel="stylesheet" runat="server" type="text/css" />
+    <webopt:bundlereference runat="server" path="~/fonts/css/font-awesome.css" />
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/18.1.5/js/dx.all.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn3.devexpress.com/jslib/18.1.5/css/dx.common.css" />
         <link href="Content/styles.css?v=2013" rel="stylesheet" />

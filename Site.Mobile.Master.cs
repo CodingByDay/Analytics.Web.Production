@@ -20,16 +20,13 @@ namespace peptak
         {
 
             signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"Select userRole from Users where uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
-            userRole = (string)cmd.ExecuteScalar();
-            CheckIsAdminShowAdminButtonOrNot(userRole);
 
         }
 
@@ -39,17 +36,7 @@ namespace peptak
             Response.Redirect("home.aspx", true);
         }
 
-        private void CheckIsAdminShowAdminButtonOrNot(string userRole)
-        {
-            if (userRole != "SuperAdmin" && userRole != "Admin")
-            {
-                adminButtonAnchor.Visible = false;
-            }
-            else
-            {
-                adminButtonAnchor.Visible = true;
-            }
-        }
+      
 
 
 

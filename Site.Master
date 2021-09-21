@@ -40,6 +40,9 @@
     <webopt:bundlereference runat="server" path="~/css/website.css" />
 
 
+
+    <link href= "~/fonts/css/font-awesome.css" rel="stylesheet" runat="server" type="text/css" />
+    <webopt:bundlereference runat="server" path="~/fonts/css/font-awesome.css" />
     <style>
 
    
@@ -130,7 +133,7 @@
         </script>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link href="~/favicons/apple.png" rel="shortcut icon" type="image/x-icon" />
 
 </head>
 <body>
@@ -169,7 +172,7 @@
   <div class="container">
     <a class="navbar-brand" href="#">
         </a>
-      <img src="show.PNG"  id="pic" style="width:25px;height:25px;"/>
+      <img src="images/show.PNG"  id="pic" style="width:25px;height:25px;"/>
       <input id="toggle" type="checkbox" name="checkbox" class="switch" runat="server" onchange="postback();">
        <div id ="desktop_div">
                        <a id="desktop-button" href="<%= Page.ResolveUrl("/") %>"  onclick="dxDemo.Navigation.navigate(this.href)" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>  Desktop</a>
@@ -221,7 +224,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-               <center><p>&copy; <%: DateTime.Now.Year %> In SIST d.o.o. <img src="sist.png" width="100" height="50"/></p></center>
+               <center><p>&copy; <%: DateTime.Now.Year %> In SIST d.o.o. <img src="images/sist.png" width="100" height="50"/></p></center>
             </footer>
         </div>
 

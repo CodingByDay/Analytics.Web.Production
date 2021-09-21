@@ -56,7 +56,7 @@
   top: 0!important;
   left: 0!important;
 }
-  }
+  
     </style>
     <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
@@ -105,7 +105,6 @@
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
   <div class="container">
     <a class="navbar-brand" href="#">
-        <img src="5f31883b507a4399a9cafe7bd10c269c.png" width="45" height="30" border-radius: 50%/>
         </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -120,14 +119,7 @@
 
       </ul>
         
-                     <div class="inner"><a runat="server" id="adminButtonAnchor" onserverclick="adminButtonAnchor_ServerClick"  title="Administration">
-                     <i class="fa fa-wrench"></i> Nastavitve
-                    </a></div>
-
-
-                           <div class="inner">   <a runat="server" id="backButtonA" onserverclick="backButtonA_ServerClick"  title="Back">
-                     <i class="fa fa-reply"></i> Nazaj
-                    </a></div>
+                    
                      <div class="inner"> <a runat="server" id="signOutAnchor" onserverclick="signOutAnchor_ServerClick"  title="Logout">
                      <i class="fa fa-chevron-right"></i> Odjava
                     </a></div>
@@ -139,7 +131,7 @@
             </asp:ContentPlaceHolder>
             <hr />
             <footer>
-               <center><p>&copy; <%: DateTime.Now.Year %> In-Sist doo <img src="css/logo.png" width="100" height="50"/></p></center>
+               <center><p>&copy; <%: DateTime.Now.Year %> In-Sist d.o.o. <img src="css/logo.png" width="100" height="50"/></p></center>
             </footer>
         </div>
 
