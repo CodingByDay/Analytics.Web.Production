@@ -59,7 +59,7 @@
     </div>
     <div class="content-wrap">
         <div class="msg-wrap">
-            <p>This website uses cookies or similar technologies, to enhance your browsing experience and provide personalized recommendations. By continuing to use our website, you agree to our  <a style="color:#115cfa;" href="/privacy-policy">Privacy Policy</a></p>
+            <p>This website uses cookies or similar technologies, to enhance your browsing experience and provide personalized recommendations. By continuing to use our website, you agree with this.</p>
             <div class="btn-wrap">
                 <button class="btn-primary" onclick="acceptCookieConsent();">Accept</button>
             </div>

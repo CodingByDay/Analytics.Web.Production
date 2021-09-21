@@ -95,8 +95,7 @@ namespace peptak.DatabaseStorage
             try
             {
                 cmd.ExecuteNonQuery();
-                //fillUsersDelete();
-                //fillCompanyDelete();
+           
             }
 
 

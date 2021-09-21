@@ -29,10 +29,10 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
-                  HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                 admin.Visible = false;
-
-                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                admin.Visible = false;
+                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
@@ -40,7 +40,6 @@ namespace peptak
                 ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
                 if (Session["DesignerPayed"].ToString() == "true")
                 {
 

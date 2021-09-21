@@ -50,7 +50,7 @@ namespace peptak
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
 
                 ASPxDashboard3.Visible = true;
-
+                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;  
