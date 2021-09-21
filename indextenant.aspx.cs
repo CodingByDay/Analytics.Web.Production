@@ -50,8 +50,12 @@ namespace peptak
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+                if(Session["DesignerPayed"] is null)
+               {
+                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
-                if (Session["DesignerPayed"].ToString() == "true")
+               }
+              if (Session["DesignerPayed"].ToString() == "true")
                 {
 
                     if (Session["FirstLoad"].ToString() != "true")
