@@ -4,6 +4,7 @@ using Stripe;
 using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -75,12 +76,14 @@ namespace peptak
 
         private void insertCompany(string company, string username, string website, string phone)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
             var result = cmd.ExecuteScalar();
             Int32 next = System.Convert.ToInt32(result) + 1;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
 
@@ -108,7 +111,9 @@ namespace peptak
 
         private int getCompanyID(string name)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{name}'", conn);
             var result = cmd.ExecuteScalar();
@@ -128,7 +133,12 @@ namespace peptak
         }
         private void CreateUser(string username, string password, string name, string email, string phone, string company)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
+
+
+
             conn.Open();
             SqlCommand cmd = new SqlCommand($"Select count(*) from Users", conn);
             var result = cmd.ExecuteScalar();
@@ -136,7 +146,7 @@ namespace peptak
 
             int next = Total_ID + 1;
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{username}'", conn);
 
@@ -205,7 +215,9 @@ namespace peptak
     
         private void UpdateCompany(string username, string company)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
             try

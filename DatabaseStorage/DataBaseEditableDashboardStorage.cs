@@ -2,6 +2,7 @@
 using DevExpress.DataAccess.Native.Web;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -86,7 +87,9 @@ namespace peptak.DatabaseStorage
 
         private void InsertPermision(string dashboardName)
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
 

@@ -24,7 +24,7 @@ namespace peptak
     {
 
 
-        private string connection = "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;";
+        private string connection;
         // DB.
         private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
@@ -64,6 +64,7 @@ namespace peptak
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;

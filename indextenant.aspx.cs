@@ -17,7 +17,7 @@ namespace peptak
 {
     public partial class indextenant : System.Web.UI.Page
     {
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = dashboards; Password=Cporje?%ofgGHH$984d4L";
+        public static string ConnectionString;
         private SqlConnection conn;
         private int companyID;
         private int stringID;
@@ -32,7 +32,9 @@ namespace peptak
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
 
                 admin.Visible = false;
+                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+          
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
 
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -168,8 +170,9 @@ namespace peptak
                 bool flag = false; /* For added security default=false */
 
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+                conn = new SqlConnection(ConnectionString);
                 conn.Open();
                 SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
 
@@ -214,8 +217,9 @@ namespace peptak
         private ConnectionStringSettings GetConnectionString()
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
 
@@ -256,8 +260,10 @@ namespace peptak
         public int get_id_string(int id)
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(ConnectionString);
+
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select ID from companies where id_company={id}", conn);
 
@@ -286,8 +292,9 @@ namespace peptak
         public string get_conn_name(int id)
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select string from company_string where ID={id}", conn);
 

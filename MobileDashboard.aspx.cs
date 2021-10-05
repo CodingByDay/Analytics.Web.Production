@@ -3,6 +3,7 @@ using DevExpress.DataAccess.Web;
 using peptak.DatabaseStorage;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -13,11 +14,12 @@ namespace peptak
     public partial class MobileDashboard : System.Web.UI.Page
     {
 
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = dashboards; Password=Cporje?%ofgGHH$984d4L";
+        public static string ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
 
 

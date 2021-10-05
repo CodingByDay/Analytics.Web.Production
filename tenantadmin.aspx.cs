@@ -20,7 +20,7 @@ namespace peptak
     public partial class tenantadmin : System.Web.UI.Page
     {
 
-        private string connection = "server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;";
+        private string connection;
 
 
         private List<User> userObjectList = new List<User>();
@@ -61,6 +61,7 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
 
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
             // All of this config is neccessary.
 

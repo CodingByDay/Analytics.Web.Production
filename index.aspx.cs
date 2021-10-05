@@ -23,7 +23,7 @@ namespace peptak
     {
 
 
-        public static string ConnectionString = @"Data Source=10.100.100.25\SPLAHOST; Database=graphs;Application Name = Dashboard; Integrated Security = false; User ID = dashboards; Password=Cporje?%ofgGHH$984d4L";
+        public static string ConnectionString;
 
         private List<String> strings = new List<string>();
         private string state;
@@ -39,10 +39,12 @@ namespace peptak
                  authenticate();
                  ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
+                 ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+                
 
-                // Hide the back button.  
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                 // Hide the back button.  
+                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
 
                 admin.Visible = false;
                 var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
@@ -102,7 +104,11 @@ namespace peptak
         private void authenticate()
 
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
+
+
             conn.Open();
             var username = HttpContext.Current.User.Identity.Name;
             // Create SqlCommand to select pwd field from users table given supplied userName.
