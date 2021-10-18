@@ -121,6 +121,10 @@ namespace peptak
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 FillListGraphs();
+                
+               // Here is the bug
+
+
 
                 if (companiesListBox.SelectedItem.Value != null)
                 {
@@ -259,11 +263,20 @@ namespace peptak
             // EXEC(@SQLStatment
             if (usersGridView.FocusedRowIndex >= 0)
             {
-
+            
 
                 var namePlural = usersGridView.GetSelectedFieldValues("uname");
-                string name = namePlural[0].ToString();
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
+
+                if(namePlural.Count == 0)
+                {
+                    string nameUser = usersList.ElementAt(0).uname;
+                    findIdString = String.Format($"SELECT id_permision_user from Users where uname='{nameUser}'");
+                } else
+                {
+                    string name = namePlural[0].ToString();
+                    findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
+                }
+              
                 // Documentation. This query is for getting all the permision table data from the user
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
@@ -775,6 +788,7 @@ namespace peptak
             else
             {
                 insertCompany();
+                createAdminForTheCompany(companyName.Text);
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
 
                 fillCompanies();
@@ -784,6 +798,61 @@ namespace peptak
 
             }
         }
+
+        private void createAdminForTheCompany(string name)
+        {
+            conn = new SqlConnection(connection);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
+            var result = cmd.ExecuteScalar();
+            Int32 Total_ID = System.Convert.ToInt32(result);
+            cmd.Dispose();
+            int next = Total_ID + 1;
+
+
+
+
+            string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
+            SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+            try
+            {
+                createUserPermisions.ExecuteNonQuery();
+            }
+            catch (Exception error)
+            {
+                var log = error;
+            }
+            createUserPermisions.Dispose();
+
+            string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
+
+            string companyINSERT = name;
+            int idCOMPANY = getIdCompany(companyINSERT);
+            var nonQuery = new SqlConnection(connection);
+            nonQuery.Open();
+            string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
+
+
+
+            SqlCommand createUser = new SqlCommand(finalQueryRegistration, nonQuery);
+            var username = TxtUserName.Text;
+            try
+            {
+                var id = getIdCompany(companiesList.SelectedValue);
+                createUser.ExecuteNonQuery();
+                createUser.Dispose();
+
+                FillListAdmin();
+                FillUsers(id);
+            } catch(Exception) { 
+
+
+            }
+            
+            
+            }
+
         protected void deleteUser_Click(object sender, EventArgs e)
         {
             conn = new SqlConnection(connection);
@@ -1122,15 +1191,10 @@ namespace peptak
             {
                 cmd.ExecuteNonQuery();
 
-                //fillUsersDelete();
-                //fillCompanyDelete();
+                
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
 
-                string filePath = Server.MapPath("~/App_Data/" + current);
-                if (Directory.Exists(filePath))
-                {
-                    Directory.Delete(filePath);
-                }
+                
             }
             catch (Exception error)
             {
@@ -1143,7 +1207,7 @@ namespace peptak
             FillListGraphs();
             fillCompanies();
             FillListAdmin();
-
+            companiesListBox.SelectedIndex = 0;
             cmd.Dispose();
             conn.Close();
 
