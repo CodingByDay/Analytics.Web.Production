@@ -63,7 +63,6 @@ namespace peptak
 
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            // All of this config is neccessary.
 
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;

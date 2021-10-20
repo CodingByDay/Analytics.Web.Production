@@ -31,7 +31,10 @@ namespace peptak
         private string getRole(string username, string password)
 
         {
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+
+            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(connection);
             conn.Open();
             var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
 

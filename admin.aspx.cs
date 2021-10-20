@@ -788,6 +788,7 @@ namespace peptak
             else
             {
                 insertCompany();
+                fillCompaniesRegistration();
                 createAdminForTheCompany(companyName.Text);
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
 
@@ -893,11 +894,12 @@ namespace peptak
 
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+         
             TxtUserName.Enabled = false;
             email.Enabled = false;
             current = companiesListBox.SelectedItem.Value.ToString();
 
-            var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString().Replace(" ", string.Empty));
+            var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString());
 
             FillUsers(id);
 
