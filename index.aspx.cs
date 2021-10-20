@@ -40,7 +40,7 @@ namespace peptak
                  ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
                  ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
+            
                 
 
                  // Hide the back button.  
@@ -136,8 +136,8 @@ namespace peptak
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
-          
 
+            string test = e.ConnectionName;
             ConnectionStringSettings conn = GetConnectionString();          
             CustomStringConnectionParameters parameters =
             (CustomStringConnectionParameters)e.ConnectionParameters;

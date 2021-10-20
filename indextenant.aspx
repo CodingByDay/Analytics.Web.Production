@@ -119,7 +119,7 @@ height: 100% !important;
                     } else {
                         var control = dashboard.GetDashboardControl();
                         design = control.isDesignMode();
-                        alert(`Design value is ${design}`);
+                       
                         if (design == false) {
                             onCollapse();
                         }

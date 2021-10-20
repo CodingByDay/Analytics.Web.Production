@@ -25,6 +25,7 @@ namespace peptak
         private int value;
         private bool flag = false;
         private string state;
+        private string returnString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -150,7 +151,6 @@ namespace peptak
                         Session["mode"] = "Designer";
                         Session["flag"] = "true";
 
-                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
                     }
                 }
                 else
@@ -210,8 +210,12 @@ namespace peptak
 
             CustomStringConnectionParameters parameters =
                   (CustomStringConnectionParameters)e.ConnectionParameters;
+            MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+            // Here is the error.
 
             parameters.ConnectionString = conn.ConnectionString;
+
+        
         }
 
         private ConnectionStringSettings GetConnectionString()
@@ -241,14 +245,44 @@ namespace peptak
             cmd.Dispose();
             conn.Close();
 
-            var a = get_id_string(companyID);
-            string get_conn = get_conn_name(a);
+            var a = get_connectionStringName(companyID);
+          
 
 
-            ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[get_conn];
+            ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
 
             return stringFinal;
 
+        }
+
+        private string get_connectionStringName(int companyID)
+        {
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
+
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select databaseName from companies where id_company={companyID}", conn);
+
+            try
+            {
+                string result = cmd.ExecuteScalar().ToString();
+                returnString = result; 
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+            return returnString;
         }
 
 
