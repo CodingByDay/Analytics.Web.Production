@@ -61,6 +61,9 @@ namespace peptak
         private int idFromString;
         private string role;
         private List<User> usersList = new List<User>();
+        private string HashedPasswordEdit;
+        private SqlCommand cmdEdit;
+        private string returnString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -510,7 +513,7 @@ namespace peptak
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userTypeRadio.SelectedIndex = userRole.Items.IndexOf(userTypeRadio.Items.FindByValue(role));
+                userTypeRadio.SelectedValue = type;
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
             }
@@ -540,7 +543,7 @@ namespace peptak
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userTypeRadio.SelectedIndex = userRole.Items.IndexOf(userTypeRadio.Items.FindByValue(role));
+                userTypeRadio.SelectedValue = type;
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
             }
@@ -648,16 +651,24 @@ namespace peptak
             }
             else
             {
+                conn.Close();
+                conn.Open();
+                if (!String.IsNullOrEmpty(TxtPassword.Text))
+                {
+                    HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+                    cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
-                string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+                }
+                else
+                {
+                    cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
+                }
 
 
                 conn = new SqlConnection(connection);
-                conn.Open();
-                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+             
                 //  debug.Add(dev);
-                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
@@ -671,9 +682,9 @@ namespace peptak
                     try
                     {
                         var username = TxtUserName.Text.Replace(" ", string.Empty); ;
-                        cmd.ExecuteNonQuery();
+                        cmdEdit.ExecuteNonQuery();
                         conn.Close();
-                        cmd.Dispose();
+                        cmdEdit.Dispose();
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
 
                         TxtName.Text = "";
@@ -682,8 +693,7 @@ namespace peptak
                         TxtUserName.Text = "";
                         email.Text = "";
                         var company = companiesList.SelectedValue.Replace(" ", string.Empty);
-                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
-                        string replacedPath = filePath.Replace(" ", string.Empty);
+                        
 
 
 
@@ -691,7 +701,7 @@ namespace peptak
                     catch (Exception ex)
                     {
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
+                        var debug = ex.Message;
                         TxtName.Text = "";
                         TxtPassword.Text = "";
                         TxtRePassword.Text = "";
@@ -699,7 +709,7 @@ namespace peptak
                         email.Text = "";
 
                     }
-                    cmd.Dispose();
+                    cmdEdit.Dispose();
                     conn.Close();
                 }
             }
@@ -891,10 +901,42 @@ namespace peptak
 
             conn.Close();
         }
+        private string get_connectionStringName(string name)
+        {
+            var s = name.Replace(" ", string.Empty);
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+            conn = new SqlConnection(ConnectionString);
+
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select databaseName from companies where company_name='{name}'", conn);
+
+            try
+            {
+                string result = cmd.ExecuteScalar().ToString();
+                returnString = result;
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+            return returnString;
+        }
         protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-         
+            var connectionStringName = get_connectionStringName(companiesListBox.SelectedItem.Value.ToString());
+            Session["conn"] = connectionStringName;
+
+
             TxtUserName.Enabled = false;
             email.Enabled = false;
             current = companiesListBox.SelectedItem.Value.ToString();

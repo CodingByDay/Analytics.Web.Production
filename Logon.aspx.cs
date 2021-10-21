@@ -168,41 +168,52 @@ namespace peptak
         {
             var role = getRole(txtUserName.Value, txtUserPass.Value);
 
-            if (Session["passport"].ToString() == "true")
-            {
-                Session["conn"] = databaseList.SelectedValue;
+            //if (Session["passport"].ToString() == "true")
+            //{
+            //    Session["conn"] = databaseList.SelectedValue;
                 validate();
-            }
-            else
-            {
+            //}
+            //else
+            //{
 
-                if (role == "SuperAdmin")
-                {
-                    database.Visible = true;
-                    passport = true;
-                    Session["passport"] = "true";
-                }
-                else
-                {
-                    validate();
-                }
-            }
+            //    if (role == "SuperAdmin")
+            //    {
+            //        database.Visible = true;
+            //        passport = true;
+            //        Session["passport"] = "true";
+            //    }
+            //    else
+            //    {
+            //        validate();
+            //    }
+            //}
             
 
         }
 
    private void validate()
         {
+            Session["change"] = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
 
                 var isDesigner = getCurrentID(txtUserName.Value);
+                var isUserAllowed = isIndividualAllowed(txtUserName.Value);
                 if (isDesigner)
                 {
                     Session["DesignerPayed"] = "true";
+                    if(isUserAllowed)
+                    {
+                        Session["UserAllowed"] = "true";                    
+                    }
+                    else {
+                        Session["UserAllowed"] = "false";
+
+                    }
                 }
                 else
                 {
+                    Session["UserAllowed"] = "false";
                     Session["DesignerPayed"] = "false";
                 }
                 FormsAuthenticationTicket tkt;
@@ -255,6 +266,29 @@ namespace peptak
             {
                 Response.Redirect("logon.aspx", true);
             }
+        }
+
+        private bool isIndividualAllowed(string value)
+        {
+            conn.Close();
+            conn.Open(); 
+            var checkingDesigner = new SqlCommand($"select ViewState from users where uname='{value}';", conn);
+
+            var flag = checkingDesigner.ExecuteScalar();
+
+            string result = flag.ToString();
+            cmd.Dispose();
+            checkingDesigner.Dispose();
+            conn.Close();
+            if (result == "Viewer&Designer")
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
         protected void reset_Click(object sender, EventArgs e)

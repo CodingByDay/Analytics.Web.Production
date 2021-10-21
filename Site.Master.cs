@@ -83,6 +83,7 @@ namespace peptak
         {
             if (userRole == "SuperAdmin")
             {
+                Session["change"] = "yes";
                 Response.Redirect("index", true);
             }
             else
