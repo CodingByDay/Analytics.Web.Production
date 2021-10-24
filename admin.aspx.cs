@@ -72,6 +72,7 @@ namespace peptak
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
             companiesGridView.SettingsBehavior.AllowFocusedRow = true;
+            
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
             companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -79,7 +80,7 @@ namespace peptak
             companiesGridView.EnableCallBacks = false;
             companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-
+            companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
             // All of this config is neccessary.
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -108,6 +109,7 @@ namespace peptak
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
                 companiesGridView.FocusedRowIndex = 0;
+               
                 var beginingID = 1;
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
@@ -132,23 +134,41 @@ namespace peptak
                 admin.Visible = true;
                 FillListGraphs();
                 
-               // Here is the bug
+               
 
                 
 
-                if (companiesGridView.FocusedRowIndex >= 0)
+                if (companiesGridView.Selection.Count != 0)
                 {
-                    var current = companiesGridView.GetSelectedFieldValues("company_name");
-                    FillUsers(getIdCompany(current[0].ToString()));
+                    var plurals = companiesGridView.GetSelectedFieldValues("company_name");
+                    var value = plurals[0].ToString();
+                    FillUsers(getIdCompany(value));
                 }
                 else
                 {
                     companiesGridView.FocusedRowIndex = 0;
+                    companiesGridView.Selection.SelectRow(0);
                     var current = companiesGridView.GetSelectedFieldValues("company_name");
                     FillUsers(getIdCompany(current[0].ToString()));
                 }
 
             }
+
+        }
+
+      
+
+        private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
+        {
+            
+            var index = companiesGridView.FocusedRowIndex;
+            if (index != -1)
+            {
+                string[] names = { "company_name" };
+                var values = companiesGridView.GetRowValues(index, "company_name");
+                Session["current"] = values.ToString();
+                var debug = true;
+            } 
 
         }
 
@@ -837,7 +857,9 @@ namespace peptak
                 fillCompaniesRegistration();
                 createAdminForTheCompany(companyName.Text);
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
-
+                var sourceID = companiesGridView.DataSource;
+                companiesGridView.DataSource = null;
+                companiesGridView.DataSource = sourceID;
                 //fillCompanies();
                 companyNumber.Text = "";
                 companyName.Text = "";
@@ -1223,57 +1245,63 @@ namespace peptak
 
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
-            var id = getIdCompany(current);
-            deleteMemberships(id);
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-
-            var deb = $"delete from users where id_company={id}";
-
-
-            try
+            if (companiesGridView.FocusedRowIndex != -1)
             {
-                user.ExecuteNonQuery();
+                var current = Session["current"].ToString();
+                var id = getIdCompany(current);
+                deleteMemberships(id);
+                conn = new SqlConnection(connection);
+                conn.Open();
+                SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
 
+                var deb = $"delete from users where id_company={id}";
+
+
+                try
+                {
+                    user.ExecuteNonQuery();
+
+                }
+                catch (Exception error)
+                {
+                    var log = error;
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+
+                }
+                conn = new SqlConnection(connection);
+
+                conn.Open();
+                SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
+                string dev = $"DELETE FROM companies WHERE company_name='{current}'";
+                try
+                {
+                    cmd.ExecuteNonQuery();
+
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
+                    var source = companiesGridView.DataSource;
+                    companiesGridView.DataSource = null;
+                    companiesGridView.DataSource = source;
+
+                }
+                catch (Exception error)
+                {
+
+
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                    var log = error;
+                }
+
+                FillListGraphs();
+                /// fillCompanies();
+                FillListAdmin();
+                cmd.Dispose();
+                conn.Close();
+
+
+
+                FillUsers(1);
             }
-            catch (Exception error)
-            {
-                var log = error;
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
-            }
-            conn = new SqlConnection(connection);
-
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-            string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-            try
-            {
-                cmd.ExecuteNonQuery();
-
-                
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
-                
-            }
-            catch (Exception error)
-            {
-
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                var log = error;
-            }
-
-            FillListGraphs();
-           /// fillCompanies();
-            FillListAdmin();
-            cmd.Dispose();
-            conn.Close();
-
-
-
-            FillUsers(1);
         }
 
         private int getIdCompany(string current)

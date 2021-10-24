@@ -125,7 +125,7 @@
         <div class="inv" style="z-index:0!important">
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
 
-        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320"  AutoGenerateColumns="False">
+        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320px"  AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
               <Settings VerticalScrollBarMode="Visible" />
@@ -137,14 +137,11 @@
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
                       
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
-                    </dx:BootstrapGridViewCommandColumn>
-                      
-                    <dx:BootstrapGridViewTextColumn FieldName="id_company"  Visible="false" ReadOnly="True" VisibleIndex="1">
+                    <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="false" ReadOnly="True" VisibleIndex="0">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Naziv" VisibleIndex="2">
+                    <dx:BootstrapGridViewTextColumn FieldName="company_name" VisibleIndex="1">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" Caption="Naziv povezave" VisibleIndex="3">
+                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
                       
                 </Columns>
@@ -600,6 +597,24 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 
