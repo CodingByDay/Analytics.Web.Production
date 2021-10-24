@@ -71,7 +71,14 @@ namespace peptak
 
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
-
+            companiesGridView.SettingsBehavior.AllowFocusedRow = true;
+            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
+            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            companiesGridView.EnableCallBacks = false;
+            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
+            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
 
             // All of this config is neccessary.
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
@@ -142,6 +149,16 @@ namespace peptak
 
             }
 
+        }
+
+        private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)

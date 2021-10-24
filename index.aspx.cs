@@ -136,13 +136,15 @@ namespace peptak
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
+            if (Session["conn"].ToString() != "")
+            {
+                string test = e.ConnectionName;
+                ConnectionStringSettings conn = GetConnectionString();
+                CustomStringConnectionParameters parameters =
+                (CustomStringConnectionParameters)e.ConnectionParameters;
 
-            string test = e.ConnectionName;
-            ConnectionStringSettings conn = GetConnectionString();          
-            CustomStringConnectionParameters parameters =
-            (CustomStringConnectionParameters)e.ConnectionParameters;
-
-            parameters.ConnectionString = conn.ConnectionString;
+                parameters.ConnectionString = conn.ConnectionString;
+            }
         }
 
         private ConnectionStringSettings GetConnectionString()

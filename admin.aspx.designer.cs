@@ -15,6 +15,24 @@ namespace peptak
     {
 
         /// <summary>
+        /// companiesGridView control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView companiesGridView;
+
+        /// <summary>
+        /// companiesGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource companiesGrid;
+
+        /// <summary>
         /// companiesListBox control.
         /// </summary>
         /// <remarks>

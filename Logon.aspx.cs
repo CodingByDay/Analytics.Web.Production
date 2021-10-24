@@ -167,7 +167,7 @@ namespace peptak
         protected void cmdLogin_Click(object sender, EventArgs e)
         {
             var role = getRole(txtUserName.Value, txtUserPass.Value);
-
+            Session["conn"] = "";
             //if (Session["passport"].ToString() == "true")
             //{
             //    Session["conn"] = databaseList.SelectedValue;

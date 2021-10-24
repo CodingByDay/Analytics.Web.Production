@@ -123,6 +123,32 @@
 	
 	<div class="column">
         <div class="inv" style="z-index:0!important">
+            <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" AutoGenerateColumns="False">
+                <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+
+              <Settings VerticalScrollBarMode="Visible" />
+             <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+             </SettingsPager>
+
+<SettingsEditing Mode="PopupEditForm"></SettingsEditing>
+
+                   <SettingsDataSecurity AllowEdit="True" />
+                <Columns>
+                      
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
+                    </dx:BootstrapGridViewCommandColumn>
+                      
+                    <dx:BootstrapGridViewTextColumn FieldName="id_company"  Visible="false" ReadOnly="True" VisibleIndex="1">
+                    </dx:BootstrapGridViewTextColumn>
+                    <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Naziv" VisibleIndex="2">
+                    </dx:BootstrapGridViewTextColumn>
+                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" Caption="Naziv povezave" VisibleIndex="3">
+                    </dx:BootstrapGridViewTextColumn>
+                      
+                </Columns>
+                  <SettingsSearchPanel Visible="True"  />
+            </dx:BootstrapGridView>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
 		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="5">
         <CssClasses Control="control"  />
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused"  />
@@ -576,6 +602,88 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+</div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 

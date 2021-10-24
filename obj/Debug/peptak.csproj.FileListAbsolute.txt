@@ -985,3 +985,4 @@ C:\Users\janko\Desktop\updated\DevExpressDatabaseStorage\obj\Debug\peptak.csproj
 C:\Users\janko\Desktop\updated\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.CopyComplete
 C:\Users\janko\Desktop\updated\DevExpressDatabaseStorage\obj\Debug\peptak.dll
 C:\Users\janko\Desktop\updated\DevExpressDatabaseStorage\obj\Debug\peptak.pdb
+C:\Users\janko\Desktop\updated\DevExpressDatabaseStorage\obj\Debug\peptak.csproj.AssemblyReference.cache
