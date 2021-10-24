@@ -107,11 +107,11 @@ namespace peptak
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
-                companiesListBox.SelectedIndex = 0;
+                companiesGridView.FocusedRowIndex = 0;
                 var beginingID = 1;
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
-                fillCompanies();
+                //fillCompanies();
                 // FillUsers();
                 FillListGraphs();
                 fillCompaniesRegistration();
@@ -134,17 +134,18 @@ namespace peptak
                 
                // Here is the bug
 
+                
 
-
-                if (companiesListBox.SelectedItem.Value != null)
+                if (companiesGridView.FocusedRowIndex >= 0)
                 {
-                    current = companiesListBox.SelectedItem.Value.ToString();
-                    FillUsers(getIdCompany(current));
+                    var current = companiesGridView.GetSelectedFieldValues("company_name");
+                    FillUsers(getIdCompany(current[0].ToString()));
                 }
                 else
                 {
-                    current = companiesListBox.Items[0].Value.ToString();
-                    FillUsers(getIdCompany(current));
+                    companiesGridView.FocusedRowIndex = 0;
+                    var current = companiesGridView.GetSelectedFieldValues("company_name");
+                    FillUsers(getIdCompany(current[0].ToString()));
                 }
 
             }
@@ -158,7 +159,25 @@ namespace peptak
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            var plurals = companiesGridView.GetSelectedFieldValues("company_name");
+
+            var connectionStringName = get_connectionStringName(plurals[0].ToString());
+            Session["conn"] = connectionStringName;
+
+
+            TxtUserName.Enabled = false;
+            email.Enabled = false;
+            current = plurals[0].ToString();
+
+            var id = getIdCompany(plurals[0].ToString());
+
+            FillUsers(id);
+
+            var without = plurals[0].ToString();
+            companiesList.SelectedValue = without;
+            companiesList.Enabled = false;
+
+            usersGridView.Selection.SetSelection(0, true);
         }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
@@ -476,37 +495,37 @@ namespace peptak
             }
         }
 
-        private void fillCompanies()
-        {
+        //private void fillCompanies()
+        //{
 
-            try
-            {
-                companiesData.Clear();
-                conn = new SqlConnection(connection);
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
-                {
-                    companiesData.Add(sdr["company_name"].ToString());
+        //    try
+        //    {
+        //        companiesData.Clear();
+        //        conn = new SqlConnection(connection);
+        //        conn.Open();
+        //        // Create SqlCommand to select pwd field from users table given supplied userName.
+        //        cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
+        //        // Execute command and fetch pwd field into lookupPassword string.
+        //        SqlDataReader sdr = cmd.ExecuteReader();
+        //        while (sdr.Read())
+        //        {
+        //            companiesData.Add(sdr["company_name"].ToString());
 
-                }
-                companiesListBox.DataSource = companiesData;
-                companiesListBox.DataBind();
-
-
-                cmd.Dispose();
-                conn.Close();
+        //        }
+        //        companiesListBox.DataSource = companiesData;
+        //        companiesListBox.DataBind();
 
 
-            }
-            catch (Exception ex)
-            {
-                Response.Write(ex.ToString());
-            }
-        }
+        //        cmd.Dispose();
+        //        conn.Close();
+
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Response.Write(ex.ToString());
+        //    }
+        //}
 
         private void updateForm()
         {
@@ -819,7 +838,7 @@ namespace peptak
                 createAdminForTheCompany(companyName.Text);
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
 
-                fillCompanies();
+                //fillCompanies();
                 companyNumber.Text = "";
                 companyName.Text = "";
                 website.Text = "";
@@ -920,7 +939,7 @@ namespace peptak
         }
         private string get_connectionStringName(string name)
         {
-            var s = name.Replace(" ", string.Empty);
+            //var s = name.Replace(" ", string.Empty);
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
@@ -948,26 +967,7 @@ namespace peptak
             conn.Close();
             return returnString;
         }
-        protected void companiesListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var connectionStringName = get_connectionStringName(companiesListBox.SelectedItem.Value.ToString());
-            Session["conn"] = connectionStringName;
-
-
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            current = companiesListBox.SelectedItem.Value.ToString();
-
-            var id = getIdCompany(companiesListBox.SelectedItem.Value.ToString());
-
-            FillUsers(id);
-
-            var without = companiesListBox.SelectedItem.Value.ToString();
-            companiesList.SelectedValue = without;
-            companiesList.Enabled = false;
-
-            usersGridView.Selection.SetSelection(0, true);
-        }
+    
 
         protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1217,8 +1217,8 @@ namespace peptak
 
         private string getCurrentCompany()
         {
-            var company = companiesListBox.SelectedItem.Text;
-            return company;
+            var company =  companiesGridView.GetSelectedFieldValues("company_name");
+            return company[0].ToString();
         }
 
         protected void deleteCompany_Click(object sender, EventArgs e)
@@ -1266,9 +1266,8 @@ namespace peptak
             }
 
             FillListGraphs();
-            fillCompanies();
+           /// fillCompanies();
             FillListAdmin();
-            companiesListBox.SelectedIndex = 0;
             cmd.Dispose();
             conn.Close();
 

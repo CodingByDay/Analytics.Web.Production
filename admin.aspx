@@ -60,8 +60,8 @@
 
         }
 
-      
-        
+
+
 
     </script>
     <style>
@@ -123,7 +123,9 @@
 	
 	<div class="column">
         <div class="inv" style="z-index:0!important">
-            <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" AutoGenerateColumns="False">
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
+
+        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320"  AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
               <Settings VerticalScrollBarMode="Visible" />
@@ -147,12 +149,8 @@
                       
                 </Columns>
                   <SettingsSearchPanel Visible="True"  />
+            <CssClasses Control="control" />
             </dx:BootstrapGridView>
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
-		<dx:BootstrapListBox ID="companiesListBox" AutoPostBack="true" OnSelectedIndexChanged="companiesListBox_SelectedIndexChanged" AllowCustomValues="true" runat="server"  SelectionMode="Single"  FilteringSettings-EditorNullText="Poiščite podjetje" CssClasses-Control="control" FilteringSettings-UseCompactView="true" ClientEnabled="true"  ViewStateMode="Enabled" Rows="5">
-        <CssClasses Control="control"  />
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused"  />
-</dx:BootstrapListBox>
 	</div>
 		<br />
 		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
@@ -602,88 +600,6 @@
  
  
 </div>
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-    </div>
- 
-
- 
- 
-  
-
- 
- 
-</div>
-    </div>
- 
-
- 
- 
-  
-
- 
- 
     </div>
  
 
