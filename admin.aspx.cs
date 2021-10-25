@@ -167,37 +167,41 @@ namespace peptak
                 string[] names = { "company_name" };
                 var values = companiesGridView.GetRowValues(index, "company_name");
                 Session["current"] = values.ToString();
-                var debug = true;
+                
             } 
 
         }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            throw new NotImplementedException();
+          //
         }
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
         {
+
             var plurals = companiesGridView.GetSelectedFieldValues("company_name");
 
-            var connectionStringName = get_connectionStringName(plurals[0].ToString());
-            Session["conn"] = connectionStringName;
+            if (plurals.Count != 0)
+            {
+                var connectionStringName = get_connectionStringName(plurals[0].ToString());
+                Session["conn"] = connectionStringName;
 
 
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            current = plurals[0].ToString();
+                TxtUserName.Enabled = false;
+                email.Enabled = false;
+                current = plurals[0].ToString();
 
-            var id = getIdCompany(plurals[0].ToString());
+                var id = getIdCompany(plurals[0].ToString());
 
-            FillUsers(id);
+                FillUsers(id);
 
-            var without = plurals[0].ToString();
-            companiesList.SelectedValue = without;
-            companiesList.Enabled = false;
+                var without = plurals[0].ToString();
+                companiesList.SelectedValue = without;
+                companiesList.Enabled = false;
 
-            usersGridView.Selection.SetSelection(0, true);
+                usersGridView.Selection.SetSelection(0, true);
+            }
         }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)

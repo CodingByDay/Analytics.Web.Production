@@ -247,7 +247,6 @@ namespace peptak
                 else
                 {
                     Session["value"] = "Skaza";
-                    Session["mode"] = "ViewerOnly";
                     Session["flag"] = "false";
                     Session["id"] = "2";
                     Session["InitialPassed"] = "false";

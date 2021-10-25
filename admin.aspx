@@ -131,17 +131,21 @@
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
              </SettingsPager>
+            <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
 <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
                       
-                    <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="false" ReadOnly="True" VisibleIndex="0">
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
+                    </dx:BootstrapGridViewCommandColumn>
+                      
+                    <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="False" ReadOnly="True" VisibleIndex="1">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="company_name" VisibleIndex="1">
+                    <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" VisibleIndex="2">
+                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" Caption="Naziv konekcije" VisibleIndex="3">
                     </dx:BootstrapGridViewTextColumn>
                       
                 </Columns>
@@ -150,10 +154,12 @@
             </dx:BootstrapGridView>
 	</div>
 		<br />
+        <div class="companyButtons" style="position: relative;top:-15px!important">
 		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
+            </div>
 	</div>
 
 
@@ -207,7 +213,7 @@
      
 		<br />  
         
-		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"  class="btn btn-success">Registracija</button>
+		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"  class="btn btn-primary">Registracija</button>
 
 	
 
@@ -597,6 +603,42 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 

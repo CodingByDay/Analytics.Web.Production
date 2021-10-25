@@ -65,16 +65,11 @@ namespace peptak
                     {
                         ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
                     }
-                    if (Session["mode"].ToString() == "ViewerOnly")
-                    {
-                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-                    }
-                    else
-                    {
-                        ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                    }
-                }
-                else
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+
+
+            }
+            else
 
                 {
 
