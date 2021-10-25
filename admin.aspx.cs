@@ -64,6 +64,11 @@ namespace peptak
         private string HashedPasswordEdit;
         private SqlCommand cmdEdit;
         private string returnString;
+        private string company_name;
+        private string company_number;
+        private string websiteCompany;
+        private string admin_id;
+        private string databaseName;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -174,7 +179,49 @@ namespace peptak
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-          //
+            TxtUserName.Enabled = false;
+
+            var name = e.EditingKeyValue;
+            // Call js. function here if the test passes.
+            updateFormCompany(name.ToString());
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
+
+
+            e.Cancel = true;
+        }
+
+        private void updateFormCompany(string v)
+        {
+            // Select * from companies where id_company={}
+
+            conn = new SqlConnection(connection);
+            conn.Open();
+            var username = HttpContext.Current.User.Identity.Name;
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"Select * from companies where id_company={v};", conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+               company_name = (reader["company_name"].ToString());
+               company_number = (reader["company_number"].ToString());
+               websiteCompany = (reader["website"].ToString());
+               admin_id = (reader["admin_id"].ToString());
+               databaseName = (reader["databaseName"].ToString());
+            }
+
+            companyName.Text = company_name;
+            companyNumber.Text = company_number;
+            website.Text = websiteCompany;
+
+            listAdmin.SelectedValue = admin_id;
+            var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
+            ConnectionString.Text = connectionDB;
+
+            conn.Close();
+            cmd.Dispose();
+
+
+            
         }
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)

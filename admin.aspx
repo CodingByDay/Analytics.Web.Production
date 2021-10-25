@@ -59,6 +59,20 @@
             }, 100);
 
         }
+        function showDialogSyncCompany() {
+
+
+            $("#companyForm").css('display', 'flex');
+
+            var elem = document.getElementById("companyForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                document.getElementById('overlay').style.backgroundColor = "gray";
+
+            }, 100);
+
+        }
 
 
 
@@ -303,7 +317,6 @@
 	<div class="column" id="companyForm" tabindex="0" >
 
         <div class="companyPart">
-	    <h5 style="text-decoration: solid; font-style: italic;font-weight: bold">Registracija novega podjetja.</h5>
              <hr style="color: black;" />
 
 
@@ -332,7 +345,7 @@
 
 
 
-                <br />
+                <br />C
                 <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Admin</label>
       
@@ -603,6 +616,24 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 
