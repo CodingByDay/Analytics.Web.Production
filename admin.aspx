@@ -345,7 +345,7 @@
 
 
 
-                <br />C
+                <br />
                 <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Admin</label>
       
