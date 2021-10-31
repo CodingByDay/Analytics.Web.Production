@@ -953,12 +953,12 @@ namespace peptak
             build.Password = dbPassword;
 
             ConnectionStringSettings stringSettings = new ConnectionStringSettings();
-
+            
             stringSettings.ConnectionString = build.ConnectionString;
 
             Configuration c = WebConfigurationManager.OpenWebConfiguration(null);
 
-            c.ConnectionStrings.ConnectionStrings.Remove(connName);
+            c.ConnectionStrings.ConnectionStrings[connName].ConnectionString = build.ConnectionString;
 
             c.ConnectionStrings.ConnectionStrings.Add(stringSettings);
 
