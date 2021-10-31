@@ -186,13 +186,40 @@ namespace peptak
         protected global::System.Web.UI.WebControls.DropDownList ConnectionStrings;
 
         /// <summary>
-        /// ConnectionString control.
+        /// dbDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox ConnectionString;
+        protected global::System.Web.UI.WebControls.TextBox dbDataSource;
+
+        /// <summary>
+        /// dbUser control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dbUser;
+
+        /// <summary>
+        /// dbPassword control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dbPassword;
+
+        /// <summary>
+        /// dbNameInstance control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox dbNameInstance;
 
         /// <summary>
         /// connName control.

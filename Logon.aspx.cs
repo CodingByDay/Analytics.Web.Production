@@ -193,6 +193,7 @@ namespace peptak
 
    private void validate()
         {
+            Session["EDIT"] = "false";
             Session["change"] = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {

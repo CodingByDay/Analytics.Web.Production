@@ -369,22 +369,46 @@
             </div>
       <div class="connectionPart">
           <br />
-          <br />
+     
        
        
-          <br />
-            <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Connection string</label>
-        <asp:TextBox ID="ConnectionString" runat="server" Enabled="true" placeholder="Connection string:" Width="1200" CssClass="conn"></asp:TextBox>
+    
+           <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Data source</label>
+           <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true"></asp:TextBox>
+                       </div>
+                          <br />
+
+             
+
+
+        
+
+                 <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Uporabnik</label>
+           <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik:" CssClass="form-control" Enabled="true"></asp:TextBox> 
                        </div>
           <br />
+          <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
+           <asp:TextBox ID="dbPassword" runat="server" placeholder="Geslo:" CssClass="form-control" Enabled="true"></asp:TextBox> 
+                       </div>
+          <br />
+
+    
+            <div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Ime baze</label>
+                <asp:TextBox ID="dbNameInstance" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
+                       </div>
+
+          <br />
+
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
                 <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
                        </div>
 
-          <br />
-        <p style="font-size:xx-small;">Primer: Data Source=10.10.10.10\?;Initial Catalog=?;Persist Security Info=True;User ID=?;Password=?</p>
+       
 
       <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
         <SettingsBootstrap RenderOption="Info" />
@@ -560,10 +584,29 @@
 
         });
     });
-
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
 
     $(document).ready(function () {
         $("#company").click(function () {
+            setCookie("EDIT", "no", 365);
             $("#companyForm").css('display', 'flex');
             var x = document.getElementsByTagName("BODY")[0]
             var elem = document.getElementById("companyForm");

@@ -69,6 +69,7 @@ namespace peptak
         private string websiteCompany;
         private string admin_id;
         private string databaseName;
+        private bool isEditHappening = false;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -179,6 +180,8 @@ namespace peptak
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            Response.Cookies["EDIT"].Value = "yes";
+            isEditHappening = true;
             TxtUserName.Enabled = false;
 
             var name = e.EditingKeyValue;
@@ -186,7 +189,7 @@ namespace peptak
             updateFormCompany(name.ToString());
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
 
-
+         
             e.Cancel = true;
         }
 
@@ -215,8 +218,13 @@ namespace peptak
 
             listAdmin.SelectedValue = admin_id;
             var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
-            ConnectionString.Text = connectionDB;
 
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionDB);
+            dbDataSource.Text = builder.DataSource;
+            dbNameInstance.Text = builder.InitialCatalog;
+            dbUser.Text = builder.UserID;
+            dbPassword.Text = builder.Password;
+            connName.Text = databaseName.ToString();
             conn.Close();
             cmd.Dispose();
 
@@ -861,6 +869,7 @@ namespace peptak
             catch (Exception error)
             {
                 string debugValue = error.Message;
+
                 // Implement logging here.
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
 
@@ -876,47 +885,115 @@ namespace peptak
 
         protected void companyButton_Click(object sender, EventArgs e)
         {
-            if (companyName.Text == "")
+            var ed = Response.Cookies["EDIT"].ToString();
+
+            if (!isEditHappening && ed=="no")
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Niste vpisali ime podjetja...')", true);
+                if (companyName.Text == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Niste vpisali ime podjetja...')", true);
 
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-            }
-            else if (website.Text == "")
+                    companyNumber.Text = "";
+                    companyName.Text = "";
+                    website.Text = "";
+                }
+                else if (website.Text == "")
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Niste vpisali spletno stran...')", true);
+
+                    companyNumber.Text = "";
+                    companyName.Text = "";
+                    website.Text = "";
+
+                }
+                else if (!checkIfNumber(companyNumber.Text))
+                {
+                    Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Številka ni v pravi obliki.')", true);
+
+                    companyNumber.Text = "";
+                    companyName.Text = "";
+                    website.Text = "";
+                }
+                else
+                {
+                    insertCompany();
+                    fillCompaniesRegistration();
+                    createAdminForTheCompany(companyName.Text);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
+                    var sourceID = companiesGridView.DataSource;
+                    companiesGridView.DataSource = null;
+                    companiesGridView.DataSource = sourceID;
+                    
+                    companyNumber.Text = "";
+                    companyName.Text = "";
+                    website.Text = "";
+
+                }
+            } else
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Niste vpisali spletno stran...')", true);
-
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-
+                UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                int iid=1;
+                updateCompanyData(iid);
             }
-            else if (!checkIfNumber(companyNumber.Text))
+        }
+
+        private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        {
+            var ConnectionString = ConfigurationManager.ConnectionStrings[connName].ConnectionString;
+
+            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder(ConnectionString);
+
+            build.InitialCatalog = dbNameInstance;
+
+            build.DataSource = dbSource;
+
+            build.UserID = dbUser;
+
+            build.Password = dbPassword;
+
+            ConnectionStringSettings stringSettings = new ConnectionStringSettings();
+
+            stringSettings.ConnectionString = build.ConnectionString;
+
+            Configuration c = WebConfigurationManager.OpenWebConfiguration(null);
+
+            c.ConnectionStrings.ConnectionStrings.Remove(connName);
+
+            c.ConnectionStrings.ConnectionStrings.Add(stringSettings);
+
+            c.Save();
+
+            ConfigurationManager.RefreshSection("connectionStrings");
+
+        }
+
+        private void updateCompanyData(int id)
+        {
+            var admin = listAdmin.SelectedValue;
+
+            var websiteString = website.Text;
+
+            var companyNum = companyNumber.Text;
+
+            conn = new SqlConnection(connection);
+
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}, website='{websiteString}', company_number='{companyNum}' WHERE id_company={id}", conn);
+            try
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Številka ni v pravi obliki.')", true);
+                cmd.ExecuteNonQuery();
 
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-            }
-            else
+            } catch(Exception)
             {
-                insertCompany();
-                fillCompaniesRegistration();
-                createAdminForTheCompany(companyName.Text);
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
-                var sourceID = companiesGridView.DataSource;
-                companiesGridView.DataSource = null;
-                companiesGridView.DataSource = sourceID;
-                //fillCompanies();
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-
+                // Log
             }
+            finally
+            {
+                conn.Close();
+                conn.Dispose(); 
+            }
+          
         }
 
         private void createAdminForTheCompany(string name)
@@ -968,9 +1045,7 @@ namespace peptak
             } catch(Exception) { 
 
 
-            }
-            
-            
+                 }
             }
 
         protected void deleteUser_Click(object sender, EventArgs e)
@@ -1526,7 +1601,7 @@ namespace peptak
 
         protected void AddConnection_Click(object sender, EventArgs e)
         {
-            var _stringDB = GetResultFromDBTest(ConnectionString.Text);
+           // var _stringDB = GetResultFromDBTest(ConnectionString.Text);
           
             if (connName.Text == null)
             {
@@ -1540,7 +1615,7 @@ namespace peptak
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Dodana konekcija.')", true);
 
-                AddConnectionString(ConnectionString.Text);
+                //AddConnectionString(ConnectionString.Text);
                 FillListAdmin();
                 DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
                 // Unit testing.
