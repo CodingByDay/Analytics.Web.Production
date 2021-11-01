@@ -182,12 +182,15 @@ namespace peptak
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            labl.Visible = true;
+            listAdmin.Visible = true;
             Response.Cookies["EDIT"].Value = "yes";
             isEditHappening = true;
             TxtUserName.Enabled = false;
-
+            // Call toggle from here
             var name = e.EditingKeyValue;
-            // Call js. function here if the test passes.
+            // 
+         
             updateFormCompany(name.ToString());
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
 

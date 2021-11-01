@@ -138,7 +138,7 @@
 	<div class="column">
         <div class="inv" style="z-index:0!important">
 
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [companies]"></asp:SqlDataSource>
 
         <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320px"  AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -161,6 +161,8 @@
                     <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
                     <dx:BootstrapGridViewTextColumn FieldName="databaseName" Caption="Naziv konekcije" VisibleIndex="3">
+                    </dx:BootstrapGridViewTextColumn>
+                      <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
                     </dx:BootstrapGridViewTextColumn>
                       
                 </Columns>
@@ -348,9 +350,9 @@
 
                 <br />
                 <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Admin</label>
+             <label class="col-sm-2 col-form-label" runat="server" id="labl" visible="false" for="name">Admin</label>
       
-            <asp:DropDownList ID="listAdmin" runat="server" Enabled="true"> 
+            <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"> 
                <%--AppendDataBoundItems="true">--%>  
               </asp:DropDownList> 
                        </div>
@@ -403,7 +405,7 @@
              <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
                 <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn" ClientIDMode="Static"></asp:TextBox> 
                        </div>
-
+          <br />
        
 
       <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
@@ -603,9 +605,15 @@
         return null;
     }
 
+
+
+
+    
+
     $(document).ready(function () {
         $("#company").click(function () {
-            // 
+           
+ 
             document.getElementById("companyName").value = "";
             document.getElementById("companyNumber").value = "";
             document.getElementById("website").value = "";
@@ -667,6 +675,24 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 
