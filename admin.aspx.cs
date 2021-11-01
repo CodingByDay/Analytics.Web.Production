@@ -187,14 +187,9 @@ namespace peptak
             Response.Cookies["EDIT"].Value = "yes";
             isEditHappening = true;
             TxtUserName.Enabled = false;
-            // Call toggle from here
             var name = e.EditingKeyValue;
-            // 
-         
             updateFormCompany(name.ToString());
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
-
-         
             e.Cancel = true;
         }
 
@@ -928,9 +923,16 @@ namespace peptak
                     insertCompany();
                     fillCompaniesRegistration();
                     createAdminForTheCompany(companyName.Text);
-                    createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    if(isConnectionOk(checkDB))
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Povezava je vredo.')", true);
 
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
+                    } else
+                    {
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Povezava ni vredo.')", true);
+
+                    }
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
                     companiesGridView.DataSource = sourceID;
@@ -942,10 +944,53 @@ namespace peptak
                 }
             } else
             {
-                UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                int iid=1;
-                updateCompanyData(iid);
+
+
+                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+                
+                build.InitialCatalog = dbNameInstance.Text;
+
+                build.DataSource = dbDataSource.Text;
+
+                build.UserID = dbUser.Text;
+                build.Password = dbPassword.Text;
+
+                if (isConnectionOk(build.ConnectionString))
+                {
+                    UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešna povezava.')", true);
+
+                }
+                else
+                {
+                    UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Konekcija ni vredo')", true);
+
+                }
+
+                updateCompanyData();
             }
+        }
+
+
+
+        private bool isConnectionOk(string connection)
+        {
+            var _stringDB = GetResultFromDBTest(connection);
+
+            if (connName.Text == null)
+            {
+
+                return true;
+            }
+            else
+
+            {
+
+                return false;
+
+            }
+
         }
         private void AddConnectionString(string stringConnection)
         {
@@ -967,7 +1012,7 @@ namespace peptak
 
 
 
-       private void createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+       private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
 
@@ -979,6 +1024,7 @@ namespace peptak
 
             build.Password = dbPassword;
             AddConnectionString(build.ConnectionString);
+            return build.ConnectionString;
         }
 
         private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
@@ -1013,7 +1059,7 @@ namespace peptak
 
         }
 
-        private void updateCompanyData(int id)
+        private void updateCompanyData()
         {
             var admin = listAdmin.SelectedValue;
 
@@ -1024,7 +1070,7 @@ namespace peptak
             conn = new SqlConnection(connection);
 
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}, website='{websiteString}', company_number='{companyNum}' WHERE id_company={id}", conn);
+            SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}, website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
             try
             {
                 cmd.ExecuteNonQuery();
@@ -1644,40 +1690,7 @@ namespace peptak
             TxtRePassword.Text = "";
         }
 
-        protected void AddConnection_Click(object sender, EventArgs e)
-        {
-            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-
-            build.InitialCatalog = dbNameInstance.Text;
-
-            build.DataSource = dbDataSource.Text;
-
-            build.UserID = dbUser.Text;
-
-            build.Password = dbPassword.Text;
-
-            var _stringDB = GetResultFromDBTest(build.ConnectionString);
-          
-            if (connName.Text == null)
-            {
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate napisati ime.')", true);
-            }
-            else
-
-            {
-
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Dodana konekcija.')", true);
-
-                AddConnectionString(build.ConnectionString);
-                FillListAdmin();
-                DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
-                // Unit testing.
-            }
-
-
-        }
+      
 
        
 

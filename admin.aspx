@@ -408,9 +408,7 @@
           <br />
        
 
-      <dx:BootstrapButton runat="server" IconCssClass="bi bi-plus"  CssClasses-Control="plus" ID="AddConnection" OnClick="AddConnection_Click" Text="Testiraj konekcijo" AutoPostBack="false">
-        <SettingsBootstrap RenderOption="Info" />
-       </dx:BootstrapButton>
+     
         <br />
 
         <br />
@@ -675,6 +673,15 @@
  
  
 </div>
+    </div>
+ 
+
+ 
+ 
+  
+
+ 
+ 
     </div>
  
 
