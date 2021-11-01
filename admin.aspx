@@ -137,6 +137,7 @@
 	
 	<div class="column">
         <div class="inv" style="z-index:0!important">
+
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName] FROM [companies]"></asp:SqlDataSource>
 
         <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320px"  AutoGenerateColumns="False">
@@ -323,7 +324,7 @@
 
                    <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Naziv podjetja</label>
-           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true"></asp:TextBox>
+           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                        </div>
 
 
@@ -331,7 +332,7 @@
 
                  <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Kontaktna številka</label>
-            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true"></asp:TextBox>   
+            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>   
                        </div>
 
 
@@ -340,7 +341,7 @@
 
                  <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Spletna stran</label>
-           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control" Enabled="true"></asp:TextBox> 
+           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
                        </div>
 
 
@@ -370,7 +371,7 @@
     
            <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Data source</label>
-           <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true"></asp:TextBox>
+           <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                        </div>
                           <br />
 
@@ -381,26 +382,26 @@
 
                  <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Uporabnik</label>
-           <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik:" CssClass="form-control" Enabled="true"></asp:TextBox> 
+           <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
                        </div>
           <br />
           <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-           <asp:TextBox ID="dbPassword" runat="server" placeholder="Geslo:" CssClass="form-control" Enabled="true"></asp:TextBox> 
+           <asp:TextBox ID="dbPassword" runat="server" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
                        </div>
           <br />
 
     
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime baze</label>
-                <asp:TextBox ID="dbNameInstance" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
+                <asp:TextBox ID="dbNameInstance" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn" ClientIDMode="Static"></asp:TextBox> 
                        </div>
 
           <br />
 
             <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
-                <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn"></asp:TextBox> 
+                <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn" ClientIDMode="Static"></asp:TextBox> 
                        </div>
 
        
@@ -561,14 +562,17 @@
     }
 
     function company() {
+
         var userForm = $("#companyForm");
         userForm.css('display', 'flex');
+
+     
     }
 
     $(document).ready(function () {
         $("#user").click(function () {
             $("#userForm").css('display', 'flex');
-
+            
             var elem = document.getElementById("userForm");
 
             setTimeout(function () {
@@ -601,6 +605,15 @@
 
     $(document).ready(function () {
         $("#company").click(function () {
+            // 
+            document.getElementById("companyName").value = "";
+            document.getElementById("companyNumber").value = "";
+            document.getElementById("website").value = "";
+            document.getElementById("dbDataSource").value = "";
+            document.getElementById("dbUser").value = "";
+            document.getElementById("dbPassword").value = "";
+            document.getElementById("dbNameInstance").value = "";
+            document.getElementById("connName").value = "";
             setCookie("EDIT", "no", 365);
             $("#companyForm").css('display', 'flex');
             var x = document.getElementsByTagName("BODY")[0]

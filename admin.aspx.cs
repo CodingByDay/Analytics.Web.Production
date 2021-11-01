@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
@@ -75,7 +76,7 @@ namespace peptak
         protected void Page_Load(object sender, EventArgs e)
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
+            
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
             companiesGridView.SettingsBehavior.AllowFocusedRow = true;
@@ -193,6 +194,9 @@ namespace peptak
          
             e.Cancel = true;
         }
+
+
+      
 
         private void updateFormCompany(string v)
         {
@@ -857,8 +861,8 @@ namespace peptak
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection(connection);
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName}')", conn);
-            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName}')";
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName.Text}')", conn);
+            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName.Text}')";
             var adminForCreation = listAdmin.SelectedValue;
 
             try
