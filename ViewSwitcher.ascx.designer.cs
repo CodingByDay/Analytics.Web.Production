@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace peptak {
+namespace Dash {
     
     
     public partial class ViewSwitcher {

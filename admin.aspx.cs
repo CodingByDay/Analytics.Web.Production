@@ -1,6 +1,6 @@
 ﻿using DevExpress.Web.Bootstrap;
-using peptak.HelperClasses;
-using peptak.ORM;
+using Dash.HelperClasses;
+using Dash.ORM;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,7 +20,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
-namespace peptak
+namespace Dash
 {
     public partial class admin : System.Web.UI.Page
     {

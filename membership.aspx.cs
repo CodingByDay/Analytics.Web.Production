@@ -1,4 +1,4 @@
-﻿using peptak.Session;
+﻿using Dash.Session;
 using Stripe;
 using Stripe.BillingPortal;
 using Stripe.Checkout;
@@ -11,7 +11,7 @@ using System.Web.UI.WebControls;
 using SessionCreateOptions = Stripe.Checkout.SessionCreateOptions;
 using SessionService = Stripe.Checkout.SessionService;
 
-namespace peptak
+namespace Dash
 {
     public partial class membership : System.Web.UI.Page
     {

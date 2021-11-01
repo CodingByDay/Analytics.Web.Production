@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="plans.aspx.cs" Inherits="peptak.plans" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="plans.aspx.cs" Inherits="Dash.plans" %>
 
 <!DOCTYPE html>
 <html>

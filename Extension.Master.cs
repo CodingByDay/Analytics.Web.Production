@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace peptak
+namespace Dash
 {
     public partial class Extension : System.Web.UI.MasterPage
     {

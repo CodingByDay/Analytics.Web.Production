@@ -1,5 +1,5 @@
-﻿using peptak.HelperClasses;
-using peptak.Session;
+﻿using Dash.HelperClasses;
+using Dash.Session;
 using Stripe;
 using Stripe.Checkout;
 using System;
@@ -12,7 +12,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace peptak
+namespace Dash
 {
     public partial class Success : System.Web.UI.Page
     {

@@ -8,7 +8,7 @@
 //------------------------------------------------------------------------------
 
 
-namespace peptak
+namespace Dash
 {
     public partial class Contact
     {

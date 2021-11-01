@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace peptak.HelperClasses
+namespace Dash.HelperClasses
 {
     public class CheckConnection
     {

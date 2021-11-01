@@ -1,6 +1,6 @@
 ﻿using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.Web;
-using peptak.DatabaseStorage;
+using Dash.DatabaseStorage;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace peptak
+namespace Dash
 {
     public partial class MobileDashboard : System.Web.UI.Page
     {

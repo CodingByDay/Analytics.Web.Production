@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace peptak.Session
+namespace Dash.Session
 {
     public class CustomerSessionClass
     {

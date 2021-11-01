@@ -4,7 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Web.Security;
 
-namespace peptak
+namespace Dash
 {
     public partial class ChangePassword : System.Web.UI.Page
     {

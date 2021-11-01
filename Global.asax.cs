@@ -7,7 +7,7 @@ using System.Web.Routing;
 using System.Web.Security;
 using System.Web.SessionState;
 
-namespace peptak
+namespace Dash
 {
     public class Global : HttpApplication
     {

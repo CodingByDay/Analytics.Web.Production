@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using FluentFTP;
-namespace peptak
+namespace Dash
 {
     public partial class home : System.Web.UI.Page
     {

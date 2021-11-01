@@ -4,7 +4,7 @@ using System.IO;
 using System.Web;
 using System.Xml.Linq;
 using DevExpress.DashboardWeb;
-using peptak;
+using Dash;
 using System.Data.SqlClient;
 
 namespace WebDesigner_CustomDashboardStorage

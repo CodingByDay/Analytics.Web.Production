@@ -8,7 +8,7 @@ using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace peptak
+namespace Dash
 {
     public partial class Site_Mobile : System.Web.UI.MasterPage
     {

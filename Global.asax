@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="peptak.Global" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="Dash.Global" Language="C#" %>

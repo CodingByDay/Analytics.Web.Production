@@ -9,7 +9,7 @@ using System.Web.Security;
 using System.Data;
 using System.Configuration;
 
-namespace peptak
+namespace Dash
 {
     public partial class Logon : System.Web.UI.Page
     {

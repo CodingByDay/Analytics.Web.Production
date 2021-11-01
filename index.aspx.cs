@@ -2,7 +2,7 @@
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using peptak.DatabaseStorage;
+using Dash.DatabaseStorage;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,7 +17,7 @@ using System.Web.UI.WebControls;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace peptak
+namespace Dash
 {
     public partial class index : System.Web.UI.Page
     {

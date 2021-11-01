@@ -8,8 +8,8 @@ using System.Web.Security;
 using DevExpress.DashboardWeb;
 using System.Data.SqlClient;
 using System.Data;
-using static peptak.SiteMaster;
-namespace peptak
+using static Dash.SiteMaster;
+namespace Dash
 {
     public partial class _Default : Page
     {

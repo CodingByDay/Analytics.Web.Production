@@ -1,5 +1,5 @@
 ﻿using DevExpress.Web.Data;
-using peptak.ORM;
+using Dash.ORM;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,7 +15,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
-namespace peptak
+namespace Dash
 {
     public partial class tenantadmin : System.Web.UI.Page
     {

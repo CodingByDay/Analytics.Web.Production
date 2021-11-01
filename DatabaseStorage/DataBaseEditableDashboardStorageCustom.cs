@@ -9,7 +9,7 @@ using System.Linq;
 using System.Web;
 using System.Xml.Linq;
 
-namespace peptak.DatabaseStorage
+namespace Dash.DatabaseStorage
 {
 
     public class DataBaseEditableDashboardStorageCustom : IEditableDashboardStorage

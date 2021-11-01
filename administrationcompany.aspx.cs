@@ -13,7 +13,7 @@ using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
-namespace peptak
+namespace Dash
 {
     public partial class adminsitrationcompany : System.Web.UI.Page
     {

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Emulator" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Emulator.aspx.cs" Inherits="peptak.Emulator" %>
+﻿<%@ Page Title="Emulator" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Emulator.aspx.cs" Inherits="Dash.Emulator" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
       ﻿<script src="http://code.jquery.com/jquery-3.3.1.min.js"  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js"></script>
