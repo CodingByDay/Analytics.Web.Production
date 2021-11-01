@@ -343,15 +343,15 @@ namespace peptak
                 }
                 listAdmin.DataSource = admins;
                 listAdmin.DataBind();
-                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-                foreach (ConnectionStringSettings setting in connections)
-                {
-                    strings.Add(setting.Name);
-                }
-                strings.RemoveAt(0);
+                //ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+                //foreach (ConnectionStringSettings setting in connections)
+                //{
+                //    strings.Add(setting.Name);
+                //}
+                //strings.RemoveAt(0);
 
-                ConnectionStrings.DataSource = strings;
-                ConnectionStrings.DataBind();
+                //ConnectionStrings.DataSource = strings;
+                //ConnectionStrings.DataBind();
 
 
 
@@ -857,8 +857,8 @@ namespace peptak
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection(connection);
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')", conn);
-            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{ConnectionStrings.SelectedValue}')";
+            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName}')", conn);
+            var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName}')";
             var adminForCreation = listAdmin.SelectedValue;
 
             try
@@ -886,7 +886,7 @@ namespace peptak
 
         protected void companyButton_Click(object sender, EventArgs e)
         {
-            var ed = Response.Cookies["EDIT"].ToString();
+            var ed = Request.Cookies["EDIT"].Value.ToString();
 
             if (!isEditHappening && ed=="no")
             {
@@ -921,6 +921,8 @@ namespace peptak
                     insertCompany();
                     fillCompaniesRegistration();
                     createAdminForTheCompany(companyName.Text);
+                    createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno poslani podatki.')", true);
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
@@ -937,6 +939,39 @@ namespace peptak
                 int iid=1;
                 updateCompanyData(iid);
             }
+        }
+        private void AddConnectionString(string stringConnection)
+        {
+
+            Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+
+            var builder = new SqlConnectionStringBuilder(stringConnection);
+
+            ConnectionStringSettings conn = new ConnectionStringSettings();
+
+            conn.ConnectionString = builder.ConnectionString;
+
+            conn.Name = connName.Text;
+
+            config.ConnectionStrings.ConnectionStrings.Add(conn);
+
+            config.Save(ConfigurationSaveMode.Modified, true);
+        }
+
+
+
+       private void createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        {
+            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+
+            build.InitialCatalog = dbNameInstance;
+
+            build.DataSource = dbSource;
+
+            build.UserID = dbUser;
+
+            build.Password = dbPassword;
+            AddConnectionString(build.ConnectionString);
         }
 
         private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
@@ -1604,7 +1639,17 @@ namespace peptak
 
         protected void AddConnection_Click(object sender, EventArgs e)
         {
-           // var _stringDB = GetResultFromDBTest(ConnectionString.Text);
+            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+
+            build.InitialCatalog = dbNameInstance.Text;
+
+            build.DataSource = dbDataSource.Text;
+
+            build.UserID = dbUser.Text;
+
+            build.Password = dbPassword.Text;
+
+            var _stringDB = GetResultFromDBTest(build.ConnectionString);
           
             if (connName.Text == null)
             {
@@ -1618,7 +1663,7 @@ namespace peptak
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Dodana konekcija.')", true);
 
-                //AddConnectionString(ConnectionString.Text);
+                AddConnectionString(build.ConnectionString);
                 FillListAdmin();
                 DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
                 // Unit testing.
@@ -1627,24 +1672,7 @@ namespace peptak
 
         }
 
-        private void AddConnectionString(string stringConnection)
-        {
-
-            Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-
-            var builder = new SqlConnectionStringBuilder(stringConnection);
-
-            ConnectionStringSettings conn = new ConnectionStringSettings();
-
-            conn.ConnectionString = builder.ConnectionString;
-
-            conn.Name = connName.Text;
-
-            config.ConnectionStrings.ConnectionStrings.Add(conn);
-
-            config.Save(ConfigurationSaveMode.Modified, true);
-
-        }
+       
 
         private string GetResultFromDBTest(string connectionString)
         {

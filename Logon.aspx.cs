@@ -193,7 +193,7 @@ namespace peptak
 
    private void validate()
         {
-            Session["EDIT"] = "false";
+            Response.Cookies["EDIT"].Value = "no";
             Session["change"] = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
