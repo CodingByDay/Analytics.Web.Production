@@ -177,15 +177,6 @@ namespace peptak
         protected global::System.Web.UI.WebControls.DropDownList listAdmin;
 
         /// <summary>
-        /// ConnectionStrings control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ConnectionStrings;
-
-        /// <summary>
         /// dbDataSource control.
         /// </summary>
         /// <remarks>

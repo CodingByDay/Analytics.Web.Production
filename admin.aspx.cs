@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
@@ -956,14 +957,16 @@ namespace peptak
             
             stringSettings.ConnectionString = build.ConnectionString;
 
-            Configuration c = WebConfigurationManager.OpenWebConfiguration(null);
 
-            c.ConnectionStrings.ConnectionStrings[connName].ConnectionString = build.ConnectionString;
-
-            c.ConnectionStrings.ConnectionStrings.Add(stringSettings);
-
-            c.Save();
-
+            var settings = ConfigurationManager.ConnectionStrings[connName];
+            var fi = typeof(ConfigurationElement).GetField(
+                          "_bReadOnly",
+                          BindingFlags.Instance | BindingFlags.NonPublic);
+            fi.SetValue(settings, false);
+            settings.ConnectionString = build.ConnectionString;
+        
+            ConfigurationManager.RefreshSection("connectionStrings");
+          
             ConfigurationManager.RefreshSection("connectionStrings");
 
         }

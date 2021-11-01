@@ -358,12 +358,7 @@
            
                 <br />
 
-               <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Izberite bazo</label>
-            <asp:DropDownList ID="ConnectionStrings" Enabled="true" runat="server"  
-               AppendDataBoundItems="true">  
-              </asp:DropDownList> 
-                       </div>
+          
 
        
             </div>
