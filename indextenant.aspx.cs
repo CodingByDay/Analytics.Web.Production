@@ -53,29 +53,11 @@ namespace Dash
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-                if(Session["DesignerPayed"] is null)
-               {
-                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+              
 
-               }
-              if (Session["DesignerPayed"].ToString() == "true")
-                {
-
-                    if (Session["FirstLoad"].ToString() != "true")
-                    {
-                        ASPxDashboard3.InitialDashboardId = Session["id"].ToString();
-                    }
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
 
-
-            }
-            else
-
-                {
-
-                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-
-                }
+                
 
                if (Request.Cookies.Get("state") is null)
                {

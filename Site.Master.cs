@@ -21,6 +21,9 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
+            HttpContext.Current.Response.AddHeader("Expires", "0");
 
             signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
             adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
@@ -41,6 +44,7 @@ namespace Dash
         protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
+            Response.Redirect("home.aspx", true);
         
            
         }
