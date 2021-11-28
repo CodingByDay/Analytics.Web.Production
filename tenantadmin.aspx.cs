@@ -318,8 +318,10 @@ namespace Dash
             try
             {
                 userObjectList.Clear();
+                string uname = HttpContext.Current.User.Identity.Name;
+                string name = getCompanyQuery(uname);
                 var company = defaultCompany();
-                var id = getIdCompany(company);
+                var id = getIdCompany(name);
                 usersData.Clear();
                 string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 conn = new SqlConnection(connection);
@@ -687,8 +689,8 @@ namespace Dash
             {
                 companyInfo = (reader["company_name"].ToString());
             }
-            var final = companyInfo.Replace(" ", string.Empty);
-            return final;
+            
+            return companyInfo;
 
         }
 
