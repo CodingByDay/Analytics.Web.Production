@@ -173,6 +173,13 @@ height: 100% !important;
                 });
             }
 
+            function correctTheLoadingState() {
+                var control = dashboard.GetDashboardControl();
+                design = control.isDesignMode();
+                if (design == false) {
+                    onCollapse();
+                }
+            }
 
         </script>
     
@@ -193,7 +200,7 @@ height: 100% !important;
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
                           
-                          DashboardInitialized="onCollapse"                      
+                          DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>
 </div>
