@@ -342,9 +342,10 @@ namespace Dash
 
 
                 }
+                byUserListBox.DataSource = null;
                 byUserListBox.DataSource = usersData;
                 byUserListBox.DataBind();
-
+                usersGridView.DataSource = null;
                 usersGridView.DataSource = userObjectList;
                 usersGridView.DataBind();
 
@@ -415,9 +416,19 @@ namespace Dash
 
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
-                email.Text = sdr["email"].ToString();
-                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role)); 
+
+
+                userTypeRadio.SelectedValue = type;
+                userTypeRadio.Items.FindByValue(type).Selected = true;
+                var test = userTypeRadio.Items.IndexOf(userTypeRadio.Items.FindByValue(type));
                 userTypeRadio.SelectedIndex = userTypeRadio.Items.IndexOf(userTypeRadio.Items.FindByValue(type));
+                userTypeRadio.SelectedItem.Selected = true;
+
+                //email.Text = sdr["email"].ToString();
+                //userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                //string sd = userTypeRadio.Items.FindByValue(type).Value;
+           
+                
 
             }
             sdr.Close();
@@ -483,8 +494,11 @@ namespace Dash
                     else
                     {
 
-                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
                         SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+                        conn.Close();
+                        conn.Open();
 
                         try
                         {
@@ -500,7 +514,7 @@ namespace Dash
                         createUserPermisions.Dispose();
                         var connRegistration = new SqlConnection(connection);
                         connRegistration.Open();
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, connRegistration);
                         var username = TxtUserName.Text;
                         try
@@ -522,8 +536,7 @@ namespace Dash
                             createUser.Dispose();
                             //fillChange();
                             //fillUsersDelete();
-                            string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
-                            string replacedPath = filePath.Replace(" ", string.Empty);
+                           
 
                         }
                         catch (SqlException ex) when (ex.Number == 2627)
@@ -1043,14 +1056,14 @@ namespace Dash
                 cmd.ExecuteNonQuery();
 
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno brisanje.')", true);
-                string filePath = Server.MapPath($@"~/App_Data/{spacelessCompany}/{singular}");
-                string finalPath = filePath.Replace(" ", string.Empty);
+          
 
                 FillListGraphs();
                 showConfig();
                 deletePermisionEntry();
                 FillUsers();
-                // Logging
+                Response.Redirect("tenantadmin.aspx");
+                
 
             }
 

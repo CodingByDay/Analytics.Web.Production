@@ -362,7 +362,7 @@
           
 <h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-               <asp:RadioButtonList ID="userTypeRadio" runat="server" RepeatDirection="Horizontal" CellSpacing="8"  CellPadding="5" >  
+               <asp:RadioButtonList ID="userTypeRadio"  runat="server" RepeatDirection="Horizontal" CellSpacing="8"  CellPadding="5" >  
                             <asp:ListItem>Viewer</asp:ListItem>  
                             <asp:ListItem>Designer</asp:ListItem>  
                             <asp:ListItem>Viewer&Designer</asp:ListItem>  
