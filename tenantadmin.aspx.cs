@@ -77,7 +77,7 @@ namespace Dash
 
             if (!IsPostBack)
             {
-
+              
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -140,7 +140,7 @@ namespace Dash
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userTypeRadio.SelectedIndex = userRole.Items.IndexOf(userTypeRadio.Items.FindByValue(role));
+          
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
             }
@@ -416,18 +416,9 @@ namespace Dash
 
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
-
-
-                userTypeRadio.SelectedValue = type;
-                userTypeRadio.Items.FindByValue(type).Selected = true;
-                var test = userTypeRadio.Items.IndexOf(userTypeRadio.Items.FindByValue(type));
-                userTypeRadio.SelectedIndex = userTypeRadio.Items.IndexOf(userTypeRadio.Items.FindByValue(type));
-                userTypeRadio.SelectedItem.Selected = true;
-
-                //email.Text = sdr["email"].ToString();
-                //userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                //string sd = userTypeRadio.Items.FindByValue(type).Value;
-           
+                email.Text = sdr["email"].ToString();
+                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+            
                 
 
             }
@@ -514,7 +505,7 @@ namespace Dash
                         createUserPermisions.Dispose();
                         var connRegistration = new SqlConnection(connection);
                         connRegistration.Open();
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, connRegistration);
                         var username = TxtUserName.Text;
                         try
@@ -561,9 +552,9 @@ namespace Dash
 
                 conn = new SqlConnection(connection);
                 conn.Open();
-                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
                 //  debug.Add(dev);
-                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                SqlCommand cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 if (TxtPassword.Text != TxtRePassword.Text)
                 {
