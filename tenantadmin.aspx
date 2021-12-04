@@ -366,7 +366,6 @@
 
               <asp:DropDownList ID="userTypeList" runat="server">
         <asp:ListItem>Viewer</asp:ListItem>
-        <asp:ListItem>Designer</asp:ListItem>
         <asp:ListItem>Viewer&amp;Designer</asp:ListItem>
     </asp:DropDownList>
         <br />

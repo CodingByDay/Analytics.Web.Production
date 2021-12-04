@@ -418,8 +418,8 @@ namespace Dash
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-            
-                
+
+                userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
 
             }
             sdr.Close();
