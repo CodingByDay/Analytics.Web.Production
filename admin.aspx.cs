@@ -506,7 +506,7 @@ namespace Dash
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand($"Select * from Users where id_company={companyID}", conn);
 
-                /// Intepolation or the F string. C# > 5.0       
+                // Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
 

@@ -128,6 +128,28 @@
     </style>
 	<script>
 
+        /**
+       *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
+       * @param isError
+       * @param message
+       */
+        function notify(isError, message) {
+            if (isError) {
+                Swal.fire(
+                    'Napaka',
+                    message,
+                    'error'
+                )
+            } else {
+                Swal.fire(
+                    'Uspeh!',
+                    message,
+                    'success'
+                )
+            }
+        }
+      
+
 
     
 

@@ -808,7 +808,7 @@ namespace Dash
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersGridView.FocusedRowIndex >= 0)
+            if (usersGridView.GetSelectedFieldValues() == null)
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
             }
@@ -1179,7 +1179,7 @@ namespace Dash
 
         protected void usersGridView_SelectionChanged(object sender, EventArgs e)
         {
-            graphsListBox.Enabled = true;
+             graphsListBox.Enabled = true;
             FillListGraphs();
             showConfig();
             updateForm();

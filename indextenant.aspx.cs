@@ -53,13 +53,19 @@ namespace Dash
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-              
 
-                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+            if (Session["UserAllowed"].ToString() == "true")
+            {
+                ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+            } else
+            {
+                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
 
-                
+            }
 
-               if (Request.Cookies.Get("state") is null)
+
+
+            if (Request.Cookies.Get("state") is null)
                {
 
                 Response.Cookies["state"].Value = "light";
