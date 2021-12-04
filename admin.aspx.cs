@@ -631,7 +631,7 @@ namespace Dash
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userTypeRadio.SelectedValue = type;
+                userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
             }
@@ -661,8 +661,8 @@ namespace Dash
                 string role = sdr["userRole"].ToString();
                 string type = sdr["ViewState"].ToString();
                 email.Text = sdr["email"].ToString();
-                userTypeRadio.SelectedValue = type;
                 userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
 
             }
             sdr.Close();
@@ -728,7 +728,7 @@ namespace Dash
                         int idCOMPANY = getIdCompany(companyINSERT);
                         var nonQuery = new SqlConnection(connection);
                         nonQuery.Open();
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeRadio.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
+                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, nonQuery);
                         var username = TxtUserName.Text;
                         try
@@ -774,12 +774,12 @@ namespace Dash
                 if (!String.IsNullOrEmpty(TxtPassword.Text))
                 {
                     HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                    cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                    cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 }
                 else
                 {
-                    cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeRadio.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                    cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 }
 

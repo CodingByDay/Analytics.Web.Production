@@ -294,13 +294,13 @@ namespace Dash
         protected global::System.Web.UI.WebControls.RadioButtonList userRole;
 
         /// <summary>
-        /// userTypeRadio control.
+        /// userTypeList control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList userTypeRadio;
+        protected global::System.Web.UI.WebControls.DropDownList userTypeList;
 
         /// <summary>
         /// companiesList control.

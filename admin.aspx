@@ -508,11 +508,12 @@
           
 <h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
                     <br />
-               <asp:RadioButtonList ID="userTypeRadio" runat="server" Enabled="true" RepeatDirection="Horizontal" CellSpacing="8" CssClass="radio">  
-                            <asp:ListItem>Viewer</asp:ListItem>  
-                            <asp:ListItem>Designer</asp:ListItem>  
-                            <asp:ListItem>Viewer&Designer</asp:ListItem>  
-                        </asp:RadioButtonList>  
+
+        <asp:DropDownList ID="userTypeList" runat="server">
+        <asp:ListItem>Viewer</asp:ListItem>
+        <asp:ListItem>Viewer&amp;Designer</asp:ListItem>
+        </asp:DropDownList> 
+
         <br />
         <br />
              
