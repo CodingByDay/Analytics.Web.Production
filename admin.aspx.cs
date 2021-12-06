@@ -623,8 +623,9 @@ namespace Dash
                 TxtName.Text = sdr["FullName"].ToString();
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
-                var number = (int)sdr["id_company"];
-                companiesList.SelectedIndex = number - 1;
+                int number = (int)sdr["id_company"];
+                string dare = GetCompanyName(number);
+                companiesList.SelectedValue = dare;
 
                 companiesList.Enabled = false;
                 email.Enabled = false;
@@ -638,7 +639,20 @@ namespace Dash
             sdr.Close();
             cmd.Dispose();
         }
+        public string GetCompanyName(int company)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+           var admin = (string)cmd.ExecuteScalar();
 
+            cmd.Dispose();
+            conn.Close();
+            return admin;
+        }
 
         private void updateFormName(string name)
         {
@@ -654,7 +668,8 @@ namespace Dash
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
                 var number = (int)sdr["id_company"];
-                companiesList.SelectedIndex = number - 1;
+                var data = GetCompanyName(number);
+                companiesList.SelectedValue = data;
 
                 companiesList.Enabled = false;
                 email.Enabled = false;
@@ -771,7 +786,7 @@ namespace Dash
             {
                 conn.Close();
                 conn.Open();
-                if (!String.IsNullOrEmpty(TxtPassword.Text))
+                if (!String.IsNullOrEmpty(TxtRePassword.Text))
                 {
                     HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
                     cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
@@ -779,6 +794,7 @@ namespace Dash
                 }
                 else
                 {
+
                     cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
 
                 }
@@ -854,7 +870,7 @@ namespace Dash
         {
             conn = new SqlConnection(connection);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
+            SqlCommand cmd = new SqlCommand($"Select MAX(id_company) from companies", conn);
             var result = cmd.ExecuteScalar();
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection(connection);
