@@ -119,7 +119,20 @@ namespace Dash
 
             e.Cancel = true;
         }
+        public string GetCompanyName(int company)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn.Open();
+            // Create SqlCommand to select pwd field from users table given supplied userName.
+            cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            // Execute command and fetch pwd field into lookupPassword string.
+            var admin = (string)cmd.ExecuteScalar();
 
+            cmd.Dispose();
+            conn.Close();
+            return admin;
+        }
         private void updateFormName(string name)
         {
 
@@ -133,7 +146,8 @@ namespace Dash
                 TxtUserName.Text = sdr["uname"].ToString();
                 TxtUserName.Enabled = false;
                 var number = (int)sdr["id_company"];
-                companiesList.SelectedIndex = number - 1;
+                var data = GetCompanyName(number);
+                companiesList.SelectedValue = data;
 
                 companiesList.Enabled = false;
                 email.Enabled = false;
@@ -410,7 +424,8 @@ namespace Dash
                 string uname = HttpContext.Current.User.Identity.Name;
                 string name = getCompanyQuery(uname);
                 int id = getIdCompany(name);
-                companiesList.SelectedIndex = id - 1;
+                var data = GetCompanyName(id);
+                companiesList.SelectedValue = data;
                 companiesList.Enabled = false;
                 email.Enabled = false;
 
@@ -437,7 +452,10 @@ namespace Dash
 
             int id = getIdCompany(name);
 
-            companiesList.SelectedIndex = id - 1;
+            var data = GetCompanyName(id);
+            companiesList.SelectedValue = data;
+
+           
 
             companiesList.Enabled = false;
 
