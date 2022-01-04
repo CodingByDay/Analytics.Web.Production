@@ -136,14 +136,29 @@ namespace Dash
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
-            if (Session["conn"].ToString() != "")
+            string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
+            if (Session != null)
             {
-                string test = e.ConnectionName;
-                ConnectionStringSettings conn = GetConnectionString();
-                CustomStringConnectionParameters parameters =
-                (CustomStringConnectionParameters)e.ConnectionParameters;
+                if (System.Web.HttpContext.Current.Session["conn"] != null)
+                {
+                    if (Session["conn"].ToString() != "")
+                    {
+                        string test = e.ConnectionName;
+                        ConnectionStringSettings conn = GetConnectionString();
+                        CustomStringConnectionParameters parameters =
+                        (CustomStringConnectionParameters)e.ConnectionParameters;
 
-                parameters.ConnectionString = conn.ConnectionString;
+                        parameters.ConnectionString = conn.ConnectionString;
+                    }
+                }
+                else
+                {
+                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+                    
+                }
+            }
+            else {
+                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
             }
         }
 

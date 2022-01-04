@@ -53,15 +53,34 @@ namespace Dash
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
             ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
 
-            if (Session["UserAllowed"].ToString() == "true")
-            {
-                ASPxDashboard3.WorkingMode = WorkingMode.Designer;
-            } else
-            {
-                ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+           
 
+              string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
+           // string TARGET_URL = "https://localhost:44351/";
+            if (Session != null)
+
+            {
+                if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
+                {
+                    if (Session["UserAllowed"].ToString() == "true")
+                    {
+                        ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                    }
+                    else
+                    {
+                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+
+                    }
+                }
+                else {
+                   DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+                }
+            }
+            else {
+                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
             }
 
 
