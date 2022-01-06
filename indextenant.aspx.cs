@@ -35,7 +35,7 @@ namespace Dash
                 admin.Visible = false;
                 ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-          
+                
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
 
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -53,6 +53,7 @@ namespace Dash
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
 
             if (Session["UserAllowed"].ToString() == "true")
             {
@@ -90,6 +91,12 @@ namespace Dash
                 }
               }
 
+        }
+
+        private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
+        {
+            string group = getCurrentUserID();
+            e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
         }
 
 
@@ -198,9 +205,44 @@ namespace Dash
 
             parameters.ConnectionString = conn.ConnectionString;
 
+
         
         }
 
+
+
+        private string getCurrentUserID()
+        {
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            conn = new SqlConnection(ConnectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
+
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                companyID = System.Convert.ToInt32(result);
+
+            }
+
+
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+
+
+            cmd.Dispose();
+            conn.Close();
+
+            var a = get_connectionStringName(companyID);
+
+
+            return a;
+        }
         private ConnectionStringSettings GetConnectionString()
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
