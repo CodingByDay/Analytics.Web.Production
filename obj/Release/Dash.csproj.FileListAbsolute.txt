@@ -1,2 +1,0 @@
-C:\Users\tadej\Desktop\Projekti\Dashboards\DASHBOARDS\obj\Release\peptak.dll.licenses
-C:\Users\tadej\Desktop\Projekti\Dashboards\DASHBOARDS\obj\Release\Dash.csproj.CoreCompileInputs.cache

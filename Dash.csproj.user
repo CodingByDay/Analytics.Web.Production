@@ -8,8 +8,8 @@
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
     <IISExpressUseClassicPipelineMode />
     <UseGlobalApplicationHostFile />
-    <LastActiveSolutionConfig>Debug|Any CPU</LastActiveSolutionConfig>
-    <NameOfLastUsedPublishProfile>C:\Users\tadej\Desktop\Projekti\Dashboards\DASHBOARDS\Properties\PublishProfiles\FolderProfile1.pubxml</NameOfLastUsedPublishProfile>
+    <LastActiveSolutionConfig>Release|Any CPU</LastActiveSolutionConfig>
+    <NameOfLastUsedPublishProfile>C:\Users\janko\Desktop\merge\DASHBOARDS\Properties\PublishProfiles\FolderProfile.pubxml</NameOfLastUsedPublishProfile>
     <ToolsVersionPromptShown>4.0</ToolsVersionPromptShown>
   </PropertyGroup>
   <ProjectExtensions>

@@ -192,7 +192,7 @@ namespace Dash
 
                 }
 
-
+            // Comment 42.
                 catch (Exception error)
                 {
                     // Implement logging here.
@@ -215,16 +215,18 @@ namespace Dash
 
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
-            ConnectionStringSettings conn = GetConnectionString();
+            if (e.ConnectionParameters is DevExpress.DataAccess.ConnectionParameters.CustomStringConnectionParameters)
+            {
+                ConnectionStringSettings conn = GetConnectionString();
 
-            CustomStringConnectionParameters parameters =
-                  (CustomStringConnectionParameters)e.ConnectionParameters;
-            MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-            // Here is the error.
+                CustomStringConnectionParameters parameters =
+                      (CustomStringConnectionParameters)e.ConnectionParameters;
+                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                // Here is the error.
 
-            parameters.ConnectionString = conn.ConnectionString;
+                parameters.ConnectionString = conn.ConnectionString;
 
-
+            }
         
         }
 
