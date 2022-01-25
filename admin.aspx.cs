@@ -357,14 +357,17 @@ namespace Dash
 
 
 
-                cmd.Dispose();
-                conn.Close();
+               
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
         }
 
@@ -474,8 +477,7 @@ namespace Dash
                 }
 
 
-                cmd.Dispose();
-                conn.Dispose();
+            
 
                 //  graphsGridView.DataSource = graphList;
                 //  graphsGridView.DataBind();
@@ -485,6 +487,10 @@ namespace Dash
             catch (Exception ex)
             {
                 var log = ex;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Dispose();
             }
 
         }
@@ -529,14 +535,17 @@ namespace Dash
                 usersGridView.DataBind();
 
 
-                cmd.Dispose();
-                conn.Close();
+             
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
         }
@@ -566,14 +575,17 @@ namespace Dash
                 companiesList.DataBind();
 
 
-                cmd.Dispose();
-                conn.Close();
+           
 
 
             }
             catch (Exception ex)
             {
                 Response.Write(ex.ToString());
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
         }
 
@@ -892,11 +904,14 @@ namespace Dash
                 // Implement logging here.
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
 
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+       
         }
 
 
@@ -1127,7 +1142,12 @@ namespace Dash
             {
                 var log = error;
             }
-            createUserPermisions.Dispose();
+            finally
+            {
+                createUserPermisions.Dispose();
+                conn.Close();
+            }
+           
 
             string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
 
@@ -1145,14 +1165,20 @@ namespace Dash
             {
                 var id = getIdCompany(companiesList.SelectedValue);
                 createUser.ExecuteNonQuery();
-                createUser.Dispose();
+               
 
                 FillListAdmin();
                 FillUsers(id);
             } catch(Exception) { 
 
 
-                 }
+           }
+            finally
+            {
+                createUser.Dispose();
+                nonQuery.Close();
+
+            }
             }
 
         protected void deleteUser_Click(object sender, EventArgs e)
@@ -1184,13 +1210,16 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
 
+            } finally
+            {
+                cmd.Dispose();
+
+                conn.Close();
             }
 
             FillUsers(idFromString);
 
-            cmd.Dispose();
-
-            conn.Close();
+           
         }
         private string get_connectionStringName(string name)
         {
@@ -1215,11 +1244,14 @@ namespace Dash
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+           
             return returnString;
         }
     
@@ -1264,14 +1296,17 @@ namespace Dash
                     // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(stripped);
                 }
-                cmd.Dispose();
-                conn.Close();
+        
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
             return values;
@@ -1437,11 +1472,14 @@ namespace Dash
                 var log = error;
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+        
 
         }
 
@@ -1463,9 +1501,12 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
+            } finally
+            {
+                cmd1.Dispose();
+                conn.Close();
             }
-            cmd1.Dispose();
-            conn.Close();
+          
         }
 
 
@@ -1550,10 +1591,13 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
-            cmd.Dispose();
-            conn.Close();
+       
 
             int finalID = System.Convert.ToInt32(result);
 
@@ -1585,12 +1629,15 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
+            } finally
+            {
+                cmd.Dispose();
+                conn.Close();
             }
 
 
 
-            cmd.Dispose();
-            conn.Close();
+       
         }
 
 

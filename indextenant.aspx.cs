@@ -54,7 +54,7 @@ namespace Dash
 
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
-            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+                ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
 
            
 
@@ -198,10 +198,13 @@ namespace Dash
                     // Implement logging here.
                     Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
                 }
-                
-
+                finally
+            {
                 cmd.Dispose();
                 conn.Close();
+            }
+
+               
              if(value==1)
             {
                 flag = true;
@@ -255,9 +258,12 @@ namespace Dash
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
-
-            cmd.Dispose();
-            conn.Close();
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
+         
 
             var a = get_connectionStringName(companyID);
 
@@ -288,8 +294,11 @@ namespace Dash
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
 
             var a = get_connectionStringName(companyID);
           
@@ -326,8 +335,11 @@ namespace Dash
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
             return returnString;
         }
 
@@ -361,9 +373,11 @@ namespace Dash
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
 
-
-            cmd.Dispose();
-            conn.Close();
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
             return stringID;
         }
 
@@ -393,8 +407,11 @@ namespace Dash
             }
 
 
-            cmd.Dispose();
-            conn.Close();
+            finally
+            {
+                cmd.Dispose();
+                conn.Close();
+            }
             return stringConnection;
         }
     }
