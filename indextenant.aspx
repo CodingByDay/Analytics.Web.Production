@@ -35,6 +35,37 @@ height: 100% !important;
         <script>
 
 
+            function customizeWidgets(sender, args) {
+                if (args.ItemName == "gridDashboardItem1") {
+                    var grid = args.GetWidget();
+                    var columns = grid.option("columns");
+                    for (var i = 0; i < columns.length; i++) {
+
+                        var textToCheck = columns[i].caption
+                        console.log(textToCheck);
+
+
+                        if (textToCheck.includes("Obdoblje")) {
+                            console.log("Yes I do.")
+                        } else {
+                            continue;
+                        }
+                        
+                    }
+                    grid.option("columns", columns);
+                }
+            }
+
+            function onItemCaptionToolbarUpdated(s, e) {
+                console.log("Works");
+
+                var list = dashboard.GetParameters().GetParameterList();
+                if (list.length > 0 && e.ItemName == 'gridDashboardItem1') {
+                    /*  e.Options.staticItems[1].text += '' + dashboard.GetParameters().GetParameterList()[0].Value;*/
+                    /*  console.log("Inside of heaven.");*/
+    
+                }
+            }
 
             var extension;
 
@@ -199,7 +230,8 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          
+                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
+                          ItemWidgetUpdated="customizeWidgets"
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>

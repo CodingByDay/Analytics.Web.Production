@@ -35,6 +35,15 @@ height: 100% !important;
         <script>
 
 
+            function onItemCaptionToolbarUpdated(s, e) {
+                console.log("Works");
+           
+                var list = dashboard.GetParameters().GetParameterList();
+                if (list.length > 0) {
+                    e.Options.staticItems[0].text += ' TEST' + dash.GetParameters().GetParameterList()[0].Value;
+                }
+            }
+
 
             var extension;
 
@@ -198,7 +207,7 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          
+                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"             
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>
