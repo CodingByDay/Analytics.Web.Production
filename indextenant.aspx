@@ -47,25 +47,27 @@ height: 100% !important;
                     var columns = grid.option("columns");
                     for (var i = 0; i < columns.length; i++) {
                        var textToCheck = columns[i].caption
-                        console.log(textToCheck);
+                       
                         if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
-                                text = "";
-                                text = textToCheck;
-                                text.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
-                                text.replace("#obdobje1", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
-                                console.log
-                                columns[i].caption = text;
+                                                            
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                textNew =  textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);                               
+                                columns[i].caption = textNew;
+
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
-                                text = ""
-                                text = textToCheck;
-                                text.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
-                                columns[i].caption = text;
+                                                         
+                                var textNew = textToCheck;
+                                textNew =  textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                columns[i].caption = textNew;
+                               
                             } else {
-                                text = ""
-                                text = textToCheck;
-                                text.replace("#obdobje1", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
-                                columns[i].caption = text;
+                                                         
+                                var textNew = textToCheck;
+                                textNew =  textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                columns[i].caption = textNew;
+                          
                             }                           
                         } else {
                            continue
@@ -82,7 +84,7 @@ height: 100% !important;
                 console.log("Works");
                 var list = dashboard.GetParameters().GetParameterList();
                 if (list.length > 0 && e.ItemName == 'gridDashboardItem1') {
-                     dashboard.GetParameters().GetParameterList()[0].Value;
+                    dashboard.GetParameters().GetParameterList()[0].Value;
                     payload.push(dashboard.GetParameters().GetParameterList()[0].Value);
                     payload.push(dashboard.GetParameters().GetParameterList()[1].Value);
                     payload.push(dashboard.GetParameters().GetParameterList()[2].Value);
