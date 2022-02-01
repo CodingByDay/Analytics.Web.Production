@@ -26,6 +26,11 @@
 
         
 <style>
+    .dx-widget{  
+    color: #333!important;  
+    font-weight: normal!important;  
+    font-size: 11px!important;  
+} 
 #MainContent_ASPxDashboard3 {
 
 height: 100% !important;
@@ -56,20 +61,20 @@ height: 100% !important;
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
                                                             
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
-                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
 
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
                                                          
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
                                
                             } else {
                                                          
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
                           
                             }                           
@@ -99,20 +104,20 @@ height: 100% !important;
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
-                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
 
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
 
                             } else {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
                                 columns[i].caption = textNew;
 
                             }
