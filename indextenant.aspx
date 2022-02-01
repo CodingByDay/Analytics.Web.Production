@@ -40,7 +40,7 @@ height: 100% !important;
              * @param args
              */
             function customizeWidgets(sender, args) {
-              
+                console.log(`The inital value is ${dashboard.GetParameters().GetParameterList()[0].Value}`);
                 console.log(args.ItemName)        
                 if (args.ItemName == "gridDashboardItem1") {
                     var grid = args.GetWidget();
@@ -77,19 +77,66 @@ height: 100% !important;
                 }
             }
 
+
+            function updatecustomizeWidgets(sender, args) {
+                console.log(`The updated value is ${dashboard.GetParameters().GetParameterList()[0].Value}`);
+                console.log(args.ItemName)
+                if (args.ItemName == "gridDashboardItem1") {
+                    var grid = args.GetWidget();
+                    var columns = grid.option("columns");
+                    for (var i = 0; i < columns.length; i++) {
+                        var textToCheck = columns[i].caption
+
+                        if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
+                            if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                columns[i].caption = textNew;
+
+                            } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                columns[i].caption = textNew;
+
+                            } else {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                columns[i].caption = textNew;
+
+                            }
+                        } else {
+                            continue
+                        }
+                    }
+               
+             
+                    grid.option("columns", columns);
+                }
+            }
+               
+         
+           
+
             payload = [];
 
             function onItemCaptionToolbarUpdated(s, e) {
                 payload = []; 
-                console.log("Works");
+              
                 var list = dashboard.GetParameters().GetParameterList();
                 if (list.length > 0 && e.ItemName == 'gridDashboardItem1') {
                     dashboard.GetParameters().GetParameterList()[0].Value;
                     payload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                   
                     payload.push(dashboard.GetParameters().GetParameterList()[1].Value);
                     payload.push(dashboard.GetParameters().GetParameterList()[2].Value);
                     payload.push(dashboard.GetParameters().GetParameterList()[3].Value);    
                 }
+               
+               
             }
 
             var extension;
@@ -231,6 +278,7 @@ height: 100% !important;
 
             function correctTheLoadingState() {
                 var control = dashboard.GetDashboardControl();
+               
                 design = control.isDesignMode();
                 if (design == false) {
                     onCollapse();
@@ -257,7 +305,8 @@ height: 100% !important;
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           ItemWidgetCreated="customizeWidgets"
-                          ItemWidgetUpdated="customizeWidgets"
+                          ItemWidgetUpdated="updatecustomizeWidgets"
+                    
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>
