@@ -40,50 +40,53 @@ height: 100% !important;
              * @param args
              */
             function customizeWidgets(sender, args) {
-                console.log(args.ItemName)
+              
+                console.log(args.ItemName)        
                 if (args.ItemName == "gridDashboardItem1") {
                     var grid = args.GetWidget();
                     var columns = grid.option("columns");
                     for (var i = 0; i < columns.length; i++) {
-
-                        var textToCheck = columns[i].caption
+                       var textToCheck = columns[i].caption
                         console.log(textToCheck);
-
-
                         if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
-
-                            console.log("Yes I do. Now check the appereance of both.")
-
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
-                                console.log("Both.")
-
+                                text = "";
+                                text = textToCheck;
+                                text.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                text.replace("#obdobje1", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                console.log
+                                columns[i].caption = text;
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
-                                console.log("First.")
+                                text = ""
+                                text = textToCheck;
+                                text.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                columns[i].caption = text;
                             } else {
-                                // Includes only 2.
-                                console.log("Second.")
-                            }
-
-                            
+                                text = ""
+                                text = textToCheck;
+                                text.replace("#obdobje1", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                columns[i].caption = text;
+                            }                           
                         } else {
-
                            continue
-                        }
-                        
+                        }                        
                     }
-
                     grid.option("columns", columns);
                 }
             }
 
-            function onItemCaptionToolbarUpdated(s, e) {
-                console.log("Works");
+            payload = [];
 
+            function onItemCaptionToolbarUpdated(s, e) {
+                payload = []; 
+                console.log("Works");
                 var list = dashboard.GetParameters().GetParameterList();
                 if (list.length > 0 && e.ItemName == 'gridDashboardItem1') {
-                    /*  e.Options.staticItems[1].text += '' + dashboard.GetParameters().GetParameterList()[0].Value;*/
-                    /*  console.log("Inside of heaven.");*/
-    
+                     dashboard.GetParameters().GetParameterList()[0].Value;
+                    payload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                    payload.push(dashboard.GetParameters().GetParameterList()[1].Value);
+                    payload.push(dashboard.GetParameters().GetParameterList()[2].Value);
+                    payload.push(dashboard.GetParameters().GetParameterList()[3].Value);    
                 }
             }
 
