@@ -34,8 +34,13 @@ height: 100% !important;
 
         <script>
 
-
+            /**
+             * A client side event to update the column header titles based on parameter values.
+             * @param sender
+             * @param args
+             */
             function customizeWidgets(sender, args) {
+                console.log(args.ItemName)
                 if (args.ItemName == "gridDashboardItem1") {
                     var grid = args.GetWidget();
                     var columns = grid.option("columns");
@@ -45,13 +50,28 @@ height: 100% !important;
                         console.log(textToCheck);
 
 
-                        if (textToCheck.includes("Obdoblje")) {
-                            console.log("Yes I do.")
+                        if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
+
+                            console.log("Yes I do. Now check the appereance of both.")
+
+                            if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
+                                console.log("Both.")
+
+                            } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
+                                console.log("First.")
+                            } else {
+                                // Includes only 2.
+                                console.log("Second.")
+                            }
+
+                            
                         } else {
-                            continue;
+
+                           continue
                         }
                         
                     }
+
                     grid.option("columns", columns);
                 }
             }
@@ -231,6 +251,7 @@ height: 100% !important;
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
+                          ItemWidgetCreated="customizeWidgets"
                           ItemWidgetUpdated="customizeWidgets"
                           DashboardInitialized="correctTheLoadingState"                      
                           />
