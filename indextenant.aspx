@@ -33,16 +33,20 @@ height: 100% !important;
 }</style>
 
         <script>
-
+            initialPayload = [];
+            updatedPayload = [];
             /**
              * A client side event to update the column header titles based on parameter values.
              * @param sender
              * @param args
              */
             function customizeWidgets(sender, args) {
-                console.log(`The inital value is ${dashboard.GetParameters().GetParameterList()[0].Value}`);
-                console.log(args.ItemName)        
                 if (args.ItemName == "gridDashboardItem1") {
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
+                    console.log(args.ItemName);
                     var grid = args.GetWidget();
                     var columns = grid.option("columns");
                     for (var i = 0; i < columns.length; i++) {
@@ -52,20 +56,20 @@ height: 100% !important;
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
                                                             
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
-                                textNew =  textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);                               
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
 
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
                                                          
                                 var textNew = textToCheck;
-                                textNew =  textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
                                
                             } else {
                                                          
                                 var textNew = textToCheck;
-                                textNew =  textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
                           
                             }                           
@@ -79,9 +83,13 @@ height: 100% !important;
 
 
             function updatecustomizeWidgets(sender, args) {
-                console.log(`The updated value is ${dashboard.GetParameters().GetParameterList()[0].Value}`);
-                console.log(args.ItemName)
                 if (args.ItemName == "gridDashboardItem1") {
+                    initialPayload = [];
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
+                    console.log(args.ItemName);
                     var grid = args.GetWidget();
                     var columns = grid.option("columns");
                     for (var i = 0; i < columns.length; i++) {
@@ -91,20 +99,20 @@ height: 100% !important;
                             if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
-                                textNew = textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
 
                             } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje1", `${payload[0].toLocaleDateString()}-${payload[1].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString()}-${initialPayload[1].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
 
                             } else {
 
                                 var textNew = textToCheck;
-                                textNew = textNew.replace("#obdobje2", `${payload[2].toLocaleDateString()}-${payload[3].toLocaleDateString()}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString()}-${initialPayload[3].toLocaleDateString()}`);
                                 columns[i].caption = textNew;
 
                             }
@@ -112,8 +120,6 @@ height: 100% !important;
                             continue
                         }
                     }
-               
-             
                     grid.option("columns", columns);
                 }
             }
@@ -123,21 +129,7 @@ height: 100% !important;
 
             payload = [];
 
-            function onItemCaptionToolbarUpdated(s, e) {
-                payload = []; 
-              
-                var list = dashboard.GetParameters().GetParameterList();
-                if (list.length > 0 && e.ItemName == 'gridDashboardItem1') {
-                    dashboard.GetParameters().GetParameterList()[0].Value;
-                    payload.push(dashboard.GetParameters().GetParameterList()[0].Value);
-                   
-                    payload.push(dashboard.GetParameters().GetParameterList()[1].Value);
-                    payload.push(dashboard.GetParameters().GetParameterList()[2].Value);
-                    payload.push(dashboard.GetParameters().GetParameterList()[3].Value);    
-                }
-               
-               
-            }
+         
 
             var extension;
 
@@ -303,10 +295,8 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           ItemWidgetCreated="customizeWidgets"
-                          ItemWidgetUpdated="updatecustomizeWidgets"
-                    
+                          ItemWidgetUpdated="updatecustomizeWidgets"                   
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>
