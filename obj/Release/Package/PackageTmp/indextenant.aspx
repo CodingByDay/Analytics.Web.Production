@@ -26,6 +26,11 @@
 
         
 <style>
+    .dx-widget{  
+    color: #333!important;  
+    font-weight: normal!important;  
+    font-size: 11px!important;  
+} 
 #MainContent_ASPxDashboard3 {
 
 height: 100% !important;
@@ -33,8 +38,103 @@ height: 100% !important;
 }</style>
 
         <script>
+            initialPayload = [];
+            updatedPayload = [];
+            /**
+             * A client side event to update the column header titles based on parameter values.
+             * @param sender
+             * @param args
+             */
+            function customizeWidgets(sender, args) {
+                if (args.ItemName == "gridDashboardItem1") {
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
+                    console.log(args.ItemName);
+                    var grid = args.GetWidget();
+                    var columns = grid.option("columns");
+                    for (var i = 0; i < columns.length; i++) {
+                       var textToCheck = columns[i].caption
+                       
+                        if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
+                            if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
+                                                            
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+
+                            } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
+                                                         
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+                               
+                            } else {
+                                                         
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+                          
+                            }                           
+                        } else {
+                           continue
+                        }                        
+                    }
+                    grid.option("columns", columns);
+                }
+            }
 
 
+            function updatecustomizeWidgets(sender, args) {
+                if (args.ItemName == "gridDashboardItem1") {
+                    initialPayload = [];
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
+                    initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
+                    console.log(args.ItemName);
+                    var grid = args.GetWidget();
+                    var columns = grid.option("columns");
+                    for (var i = 0; i < columns.length; i++) {
+                        var textToCheck = columns[i].caption
+
+                        if (textToCheck.includes("#obdobje1") | textToCheck.includes("#obdobje2")) {
+                            if (textToCheck.includes("#obdobje1") && textToCheck.includes("#obdobje2")) {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+
+                            } else if (textToCheck.includes("#obdobje1") && !textToCheck.includes("#obdobje2")) {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje1", `${initialPayload[0].toLocaleDateString("uk-Uk")}-${initialPayload[1].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+
+                            } else {
+
+                                var textNew = textToCheck;
+                                textNew = textNew.replace("#obdobje2", `${initialPayload[2].toLocaleDateString("uk-Uk")}-${initialPayload[3].toLocaleDateString("uk-Uk")}`);
+                                columns[i].caption = textNew;
+
+                            }
+                        } else {
+                            continue
+                        }
+                    }
+                    grid.option("columns", columns);
+                }
+            }
+               
+         
+           
+
+            payload = [];
+
+         
 
             var extension;
 
@@ -175,6 +275,7 @@ height: 100% !important;
 
             function correctTheLoadingState() {
                 var control = dashboard.GetDashboardControl();
+               
                 design = control.isDesignMode();
                 if (design == false) {
                     onCollapse();
@@ -199,7 +300,8 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          
+                          ItemWidgetCreated="customizeWidgets"
+                          ItemWidgetUpdated="updatecustomizeWidgets"                   
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>

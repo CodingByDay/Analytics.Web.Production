@@ -21,6 +21,7 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Pumpkin");
             HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
             HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
             HttpContext.Current.Response.AddHeader("Expires", "0");

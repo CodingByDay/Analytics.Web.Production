@@ -58,6 +58,7 @@ namespace Dash
         private List<String> CurrentPermisionID = new List<string>();
         private string role;
         private string admin;
+        private SqlConnection connectionSQL;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -209,6 +210,9 @@ namespace Dash
             {
                 Response.Redirect("logon.aspx", true);
             }
+
+            conn.Close();
+            cmd.Dispose();
         }
 
 
@@ -220,13 +224,15 @@ namespace Dash
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
-            conn = new SqlConnection(connection);
-            conn.Open();
-            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-            // SET @ColList = ''
-            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-            // EXEC(@SQLStatment
+            
+
+         
+
+           connectionSQL = new SqlConnection(connection);
+
+         
+         
+
             if (usersGridView.FocusedRowIndex >=0 )
             {
                 var plural = usersGridView.GetSelectedFieldValues("uname");
@@ -238,7 +244,6 @@ namespace Dash
             else
             {
                 var plural = usersGridView.GetSelectedFieldValues("uname");
-
                 var singular = plural[0].ToString();
                 usersGridView.Selection.SetSelection(0, true);
                 findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
@@ -246,7 +251,7 @@ namespace Dash
             }
 
             // Documentation. This query is for getting all the permision table data from the user
-            cmd = new SqlCommand(findIdString, conn);
+            cmd = new SqlCommand(findIdString, connectionSQL);
             try
             {
                 idNumber = cmd.ExecuteScalar();
@@ -254,15 +259,15 @@ namespace Dash
             {
 
             } finally {
-                conn.Close();
-                conn.Dispose();
+                connectionSQL.Close();
+               
             }
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
 
-           
+            connectionSQL.Open();
             permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-            cmd = new SqlCommand(permisionQuery, conn);
-            conn = new SqlConnection(connection);
+            cmd = new SqlCommand(permisionQuery, connectionSQL);
+            
 
             using (SqlConnection connection = new SqlConnection(
               this.connection))
@@ -290,10 +295,12 @@ namespace Dash
                     }
                 }
 
-                conn.Close();
-                conn.Dispose();
-                return valuesBool;
+              
+             
+                
             }
+            connectionSQL.Close();
+            return valuesBool;
         }
 
 
@@ -309,9 +316,6 @@ namespace Dash
 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
                 cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-
-                // Intepolation or the F string.C# > 5.0       
-                //Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
                 {
@@ -475,9 +479,6 @@ namespace Dash
 
             var data = GetCompanyName(id);
             companiesList.SelectedValue = data;
-
-           
-
             companiesList.Enabled = false;
 
             return name;
@@ -742,12 +743,20 @@ namespace Dash
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                companyInfo = (reader["company_name"].ToString());
-            }
-            
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    companyInfo = (reader["company_name"].ToString());
+                }
+            } catch (Exception)
+            {
+
+            } finally
+            {
+                conn.Close();
+            }   
             return companyInfo;
 
         }
@@ -1045,6 +1054,10 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
+            }
+            finally
+            {
+                conn.Close();
             }
             conn = new SqlConnection(connection);
             conn.Open();
