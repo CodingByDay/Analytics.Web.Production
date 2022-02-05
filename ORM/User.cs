@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dash.ORM
+﻿namespace Dash.ORM
 {
     public class User
     {
@@ -13,7 +8,7 @@ namespace Dash.ORM
         public string Pwd { get; set; }
 
 
-        public string userRole  { get; set; }
+        public string userRole { get; set; }
 
 
         public string ViewState { get; set; }

@@ -1,21 +1,13 @@
-﻿using DevExpress.DashboardCommon;
+﻿using Dash.DatabaseStorage;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using Dash.DatabaseStorage;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Xml;
-using System.Xml.Linq;
 
 namespace Dash
 {
@@ -36,38 +28,38 @@ namespace Dash
 
 
 
-                 authenticate();
-                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+            authenticate();
+            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
-                 ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            
-                
+            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                // Hide the back button.  
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
 
-                admin.Visible = false;
-                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
 
-                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+            // Hide the back button.  
+            HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
 
-                ASPxDashboard3.Visible = true;
-                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+            admin.Visible = false;
+            var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
 
-                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;  
-            
-                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
 
-                if (!IsPostBack)
+            ASPxDashboard3.Visible = true;
+            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
-                {
+            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
 
-                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
-                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+            if (!IsPostBack)
 
-                 HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
+            {
+
+                ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+
+                HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
 
 
                 if (Request.Cookies.Get("state") is null)
@@ -118,14 +110,15 @@ namespace Dash
             {
                 role = (reader["userRole"].ToString());
             }
-           
 
 
 
-            if(role=="SuperAdmin")
+
+            if (role == "SuperAdmin")
             {
 
-            } else
+            }
+            else
             {
                 Response.Redirect("logon.aspx", true);
             }
@@ -154,10 +147,11 @@ namespace Dash
                 else
                 {
                     DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                    
+
                 }
             }
-            else {
+            else
+            {
                 DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
             }
         }
@@ -169,7 +163,7 @@ namespace Dash
             return stringFinal;
         }
 
-       
+
 
 
 

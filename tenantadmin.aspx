@@ -232,7 +232,7 @@
 	
 	
 	<div class="column">
-		          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" SkinID="Office 2016 Black" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+		          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>

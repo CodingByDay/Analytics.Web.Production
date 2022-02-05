@@ -124,11 +124,11 @@ namespace Dash.DatabaseStorage
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);   
+            cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);
             // Execute command and fetch pwd field into lookupPassword string.
-            int adminID = (int) cmd.ExecuteScalar();
+            int adminID = (int)cmd.ExecuteScalar();
 
-         
+
 
             cmd.Dispose();
             conn.Close();
@@ -307,7 +307,7 @@ namespace Dash.DatabaseStorage
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
 
             List<String> permisions = new List<string>();
-         
+
 
             conn = new SqlConnection(connection);
             conn.Open();
@@ -353,10 +353,10 @@ namespace Dash.DatabaseStorage
                 }
 
 
-                
+
 
             }
-            
+
             conn.Close();
 
             return permisions;

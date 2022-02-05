@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Data.SqlClient;
-using System.Web.Security;
-using System.Data;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+using System.Web;
+using System.Web.Security;
 
 namespace Dash
 {
@@ -90,12 +87,13 @@ namespace Dash
             cmd.Dispose();
             checkingDesigner.Dispose();
             conn.Close();
-            if(flagINT==1)
+            if (flagINT == 1)
             {
                 return true;
-            } else
+            }
+            else
             {
-             return false;
+                return false;
             }
 
         }
@@ -175,7 +173,7 @@ namespace Dash
             //if (Session["passport"].ToString() == "true")
             //{
             //    Session["conn"] = databaseList.SelectedValue;
-                validate();
+            validate();
             //}
             //else
             //{
@@ -191,11 +189,11 @@ namespace Dash
             //        validate();
             //    }
             //}
-            
+
 
         }
 
-   private void validate()
+        private void validate()
         {
             Response.Cookies["EDIT"].Value = "no";
             Session["change"] = "no";
@@ -207,11 +205,12 @@ namespace Dash
                 if (isDesigner)
                 {
                     Session["DesignerPayed"] = "true";
-                    if(isUserAllowed)
+                    if (isUserAllowed)
                     {
-                        Session["UserAllowed"] = "true";                    
+                        Session["UserAllowed"] = "true";
                     }
-                    else {
+                    else
+                    {
                         Session["UserAllowed"] = "false";
 
                     }
@@ -275,7 +274,7 @@ namespace Dash
         private bool isIndividualAllowed(string value)
         {
             conn.Close();
-            conn.Open(); 
+            conn.Open();
             var checkingDesigner = new SqlCommand($"select ViewState from users where uname='{value}';", conn);
 
             var flag = checkingDesigner.ExecuteScalar();
@@ -311,6 +310,6 @@ namespace Dash
             Response.Redirect("membership.aspx", true);
         }
     }
-    }
+}
 
 

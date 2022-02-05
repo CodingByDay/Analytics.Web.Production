@@ -1,17 +1,12 @@
-﻿using DevExpress.DashboardCommon;
+﻿using Dash.DatabaseStorage;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using Dash.DatabaseStorage;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -30,36 +25,36 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+            HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
 
-                admin.Visible = false;
-                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            admin.Visible = false;
+            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                
-                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
 
-                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
 
-                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
 
-                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+            var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
 
-                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
 
-                ASPxDashboard3.AllowCreateNewDashboard = true;
+            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
 
-                ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+            ASPxDashboard3.AllowCreateNewDashboard = true;
 
-                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+            ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
 
-                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
 
-                ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
-           
+            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
 
-              string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
-           // string TARGET_URL = "https://localhost:44351/";
+
+
+            string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
+            // string TARGET_URL = "https://localhost:44351/";
             if (Session != null)
 
             {
@@ -75,26 +70,28 @@ namespace Dash
 
                     }
                 }
-                else {
-                   DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+                else
+                {
+                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                 }
             }
-            else {
+            else
+            {
                 DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
             }
 
 
 
             if (Request.Cookies.Get("state") is null)
-               {
+            {
 
                 Response.Cookies["state"].Value = "light";
 
-               }
+            }
 
-              else
+            else
 
-              {
+            {
 
                 state = Request.Cookies.Get("state").Value;
 
@@ -108,7 +105,7 @@ namespace Dash
                         break;
 
                 }
-              }
+            }
 
         }
 
@@ -168,7 +165,8 @@ namespace Dash
 
                     Session["InitialPassed"] = "true";
                 }
-            } else
+            }
+            else
             {
 
             }
@@ -176,39 +174,40 @@ namespace Dash
 
         private bool checkDB(string ID)
         {
-                bool flag = false; /* For added security default=false */
+            bool flag = false; /* For added security default=false */
 
-                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                conn = new SqlConnection(ConnectionString);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
+            conn = new SqlConnection(ConnectionString);
+            conn.Open();
+            SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
 
-                try
-                {
-                    var result = cmd.ExecuteScalar();
-                    value = System.Convert.ToInt32(result);
+            try
+            {
+                var result = cmd.ExecuteScalar();
+                value = System.Convert.ToInt32(result);
 
-                }
+            }
 
             // Comment 42.
-                catch (Exception error)
-                {
-                    // Implement logging here.
-                    Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-                }
-                finally
+            catch (Exception error)
+            {
+                // Implement logging here.
+                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
 
-               
-             if(value==1)
+
+            if (value == 1)
             {
                 flag = true;
-            } else
+            }
+            else
             {
                 flag = false;
             }
@@ -230,7 +229,7 @@ namespace Dash
                 parameters.ConnectionString = conn.ConnectionString;
 
             }
-        
+
         }
 
 
@@ -263,7 +262,7 @@ namespace Dash
                 cmd.Dispose();
                 conn.Close();
             }
-         
+
 
             var a = get_connectionStringName(companyID);
 
@@ -301,7 +300,7 @@ namespace Dash
             }
 
             var a = get_connectionStringName(companyID);
-          
+
 
 
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
@@ -323,7 +322,7 @@ namespace Dash
             try
             {
                 string result = cmd.ExecuteScalar().ToString();
-                returnString = result; 
+                returnString = result;
 
             }
 

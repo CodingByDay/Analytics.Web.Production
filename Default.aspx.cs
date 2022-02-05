@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.Security;
-using DevExpress.DashboardWeb;
+﻿using DevExpress.DashboardWeb;
+using System;
 using System.Data.SqlClient;
-using System.Data;
-using static Dash.SiteMaster;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
 namespace Dash
 {
     public partial class _Default : Page
@@ -18,11 +13,11 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-          // Button BackButton = (Button)Master.FindControl("back");
-          //  BackButton.Enabled = false;
-          //  BackButton.Visible = false;
+            // Button BackButton = (Button)Master.FindControl("back");
+            //  BackButton.Enabled = false;
+            //  BackButton.Visible = false;
             ASPxDashboard1.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
-        
+
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
             conn.Open();
@@ -55,6 +50,6 @@ namespace Dash
         }
 
 
-       
+
     }
 }

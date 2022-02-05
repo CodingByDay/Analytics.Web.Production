@@ -1,13 +1,7 @@
-﻿using Dash.Session;
-using Stripe;
-using Stripe.BillingPortal;
+﻿using Stripe;
 using Stripe.Checkout;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using SessionCreateOptions = Stripe.Checkout.SessionCreateOptions;
 using SessionService = Stripe.Checkout.SessionService;
 
@@ -55,7 +49,7 @@ namespace Dash
 
 
 
-           
+
         }
     }
 }

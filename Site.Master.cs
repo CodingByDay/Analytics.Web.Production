@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.Web.Security;
-using System.Data.SqlClient;
 using System.Configuration;
+using System.Data.SqlClient;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
 
 namespace Dash
 {
@@ -45,8 +42,8 @@ namespace Dash
         {
             FormsAuthentication.SignOut();
             Response.Redirect("home.aspx", true);
-        
-           
+
+
         }
 
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)

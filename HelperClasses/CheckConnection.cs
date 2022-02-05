@@ -1,29 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
+﻿using System.Data.SqlClient;
 
 namespace Dash.HelperClasses
 {
     public class CheckConnection
     {
-/*       Create instance of class:
+        /*       Create instance of class:
 
-         MYSQL mysql = new MYSQL();
+                 MYSQL mysql = new MYSQL();
 
-         Use it in Button event or anywhere.
-         
+                 Use it in Button event or anywhere.
 
-         source_result = mysql.check_connection("Your connection String");
 
-         if (source_result == false)
+                 source_result = mysql.check_connection("Your connection String");
 
-         {
+                 if (source_result == false)
 
-         lbl_error.Text = lbl_error.Text + " ::Error In Source Connection";
+                 {
 
-         }        */
+                 lbl_error.Text = lbl_error.Text + " ::Error In Source Connection";
+
+                 }        */
 
 
 

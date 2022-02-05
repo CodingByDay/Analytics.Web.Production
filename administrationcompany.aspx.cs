@@ -1,16 +1,11 @@
-﻿using DevExpress.Web;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using System.Xml.Linq;
 
 namespace Dash
@@ -793,7 +788,7 @@ namespace Dash
                         }
                         catch (Exception error)
                         {
-                            
+
                         }
                         string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName) VALUES ('{TxtUserName.Text}', '{TxtPassword.Text}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userType.SelectedValue}','{TxtName.Text}')");
                         SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);

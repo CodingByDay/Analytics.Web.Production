@@ -3,21 +3,16 @@ using Dash.Session;
 using Stripe;
 using Stripe.Checkout;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Dash
 {
     public partial class Success : System.Web.UI.Page
     {
-       public static CustomerSessionClass customer = new CustomerSessionClass();
-       public static NewPayedUserCompany user = new NewPayedUserCompany();
+        public static CustomerSessionClass customer = new CustomerSessionClass();
+        public static NewPayedUserCompany user = new NewPayedUserCompany();
         private SqlConnection conn;
         private int company;
         private string id;
@@ -38,7 +33,7 @@ namespace Dash
             /// Page that will show all the data for the session and also write info to the database.
             var service = new SessionService();
             var session = service.Get(id);
-          
+
             var email = session.CustomerDetails.Email;
             var customerObject = new CustomerService();
             var customerObj = customerObject.Get(session.CustomerId);
@@ -47,7 +42,7 @@ namespace Dash
 
             // Functionality
             DefaultEmailFill();
-       
+
 
 
 
@@ -67,13 +62,15 @@ namespace Dash
         protected void Register_Click(object sender, EventArgs e)
         {
             // if any field is empty.
-           if(UsernameForm.Text == "" | PasswordForm.Text == "" | 
-           RePasswordForm.Text == "" | CompanyName.Text=="" | 
-           NameForm.Text == "" | EmailForm.Text=="" | PhoneForm.Text==""
-           | WebsiteForm.Text == "") {
+            if (UsernameForm.Text == "" | PasswordForm.Text == "" |
+            RePasswordForm.Text == "" | CompanyName.Text == "" |
+            NameForm.Text == "" | EmailForm.Text == "" | PhoneForm.Text == ""
+            | WebsiteForm.Text == "")
+            {
                 // Show javascript popup
                 Response.Write("<script type=\"text/javascript\">alert('Nekateri podatki Vam manjkajo.');</script>");
-            } else
+            }
+            else
             {
                 var Username = UsernameForm.Text;
                 var Password = PasswordForm.Text;
@@ -85,9 +82,11 @@ namespace Dash
                 var Website = WebsiteForm.Text;
                 insertCompany(Company, Username, Website, Phone);
 
-                if (Password == RePassword) {
-                  CreateUser(Username, Password, Name, Email, Phone, Company);
-                } else
+                if (Password == RePassword)
+                {
+                    CreateUser(Username, Password, Name, Email, Phone, Company);
+                }
+                else
                 {
                     Response.Write("<script type=\"text/javascript\">alert('Gesla niso enaka.');</script>");
                     PasswordForm.Text = "";
@@ -108,9 +107,9 @@ namespace Dash
             conn.Open();
             cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
 
-           // company insert works.
-           // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
-           // Response.Write(deb);
+            // company insert works.
+            // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
+            // Response.Write(deb);
 
             try
             {
@@ -141,11 +140,12 @@ namespace Dash
                 company = (int)result;
 
 
-            } else
+            }
+            else
             {
                 company = -1;
             }
-            
+
 
             return company;
         }
@@ -200,7 +200,7 @@ namespace Dash
 
                     UpdateCompany(username.Replace(" ", string.Empty), company.Replace(" ", string.Empty));
                     var spacelessCompany = company.Replace(" ", string.Empty);
-                   
+
                     //fillUsersDelete();
                     string filePath = Server.MapPath($"~/App_Data/{spacelessCompany}/{username}");
                     string replacedPath = filePath.Replace(" ", string.Empty);
@@ -252,10 +252,11 @@ namespace Dash
             {
                 cmd.ExecuteNonQuery();
 
-            } catch(Exception error)
+            }
+            catch (Exception error)
             {
                 // Implement loggin here.
             }
         }
-    }      
+    }
 }

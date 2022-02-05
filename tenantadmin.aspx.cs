@@ -1,19 +1,16 @@
-﻿using DevExpress.Web.Data;
-using Dash.ORM;
+﻿using Dash.ORM;
+using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
 
 namespace Dash
 {
@@ -79,7 +76,7 @@ namespace Dash
 
             if (!IsPostBack)
             {
-              
+
                 authenticate();
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -114,7 +111,7 @@ namespace Dash
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
         {
             var name = e.EditingKeyValue;
-            // Call js function here if the test passes.
+
             updateFormName(name.ToString());
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
 
@@ -123,14 +120,14 @@ namespace Dash
         }
         public string GetCompanyName(int company)
         {
-           // Backup time
-           using(SqlConnection conn = new SqlConnection(connection))
+
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
                     cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
+
                     try
                     {
                         admin = (string)cmd.ExecuteScalar();
@@ -139,20 +136,20 @@ namespace Dash
                     {
 
                     }
-                
-                    // Perform DB operation here i.e. any CRUD operation 
+
+
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    // Handle exception, perhaps log it and do the needful
+
                 }
-              
+
             }
             return admin;
         }
         private void updateFormName(string name)
         {
-            using(SqlConnection conn = new SqlConnection(connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -184,7 +181,7 @@ namespace Dash
                     //Handle exception, perhaps log it and do the needful
                 }
             }
-          
+
         }
 
         protected void newUser_Click(object sender, EventArgs e)
@@ -204,7 +201,7 @@ namespace Dash
 
         {
 
-            using(SqlConnection conn = new SqlConnection(connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -229,21 +226,21 @@ namespace Dash
                     {
                         Response.Redirect("logon.aspx", true);
                     }
-                    //Perform DB operation here i.e. any CRUD operation 
+
                 }
                 catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+
                 }
             }
-         
+
         }
 
 
 
 
-            private List<bool> showConfig()
-            {
+        private List<bool> showConfig()
+        {
 
             valuesBool.Clear();
             columnNames.Clear();
@@ -264,6 +261,15 @@ namespace Dash
                         var singular = plural[0].ToString();
 
                         findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        cmd = new SqlCommand(findIdString, conn);
+                        try
+                        {
+                            idNumber = cmd.ExecuteScalar();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
                     }
                     else
                     {
@@ -271,35 +277,32 @@ namespace Dash
                         var singular = plural[0].ToString();
                         usersGridView.Selection.SetSelection(0, true);
                         findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        cmd = new SqlCommand(findIdString, conn);
+                        try
+                        {
+                            idNumber = cmd.ExecuteScalar();
+                        }
+                        catch (Exception)
+                        {
+
+                        }
 
                     }
-
-                    // Documentation. This query is for getting all the permision table data from the user
-                    cmd = new SqlCommand(findIdString, connectionSQL);
-                    try
-                    {
-                        idNumber = cmd.ExecuteScalar();
-                    } catch (Exception)
-                    {
-
-                    }
-
-                    //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    //Handle exception, perhaps log it and do the needful
+
                 }
-            }   //Connection will autmatically be closed here always
+            }
 
 
-          
+
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
 
-   
+
             permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-           
-            
+
+
 
             using (SqlConnection connection = new SqlConnection(
               this.connection))
@@ -327,11 +330,11 @@ namespace Dash
                     }
                 }
 
-              
-             
-                
+
+
+
             }
-        
+
             return valuesBool;
         }
 
@@ -345,8 +348,8 @@ namespace Dash
                     conn.Open();
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                   
-                 
+
+
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
@@ -371,9 +374,9 @@ namespace Dash
                 {
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
-            }	//Connection will autmatically be closed here always
+            }   //Connection will autmatically be closed here always
 
-          
+
 
 
         }
@@ -394,8 +397,8 @@ namespace Dash
                     var id = getIdCompany(name);
                     usersData.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                   
-                  
+
+
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
@@ -424,8 +427,8 @@ namespace Dash
                     Response.Write(ex.ToString());
 
                 }
-            }	
-        
+            }
+
 
         }
         private void fillCompaniesRegistration()
@@ -454,8 +457,8 @@ namespace Dash
 
 
                 }
-              
-            
+
+
                 catch (Exception ex)
                 {
                     //Handle exception, perhaps log it and do the needful
@@ -463,7 +466,7 @@ namespace Dash
             }
 
 
-           
+
         }
 
 
@@ -479,7 +482,7 @@ namespace Dash
                     var plural = usersGridView.GetSelectedFieldValues("uname");
 
                     var singular = plural[0].ToString();
-                 
+
                     SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{singular}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -506,14 +509,14 @@ namespace Dash
                     }
                     sdr.Close();
                     cmd.Dispose();
-                   
+
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             }
-           
+
         }
 
 
@@ -537,11 +540,11 @@ namespace Dash
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
-          
-                using (SqlConnection conn = new SqlConnection(this.connection))
+
+            using (SqlConnection conn = new SqlConnection(this.connection))
+            {
+                try
                 {
-                    try
-                    {
                     if (TxtUserName.Enabled == true)
                     {
                         conn.Open();
@@ -635,14 +638,14 @@ namespace Dash
 
                             }
                         }
-                    
-                      }
+
+                    }
                     else
                     {
                         string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
 
-                 
+
                         var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
                         //  debug.Add(dev);
                         SqlCommand cmd;
@@ -678,18 +681,17 @@ namespace Dash
                                 TxtUserName.Text = "";
                                 email.Text = "";
                                 var company = companiesList.SelectedValue.Replace(" ", string.Empty); ;
-                                //    fillUsersDelete();
-                                string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
-                                string replacedPath = filePath.Replace(" ", string.Empty);
+
+
 
 
 
                             }
                             catch (Exception ex)
                             {
-                                // Implement logging here.
+
                                 Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.Message}');</script>");
-                                // Logging
+
                                 TxtName.Text = "";
                                 TxtPassword.Text = "";
                                 TxtRePassword.Text = "";
@@ -697,10 +699,11 @@ namespace Dash
                                 email.Text = "";
 
                             }
-                           
+
                         }
                     }
-                } catch (Exception)
+                }
+                catch (Exception)
                 {
 
                 }
@@ -784,7 +787,7 @@ namespace Dash
             {
                 try
                 {
-                 
+
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
@@ -800,7 +803,7 @@ namespace Dash
                     {
 
                     }
-                   
+
                     //Perform DB operation here i.e. any CRUD operation 
                 }
                 catch (Exception ex)
@@ -808,7 +811,7 @@ namespace Dash
                     //Handle exception, perhaps log it and do the needful
                 }
             }
-            return companyInfo;      
+            return companyInfo;
         }
 
 
@@ -860,9 +863,9 @@ namespace Dash
 
                     }
                 }
-               
+
                 //Perform DB operation here i.e. any CRUD operation 
-            
+
                 catch (Exception ex)
                 {
                     //Handle exception, perhaps log it and do the needful
@@ -871,7 +874,7 @@ namespace Dash
 
 
 
-        
+
         }
         private void makeSQLqueryByUser()
         {
@@ -941,8 +944,8 @@ namespace Dash
                     //Handle exception, perhaps log it and do the needful
                 }
             }
-           
-          
+
+
         }
 
 
@@ -965,7 +968,7 @@ namespace Dash
             {
                 try
                 {
-                  
+
                     conn.Open();
                     SqlCommand cmd = new SqlCommand($"select id_permision_user from permisions_user where uname='{deletedID}'", conn);
 
@@ -983,80 +986,80 @@ namespace Dash
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                         var log = error;
                     }
-                   
+
                 }
                 catch (Exception ex)
                 {
-                    
+
                 }
             }
-         
 
 
-        
+
+
 
         }
 
         private List<String> getIdPermisionCurrentUser(string uname, List<String> obj)
         {
-            using( SqlConnection conn = new SqlConnection(connection) )
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-	            try
-	              {
+                try
+                {
                     permisionsReturn.Clear();
-		            conn.Open();
+                    conn.Open();
                     permisionsReturn = new List<string>();
-                  
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from User where uname='{uname}'", conn);
 
-                  
-                        var result = cmd.ExecuteScalar();
-                        permisionID = System.Convert.ToInt32(result);
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{uname}'", conn);
 
-                    
 
-                
-                          int idUser = permisionID;
+                    var result = cmd.ExecuteScalar();
+                    permisionID = System.Convert.ToInt32(result);
 
-                   
-                        foreach (String graph in obj)
+
+
+
+                    int idUser = permisionID;
+
+
+                    foreach (String graph in obj)
+                    {
+                        string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
+                        string stripped = whiteless.Replace("-", "");
+                        SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
+                        string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
+                        try
                         {
-                            string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
-                            string stripped = whiteless.Replace("-", "");
-                            SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
-                            string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
-                            try
+                            var resultID = graphResult.ExecuteScalar();
+                            permisionID = System.Convert.ToInt32(resultID);
+
+                            if (permisionID == 1)
                             {
-                                var resultID = graphResult.ExecuteScalar();
-                                permisionID = System.Convert.ToInt32(resultID);
-
-                                if (permisionID == 1)
-                                {
-                                    permisionsReturn.Add(graph);
-                                }
-                                else
-                                {
-                                    continue;
-                                }
-
+                                permisionsReturn.Add(graph);
                             }
-                            catch (Exception ex)
+                            else
                             {
                                 continue;
                             }
+
                         }
-                    
-                  
-                   
+                        catch (Exception ex)
+                        {
+                            continue;
+                        }
+                    }
+
+
+
 
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-	        catch (Exception ex)
-        	{
-		        //Handle exception, perhaps log it and do the needful
-	        }
-}
-            return permisionsReturn; 
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
+            }
+            return permisionsReturn;
 
         }
 
@@ -1067,14 +1070,14 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                
+
                     SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
                     var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
-                   
-                        var result = cmd1.ExecuteScalar();
-                        Int32 Total_ID = System.Convert.ToInt32(result);
 
-                 
+                    var result = cmd1.ExecuteScalar();
+                    Int32 Total_ID = System.Convert.ToInt32(result);
+
+
                     // Perform DB operation here i.e. any CRUD operation 
                 }
                 catch (Exception ex)
@@ -1082,20 +1085,11 @@ namespace Dash
                     // Handle exception, perhaps log it and do the needful
                 }
             }
-         
-           
-          
-        }
 
-
-
-
-
-        protected void delete_Click(object sender, EventArgs e)
-        {
 
 
         }
+
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -1106,15 +1100,15 @@ namespace Dash
 
                     var id = getIdCompany(current);
                     deleteMemberships(id);
-             
+
                     SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-                 
+
                     user.ExecuteNonQuery();
 
-                    
-                  
-                 
-                   
+
+
+
+
                     SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{current}'";
                     try
@@ -1135,7 +1129,7 @@ namespace Dash
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
                     }
-                    
+
 
                     FillListGraphs();
                     FillUsers();
@@ -1145,7 +1139,7 @@ namespace Dash
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }
-          
+
         }
 
         private int getIdCompany(string current)
@@ -1155,24 +1149,24 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    
+
                     SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-                   
+
                     result = cmd.ExecuteScalar();
-            
+
 
                     var finalID = System.Convert.ToInt32(result);
 
                     return finalID;
-                  
+
                 }
                 catch (Exception)
                 {
-                  
+
                     return -1;
                 }
             }
-         
+
         }
 
         private void deleteMemberships(int number)
@@ -1186,21 +1180,21 @@ namespace Dash
 
                     var final = defaultCompany();
                     int idCompany = getIdCompany(final);
-                
+
                     SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
-                   
+
                     cmd.ExecuteNonQuery();
 
-                  
+
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                   
+
                 }
             }
-           
-          
+
+
         }
 
         protected void deleteUser_Click(object sender, EventArgs e)
@@ -1210,7 +1204,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                
+
                     var plural = usersGridView.GetSelectedFieldValues("uname");
 
                     var singular = plural[0].ToString();
@@ -1237,22 +1231,22 @@ namespace Dash
 
                     catch (Exception error)
                     {
-                        // Implement logging here.
+
                         var log = error;
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                     }
-                  
-                    //Perform DB operation here i.e. any CRUD operation 
+
+
                 }
                 catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+
                 }
             }
-            
 
-         
+
+
         }
 
 
@@ -1359,7 +1353,7 @@ namespace Dash
                     //Handle exception, perhaps log it and do the needful
                 }
             }
-          
+
         }
 
 
@@ -1370,7 +1364,7 @@ namespace Dash
 
         protected void usersGridView_SelectionChanged(object sender, EventArgs e)
         {
-             graphsListBox.Enabled = true;
+            graphsListBox.Enabled = true;
             FillListGraphs();
             showConfig();
             updateForm();
@@ -1391,6 +1385,14 @@ namespace Dash
             // Call the client.
 
             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
+        }
+
+        protected void usersGridView_SelectionChanged1(object sender, EventArgs e)
+        {
+            graphsListBox.Enabled = true;
+            FillListGraphs();
+            showConfig();
+            updateForm();
         }
     }
 }

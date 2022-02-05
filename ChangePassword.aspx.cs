@@ -29,17 +29,20 @@ namespace Dash
 
         protected void change_Click(object sender, EventArgs e)
         {
-            if (checkEquality()) {
+            if (checkEquality())
+            {
                 if (ChangeUserPassword())
                 {
                     Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjeno.'  );</script>");
 
-                } else
+                }
+                else
                 {
                     Response.Write($"<script type=\"text/javascript\">alert('Link za spremembo gesla je potekal ali ni vejaven.'  );</script>");
 
                 }
-            } else
+            }
+            else
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Gesla niso ista.'  );</script>");
 
@@ -49,7 +52,7 @@ namespace Dash
 
 
         private bool IsPasswordResetLinkValid()
-         {
+        {
             List<SqlParameter> paramList = new List<SqlParameter>()
          {
          new SqlParameter()
@@ -63,7 +66,7 @@ namespace Dash
         }
         private bool ChangeUserPassword()
         {
-                    List<SqlParameter> paramList = new List<SqlParameter>()
+            List<SqlParameter> paramList = new List<SqlParameter>()
             {
                 new SqlParameter()
                 {
@@ -85,11 +88,12 @@ namespace Dash
 
         private bool checkEquality()
         {
-            if(pwd.Text==REpwd.Text)
+            if (pwd.Text == REpwd.Text)
             {
                 return true;
 
-            } else
+            }
+            else
             {
                 return false;
             }
@@ -101,14 +105,14 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
 
-            using(conn)
+            using (conn)
             {
 
                 SqlCommand cmd = new SqlCommand(SPName, conn);
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                foreach(SqlParameter parameter in SPParameters)
+                foreach (SqlParameter parameter in SPParameters)
                 {
                     cmd.Parameters.Add(parameter);
                 }

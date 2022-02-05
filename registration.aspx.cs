@@ -1,17 +1,10 @@
 ﻿using Dash.HelperClasses;
 using Dash.Session;
-using Stripe;
-using Stripe.Checkout;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Web;
 using System.Web.Security;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -26,7 +19,7 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-       
+
 
 
 
@@ -34,7 +27,7 @@ namespace Dash
 
         }
 
-    
+
 
 
         protected void Register_Click(object sender, EventArgs e)
@@ -212,7 +205,7 @@ namespace Dash
             }
         }
 
-    
+
         private void UpdateCompany(string username, string company)
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;

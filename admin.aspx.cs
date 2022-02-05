@@ -1,24 +1,18 @@
-﻿using DevExpress.Web.Bootstrap;
-using Dash.HelperClasses;
+﻿using Dash.HelperClasses;
 using Dash.ORM;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
-using System.Xml.Linq;
 
 namespace Dash
 {
@@ -76,11 +70,11 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            
+
             HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             adminButton.Visible = false;
             companiesGridView.SettingsBehavior.AllowFocusedRow = true;
-            
+
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
             companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -106,7 +100,7 @@ namespace Dash
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
-                
+
 
 
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
@@ -117,7 +111,7 @@ namespace Dash
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
                 companiesGridView.FocusedRowIndex = 0;
-               
+
                 var beginingID = 1;
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
@@ -132,7 +126,7 @@ namespace Dash
                 typesOfViews.Add("Viewer&Designer");
 
 
-              
+
 
             }
             else
@@ -141,10 +135,10 @@ namespace Dash
                 HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 FillListGraphs();
-                
-               
 
-                
+
+
+
 
                 if (companiesGridView.Selection.Count != 0)
                 {
@@ -164,19 +158,19 @@ namespace Dash
 
         }
 
-      
+
 
         private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
         {
-            
+
             var index = companiesGridView.FocusedRowIndex;
             if (index != -1)
             {
                 string[] names = { "company_name" };
                 var values = companiesGridView.GetRowValues(index, "company_name");
                 Session["current"] = values.ToString();
-                
-            } 
+
+            }
 
         }
 
@@ -194,7 +188,7 @@ namespace Dash
         }
 
 
-      
+
 
         private void updateFormCompany(string v)
         {
@@ -208,11 +202,11 @@ namespace Dash
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-               company_name = (reader["company_name"].ToString());
-               company_number = (reader["company_number"].ToString());
-               websiteCompany = (reader["website"].ToString());
-               admin_id = (reader["admin_id"].ToString());
-               databaseName = (reader["databaseName"].ToString());
+                company_name = (reader["company_name"].ToString());
+                company_number = (reader["company_number"].ToString());
+                websiteCompany = (reader["website"].ToString());
+                admin_id = (reader["admin_id"].ToString());
+                databaseName = (reader["databaseName"].ToString());
             }
 
             companyName.Text = company_name;
@@ -232,7 +226,7 @@ namespace Dash
             cmd.Dispose();
 
 
-            
+
         }
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
@@ -357,14 +351,15 @@ namespace Dash
 
 
 
-               
+
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
@@ -387,20 +382,21 @@ namespace Dash
             // EXEC(@SQLStatment
             if (usersGridView.FocusedRowIndex >= 0)
             {
-            
+
 
                 var namePlural = usersGridView.GetSelectedFieldValues("uname");
 
-                if(namePlural.Count == 0)
+                if (namePlural.Count == 0)
                 {
                     string nameUser = usersList.ElementAt(0).uname;
                     findIdString = String.Format($"SELECT id_permision_user from Users where uname='{nameUser}'");
-                } else
+                }
+                else
                 {
                     string name = namePlural[0].ToString();
                     findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
                 }
-              
+
                 // Documentation. This query is for getting all the permision table data from the user
                 cmd = new SqlCommand(findIdString, conn);
                 idNumber = cmd.ExecuteScalar();
@@ -477,7 +473,7 @@ namespace Dash
                 }
 
 
-            
+
 
                 //  graphsGridView.DataSource = graphList;
                 //  graphsGridView.DataBind();
@@ -487,7 +483,8 @@ namespace Dash
             catch (Exception ex)
             {
                 var log = ex;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Dispose();
@@ -495,7 +492,7 @@ namespace Dash
 
         }
 
-   
+
 
 
 
@@ -535,14 +532,15 @@ namespace Dash
                 usersGridView.DataBind();
 
 
-             
+
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
@@ -575,14 +573,15 @@ namespace Dash
                 companiesList.DataBind();
 
 
-           
+
 
 
             }
             catch (Exception ex)
             {
                 Response.Write(ex.ToString());
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
@@ -659,7 +658,7 @@ namespace Dash
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
-           var admin = (string)cmd.ExecuteScalar();
+            var admin = (string)cmd.ExecuteScalar();
 
             cmd.Dispose();
             conn.Close();
@@ -813,7 +812,7 @@ namespace Dash
 
 
                 conn = new SqlConnection(connection);
-             
+
                 //  debug.Add(dev);
 
                 if (TxtPassword.Text != TxtRePassword.Text)
@@ -839,7 +838,7 @@ namespace Dash
                         TxtUserName.Text = "";
                         email.Text = "";
                         var company = companiesList.SelectedValue.Replace(" ", string.Empty);
-                        
+
 
 
 
@@ -904,14 +903,15 @@ namespace Dash
                 // Implement logging here.
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
 
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
 
 
-       
+
         }
 
 
@@ -921,7 +921,7 @@ namespace Dash
         {
             var ed = Request.Cookies["EDIT"].Value.ToString();
 
-            if (!isEditHappening && ed=="no")
+            if (!isEditHappening && ed == "no")
             {
                 if (companyName.Text == "")
                 {
@@ -955,11 +955,12 @@ namespace Dash
                     fillCompaniesRegistration();
                     createAdminForTheCompany(companyName.Text);
                     var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    if(isConnectionOk(checkDB))
+                    if (isConnectionOk(checkDB))
                     {
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Povezava je vredo.')", true);
 
-                    } else
+                    }
+                    else
                     {
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Povezava ni vredo.')", true);
 
@@ -967,18 +968,19 @@ namespace Dash
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
                     companiesGridView.DataSource = sourceID;
-                    
+
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
 
                 }
-            } else
+            }
+            else
             {
 
 
                 SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-                
+
                 build.InitialCatalog = dbNameInstance.Text;
 
                 build.DataSource = dbDataSource.Text;
@@ -1043,7 +1045,7 @@ namespace Dash
 
 
 
-       private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
 
@@ -1073,7 +1075,7 @@ namespace Dash
             build.Password = dbPassword;
 
             ConnectionStringSettings stringSettings = new ConnectionStringSettings();
-            
+
             stringSettings.ConnectionString = build.ConnectionString;
 
 
@@ -1083,9 +1085,9 @@ namespace Dash
                           BindingFlags.Instance | BindingFlags.NonPublic);
             fi.SetValue(settings, false);
             settings.ConnectionString = build.ConnectionString;
-        
+
             ConfigurationManager.RefreshSection("connectionStrings");
-          
+
             ConfigurationManager.RefreshSection("connectionStrings");
 
         }
@@ -1106,16 +1108,17 @@ namespace Dash
             {
                 cmd.ExecuteNonQuery();
 
-            } catch(Exception)
+            }
+            catch (Exception)
             {
                 // Log
             }
             finally
             {
                 conn.Close();
-                conn.Dispose(); 
+                conn.Dispose();
             }
-          
+
         }
 
         private void createAdminForTheCompany(string name)
@@ -1147,7 +1150,7 @@ namespace Dash
                 createUserPermisions.Dispose();
                 conn.Close();
             }
-           
+
 
             string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
 
@@ -1165,21 +1168,23 @@ namespace Dash
             {
                 var id = getIdCompany(companiesList.SelectedValue);
                 createUser.ExecuteNonQuery();
-               
+
 
                 FillListAdmin();
                 FillUsers(id);
-            } catch(Exception) { 
+            }
+            catch (Exception)
+            {
 
 
-           }
+            }
             finally
             {
                 createUser.Dispose();
                 nonQuery.Close();
 
             }
-            }
+        }
 
         protected void deleteUser_Click(object sender, EventArgs e)
         {
@@ -1210,7 +1215,8 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
 
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
 
@@ -1219,7 +1225,7 @@ namespace Dash
 
             FillUsers(idFromString);
 
-           
+
         }
         private string get_connectionStringName(string name)
         {
@@ -1244,17 +1250,18 @@ namespace Dash
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
 
 
-           
+
             return returnString;
         }
-    
+
 
         protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1296,14 +1303,15 @@ namespace Dash
                     // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(stripped);
                 }
-        
+
 
 
             }
             catch (Exception ex)
             {
                 var log = ex;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
@@ -1472,14 +1480,15 @@ namespace Dash
                 var log = error;
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
 
 
-        
+
 
         }
 
@@ -1501,19 +1510,20 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
-            } finally
+            }
+            finally
             {
                 cmd1.Dispose();
                 conn.Close();
             }
-          
+
         }
 
 
 
         private string getCurrentCompany()
         {
-            var company =  companiesGridView.GetSelectedFieldValues("company_name");
+            var company = companiesGridView.GetSelectedFieldValues("company_name");
             return company[0].ToString();
         }
 
@@ -1591,13 +1601,14 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
 
-       
+
 
             int finalID = System.Convert.ToInt32(result);
 
@@ -1629,7 +1640,8 @@ namespace Dash
             {
                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 var log = error;
-            } finally
+            }
+            finally
             {
                 cmd.Dispose();
                 conn.Close();
@@ -1637,7 +1649,7 @@ namespace Dash
 
 
 
-       
+
         }
 
 
@@ -1753,9 +1765,9 @@ namespace Dash
             TxtRePassword.Text = "";
         }
 
-      
 
-       
+
+
 
         private string GetResultFromDBTest(string connectionString)
         {
@@ -1817,6 +1829,6 @@ namespace Dash
 
 
 
-     
+
     }
 }
