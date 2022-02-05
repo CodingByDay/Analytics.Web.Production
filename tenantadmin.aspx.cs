@@ -22,7 +22,7 @@ namespace Dash
 
         private string connection;
 
-
+        private List<string> permisionsReturn = new List<string>();
         private List<User> userObjectList = new List<User>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -123,53 +123,68 @@ namespace Dash
         }
         public string GetCompanyName(int company)
         {
-            string uname = HttpContext.Current.User.Identity.Name;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
-            // Execute command and fetch pwd field into lookupPassword string.
-            try
+           // Backup time
+           using(SqlConnection conn = new SqlConnection(connection))
             {
-                admin = (string)cmd.ExecuteScalar();
-            } catch(Exception)
-            {
+                try
+                {
+                    conn.Open();
+                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    try
+                    {
+                        admin = (string)cmd.ExecuteScalar();
+                    }
+                    catch (Exception)
+                    {
 
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
+                    }
+                
+                    // Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception, perhaps log it and do the needful
+                }
+              
             }
-            
             return admin;
         }
         private void updateFormName(string name)
         {
-
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
-            SqlDataReader sdr = cmd.ExecuteReader();
-            while (sdr.Read())
+            using(SqlConnection conn = new SqlConnection(connection))
             {
-                TxtName.Text = sdr["FullName"].ToString();
-                TxtUserName.Text = sdr["uname"].ToString();
-                TxtUserName.Enabled = false;
-                var number = (int)sdr["id_company"];
-                var data = GetCompanyName(number);
-                companiesList.SelectedValue = data;
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        TxtName.Text = sdr["FullName"].ToString();
+                        TxtUserName.Text = sdr["uname"].ToString();
+                        TxtUserName.Enabled = false;
+                        var number = (int)sdr["id_company"];
+                        var data = GetCompanyName(number);
+                        companiesList.SelectedValue = data;
 
-                companiesList.Enabled = false;
-                email.Enabled = false;
-                string role = sdr["userRole"].ToString();
-                string type = sdr["ViewState"].ToString();
-                email.Text = sdr["email"].ToString();
-          
-                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                        companiesList.Enabled = false;
+                        email.Enabled = false;
+                        string role = sdr["userRole"].ToString();
+                        string type = sdr["ViewState"].ToString();
+                        email.Text = sdr["email"].ToString();
 
+                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+
+                    }
+                    //Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
-            sdr.Close();
-            cmd.Dispose();
+          
         }
 
         protected void newUser_Click(object sender, EventArgs e)
@@ -188,85 +203,102 @@ namespace Dash
         private void authenticate()
 
         {
-            conn = new SqlConnection(connection);
-            conn.Open();
-            var username = HttpContext.Current.User.Identity.Name;
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+
+            using(SqlConnection conn = new SqlConnection(connection))
             {
-                role = (reader["userRole"].ToString());
+                try
+                {
+                    conn.Open();
+                    var username = HttpContext.Current.User.Identity.Name;
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        role = (reader["userRole"].ToString());
+                    }
+
+
+
+
+                    if (role == "Admin")
+                    {
+
+                    }
+                    else
+                    {
+                        Response.Redirect("logon.aspx", true);
+                    }
+                    //Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
-
-
-
-
-            if (role == "Admin")
-            {
-
-            }
-            else
-            {
-                Response.Redirect("logon.aspx", true);
-            }
-
-            conn.Close();
-            cmd.Dispose();
+         
         }
 
 
 
 
-  private List<bool> showConfig()
-        {
+            private List<bool> showConfig()
+            {
 
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
-            
 
-         
-
-           connectionSQL = new SqlConnection(connection);
-
-         
-         
-
-            if (usersGridView.FocusedRowIndex >=0 )
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                var plural = usersGridView.GetSelectedFieldValues("uname");
+                try
+                {
+                    conn.Open();
 
-                var singular = plural[0].ToString();
 
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-            }
-            else
-            {
-                var plural = usersGridView.GetSelectedFieldValues("uname");
-                var singular = plural[0].ToString();
-                usersGridView.Selection.SetSelection(0, true);
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
 
-            }
+                    if (usersGridView.FocusedRowIndex >= 0)
+                    {
+                        var plural = usersGridView.GetSelectedFieldValues("uname");
 
-            // Documentation. This query is for getting all the permision table data from the user
-            cmd = new SqlCommand(findIdString, connectionSQL);
-            try
-            {
-                idNumber = cmd.ExecuteScalar();
-            } catch(Exception)
-            {
+                        var singular = plural[0].ToString();
 
-            } finally {
-                connectionSQL.Close();
-               
-            }
+                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                    }
+                    else
+                    {
+                        var plural = usersGridView.GetSelectedFieldValues("uname");
+                        var singular = plural[0].ToString();
+                        usersGridView.Selection.SetSelection(0, true);
+                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+
+                    }
+
+                    // Documentation. This query is for getting all the permision table data from the user
+                    cmd = new SqlCommand(findIdString, connectionSQL);
+                    try
+                    {
+                        idNumber = cmd.ExecuteScalar();
+                    } catch (Exception)
+                    {
+
+                    }
+
+                    //Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
+            }   //Connection will autmatically be closed here always
+
+
+          
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
 
-            connectionSQL.Open();
+   
             permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-            cmd = new SqlCommand(permisionQuery, connectionSQL);
+           
             
 
             using (SqlConnection connection = new SqlConnection(
@@ -299,171 +331,189 @@ namespace Dash
              
                 
             }
-            connectionSQL.Close();
+        
             return valuesBool;
         }
 
 
         public void FillListGraphs()
         {
-
-            try
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                graphList.Clear();
-                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection(connection);
-                conn.Open();
-
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
+                try
                 {
-                    graphList.Add(sdr["Caption"].ToString());
-                    string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+                    conn.Open();
+                    graphList.Clear();
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                   
+                 
 
-                    // Refils potential new tables.
-                    // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-                    values.Add(trimmed);
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        graphList.Add(sdr["Caption"].ToString());
+                        string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+
+                        // Refils potential new tables.
+                        // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
+                        values.Add(trimmed);
+                    }
+
+                    CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
+
+                    graphsListBox.DataSource = CurrentPermisionID;
+                    graphsListBox.DataBind();
+                    //Perform DB operation here i.e. any CRUD operation 
                 }
+                catch (Exception ex)
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                }
+            }	//Connection will autmatically be closed here always
 
-                CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
-
-                graphsListBox.DataSource = CurrentPermisionID;
-                graphsListBox.DataBind();
-
-
-            }
-            catch (Exception ex)
-            {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
-                var log = ex;
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
+          
 
 
         }
         public void FillUsers()
         {
-            try
+
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                userObjectList.Clear();
-                string uname = HttpContext.Current.User.Identity.Name;
-                string name = getCompanyQuery(uname);
-                var company = defaultCompany();
-                var id = getIdCompany(name);
-                usersData.Clear();
-                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection(connection);
-                conn.Open();
-
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
-
-                /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
+                try
                 {
+                    conn.Open();
 
-                    User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                    var test = user.uname;
-                    userObjectList.Add(user);
+                    //Perform DB operation here i.e. any CRUD operation 
+                    userObjectList.Clear();
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    string name = getCompanyQuery(uname);
+                    var company = defaultCompany();
+                    var id = getIdCompany(name);
+                    usersData.Clear();
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                   
+                  
 
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
+
+                    /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+
+                        User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
+                        var test = user.uname;
+                        userObjectList.Add(user);
+
+
+                    }
+                    byUserListBox.DataSource = null;
+                    byUserListBox.DataSource = usersData;
+                    byUserListBox.DataBind();
+                    usersGridView.DataSource = null;
+                    usersGridView.DataSource = userObjectList;
+                    usersGridView.DataBind();
+                }
+                catch (Exception ex)
+                {
+                    Response.Write(ex.ToString());
 
                 }
-                byUserListBox.DataSource = null;
-                byUserListBox.DataSource = usersData;
-                byUserListBox.DataBind();
-                usersGridView.DataSource = null;
-                usersGridView.DataSource = userObjectList;
-                usersGridView.DataBind();
-
-             
-
-
-            }
-            catch (Exception ex)
-            {
-                Response.Write(ex.ToString());
-            } finally {
-                cmd.Dispose();
-                conn.Close();
-            }
+            }	
+        
 
         }
         private void fillCompaniesRegistration()
         {
-            try
+
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                conn = new SqlConnection(connection);
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
+                try
                 {
-                    companies.Add(sdr["company_name"].ToString());
+                    conn.Open();
+
+
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        companies.Add(sdr["company_name"].ToString());
+
+                    }
+                    companiesList.DataSource = companies;
+                    companiesList.DataBind();
+
+
+
 
                 }
-                companiesList.DataSource = companies;
-                companiesList.DataBind();
-
-
-
-
+              
+            
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
-            catch (Exception ex)
-            {
-                Response.Write(ex.ToString());
-            } finally {
 
-                cmd.Dispose();
-                conn.Close();
-            }
+
+           
         }
 
 
         private void updateForm()
         {
 
-            var plural = usersGridView.GetSelectedFieldValues("uname");
 
-            var singular = plural[0].ToString();
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{singular}'", conn);
-            SqlDataReader sdr = cmd.ExecuteReader();
-            while (sdr.Read())
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                TxtName.Text = sdr["FullName"].ToString();
-                TxtUserName.Text = sdr["uname"].ToString();
-                TxtUserName.Enabled = false;
-                var company = defaultCompany();
-                string uname = HttpContext.Current.User.Identity.Name;
-                string name = getCompanyQuery(uname);
-                int id = getIdCompany(name);
-                var data = GetCompanyName(id);
-                companiesList.SelectedValue = data;
-                companiesList.Enabled = false;
-                email.Enabled = false;
+                try
+                {
+                    conn.Open();
+                    var plural = usersGridView.GetSelectedFieldValues("uname");
 
-                string role = sdr["userRole"].ToString();
-                string type = sdr["ViewState"].ToString();
-                email.Text = sdr["email"].ToString();
-                userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                    var singular = plural[0].ToString();
+                 
+                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{singular}'", conn);
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        TxtName.Text = sdr["FullName"].ToString();
+                        TxtUserName.Text = sdr["uname"].ToString();
+                        TxtUserName.Enabled = false;
+                        var company = defaultCompany();
+                        string uname = HttpContext.Current.User.Identity.Name;
+                        string name = getCompanyQuery(uname);
+                        int id = getIdCompany(name);
+                        var data = GetCompanyName(id);
+                        companiesList.SelectedValue = data;
+                        companiesList.Enabled = false;
+                        email.Enabled = false;
 
-                userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
+                        string role = sdr["userRole"].ToString();
+                        string type = sdr["ViewState"].ToString();
+                        email.Text = sdr["email"].ToString();
+                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
+                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
+
+                    }
+                    sdr.Close();
+                    cmd.Dispose();
+                   
+                }
+                catch (Exception ex)
+                {
+                    
+                }
             }
-            sdr.Close();
-            cmd.Dispose();
+           
         }
 
 
@@ -487,170 +537,172 @@ namespace Dash
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
-            if (TxtUserName.Enabled == true)
-            {
-                
-                conn = new SqlConnection(connection);
-                conn.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
-                var result = cmd.ExecuteScalar();
-                Int32 Total_ID = System.Convert.ToInt32(result);
-                
-                conn.Close();
-                cmd.Dispose();
-                int next = Total_ID + 1;
-                if (TxtPassword.Text != TxtRePassword.Text)
+          
+                using (SqlConnection conn = new SqlConnection(this.connection))
                 {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
-
-                    TxtPassword.Text = "";
-                    TxtRePassword.Text = "";
-                }
-                else
-                {
-                    conn = new SqlConnection(connection);
-                    conn.Open();
-                    SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
-
-
-                    var resultCheck = check.ExecuteScalar();
-
-                    Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                    conn.Close();
-                    check.Dispose();
-                    if (resultUsername > 0)
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-
-                    }
-                    else
-                    {
-
-                        string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
-                        SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-
-                        conn.Close();
-                        conn.Open();
-
-                        try
-                        {
-                            createUserPermisions.ExecuteNonQuery();
-                        }
-                        catch (Exception error)
-                        {
-                            Response.Write(error.ToString());
-                        }
-                        string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
-                        conn.Close();
-                        createUserPermisions.Dispose();
-                        var connRegistration = new SqlConnection(connection);
-                        connRegistration.Open();
-                        string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companiesList.SelectedIndex + 1}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
-                        SqlCommand createUser = new SqlCommand(finalQueryRegistration, connRegistration);
-                        var username = TxtUserName.Text;
-                        try
-                        {
-                            var id = getIdCompany(companiesList.SelectedValue);
-                            createUser.ExecuteNonQuery();
-
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
-
-                            TxtName.Text = "";
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                            TxtUserName.Text = "";
-                            email.Text = "";
-                            FillUsers();
-                            var company = companiesList.SelectedValue;
-                            var spacelessCompany = company.Replace(" ", string.Empty);
-                            conn.Close();
-                            createUser.Dispose();
-                            //fillChange();
-                            //fillUsersDelete();
-                           
-
-                        }
-                        catch (SqlException ex) when (ex.Number == 2627)
-                        {
-                            // Implement logging here.
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'To uporabniško ime že obstaja, prosimo probajte še enkrat.')", true);
-
-                            TxtName.Text = "";
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                            TxtUserName.Text = "";
-                            email.Text = "";
-
-                        }
-                    }
-                }
-            }
-            else
-            {
-                string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
-
-                conn = new SqlConnection(connection);
-                conn.Open();
-                var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
-                //  debug.Add(dev);
-                SqlCommand cmd;
-                if (!String.IsNullOrEmpty(TxtRePassword.Text))
-                {
-                    HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                    cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
-                }
-                else
-                {
-
-                    cmd = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
-                }
-                if (TxtPassword.Text != TxtRePassword.Text)
-                {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
-                    TxtPassword.Text = "";
-                    TxtRePassword.Text = "";
-                }
-                else
-                {
-
                     try
                     {
-                        var username = TxtUserName.Text.Replace(" ", string.Empty); ;
-                        cmd.ExecuteNonQuery();
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno spremenjeni podatki.')", true);
-                        TxtName.Text = "";
-                        TxtPassword.Text = "";
-                        TxtRePassword.Text = "";
-                        TxtUserName.Text = "";
-                        email.Text = "";
-                        var company = companiesList.SelectedValue.Replace(" ", string.Empty); ;
-                        //    fillUsersDelete();
-                        string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
-                        string replacedPath = filePath.Replace(" ", string.Empty);
-                      
-
-
-                    }
-                    catch (Exception ex)
+                    if (TxtUserName.Enabled == true)
                     {
-                        // Implement logging here.
-                        Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.Message}');</script>");
-                        // Logging
-                        TxtName.Text = "";
-                        TxtPassword.Text = "";
-                        TxtRePassword.Text = "";
-                        TxtUserName.Text = "";
-                        email.Text = "";
+                        conn.Open();
 
-                    } finally
+                        SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM permisions_user;", conn);
+                        var result = cmd.ExecuteScalar();
+                        Int32 Total_ID = System.Convert.ToInt32(result);
+
+
+                        int next = Total_ID + 1;
+                        if (TxtPassword.Text != TxtRePassword.Text)
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
+
+                            TxtPassword.Text = "";
+                            TxtRePassword.Text = "";
+                        }
+                        else
+                        {
+
+
+                            SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
+
+
+                            var resultCheck = check.ExecuteScalar();
+
+                            Int32 resultUsername = System.Convert.ToInt32(resultCheck);
+
+                            if (resultUsername > 0)
+                            {
+                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
+
+                            }
+                            else
+                            {
+
+                                string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
+                                SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
+
+
+
+                                try
+                                {
+                                    createUserPermisions.ExecuteNonQuery();
+                                }
+                                catch (Exception error)
+                                {
+                                    Response.Write(error.ToString());
+                                }
+                                string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+
+
+                                createUserPermisions.Dispose();
+                                var companyIndex = getIdCompany(companiesList.SelectedValue);
+                                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{companyIndex}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{next}')");
+                                SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                                var username = TxtUserName.Text;
+                                try
+                                {
+                                    var id = getIdCompany(companiesList.SelectedValue);
+                                    createUser.ExecuteNonQuery();
+
+                                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
+
+                                    TxtName.Text = "";
+                                    TxtPassword.Text = "";
+                                    TxtRePassword.Text = "";
+                                    TxtUserName.Text = "";
+                                    email.Text = "";
+                                    FillUsers();
+                                    var company = companiesList.SelectedValue;
+                                    var spacelessCompany = company.Replace(" ", string.Empty);
+
+                                    createUser.Dispose();
+
+
+
+                                }
+                                catch (SqlException ex) when (ex.Number == 2627)
+                                {
+                                    // Implement logging here.
+                                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'To uporabniško ime že obstaja, prosimo probajte še enkrat.')", true);
+
+                                    TxtName.Text = "";
+                                    TxtPassword.Text = "";
+                                    TxtRePassword.Text = "";
+                                    TxtUserName.Text = "";
+                                    email.Text = "";
+
+                                }
+
+                            }
+                        }
+                    
+                      }
+                    else
                     {
-                        conn.Close();
-                        cmd.Dispose();
+                        string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+
+
+                 
+                        var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
+                        //  debug.Add(dev);
+                        SqlCommand cmd;
+                        if (!String.IsNullOrEmpty(TxtRePassword.Text))
+                        {
+                            HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
+                            cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+
+                        }
+                        else
+                        {
+
+                            cmd = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+
+                        }
+                        if (TxtPassword.Text != TxtRePassword.Text)
+                        {
+                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
+                            TxtPassword.Text = "";
+                            TxtRePassword.Text = "";
+                        }
+                        else
+                        {
+
+                            try
+                            {
+                                var username = TxtUserName.Text.Replace(" ", string.Empty); ;
+                                cmd.ExecuteNonQuery();
+                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno spremenjeni podatki.')", true);
+                                TxtName.Text = "";
+                                TxtPassword.Text = "";
+                                TxtRePassword.Text = "";
+                                TxtUserName.Text = "";
+                                email.Text = "";
+                                var company = companiesList.SelectedValue.Replace(" ", string.Empty); ;
+                                //    fillUsersDelete();
+                                string filePath = Server.MapPath($"~/App_Data/{company}/{username}");
+                                string replacedPath = filePath.Replace(" ", string.Empty);
+
+
+
+                            }
+                            catch (Exception ex)
+                            {
+                                // Implement logging here.
+                                Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.Message}');</script>");
+                                // Logging
+                                TxtName.Text = "";
+                                TxtPassword.Text = "";
+                                TxtRePassword.Text = "";
+                                TxtUserName.Text = "";
+                                email.Text = "";
+
+                            }
+                           
+                        }
                     }
+                } catch (Exception)
+                {
+
                 }
             }
         }
@@ -687,166 +739,106 @@ namespace Dash
 
         public void FillListGraphsNames()
         {
-
-
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                graphList.Clear();
-                string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                conn = new SqlConnection(connection);
-                conn.Open();
-
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-
-                /// Intepolation or the F string. C# > 5.0       
-                // Execute command and fetch pwd field into lookupPassword string.
-                SqlDataReader sdr = cmd.ExecuteReader();
-                while (sdr.Read())
+                try
                 {
-                    graphList.Add(sdr["Caption"].ToString());
-                    string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+                    conn.Open();
+                    graphList.Clear();
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
 
-                    // Refils potential new tables.
-                    // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-                    values.Add(trimmed);
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
+
+                    /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    SqlDataReader sdr = cmd.ExecuteReader();
+                    while (sdr.Read())
+                    {
+                        graphList.Add(sdr["Caption"].ToString());
+                        string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
+
+                        // Refils potential new tables.
+                        // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
+                        values.Add(trimmed);
+                    }
+
+                    List<String> CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
+
+                    graphsListBox.DataSource = CurrentPermisionID;
+                    graphsListBox.DataBind();
+
+                    //Perform DB operation here i.e. any CRUD operation 
                 }
-
-                List<String> CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
-
-                graphsListBox.DataSource = CurrentPermisionID;
-                graphsListBox.DataBind();
-
-
+                catch (Exception ex)
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                }
             }
-            catch (Exception ex)
-            {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                var log = ex;    
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-
-
-
 
         }
 
         private string getCompanyQuery(string uname)
         {
-
-
-            conn = new SqlConnection(connection);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                SqlDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                try
                 {
-                    companyInfo = (reader["company_name"].ToString());
+                 
+                    conn.Open();
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                    try
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            companyInfo = (reader["company_name"].ToString());
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                   
+                    //Perform DB operation here i.e. any CRUD operation 
                 }
-            } catch (Exception)
-            {
-
-            } finally
-            {
-                conn.Close();
-            }   
-            return companyInfo;
-
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
+            }
+            return companyInfo;      
         }
 
 
         private void makeSQLquery()
-        {   try
-            {
-                conn = new SqlConnection(connection);
-                conn.Open();
-                for (int i = 0; i < graphsListBox.Items.Count; i++)
-                {
-                    var tempGraphString = values.ElementAt(i);
-                    var plural = usersGridView.GetSelectedFieldValues("uname");
-
-                    var singular = plural[0].ToString();
-                    findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-                    // execute query
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand(findId, conn);
-                    try
-                    {
-                        id = cmd.ExecuteScalar();
-
-                    }
-                    catch (Exception e)
-                    {
-                        continue;
-                    }
-                    Int32 Total_ID = System.Convert.ToInt32(id);
-                    if (graphsListBox.Items.ElementAt(i).Selected == true)
-                    {
-                        flag = 1;
-                    }
-                    else
-                    {
-                        flag = 0;
-                    }
-                    finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                    cmd = new SqlCommand(finalQuerys, conn);
-                    try
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception e)
-                    {
-                        continue;
-                    }
-
-                }
-            }
-            catch (Exception)
-            {
-
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-        }
-        private void makeSQLqueryByUser()
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                conn = new SqlConnection(connection);
-                conn.Open();
-                for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
+                try
                 {
-                    var tempGraphStringFullOfStuff = byUserListBox.SelectedValues[i].ToString();
-                    string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
-                    string trimmed = trimmedless.Replace("-", "");
-                    find = String.Format($"SELECT id_permision-user from Users where uname='{trimmed}'");
-                    // execute query
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand(find, conn);
-                    try
+                    conn.Open();
+                    for (int i = 0; i < graphsListBox.Items.Count; i++)
                     {
-                        id = cmd.ExecuteScalar();
+                        var tempGraphString = values.ElementAt(i);
+                        var plural = usersGridView.GetSelectedFieldValues("uname");
 
-                    }
-                    catch (Exception e)
-                    {
-                        continue;
-                    }
-                    Int32 Total_ID = System.Convert.ToInt32(id);
+                        var singular = plural[0].ToString();
+                        findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        // execute query
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand(findId, conn);
+                        try
+                        {
+                            id = cmd.ExecuteScalar();
 
-                    for (int j = 0; j < graphsListBox.Items.Count; j++)
-                    {
-
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                        Int32 Total_ID = System.Convert.ToInt32(id);
                         if (graphsListBox.Items.ElementAt(i).Selected == true)
                         {
                             flag = 1;
@@ -855,34 +847,101 @@ namespace Dash
                         {
                             flag = 0;
                         }
-
-                        tempGraphString = values.ElementAt(j);
-
                         finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                        var debug = finalQuerys;
-                        help.Add(debug.ToString());
                         cmd = new SqlCommand(finalQuerys, conn);
-
                         try
                         {
                             cmd.ExecuteNonQuery();
                         }
                         catch (Exception e)
                         {
-
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
-                            var log = e;
+                            continue;
                         }
+
                     }
                 }
-            } catch (Exception)
-            {
-
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
+               
+                //Perform DB operation here i.e. any CRUD operation 
+            
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
+
+
+
+        
+        }
+        private void makeSQLqueryByUser()
+        {
+
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
+                    {
+                        var tempGraphStringFullOfStuff = byUserListBox.SelectedValues[i].ToString();
+                        string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
+                        string trimmed = trimmedless.Replace("-", "");
+                        find = String.Format($"SELECT id_permision-user from Users where uname='{trimmed}'");
+                        // execute query
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand(find, conn);
+                        try
+                        {
+                            id = cmd.ExecuteScalar();
+
+                        }
+                        catch (Exception e)
+                        {
+                            continue;
+                        }
+                        Int32 Total_ID = System.Convert.ToInt32(id);
+
+                        for (int j = 0; j < graphsListBox.Items.Count; j++)
+                        {
+
+                            if (graphsListBox.Items.ElementAt(i).Selected == true)
+                            {
+                                flag = 1;
+                            }
+                            else
+                            {
+                                flag = 0;
+                            }
+
+                            tempGraphString = values.ElementAt(j);
+
+                            finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
+                            var debug = finalQuerys;
+                            help.Add(debug.ToString());
+                            cmd = new SqlCommand(finalQuerys, conn);
+
+                            try
+                            {
+                                cmd.ExecuteNonQuery();
+                            }
+                            catch (Exception e)
+                            {
+
+                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                                var log = e;
+                            }
+                        }
+                    }
+
+                    //Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
+            }
+           
           
         }
 
@@ -902,28 +961,36 @@ namespace Dash
         }
         private void getIdPermision()
         {
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
-
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                var result = cmd.ExecuteScalar();
-                permisionID = System.Convert.ToInt32(result);
+                try
+                {
+                  
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from permisions_user where uname='{deletedID}'", conn);
 
+                    try
+                    {
+                        var result = cmd.ExecuteScalar();
+                        permisionID = System.Convert.ToInt32(result);
+
+                    }
+
+
+                    catch (Exception error)
+                    {
+                        // Implement logging here.
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                        var log = error;
+                    }
+                   
+                }
+                catch (Exception ex)
+                {
+                    
+                }
             }
-
-
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                var log = error;
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
+         
 
 
         
@@ -932,100 +999,91 @@ namespace Dash
 
         private List<String> getIdPermisionCurrentUser(string uname, List<String> obj)
         {
-            List<String> permisions = new List<string>();
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{uname}'", conn);
-
-            try
+            using( SqlConnection conn = new SqlConnection(connection) )
             {
-                var result = cmd.ExecuteScalar();
-                permisionID = System.Convert.ToInt32(result);
+	            try
+	              {
+                    permisionsReturn.Clear();
+		            conn.Open();
+                    permisionsReturn = new List<string>();
+                  
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from User where uname='{uname}'", conn);
 
-            }
-
-
-
-
-            catch (Exception error)
-            {
-                var log = error;
-                // Implement logging here.
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            int idUser = permisionID;
-
-            try
-            {
-                foreach (String graph in obj)
-                {
-                    string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
-                    string stripped = whiteless.Replace("-", "");
-                    conn = new SqlConnection(connection);
-                    conn.Open();
-                    SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
-                    string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
-                    try
-                    {
-                        var result = graphResult.ExecuteScalar();
+                  
+                        var result = cmd.ExecuteScalar();
                         permisionID = System.Convert.ToInt32(result);
 
-                        if (permisionID == 1)
-                        {
-                            permisions.Add(graph);
-                        }
-                        else
-                        {
-                            continue;
-                        }
+                    
 
-                    }
-                    catch (Exception ex)
-                    {
-                        continue;
-                    }
+                
+                          int idUser = permisionID;
+
+                   
+                        foreach (String graph in obj)
+                        {
+                            string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
+                            string stripped = whiteless.Replace("-", "");
+                            SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
+                            string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
+                            try
+                            {
+                                var resultID = graphResult.ExecuteScalar();
+                                permisionID = System.Convert.ToInt32(resultID);
+
+                                if (permisionID == 1)
+                                {
+                                    permisionsReturn.Add(graph);
+                                }
+                                else
+                                {
+                                    continue;
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                continue;
+                            }
+                        }
+                    
+                  
+                   
+
+                    //Perform DB operation here i.e. any CRUD operation 
                 }
-            }catch (Exception)
-            {
-
-            } finally
-            {
-                conn.Close();
-            } 
-            return permisions;
+	        catch (Exception ex)
+        	{
+		        //Handle exception, perhaps log it and do the needful
+	        }
+}
+            return permisionsReturn; 
 
         }
 
         private void deletePermisionEntry()
         {
-
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
-            var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                var result = cmd1.ExecuteScalar();
-                Int32 Total_ID = System.Convert.ToInt32(result);
+                try
+                {
+                    conn.Open();
+                
+                    SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
+                    var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
+                   
+                        var result = cmd1.ExecuteScalar();
+                        Int32 Total_ID = System.Convert.ToInt32(result);
 
+                 
+                    // Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception, perhaps log it and do the needful
+                }
             }
-
-
-            catch (Exception error)
-            {
-                var log = error;
-                // Implement logging here.
-            }
-            finally
-            {
-                cmd1.Dispose();
-                conn.Close();
-            }
+         
+           
           
         }
 
@@ -1040,147 +1098,159 @@ namespace Dash
         }
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
-            var id = getIdCompany(current);
-            deleteMemberships(id);
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                user.ExecuteNonQuery();
+                try
+                {
+                    conn.Open();
 
+                    var id = getIdCompany(current);
+                    deleteMemberships(id);
+             
+                    SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
+                 
+                    user.ExecuteNonQuery();
+
+                    
+                  
+                 
+                   
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
+                    string dev = $"DELETE FROM companies WHERE company_name='{current}'";
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
+
+
+                    }
+
+
+                    catch (Exception error)
+                    {
+                        // Implement logging here.
+                        var log = error;
+
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+
+                    }
+                    
+
+                    FillListGraphs();
+                    FillUsers();
+                }
+                catch (Exception ex)
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                }
             }
-            catch (Exception error)
-            {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                var log = error;
-            }
-            finally
-            {
-                conn.Close();
-            }
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-            string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-            try
-            {
-                cmd.ExecuteNonQuery();
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
-
-            }
-
-
-            catch (Exception error)
-            {
-                // Implement logging here.
-                var log = error;
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            FillListGraphs();       
-            FillUsers();
+          
         }
 
         private int getIdCompany(string current)
         {
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                result = cmd.ExecuteScalar();
-            }
-            catch (Exception error)
-            {
-                var log = error;
+                try
+                {
+                    conn.Open();
+                    
+                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                   
+                    result = cmd.ExecuteScalar();
+            
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
+                    var finalID = System.Convert.ToInt32(result);
+
+                    return finalID;
+                  
+                }
+                catch (Exception)
+                {
+                  
+                    return -1;
+                }
             }
-          
-            int finalID = System.Convert.ToInt32(result);
-            return finalID;
+         
         }
 
         private void deleteMemberships(int number)
         {
-            var final = defaultCompany();
-            int idCompany = getIdCompany(final);
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
-            string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
-            try
-            {
-                cmd.ExecuteNonQuery();
 
-            }
-            catch (Exception error)
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                // Implement logging here.
-                var log = error;
+                try
+                {
+                    conn.Open();
 
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-            } finally
-            {
-                cmd.Dispose();
-                conn.Close();
+                    var final = defaultCompany();
+                    int idCompany = getIdCompany(final);
+                
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
+                    string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
+                   
+                    cmd.ExecuteNonQuery();
+
+                  
+                }
+                catch (Exception ex)
+                {
+                   
+                }
             }
+           
           
         }
 
         protected void deleteUser_Click(object sender, EventArgs e)
         {
-            conn = new SqlConnection(connection);
-            conn.Open();
-            var plural = usersGridView.GetSelectedFieldValues("uname");
-
-            var singular = plural[0].ToString();
-            SqlCommand cmd = new SqlCommand($"delete from Users where uname='{singular}'", conn);
-            getIdPermision();
-            try
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                var company = getCompanyQuery(singular);
-                var spacelessCompany = company.Replace(" ", string.Empty);
-                cmd.ExecuteNonQuery();
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno brisanje.')", true);
-          
-
-                FillListGraphs();
-                showConfig();
-                deletePermisionEntry();
-                FillUsers();
-                Response.Redirect("tenantadmin.aspx");
+                try
+                {
+                    conn.Open();
                 
+                    var plural = usersGridView.GetSelectedFieldValues("uname");
 
+                    var singular = plural[0].ToString();
+                    SqlCommand cmd = new SqlCommand($"delete from Users where uname='{singular}'", conn);
+                    getIdPermision();
+                    try
+                    {
+                        var company = getCompanyQuery(singular);
+                        var spacelessCompany = company.Replace(" ", string.Empty);
+                        cmd.ExecuteNonQuery();
+
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno brisanje.')", true);
+
+
+                        FillListGraphs();
+                        showConfig();
+                        deletePermisionEntry();
+                        FillUsers();
+                        Response.Redirect("tenantadmin.aspx");
+
+
+                    }
+
+
+                    catch (Exception error)
+                    {
+                        // Implement logging here.
+                        var log = error;
+
+                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                    }
+                  
+                    //Perform DB operation here i.e. any CRUD operation 
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
-
-
-            catch (Exception error)
-            {
-                // Implement logging here.
-                var log = error;
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
+            
 
          
         }
@@ -1217,72 +1287,79 @@ namespace Dash
 
         private void showConfigByUser()
         {
-         
-            columnNames.Clear();
-            config.Clear();
-            conn = new SqlConnection(connection);
-            conn.Open();
-            // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-            // SET @ColList = ''
-            // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-            // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-            // EXEC(@SQLStatment
-            if (byUserListBox.SelectedValues[0] != null)
+
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                var plural = usersGridView.GetSelectedFieldValues("uname");
-
-                var singular = plural[0].ToString();
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-            }
-            else
-            {
-                var plural = usersGridView.GetSelectedFieldValues("uname");
-
-                var singular = plural[0].ToString();
-                byUserListBox.SelectedIndex = 0;
-                findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-
-            }
-
-            // Documentation. This query is for getting all the permision table data from the user
-            cmd = new SqlCommand(findIdString, conn);
-            idNumber = cmd.ExecuteScalar();
-            Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-            conn.Close();
-            conn.Dispose();
-            permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-            cmd = new SqlCommand(permisionQuery, conn);
-            conn = new SqlConnection(connection);
-
-            using (SqlConnection connection = new SqlConnection(
-              this.connection))
-            {
-                SqlCommand command = new SqlCommand(permisionQuery, connection);
-                connection.Open();
-                SqlDataReader reader =
-                command.ExecuteReader(CommandBehavior.CloseConnection);
-                while (reader.Read())
+                try
                 {
-                    for (int i = 0; i < values.Count; i++)
+                    conn.Open();
+                    columnNames.Clear();
+                    config.Clear();
+
+                    // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
+                    // SET @ColList = ''
+                    // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
+                    // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
+                    // EXEC(@SQLStatment
+                    if (byUserListBox.SelectedValues[0] != null)
                     {
-                        int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                        if (bitValueTemp == 1)
+                        var plural = usersGridView.GetSelectedFieldValues("uname");
+
+                        var singular = plural[0].ToString();
+                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                    }
+                    else
+                    {
+                        var plural = usersGridView.GetSelectedFieldValues("uname");
+
+                        var singular = plural[0].ToString();
+                        byUserListBox.SelectedIndex = 0;
+                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+
+                    }
+
+                    // Documentation. This query is for getting all the permision table data from the user
+                    cmd = new SqlCommand(findIdString, conn);
+                    idNumber = cmd.ExecuteScalar();
+                    Int32 Total_Key = System.Convert.ToInt32(idNumber);
+
+
+                    permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
+                    cmd = new SqlCommand(permisionQuery, conn);
+
+
+
+                    SqlCommand command = new SqlCommand(permisionQuery, conn);
+
+                    SqlDataReader reader =
+                    command.ExecuteReader(CommandBehavior.CloseConnection);
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < values.Count; i++)
                         {
-                            graphsListBox.Items.ElementAt(i).Selected = true;
-                            valuesBool.Add(true);
-                        }
-                        else
-                        {
-                            graphsListBox.Items.ElementAt(i).Selected = false;
-                            valuesBool.Add(false);
+                            int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
+                            if (bitValueTemp == 1)
+                            {
+                                graphsListBox.Items.ElementAt(i).Selected = true;
+                                valuesBool.Add(true);
+                            }
+                            else
+                            {
+                                graphsListBox.Items.ElementAt(i).Selected = false;
+                                valuesBool.Add(false);
+                            }
                         }
                     }
                 }
 
-                conn.Close();
-                conn.Dispose();
+
+
+                catch (Exception ex)
+                {
+                    //Handle exception, perhaps log it and do the needful
+                }
             }
+          
         }
 
 

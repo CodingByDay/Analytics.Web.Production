@@ -20,6 +20,7 @@ namespace Dash.DatabaseStorage
         private SqlCommand cmd;
         private string adminName;
         private string company;
+        private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
@@ -158,7 +159,7 @@ namespace Dash.DatabaseStorage
         public string getcompanyForUser()
         {
             string uname = HttpContext.Current.User.Identity.Name;
-            conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=dashboards;Password=Cporje?%ofgGHH$984d4L;");
+            conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
             cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
@@ -176,9 +177,8 @@ namespace Dash.DatabaseStorage
         }
         private void InsertPermision(string dashboardName)
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection(ConnectionString);
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
 
@@ -204,7 +204,7 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
                 SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
@@ -223,7 +223,7 @@ namespace Dash.DatabaseStorage
         private List<String> getCaptions()
         {
             List<String> list = new List<String>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
                 SqlCommand GetCommand = new SqlCommand("SELECT Caption FROM Dashboards");
@@ -263,7 +263,7 @@ namespace Dash.DatabaseStorage
 
 
             List<DashboardInfo> list = new List<DashboardInfo>();
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
                 SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {FinalString}");
@@ -282,7 +282,7 @@ namespace Dash.DatabaseStorage
 
         public void SaveDashboard(string dashboardID, XDocument document)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
                 MemoryStream stream = new MemoryStream();
@@ -307,9 +307,9 @@ namespace Dash.DatabaseStorage
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
 
             List<String> permisions = new List<string>();
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+         
 
-            conn = new SqlConnection(ConnectionString);
+            conn = new SqlConnection(connection);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
 
@@ -330,7 +330,7 @@ namespace Dash.DatabaseStorage
             int idUser = permisionID;
             cmd.Dispose();
             conn.Close();
-            conn = new SqlConnection(ConnectionString);
+            conn = new SqlConnection(connection);
             conn.Open();
             foreach (String graph in captions)
             {
