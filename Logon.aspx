@@ -53,7 +53,7 @@
 
                         <asp:CheckBox ID="chkPersistCookie" runat="server" AutoPostBack="false" />
 
-                        <img src="pass.png" />
+                        <img src="images/pass.png" />
 
                         <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
 

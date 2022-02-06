@@ -728,18 +728,6 @@ namespace Dash
 
 
 
-
-
-
-
-        protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            graphsListBox.Enabled = true;
-            FillListGraphs();
-            showConfig();
-            updateForm();
-        }
-
         public void FillListGraphsNames()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -773,7 +761,7 @@ namespace Dash
 
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
@@ -864,9 +852,9 @@ namespace Dash
                     }
                 }
 
-                //Perform DB operation here i.e. any CRUD operation 
+               
 
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Handle exception, perhaps log it and do the needful
                 }
@@ -1054,7 +1042,7 @@ namespace Dash
 
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Handle exception, perhaps log it and do the needful
                 }

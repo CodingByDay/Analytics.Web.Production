@@ -56,150 +56,159 @@ namespace Dash.DatabaseStorage
         }
         private int getIdPermision()
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name;
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
-            try
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                var result = cmd.ExecuteScalar();
-                permisionID = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
-            {
-                var log = error;
-            }
+                try
+                {
+                    conn.Open();
 
-            cmd.Dispose();
-            conn.Close();
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name;
 
-            return permisionID;
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
+
+                    var result = cmd.ExecuteScalar();
+                    permisionID = System.Convert.ToInt32(result);
+                    
+              
+                    cmd.Dispose();
+    
+
+                    return permisionID;
+                }
+                catch (Exception ex)
+                {
+                    return -1;
+                }
+            }
+         
 
 
         }
         private void InsertPermisionAdminAndUser(int admin, string name)
         {
-            var idCurrent = getIdPermision();
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {idCurrent}", conn);
-            try
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                cmd.ExecuteNonQuery();
-
+                try
+                {
+                    conn.Open();
+                    var idCurrent = getIdPermision();
+                    SqlCommand cmd = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {idCurrent}", conn);
+                    cmd.ExecuteNonQuery();
+                    cmd.Dispose();
+                    SqlCommand cmdSecond = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {admin}", conn);
+                    cmdSecond.ExecuteNonQuery();
+                    cmd.Dispose();
+                }
+                catch (Exception)
+                {
+                    
+                }
             }
-            catch (Exception error)
-            {
-                var log = error;
-            }
-            cmd.Dispose();
-            conn.Close();
-            // Admin insert...
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmdSecond = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {admin}", conn);
-            try
-            {
-                cmdSecond.ExecuteNonQuery();
-
-            }
-            catch (Exception error)
-            {
-                var log = error;
-            }
-            cmd.Dispose();
-            conn.Close();
+          
 
         }
         public int GetPermisionUserID(string user)
         {
-            string uname = HttpContext.Current.User.Identity.Name;
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);
-            // Execute command and fetch pwd field into lookupPassword string.
-            int adminID = (int)cmd.ExecuteScalar();
+            using (SqlConnection conn = new SqlConnection(this.connection))
+            {
+                try
+                {
+                    conn.Open();
 
-
-
-            cmd.Dispose();
-            conn.Close();
-            return adminID;
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    int adminID = (int)cmd.ExecuteScalar();
+                    cmd.Dispose();
+                    return adminID;
+                }
+                catch (Exception ex)
+                {
+                    return -1;
+                }
+            }
         }
         public string GetAdminFromCompanyName(string company)
         {
-            string uname = HttpContext.Current.User.Identity.Name;
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
-            // Execute command and fetch pwd field into lookupPassword string.
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                adminName = (reader["admin_id"].ToString());
-            }
+                try
+                {
+                    conn.Open();
 
-            cmd.Dispose();
-            conn.Close();
-            return adminName;
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        adminName = (reader["admin_id"].ToString());
+                    }
+
+                    cmd.Dispose();
+
+                    return adminName;
+                }
+                catch (Exception ex)
+                {
+                    return string.Empty;
+                }
+            }
+   
         }
 
         public string getcompanyForUser()
         {
-            string uname = HttpContext.Current.User.Identity.Name;
-            conn = new SqlConnection(connection);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
-            // Execute command and fetch pwd field into lookupPassword string.
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            while (reader.Read())
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                company = (reader["company_name"].ToString());
-            }
+                try
+                {
+                    conn.Open();
 
-            cmd.Dispose();
-            conn.Close();
-            return company;
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        company = (reader["company_name"].ToString());
+                    }
+
+                    cmd.Dispose();
+                    return company;
+                }
+                catch (Exception)
+                {
+                    return string.Empty;
+                }
+            }
+           
         }
         private void InsertPermision(string dashboardName)
         {
-
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
-
-
-
-            try
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+                    cmd.ExecuteNonQuery();
+                    cmd.Dispose();
 
+                }
+                catch (Exception ex)
+                {
+                   
+                }
             }
-
-
-            catch (Exception error)
-            {
-                var log = error;
-            }
-
-
-
-            cmd.Dispose();
-            conn.Close();
+        
         }
 
         public XDocument LoadDashboard(string dashboardID)
@@ -303,63 +312,56 @@ namespace Dash.DatabaseStorage
 
         private List<String> getIdPermisionCurrentUser()
         {
-            List<String> captions = getCaptions();
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
-            List<String> permisions = new List<string>();
-
-
-            conn = new SqlConnection(connection);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
-
-            try
+            using (SqlConnection conn = new SqlConnection(this.connection))
             {
-                var result = cmd.ExecuteScalar();
-                permisionID = System.Convert.ToInt32(result);
-
-            }
-
-
-
-
-            catch (Exception error)
-            {
-                // Implement logging here.
-            }
-            int idUser = permisionID;
-            cmd.Dispose();
-            conn.Close();
-            conn = new SqlConnection(connection);
-            conn.Open();
-            foreach (String graph in captions)
-            {
-                string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
-                string stripped = whiteless.Replace("-", "");
-
-                SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
-                string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
-
-                var result = graphResult.ExecuteScalar();
-                int permision = (int)result;
-                graphResult.Dispose();
-                if (permision == 1)
+                try
                 {
-                    permisions.Add(graph);
+                    conn.Open();
+
+                    List<String> captions = getCaptions();
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+
+                    List<String> permisions = new List<string>();
+
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
+
+                    var result = cmd.ExecuteScalar();
+                    permisionID = System.Convert.ToInt32(result);
+
+                    int idUser = permisionID;
+                    cmd.Dispose();
+
+                    foreach (String graph in captions)
+                    {
+                        string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
+                        string stripped = whiteless.Replace("-", "");
+
+                        SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
+                        string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
+
+                        var resultID = graphResult.ExecuteScalar();
+                        int permision = (int)resultID;
+                        graphResult.Dispose();
+                        if (permision == 1)
+                        {
+                            permisions.Add(graph);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                    }
+
+                    return permisions;
                 }
-                else
+                catch (Exception ex)
                 {
-                    continue;
+                    List<string> data = new List<string>();
+                    return data;
                 }
-
-
-
-
             }
-
-            conn.Close();
-
-            return permisions;
+           
 
         }
     }

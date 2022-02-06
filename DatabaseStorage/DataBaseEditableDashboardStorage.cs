@@ -85,30 +85,23 @@ namespace Dash.DatabaseStorage
 
         private void InsertPermision(string dashboardName)
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
-
-
-
-            try
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
-                cmd.ExecuteNonQuery();
+                try
+                {
+                    conn.Open();
+                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                    SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+                    cmd.ExecuteNonQuery();
 
+                    
+                }
+                catch (Exception ex)
+                {
+                   
+                }
             }
-
-
-            catch (Exception error)
-            {
-
-            }
-
-
-
-            cmd.Dispose();
-            conn.Close();
+        
         }
         public XDocument LoadDashboard(string dashboardID)
         {
