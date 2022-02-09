@@ -70,11 +70,9 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
-            adminButton.Visible = false;
+          //  HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
+          //  adminButton.Visible = false;
             companiesGridView.SettingsBehavior.AllowFocusedRow = true;
-
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
             companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -90,13 +88,7 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
-
-
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-
-            // Keep this.
-
-
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
@@ -105,8 +97,8 @@ namespace Dash
 
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
                 authenticate();
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                admin.Visible = true;
+               // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+               // admin.Visible = true;
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 by.Visible = false;
@@ -132,8 +124,8 @@ namespace Dash
             else
             {
                 graphsGridView.Enabled = true;
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                admin.Visible = true;
+               // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+               // admin.Visible = true;
                 FillListGraphs();
 
 
@@ -155,10 +147,17 @@ namespace Dash
                 }
 
             }
+         
+      
+
+         
+            
+
+
 
         }
 
-
+      
 
         private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
         {
