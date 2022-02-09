@@ -12,19 +12,25 @@
         </dx:ASPxButton>
         <div class="nav-tree-view">
             <span id="breadCrumbsText" class="breadCrumbs"></span>
-            <dx:ASPxTreeView runat="server" ID="NavigationTreeView" ClientInstanceName="NavigationTreeView" DataSourceID="XmlDataSource1" Width="100%"
+            <dx:ASPxTreeView runat="server" ID="NavigationTreeView"  ClientInstanceName="NavigationTreeView" DataSourceID="XmlDataSource1" Width="100%"
                 ShowTreeLines="false" ShowExpandButtons="true" OnNodeDataBound="NavigationTreeView_NodeDataBound" OnPreRender="NavigationTreeView_PreRender" EnableHotTrack="false"
-                TextField="Title" NavigateUrlField="Url">
+                TextField="Title" NavigateUrlField="Url" Theme="Moderno">
                 <Styles>
                     <Node CssClass="node" />
                     <Elbow CssClass="elbow" />
                 </Styles>
             </dx:ASPxTreeView>
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script>
-                var NavControl = new Site.Nav.NavigationControl(NavigationTreeView, NavigationBreadCrumbsButton, 'NavControl', 'breadCrumbsText');
-                NavControl.Init();
+                $(document).ready(function () {
+                 
+                  
+                    var NavControl = new Site.Nav.NavigationControl(this.NavigationTreeView, this.NavigationBreadCrumbsButton, 'NavControl', 'breadCrumbsText');
+                    NavControl.Init();
+                });
+            
             </script>
         </div>
     </div>
-    <asp:XmlDataSource ID="XmlDataSource1" runat="server" DataFile="Navigation.xml" XPath="/namespace/*" />
+    <asp:XmlDataSource ID="XmlDataSource1" runat="server" DataFile="~/App_Data/Navigation.xml" XPath="/namespace/*" />
 </nav>

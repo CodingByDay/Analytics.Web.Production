@@ -1,5 +1,3 @@
-C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.dll.licenses
-C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\Dash.dll.config
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\Dash.dll
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\Dash.pdb
@@ -241,7 +239,8 @@ C:\Users\janko\Desktop\active\DASHBOARDS\bin\de\DevExpress.XtraTreeList.v20.2.re
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\janko\Desktop\active\DASHBOARDS\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
+C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.dll.licenses
+C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.csproj.CoreCompileInputs.cache
 C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.csproj.CopyComplete
 C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.dll
 C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.pdb
-C:\Users\janko\Desktop\active\DASHBOARDS\obj\Debug\Dash.csproj.AssemblyReference.cache
