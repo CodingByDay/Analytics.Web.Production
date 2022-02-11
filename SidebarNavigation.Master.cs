@@ -27,5 +27,11 @@ namespace Dash
             return name;
         }
 
+        protected void NavigationPanel_Load(object sender, EventArgs e)
+        {
+
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "tryLoad()", true);
+
+        }
     }
 }

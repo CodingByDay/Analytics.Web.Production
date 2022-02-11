@@ -1,6 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="SidebarNavigation.master.cs" Inherits="Dash.SidebarNavigation" %>
-<%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 <%@ Register Src="~/Navigation.ascx" TagPrefix="uc" TagName="Navigation" %>
 <%@ Register Src="~/Search.ascx" TagPrefix="uc" TagName="Search" %>
 
@@ -13,11 +13,20 @@
     <title></title>
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
-</head>
-<body>
-        <link href="Content/sidebar.css" rel="stylesheet" />
+       <link href="Content/sidebar.css" rel="stylesheet" />
 
          <script src="Content/Site.js"></script>
+         <script>
+        
+                 function tryLoad() {
+                 var NavControl = new Site.Nav.NavigationControl(window.NavigationTreeViewClient, window.NavigationBreadCrumbsButtonClient, 'NavControl', 'breadCrumbsText');
+                 NavControl.Init();
+                 }
+
+         </script>
+</head>
+<body>
+     
     <h1><span runat="server" id="Content"></span></h1>
     <!-- Place for the navbar -->
       
@@ -41,7 +50,7 @@
             </dx:ASPxPanel>
         </header>
 
-        <dx:ASPxPanel runat="server" ID="NavigationPanel" ClientInstanceName="NavigationPanel" FixedPosition="WindowLeft"
+        <dx:ASPxPanel runat="server" ID="NavigationPanel"  OnLoad="NavigationPanel_Load" ClientEnabled="true" ClientInstanceName="NavigationPanel" FixedPosition="WindowLeft"
             CssClass="navigation-panel" Collapsible="true" ScrollBars="Auto" Theme="Default">
             <SettingsCollapsing ExpandEffect="PopupToRight" AnimationType="Slide" ExpandButton-Visible="false" />
             <Styles>
@@ -49,8 +58,8 @@
                 <ExpandBar Width="0" />
             </Styles>
             <PanelCollection>
-                <dx:PanelContent>
-                    <uc:Search runat="server" ID="Search" />
+                <dx:PanelContent >
+                    <uc:Search runat="server" ID="Search"  />
                     <uc:Navigation runat="server" ID="Navigation" />
                 </dx:PanelContent>
             </PanelCollection>
@@ -60,5 +69,8 @@
             </asp:ContentPlaceHolder>
         </div>
     </form>
+
+
+
 </body>
 </html>
