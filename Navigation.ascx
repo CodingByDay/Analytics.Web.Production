@@ -24,23 +24,23 @@
              <script>
                  function initializeTree(s, e) {
                      window.tree = s;
-                     console.log("Initialized");
+                    
 
                      InitializeAll();
                  }
        
                  function initializeButton(s, e) {
                      window.button = s;
-                     console.log("Initialized");
+               
 
                  }
 
 
 
                  function InitializeAll() {
-                     console.log("Test");
-                     var NavControl = new Site.Nav.NavigationControl(window.tree, window.button, 'NavControl', 'breadCrumbsText');
-                     NavControl.Init();
+                 
+                     window.NavControl = new Site.Nav.NavigationControl(window.tree, window.button, 'NavControl', 'breadCrumbsText');
+                     window.NavControl.Init();
                  }
                
 
