@@ -9,7 +9,7 @@
             <FocusRectBorder BorderWidth="0" />
             <FocusRectPaddings Padding="0" />
             <Image SpriteProperties-CssClass="icon"></Image>
-            <ClientSideEvents Click="function(){ NavControl.onNavigationBreadCrumbsButtonClick(); }" />
+            <ClientSideEvents Click="breadCrumbs();" />
         </dx:ASPxButton>
         <div class="nav-tree-view">
             <span id="breadCrumbsText" class="breadCrumbs"></span>
@@ -22,6 +22,13 @@
                 </Styles>
             </dx:ASPxTreeView>
              <script>
+
+                 function breadCrumbs() {
+                     console.log("Test.")
+                     window.NavControl.onNavigationBreadCrumbsButtonClick();
+
+                 }
+
                  function initializeTree(s, e) {
                      window.tree = s;
                     
