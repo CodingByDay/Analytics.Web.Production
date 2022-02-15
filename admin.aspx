@@ -5,8 +5,7 @@
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-    	<link rel="stylesheet" href="css/bootstrap.css" />
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     	<link rel="stylesheet" href="css/admin.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
           <webopt:bundlereference runat="server" path="~/css/shared.css" />
@@ -20,8 +19,43 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 
 
+
+
+      <script type="text/c#" runat="server">
+          
+          
+          
+          
+          
+          [System.Web.Services.WebMethod(EnableSession = true)]
+        public static string test()
+        {
+            return "worked";
+        }
+
+
+
+
+      </script>
+    
     <script>
 
+
+
+
+        function testConnection() {
+            console.log("Before ajax receive.");
+            $.ajax({
+                type: 'POST',
+                url: '<%= ResolveUrl("~/admin.aspx/test") %>',
+                 data: '{ }',
+                 contentType: 'application/json; charset=utf-8',
+                 dataType: 'json',
+                 success: function (msg) {
+                     alert(msg.d)
+                 }
+             });
+        }
 
         /**
          *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
@@ -43,6 +77,11 @@
                 )
             }
         }
+
+
+
+
+
         function showDialogSync() {
 
 
@@ -410,6 +449,8 @@
         <br />
 
                        <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+
+                       <button type="button" class="btn btn-primary" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 

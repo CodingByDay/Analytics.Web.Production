@@ -5,16 +5,16 @@
     <div id="NavControl" class="nav-control" style="visibility: hidden">
          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <dx:ASPxButton runat="server" ID="NavigationBreadCrumbsButton" ClientEnabled="true" ClientSideEvents-Init="initializeButton" ClientInstanceName="NavigationBreadCrumbsButtonClient" CssClass="navigation-breadcrumbs-button"
-            Text="All Sections" Width="100%" AutoPostBack="false" HorizontalAlign="Left" UseSubmitBehavior="false" Height="34">
+            Text="All Sections" Width="100%" AutoPostBack="false" HorizontalAlign="Left" UseSubmitBehavior="false" Height="34" Visible="false">
             <FocusRectBorder BorderWidth="0" />
             <FocusRectPaddings Padding="0" />
             <Image SpriteProperties-CssClass="icon"></Image>
-            <ClientSideEvents Click="breadCrumbs();" />
+            <ClientSideEvents Click="function(s, e) { breadCrumbs();   }" />
         </dx:ASPxButton>
         <div class="nav-tree-view">
             <span id="breadCrumbsText" class="breadCrumbs"></span>
-            <dx:ASPxTreeView runat="server" EnableCallBacks="true"  ID="NavigationTreeView"  ClientSideEvents-Init="initializeTree" EnableClientSideAPI="true" ClientInstanceName="NavigationTreeViewClient" DataSourceID="XmlDataSource1" Width="100%"
-                ShowTreeLines="false" ShowExpandButtons="true"   OnNodeDataBound="NavigationTreeView_NodeDataBound" OnPreRender="NavigationTreeView_PreRender" EnableHotTrack="false"
+            <dx:ASPxTreeView runat="server" EnableCallBacks="true"  OnNodeClick="NavigationTreeView_NodeClick" ID="NavigationTreeView"  ClientSideEvents-Init="initializeTree" EnableClientSideAPI="true" ClientInstanceName="NavigationTreeViewClient" DataSourceID="XmlDataSource1" Width="100%"
+                ShowTreeLines="false" ShowExpandButtons="true"  OnCheckedChanged="NavigationTreeView_CheckedChanged1"   OnNodeDataBound="NavigationTreeView_NodeDataBound" OnPreRender="NavigationTreeView_PreRender" EnableHotTrack="false"
                 TextField="Title" NavigateUrlField="Url" Theme="Moderno">
                 <Styles>
                     <Node CssClass="node" />
@@ -24,7 +24,6 @@
              <script>
 
                  function breadCrumbs() {
-                     console.log("Test.")
                      window.NavControl.onNavigationBreadCrumbsButtonClick();
 
                  }
@@ -58,6 +57,7 @@
         </div>
     </div>
    
+    
 
     <asp:XmlDataSource ID="XmlDataSource1" runat="server" DataFile="~/App_Data/Navigation.xml" XPath="/namespace/*" />
 </nav>

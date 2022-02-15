@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -1696,6 +1697,13 @@ namespace Dash
             }
         }
 
+                                   //Default.aspx.cs
+        public static bool testConnection()
+        {
+            return true;
+        }
+
+
         private void showConfigByUser()
         {
 
@@ -1848,8 +1856,14 @@ namespace Dash
             updateForm();
         }
 
+        protected void test_Click(object sender, EventArgs e)
+        {
+            var debug = true;
+        }
 
+        protected void test_Click1(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }

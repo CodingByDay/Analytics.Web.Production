@@ -36,5 +36,21 @@ namespace Dash {
         {
 
         }
+
+        protected void NavigationTreeView_NodeClick(object source, TreeViewNodeEventArgs e)
+        {
+            var debug = true;
+        }
+
+        protected void NavigationTreeView_CheckedChanged(object source, TreeViewNodeEventArgs e)
+        {
+            var debug = true;
+
+        }
+
+        protected void NavigationTreeView_CheckedChanged1(object source, TreeViewNodeEventArgs e)
+        {
+            var debug = true;
+        }
     }
 }

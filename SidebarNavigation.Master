@@ -50,16 +50,16 @@
             </dx:ASPxPanel>
         </header>
 
-        <dx:ASPxPanel runat="server" ID="NavigationPanel"  OnLoad="NavigationPanel_Load" ClientEnabled="true" ClientInstanceName="NavigationPanel" FixedPosition="WindowLeft"
-            CssClass="navigation-panel" Collapsible="true" ScrollBars="Auto" Theme="Default">
+        <dx:ASPxPanel runat="server" ID="NavigationPanel"  OnLoad="NavigationPanel_Load"  ClientEnabled="true" ClientInstanceName="NavigationPanel" FixedPosition="WindowLeft"
+            CssClass="navigation-panel" Collapsible="true" ScrollBars="Auto" Theme="Aqua">
             <SettingsCollapsing ExpandEffect="PopupToRight" AnimationType="Slide" ExpandButton-Visible="false" />
             <Styles>
                 <Panel Paddings-Padding="0" />
                 <ExpandBar Width="0" />
             </Styles>
             <PanelCollection>
-                <dx:PanelContent >
-                    <uc:Search runat="server" ID="Search"  />
+                <dx:PanelContent  >
+                    <uc:Search runat="server" ID="Search"   Visible="false"/>
                     <uc:Navigation runat="server" ID="Navigation" />
                 </dx:PanelContent>
             </PanelCollection>
