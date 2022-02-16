@@ -70,6 +70,7 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
           //  HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
           //  adminButton.Visible = false;
@@ -959,9 +960,7 @@ namespace Dash
                     SqlCommand cmd = new SqlCommand($"Select MAX(id_company) from companies", conn);
                     var result = cmd.ExecuteScalar();
                     Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName.Text}')", conn);
-                    var debug = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{listAdmin.SelectedValue}', '{connName.Text}')";
-                    var adminForCreation = listAdmin.SelectedValue;               
+                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
                     cmd.ExecuteNonQuery();                   
                 }
                 catch (Exception)
@@ -972,6 +971,25 @@ namespace Dash
             }
         }
 
+        private void updateAdminCompany(string admin_value)
+        {
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                  
+                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{admin_value}'", conn);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception)
+                {
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+
+                }
+            }
+        }
 
 
 
@@ -1000,7 +1018,6 @@ namespace Dash
                 }
                 else if (!checkIfNumber(companyNumber.Text))
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Številka ni v pravi obliki.'  );</script>");
                     Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Številka ni v pravi obliki.')", true);
 
                     companyNumber.Text = "";
@@ -1012,17 +1029,9 @@ namespace Dash
                     insertCompany();
                     fillCompaniesRegistration();
                     createAdminForTheCompany(companyName.Text);
+                    updateAdminCompany(companyName.Text);
                     var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    if (isConnectionOk(checkDB))
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Povezava je vredo.')", true);
-
-                    }
-                    else
-                    {
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Povezava ni vredo.')", true);
-
-                    }
+                   
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
                     companiesGridView.DataSource = sourceID;
@@ -1030,6 +1039,7 @@ namespace Dash
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
 
                 }
             }
@@ -1046,18 +1056,9 @@ namespace Dash
                 build.UserID = dbUser.Text;
                 build.Password = dbPassword.Text;
 
-                if (isConnectionOk(build.ConnectionString))
-                {
-                    UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešna povezava.')", true);
-
-                }
-                else
-                {
-                    UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Konekcija ni vredo')", true);
-
-                }
+            
+                 UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+               
 
                 updateCompanyData();
             }
@@ -1181,7 +1182,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM permisions_user;", conn);
                     var result = cmd.ExecuteScalar();
                     Int32 Total_ID = System.Convert.ToInt32(result);
                     cmd.Dispose();
@@ -1201,7 +1202,7 @@ namespace Dash
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                     var username = TxtUserName.Text;
 
-                    var id = getIdCompany(companiesList.SelectedValue);
+                    var id = getIdCompany(name.Trim());
                     createUser.ExecuteNonQuery();
 
 
@@ -1570,6 +1571,12 @@ namespace Dash
 
                         var deb = $"delete from users where id_company={id}";
 
+                        RemoveConnectionString(current);
+
+                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
+                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
+
+                        cmd.ExecuteNonQuery();
 
                         try
                         {
@@ -1582,11 +1589,8 @@ namespace Dash
                             Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
                         }
-
-                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-
-                        cmd.ExecuteNonQuery();
+                      
+                  
 
 
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
@@ -1604,6 +1608,7 @@ namespace Dash
 
 
                         FillUsers(1);
+                       
                     }
                 }
                 catch (Exception ex)
@@ -1615,6 +1620,36 @@ namespace Dash
             
         }
 
+        private void RemoveConnectionString(string current)
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select databaseName from companies where company_name='{current}'", conn);
+                    result = cmd.ExecuteScalar();
+
+
+
+                    Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+
+                
+
+                    config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
+
+                    config.Save(ConfigurationSaveMode.Modified, true);
+
+
+
+                }
+                catch (Exception ex)
+                {
+                    return;
+                }
+            }
+        }
+
         private int getIdCompany(string current)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -1622,7 +1657,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current.Replace(" ", string.Empty)}'", conn);
                     result = cmd.ExecuteScalar();
                     int finalID = System.Convert.ToInt32(result);
                     return finalID;

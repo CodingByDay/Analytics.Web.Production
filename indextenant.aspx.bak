@@ -1,8 +1,8 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="indextenant.aspx.cs" Inherits="Dash.indextenant" %>
 
-<%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Dashboard.v21.1.Web.WebForms, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 
-<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
      <link rel="stylesheet" href="css/bootstrap.css" />
@@ -46,7 +46,9 @@ height: 100% !important;
              * @param args
              */
             function customizeWidgets(sender, args) {
-                if (args.ItemName == "gridDashboardItem1") {
+                var collection = dashboard.GetParameters().GetParameterList();
+
+                if (args.ItemName == "gridDashboardItem1" && args.GetColumnCount > 1 && collection.length > 2) {
                     initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
                     initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
                     initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
@@ -88,7 +90,9 @@ height: 100% !important;
 
 
             function updatecustomizeWidgets(sender, args) {
-                if (args.ItemName == "gridDashboardItem1") {
+                var collection = dashboard.GetParameters().GetParameterList();
+
+                if (args.ItemName == "gridDashboardItem1" && args.GetColumnCount > 1 && collection.length > 2) {
                     initialPayload = [];
                     initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
                     initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);

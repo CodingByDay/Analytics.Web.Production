@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Admin" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="Dash.admin" %>
-<%@ Register assembly="DevExpress.Web.Bootstrap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
@@ -444,7 +444,7 @@
           <br />
           <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-           <asp:TextBox ID="dbPassword" runat="server" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
+           <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
                        </div>
           <br />
 
@@ -470,7 +470,7 @@
 
                        <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
 
-                       <button type="button" class="btn btn-primary" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
+                       <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 

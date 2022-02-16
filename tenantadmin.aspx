@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="tenantadmin.aspx.cs" Inherits="Dash.tenantadmin" %>
-<%@ Register assembly="DevExpress.Web.Bootstrap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
@@ -83,7 +83,10 @@
             display: inline-block;
             
         }
+        .item {
+            padding-left: 15px!important;
 
+        }
         #saveGraphs, #byUser, #deleteCompany, #company, #user, #deleteUser {
             bottom: auto;
         }
@@ -276,10 +279,12 @@
 	</div>
   
   <div class="column">
-	<dx:BootstrapListBox ID="graphsListBox"  runat="server" SelectionMode="CheckColumn" AllowCustomValues="true" EnableSelectAll="true" FilteringSettings-UseCompactView="true" ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf"  Rows="6">
-                <CssClasses Control="control"  />
 
-       <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+
+	<dx:BootstrapListBox ID="graphsListBox" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
+                <CssClasses Control="control"  CheckBox="item"  />
+
+       <FilteringSettings  ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
        
 </dx:BootstrapListBox>
@@ -569,6 +574,10 @@
    
   
      </div>
+  
+   
+  
+    </div>
   
    
   

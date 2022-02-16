@@ -76,8 +76,12 @@ namespace Dash
 
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
+
+            string email = ConfigurationManager.AppSettings["email"];
+            string username = ConfigurationManager.AppSettings["username"];
+            string password = ConfigurationManager.AppSettings["password"];
             // MailMessage class is present is System.Net.Mail namespace
-            MailMessage mailMessage = new MailMessage("jankojovicic351@gmail.com", ToEmail);
+            MailMessage mailMessage = new MailMessage(email, ToEmail);
 
 
             // StringBuilder class is present in System.Text namespace
@@ -96,8 +100,8 @@ namespace Dash
 
             smtpClient.Credentials = new System.Net.NetworkCredential()
             {
-                UserName = "jankojovicic351@gmail.com",
-                Password = "taojeveliki123"
+                UserName = username,
+                Password = password
             };
 
             smtpClient.EnableSsl = true;

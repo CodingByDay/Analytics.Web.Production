@@ -1,29 +1,81 @@
-﻿<%@ Page Title="Admin" Language="C#" MasterPageFile="~/SidebarNavigation.Master" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="Dash.admin" %>
-<%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
-
+﻿<%@ Page Title="Admin" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="admin.aspx.cs" Inherits="Dash.admin" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     	<link rel="stylesheet" href="css/admin.css" />
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
           <webopt:bundlereference runat="server" path="~/css/shared.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
 
      <asp:PlaceHolder runat="server">
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
 
 
+    
+
+         <script type="text/c#" runat="server">
+             [System.Web.Services.WebMethod(EnableSession = true)]
+             public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
+             {
+
+                 var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
+
+
+
+                 if(result)
+                    {
+                     return true;
+                    } else
+                     {
+                     return false;
+                     }
+             
+
+
+    
+        }
+
+
+
+      </script>
+    
     <script>
 
+
+
+
+        function testConnection() {
+
+
+            var InitialCatalog = document.getElementById("dbNameInstance").value;
+            var DataSource = document.getElementById("dbDataSource").value;
+            var UserID = document.getElementById("dbUser").value;
+            var Password = document.getElementById("dbPassword").value;
+            console.log(JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password }));
+          
+            $.ajax({
+                type: 'POST',
+                url: '<%= ResolveUrl("~/admin.aspx/test") %>',
+                 data: JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password   }),
+                 contentType: 'application/json; charset=utf-8',
+                 dataType: 'json',
+                 success: function (msg) {
+                     if (msg.d) {
+                         notify(false, "Uspešna konekcija.");
+                     } else {
+                         notify(true, "Napaka v konekciji.");
+                     }
+                 }
+             });
+        }
 
         /**
          *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
@@ -45,6 +97,11 @@
                 )
             }
         }
+
+
+
+
+
         function showDialogSync() {
 
 
@@ -387,7 +444,7 @@
           <br />
           <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-           <asp:TextBox ID="dbPassword" runat="server" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
+           <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox> 
                        </div>
           <br />
 
@@ -412,6 +469,8 @@
         <br />
 
                        <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+
+                       <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 
@@ -545,6 +604,8 @@
 
  
 <script>
+
+ 
 
 
     $("#newUser").click(function (e) {

@@ -635,13 +635,14 @@ namespace Dash
                                     email.Text = "";
 
                                 }
-
+                                
                             }
                         }
 
                     }
                     else
                     {
+                        conn.Open();
                         string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
 
 
@@ -705,7 +706,7 @@ namespace Dash
                 }
                 catch (Exception)
                 {
-
+                    var debug = true;
                 }
             }
         }
