@@ -19,20 +19,29 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 
 
+    
+
+         <script type="text/c#" runat="server">
+             [System.Web.Services.WebMethod(EnableSession = true)]
+             public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
+             {
+
+                 var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
 
 
-      <script type="text/c#" runat="server">
-          
-          
-          
-          
-          
-          [System.Web.Services.WebMethod(EnableSession = true)]
-        public static string test()
-        {
-            return "worked";
+
+                 if(result)
+                    {
+                     return true;
+                    } else
+                     {
+                     return false;
+                     }
+             
+
+
+    
         }
-
 
 
 
@@ -44,15 +53,26 @@
 
 
         function testConnection() {
-            console.log("Before ajax receive.");
+
+
+            var InitialCatalog = document.getElementById("dbNameInstance").value;
+            var DataSource = document.getElementById("dbDataSource").value;
+            var UserID = document.getElementById("dbUser").value;
+            var Password = document.getElementById("dbPassword").value;
+            console.log(JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password }));
+          
             $.ajax({
                 type: 'POST',
                 url: '<%= ResolveUrl("~/admin.aspx/test") %>',
-                 data: '{ }',
+                 data: JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password   }),
                  contentType: 'application/json; charset=utf-8',
                  dataType: 'json',
                  success: function (msg) {
-                     alert(msg.d)
+                     if (msg.d) {
+                         notify(false, "Uspešna konekcija.");
+                     } else {
+                         notify(true, "Napaka v konekciji.");
+                     }
                  }
              });
         }

@@ -1118,6 +1118,8 @@ namespace Dash
             return build.ConnectionString;
         }
 
+
+       
         private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings[connName].ConnectionString;

@@ -511,6 +511,7 @@
     <Compile Include="administrationcompany.aspx.designer.cs">
       <DependentUpon>administrationcompany.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Administration\Connection.cs" />
     <Compile Include="Administration\HelpfullMethods.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="About.aspx.cs">
