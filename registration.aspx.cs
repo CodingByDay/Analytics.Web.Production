@@ -160,7 +160,7 @@ namespace Dash
                 {
                     createUserPermisions.ExecuteNonQuery();
                 }
-                catch (Exception error)
+                catch (Exception)
                 {
                     // Logging module.
                 }
@@ -218,7 +218,7 @@ namespace Dash
                 cmd.ExecuteNonQuery();
 
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 // Implement loggin here.
             }

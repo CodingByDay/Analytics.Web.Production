@@ -60,42 +60,6 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapButton saveGraphs;
 
         /// <summary>
-        /// byUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton byUser;
-
-        /// <summary>
-        /// by control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl by;
-
-        /// <summary>
-        /// byUserListBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox byUserListBox;
-
-        /// <summary>
-        /// saveByUser control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton saveByUser;
-
-        /// <summary>
         /// newUser control.
         /// </summary>
         /// <remarks>

@@ -94,14 +94,14 @@ namespace Dash.DatabaseStorage
                     SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
                     cmd.ExecuteNonQuery();
 
-                    
+
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                   
+
                 }
             }
-        
+
         }
         public XDocument LoadDashboard(string dashboardID)
         {

@@ -122,7 +122,7 @@ namespace Dash
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -319,7 +319,7 @@ namespace Dash
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -359,7 +359,7 @@ namespace Dash
                         cmd = new SqlCommand(finalQuery, conn);
                         cmd.ExecuteNonQuery();
                     }
-                    catch (Exception error)
+                    catch (Exception)
                     {
                         continue;
                     }
@@ -369,7 +369,7 @@ namespace Dash
                 cmd.Dispose();
                 conn.Close();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -422,7 +422,7 @@ namespace Dash
                     id = cmd.ExecuteScalar();
 
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     continue;
                 }
@@ -441,7 +441,7 @@ namespace Dash
                 {
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     continue;
                 }
@@ -535,7 +535,7 @@ namespace Dash
 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
@@ -602,7 +602,7 @@ namespace Dash
             }
 
 
-            catch (Exception error)
+            catch (Exception)
             {
                 // Implement logging here.
             }
@@ -786,7 +786,7 @@ namespace Dash
                         {
                             createUserPermisions.ExecuteNonQuery();
                         }
-                        catch (Exception error)
+                        catch (Exception)
                         {
 
                         }
@@ -877,7 +877,7 @@ namespace Dash
 
                         }
                     }
-                    catch (Exception error)
+                    catch (Exception)
                     {
 
                         // Implement logging here.

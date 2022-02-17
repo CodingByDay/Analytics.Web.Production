@@ -17,7 +17,7 @@ namespace WebDesigner_CustomDashboardStorage
             table.Columns.Add("DashboardXml", typeof(string));
             table.Columns.Add("DashboardName", typeof(string));
             table.PrimaryKey = new DataColumn[] { idColumn };
-            this.Tables.Add(table);
+            Tables.Add(table);
         }
     }
 }

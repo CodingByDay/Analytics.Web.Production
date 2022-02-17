@@ -36,7 +36,7 @@ namespace Dash
 
 
             // Hide the back button.  
-            HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
 
             admin.Visible = false;
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -30,7 +26,7 @@ namespace Dash
         protected void NavigationPanel_Load(object sender, EventArgs e)
         {
 
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "tryLoad()", true);
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "tryLoad()", true);
 
         }
     }

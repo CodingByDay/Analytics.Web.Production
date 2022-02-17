@@ -1,9 +1,5 @@
 ﻿using Dash.HelperClasses;
-using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace Dash.Administration
 {
@@ -40,7 +36,7 @@ namespace Dash.Administration
 
             CheckConnection TestConnection = new CheckConnection();
             var _result = TestConnection.check_connection(build.ConnectionString);
-           
+
 
             if (_result == false)
 

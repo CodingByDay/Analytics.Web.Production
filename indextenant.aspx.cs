@@ -25,7 +25,7 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
 
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;

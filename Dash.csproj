@@ -196,6 +196,7 @@
     <Content Include="css\success.css" />
     <Content Include="css\website.css" />
     <Content Include="Emulator.aspx" />
+    <Content Include="images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="images\favicon.ico" />
     <Content Include="favicons\android-chrome-144x144.png" />
     <Content Include="favicons\android-chrome-192x192.png" />
@@ -235,6 +236,7 @@
     <Content Include="home.aspx" />
     <Content Include="images\background.png" />
     <Content Include="images\dashboard-panel.png" />
+    <Content Include="images\frame.jpg" />
     <Content Include="images\graph-01.svg" />
     <Content Include="images\graph-02.svg" />
     <Content Include="images\graph-03.svg" />
@@ -252,6 +254,7 @@
     <Content Include="images\logo-w.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\logo.svg" />
+    <Content Include="images\pass.png" />
     <Content Include="images\user-01.jpg" />
     <Content Include="images\user-02.jpg" />
     <Content Include="images\user-03.jpg" />

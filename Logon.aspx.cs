@@ -33,7 +33,7 @@ namespace Dash
         private string getRole(string username, string password)
 
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -50,12 +50,12 @@ namespace Dash
                     }
                     return role;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return string.Empty;
                 }
             }
-        
+
         }
 
         private void FetchDataFillList()
@@ -108,12 +108,12 @@ namespace Dash
                         return false;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
             }
-         
+
 
         }
 
@@ -182,12 +182,12 @@ namespace Dash
                     // Compare lookupPassword and input passWord, using a case-sensitive comparison.
                     return (0 == string.Compare(lookupPassword, HashedPassword, false));
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
             }
-          
+
         }
 
         protected void cmdLogin_Click(object sender, EventArgs e)
@@ -320,12 +320,12 @@ namespace Dash
                         return false;
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
             }
-       
+
 
         }
 

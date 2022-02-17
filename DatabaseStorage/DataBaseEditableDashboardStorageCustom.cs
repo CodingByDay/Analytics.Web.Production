@@ -56,7 +56,7 @@ namespace Dash.DatabaseStorage
         }
         private int getIdPermision()
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -68,25 +68,25 @@ namespace Dash.DatabaseStorage
 
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
-                    
-              
+
+
                     cmd.Dispose();
-    
+
 
                     return permisionID;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return -1;
                 }
             }
-         
+
 
 
         }
         private void InsertPermisionAdminAndUser(int admin, string name)
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -101,16 +101,16 @@ namespace Dash.DatabaseStorage
                 }
                 catch (Exception)
                 {
-                    
+
                 }
             }
-          
+
 
         }
         public int GetPermisionUserID(string user)
         {
 
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -124,7 +124,7 @@ namespace Dash.DatabaseStorage
                     cmd.Dispose();
                     return adminID;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return -1;
                 }
@@ -132,7 +132,7 @@ namespace Dash.DatabaseStorage
         }
         public string GetAdminFromCompanyName(string company)
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -154,17 +154,17 @@ namespace Dash.DatabaseStorage
 
                     return adminName;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return string.Empty;
                 }
             }
-   
+
         }
 
         public string getcompanyForUser()
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -189,11 +189,11 @@ namespace Dash.DatabaseStorage
                     return string.Empty;
                 }
             }
-           
+
         }
         private void InsertPermision(string dashboardName)
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -203,12 +203,12 @@ namespace Dash.DatabaseStorage
                     cmd.Dispose();
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                   
+
                 }
             }
-        
+
         }
 
         public XDocument LoadDashboard(string dashboardID)
@@ -312,7 +312,7 @@ namespace Dash.DatabaseStorage
 
         private List<String> getIdPermisionCurrentUser()
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -355,13 +355,13 @@ namespace Dash.DatabaseStorage
 
                     return permisions;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     List<string> data = new List<string>();
                     return data;
                 }
             }
-           
+
 
         }
     }

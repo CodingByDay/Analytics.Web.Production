@@ -78,10 +78,9 @@ namespace Dash
             {
 
                 authenticate();
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 defaultCompany();
-                by.Visible = false;
                 FillUsers();
                 FillListGraphs();
                 graphsListBox.Enabled = false;
@@ -101,7 +100,7 @@ namespace Dash
             }
             else
             {
-                HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
+                HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 FillUsers();
             }
@@ -113,7 +112,7 @@ namespace Dash
             var name = e.EditingKeyValue;
 
             updateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
 
 
             e.Cancel = true;
@@ -176,7 +175,7 @@ namespace Dash
                     }
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Handle exception, perhaps log it and do the needful
                 }
@@ -228,7 +227,7 @@ namespace Dash
                     }
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -246,7 +245,7 @@ namespace Dash
             columnNames.Clear();
             config.Clear();
 
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -341,7 +340,7 @@ namespace Dash
 
         public void FillListGraphs()
         {
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -370,9 +369,9 @@ namespace Dash
                     graphsListBox.DataBind();
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }   //Connection will autmatically be closed here always
 
@@ -383,7 +382,7 @@ namespace Dash
         public void FillUsers()
         {
 
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -415,9 +414,7 @@ namespace Dash
 
 
                     }
-                    byUserListBox.DataSource = null;
-                    byUserListBox.DataSource = usersData;
-                    byUserListBox.DataBind();
+
                     usersGridView.DataSource = null;
                     usersGridView.DataSource = userObjectList;
                     usersGridView.DataBind();
@@ -459,7 +456,7 @@ namespace Dash
                 }
 
 
-                catch (Exception ex)
+                catch (Exception)
                 {
                     //Handle exception, perhaps log it and do the needful
                 }
@@ -511,7 +508,7 @@ namespace Dash
                     cmd.Dispose();
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -541,7 +538,7 @@ namespace Dash
         protected void registrationButton_Click(object sender, EventArgs e)
         {
 
-            using (SqlConnection conn = new SqlConnection(this.connection))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
@@ -557,7 +554,7 @@ namespace Dash
                         int next = Total_ID + 1;
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
+                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
 
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
@@ -575,7 +572,7 @@ namespace Dash
 
                             if (resultUsername > 0)
                             {
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
 
                             }
                             else
@@ -607,7 +604,7 @@ namespace Dash
                                     var id = getIdCompany(companiesList.SelectedValue);
                                     createUser.ExecuteNonQuery();
 
-                                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
+                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
 
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
@@ -626,7 +623,7 @@ namespace Dash
                                 catch (SqlException ex) when (ex.Number == 2627)
                                 {
                                     // Implement logging here.
-                                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'To uporabniško ime že obstaja, prosimo probajte še enkrat.')", true);
+                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'To uporabniško ime že obstaja, prosimo probajte še enkrat.')", true);
 
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
@@ -635,7 +632,7 @@ namespace Dash
                                     email.Text = "";
 
                                 }
-                                
+
                             }
                         }
 
@@ -664,7 +661,7 @@ namespace Dash
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
-                            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
+                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista. Poskusite še enkrat!')", true);
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
                         }
@@ -675,7 +672,7 @@ namespace Dash
                             {
                                 var username = TxtUserName.Text.Replace(" ", string.Empty); ;
                                 cmd.ExecuteNonQuery();
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
                                 TxtName.Text = "";
                                 TxtPassword.Text = "";
                                 TxtRePassword.Text = "";
@@ -706,7 +703,7 @@ namespace Dash
                 }
                 catch (Exception)
                 {
-                   
+
                 }
             }
         }
@@ -764,7 +761,7 @@ namespace Dash
                 }
                 catch (Exception)
                 {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
 
@@ -793,11 +790,11 @@ namespace Dash
 
                     }
 
-                   
+
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    
+
                 }
             }
             return companyInfo;
@@ -826,7 +823,7 @@ namespace Dash
                             id = cmd.ExecuteScalar();
 
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             continue;
                         }
@@ -845,7 +842,7 @@ namespace Dash
                         {
                             cmd.ExecuteNonQuery();
                         }
-                        catch (Exception e)
+                        catch (Exception)
                         {
                             continue;
                         }
@@ -853,11 +850,11 @@ namespace Dash
                     }
                 }
 
-               
+
 
                 catch (Exception)
                 {
-                    
+
                 }
             }
 
@@ -865,84 +862,14 @@ namespace Dash
 
 
         }
-        private void makeSQLqueryByUser()
-        {
 
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
-                    {
-                        var tempGraphStringFullOfStuff = byUserListBox.SelectedValues[i].ToString();
-                        string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
-                        string trimmed = trimmedless.Replace("-", "");
-                        find = String.Format($"SELECT id_permision-user from Users where uname='{trimmed}'");
-                        // execute query
-                        // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand(find, conn);
-                        try
-                        {
-                            id = cmd.ExecuteScalar();
-
-                        }
-                        catch (Exception e)
-                        {
-                            continue;
-                        }
-                        Int32 Total_ID = System.Convert.ToInt32(id);
-
-                        for (int j = 0; j < graphsListBox.Items.Count; j++)
-                        {
-
-                            if (graphsListBox.Items.ElementAt(i).Selected == true)
-                            {
-                                flag = 1;
-                            }
-                            else
-                            {
-                                flag = 0;
-                            }
-
-                            tempGraphString = values.ElementAt(j);
-
-                            finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                            var debug = finalQuerys;
-                            help.Add(debug.ToString());
-                            cmd = new SqlCommand(finalQuerys, conn);
-
-                            try
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-                            catch (Exception e)
-                            {
-
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
-                                var log = e;
-                            }
-                        }
-                    }
-
-                  
-                }
-                catch (Exception ex)
-                {
-                    
-                }
-            }
-
-
-        }
 
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
             if (usersGridView.GetSelectedFieldValues() == null)
             {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
             }
             else
             {
@@ -959,7 +886,7 @@ namespace Dash
                 {
 
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from permisions_user where uname='{deletedID}'", conn);
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
 
                     try
                     {
@@ -971,13 +898,13 @@ namespace Dash
 
                     catch (Exception error)
                     {
-                       
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                         var log = error;
                     }
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
 
                 }
@@ -1032,7 +959,7 @@ namespace Dash
                             }
 
                         }
-                        catch (Exception ex)
+                        catch (Exception)
                         {
                             continue;
                         }
@@ -1041,11 +968,11 @@ namespace Dash
 
 
 
-                  
+
                 }
                 catch (Exception)
                 {
-                    
+
                 }
             }
             return permisionsReturn;
@@ -1069,7 +996,7 @@ namespace Dash
 
                     // Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Handle exception, perhaps log it and do the needful
                 }
@@ -1104,7 +1031,7 @@ namespace Dash
                     {
                         cmd.ExecuteNonQuery();
 
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
 
 
                     }
@@ -1115,7 +1042,7 @@ namespace Dash
                         // Implement logging here.
                         var log = error;
 
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
                     }
 
@@ -1123,9 +1050,9 @@ namespace Dash
                     FillListGraphs();
                     FillUsers();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }
 
@@ -1198,22 +1125,19 @@ namespace Dash
 
                     var singular = plural[0].ToString();
                     SqlCommand cmd = new SqlCommand($"delete from Users where uname='{singular}'", conn);
-                    getIdPermision();
+
                     try
                     {
                         var company = getCompanyQuery(singular);
                         var spacelessCompany = company.Replace(" ", string.Empty);
                         cmd.ExecuteNonQuery();
 
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno brisanje.')", true);
-
-
                         FillListGraphs();
                         showConfig();
                         deletePermisionEntry();
                         FillUsers();
-                        Response.Redirect("tenantadmin.aspx");
 
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
 
                     }
 
@@ -1223,13 +1147,14 @@ namespace Dash
 
                         var log = error;
 
-                        Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                     }
 
 
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
                 }
             }
@@ -1240,110 +1165,11 @@ namespace Dash
 
 
 
-        protected void byUser_Click(object sender, EventArgs e)
-        {
-            if (by.Visible == true)
-            {
-                by.Visible = false;
-            }
-            else
-            {
-                by.Visible = true;
-            }
-        }
-
-        protected void saveByuser_Click(object sender, EventArgs e)
-        {
-
-            if (graphsListBox.SelectedValues == null | byUserListBox.SelectedValues == null)
-            {
-
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, Morate izbrati uporabnika in graf.')", true);
-            }
-            else
-            {
-                FillListGraphsNames();
-                makeSQLqueryByUser();
-                showConfigByUser();
-            }
-        }
-
-        private void showConfigByUser()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    columnNames.Clear();
-                    config.Clear();
-
-                    // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-                    // SET @ColList = ''
-                    // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-                    // EXEC(@SQLStatment
-                    if (byUserListBox.SelectedValues[0] != null)
-                    {
-                        var plural = usersGridView.GetSelectedFieldValues("uname");
-
-                        var singular = plural[0].ToString();
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-                    }
-                    else
-                    {
-                        var plural = usersGridView.GetSelectedFieldValues("uname");
-
-                        var singular = plural[0].ToString();
-                        byUserListBox.SelectedIndex = 0;
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-
-                    }
-
-                    // Documentation. This query is for getting all the permision table data from the user
-                    cmd = new SqlCommand(findIdString, conn);
-                    idNumber = cmd.ExecuteScalar();
-                    Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-
-                    permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-                    cmd = new SqlCommand(permisionQuery, conn);
 
 
 
-                    SqlCommand command = new SqlCommand(permisionQuery, conn);
-
-                    SqlDataReader reader =
-                    command.ExecuteReader(CommandBehavior.CloseConnection);
-                    while (reader.Read())
-                    {
-                        for (int i = 0; i < values.Count; i++)
-                        {
-                            int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                            if (bitValueTemp == 1)
-                            {
-                                graphsListBox.Items.ElementAt(i).Selected = true;
-                                valuesBool.Add(true);
-                            }
-                            else
-                            {
-                                graphsListBox.Items.ElementAt(i).Selected = false;
-                                valuesBool.Add(false);
-                            }
-                        }
-                    }
-                }
 
 
-
-                catch (Exception ex)
-                {
-                    //Handle exception, perhaps log it and do the needful
-                }
-            }
-
-        }
 
 
         protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1373,7 +1199,7 @@ namespace Dash
 
             // Call the client.
 
-            Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "showDialogSync()", true);
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
         }
 
         protected void usersGridView_SelectionChanged1(object sender, EventArgs e)
