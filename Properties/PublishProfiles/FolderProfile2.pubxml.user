@@ -4,18 +4,21 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\inetpub\wwwroot\active</_PublishTargetUrl>
-    <History>True|2022-02-01T12:59:02.0515129Z;True|2022-01-31T10:04:23.6646213+01:00;False|2022-01-31T10:02:49.0619293+01:00;</History>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\setcce-active</_PublishTargetUrl>
+    <History>True|2022-02-16T13:56:14.2744730Z;True|2022-02-01T13:59:02.0515129+01:00;True|2022-01-31T10:04:23.6646213+01:00;False|2022-01-31T10:02:49.0619293+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
       <publishTime>01/31/2022 09:54:42</publishTime>
     </File>
     <File Include="admin.aspx">
-      <publishTime>01/31/2022 09:54:45</publishTime>
+      <publishTime>02/16/2022 13:52:08</publishTime>
     </File>
     <File Include="administrationcompany.aspx">
-      <publishTime>01/31/2022 09:54:45</publishTime>
+      <publishTime>02/16/2022 13:52:08</publishTime>
+    </File>
+    <File Include="App_Data/Navigation.xml">
+      <publishTime>02/15/2022 09:44:35</publishTime>
     </File>
     <File Include="App_Readme/Elmah.txt">
       <publishTime>01/31/2022 09:54:42</publishTime>
@@ -31,6 +34,12 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="bin/AspNet.ScriptManager.jQuery.dll">
       <publishTime>01/31/2022 09:55:15</publishTime>
+    </File>
+    <File Include="bin/Dash.dll">
+      <publishTime>02/16/2022 14:55:36</publishTime>
+    </File>
+    <File Include="bin/Dash.pdb">
+      <publishTime>02/16/2022 14:55:36</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -644,8 +653,29 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Content/bootstrap.min.css.map">
       <publishTime>01/31/2022 09:54:42</publishTime>
     </File>
+    <File Include="Content/Images/arrow-left.svg">
+      <publishTime>02/06/2022 12:50:01</publishTime>
+    </File>
+    <File Include="Content/Images/arrow-right.svg">
+      <publishTime>02/06/2022 12:50:01</publishTime>
+    </File>
+    <File Include="Content/Images/clear-button.svg">
+      <publishTime>02/06/2022 12:50:01</publishTime>
+    </File>
+    <File Include="Content/Images/menu.svg">
+      <publishTime>02/06/2022 12:50:01</publishTime>
+    </File>
+    <File Include="Content/Images/search.svg">
+      <publishTime>02/06/2022 12:50:01</publishTime>
+    </File>
+    <File Include="Content/sidebar.css">
+      <publishTime>02/06/2022 12:43:38</publishTime>
+    </File>
     <File Include="Content/Site.css">
       <publishTime>01/31/2022 09:54:42</publishTime>
+    </File>
+    <File Include="Content/Site.js">
+      <publishTime>02/07/2022 09:56:54</publishTime>
     </File>
     <File Include="css/admin.css">
       <publishTime>01/31/2022 09:54:51</publishTime>
@@ -822,7 +852,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/31/2022 09:54:44</publishTime>
     </File>
     <File Include="home.aspx">
-      <publishTime>01/31/2022 09:54:52</publishTime>
+      <publishTime>02/06/2022 10:58:35</publishTime>
     </File>
     <File Include="images/background.png">
       <publishTime>01/31/2022 09:54:52</publishTime>
@@ -900,10 +930,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/31/2022 09:54:52</publishTime>
     </File>
     <File Include="index.aspx">
-      <publishTime>01/31/2022 11:59:20</publishTime>
+      <publishTime>02/16/2022 13:52:08</publishTime>
     </File>
     <File Include="indextenant.aspx">
-      <publishTime>02/01/2022 13:52:20</publishTime>
+      <publishTime>02/16/2022 13:52:08</publishTime>
     </File>
     <File Include="js/.subl51.tmp">
       <publishTime>01/31/2022 09:54:52</publishTime>
@@ -929,14 +959,23 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="js/jquery.main.js">
       <publishTime>01/31/2022 09:54:52</publishTime>
     </File>
+    <File Include="libman.json">
+      <publishTime>02/07/2022 10:55:03</publishTime>
+    </File>
     <File Include="Logon.aspx">
-      <publishTime>01/31/2022 09:54:44</publishTime>
+      <publishTime>02/16/2022 13:52:09</publishTime>
     </File>
     <File Include="membership.aspx">
       <publishTime>01/31/2022 09:54:52</publishTime>
     </File>
     <File Include="MobileDashboard.aspx">
-      <publishTime>01/31/2022 09:54:44</publishTime>
+      <publishTime>02/16/2022 13:52:08</publishTime>
+    </File>
+    <File Include="Navigation.ascx">
+      <publishTime>02/16/2022 13:52:08</publishTime>
+    </File>
+    <File Include="Navigation.xml">
+      <publishTime>02/07/2022 08:56:19</publishTime>
     </File>
     <File Include="package.json">
       <publishTime>01/31/2022 09:55:15</publishTime>
@@ -1556,8 +1595,14 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     <File Include="Scripts/WebForms/WebUIValidation.js">
       <publishTime>01/31/2022 09:54:44</publishTime>
     </File>
+    <File Include="Search.ascx">
+      <publishTime>02/16/2022 13:52:09</publishTime>
+    </File>
+    <File Include="SidebarNavigation.Master">
+      <publishTime>02/16/2022 13:52:10</publishTime>
+    </File>
     <File Include="Site.Master">
-      <publishTime>01/31/2022 09:54:45</publishTime>
+      <publishTime>02/07/2022 11:24:27</publishTime>
     </File>
     <File Include="Site.Mobile.Master">
       <publishTime>01/31/2022 09:54:45</publishTime>
@@ -1566,13 +1611,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>01/31/2022 09:54:45</publishTime>
     </File>
     <File Include="tenantadmin.aspx">
-      <publishTime>01/31/2022 09:55:19</publishTime>
+      <publishTime>02/16/2022 14:00:36</publishTime>
     </File>
     <File Include="ViewSwitcher.ascx">
       <publishTime>01/31/2022 09:54:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/31/2022 10:02:44</publishTime>
+      <publishTime>02/16/2022 14:56:03</publishTime>
     </File>
   </ItemGroup>
 </Project>

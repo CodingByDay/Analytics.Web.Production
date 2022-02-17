@@ -675,7 +675,7 @@ namespace Dash
                             {
                                 var username = TxtUserName.Text.Replace(" ", string.Empty); ;
                                 cmd.ExecuteNonQuery();
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Uspešno spremenjeni podatki.')", true);
+                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
                                 TxtName.Text = "";
                                 TxtPassword.Text = "";
                                 TxtRePassword.Text = "";
@@ -706,7 +706,7 @@ namespace Dash
                 }
                 catch (Exception)
                 {
-                    var debug = true;
+                   
                 }
             }
         }
@@ -793,11 +793,11 @@ namespace Dash
 
                     }
 
-                    //Perform DB operation here i.e. any CRUD operation 
+                   
                 }
                 catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    
                 }
             }
             return companyInfo;
@@ -857,7 +857,7 @@ namespace Dash
 
                 catch (Exception)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    
                 }
             }
 
@@ -926,11 +926,11 @@ namespace Dash
                         }
                     }
 
-                    //Perform DB operation here i.e. any CRUD operation 
+                  
                 }
                 catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    
                 }
             }
 
@@ -971,7 +971,7 @@ namespace Dash
 
                     catch (Exception error)
                     {
-                        // Implement logging here.
+                       
                         Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                         var log = error;
                     }
@@ -1041,11 +1041,11 @@ namespace Dash
 
 
 
-                    //Perform DB operation here i.e. any CRUD operation 
+                  
                 }
                 catch (Exception)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    
                 }
             }
             return permisionsReturn;

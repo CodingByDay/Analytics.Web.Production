@@ -1432,8 +1432,7 @@ namespace Dash
                         string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
                         string trimmed = trimmedless.Replace("-", "");
                         find = String.Format($"SELECT id_permision_user from Users where uname='{trimmed}'");
-                        // execute query
-                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                      
                         cmd = new SqlCommand(find, conn);
                         try
                         {
@@ -1600,14 +1599,18 @@ namespace Dash
 
 
                         FillListGraphs();
-                        /// fillCompanies();
+                      
                         FillListAdmin();
                         cmd.Dispose();
- 
+
+                        string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
 
 
+                        
 
-                        FillUsers(1);
+                        int companyID =   getIdCompany(companyName);
+
+                        FillUsers(companyID);
                        
                     }
                 }

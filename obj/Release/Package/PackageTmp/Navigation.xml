@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<namespace Url="javascript:void(0);" Title="DevExpress.Web.ASPxCallback Namespace">
+  <section Title="Grid">
+    <page Url="~/?x=ASPxGridView" Title="ASPxGridView" Tags="ASPxGridView, Grid, GridView" />
+    <group Title="Grid Editing" >
+      <page Url="~/?x=Grid Edit Modes" Title="Grid Edit Modes" Tags="grid, edit, modes"/>
+      <page Url="~/?x=Edit Forms" Title="Edit Forms" Tags="edit, forms"/>
+      <page Url="~/?x=Batch Editing and Updating" Title="Batch Editing and Updating" Tags="batch, edit"/>
+    </group>
+    <group Title="Filtering" >
+      <page Url="~/?x=Data Filter Row" Title="Data Filter Row" Tags="filter row, row, filter"/>
+      <page Url="~/?x=Search Panel" Title="Search Panel" Tags="filter, search panel"/>
+      <page Url="~/?x=Header Panel" Title="Header Panel" Tags="filer, header"/>
+      <page Url="~/?x=Date Range Header Filter" Title="Date Range Header Filter" Tags="filter, date, range, picker"/>
+    </group>
+    <group Title="Grid Columns" >
+      <page Url="~/?x=Resizing Columns" Title="Resizing Columns" Tags="resizing, size"/>
+      <page Url="~/?x=Custom Command Buttons" Title="Custom Command Buttons" Tags="command, custom, button"/>
+      <page Url="~/?x=Header Bands" Title="Header Bands" Tags="band, header"/>
+      <page Url="~/?x=Data Cell Bands" Title="Data Cell Bands" Tags="data, cell, band"/>
+      <page Url="~/?x=Column Moving" Title="Column Moving" Tags="column, moving"/>
+    </group>
+  </section>
+  <section Title="Tree List">
+    <page Url="~/?x=ASPxTreeList" Title="ASPxTreeList" Tags="ASPxTreeList, tree, list" />
+    <group Title="Data Binding" >
+      <page Url="~/?x=Build Tree from Plain Data" Title="Build Tree from Plain Data" Tags="data, bind, plain" />
+      <page Url="~/?x=Display Hierarchical Data" Title="Display Hierarchical Data" Tags="hierarchical, data"/>
+      <page Url="~/?x=Unbound Mode" Title="Unbound Mode" Tags="unbound, mode"/>
+    </group>
+    <group Title="Data Editing" >
+      <page Url="~/?x=Edit Modes" Title="Edit Modes" Tags="edit, mode"/>
+      <page Url="~/?x=Edit Form Template" Title="Edit Form Template" Tags="edit, form, template"/>
+      <page Url="~/?x=Validation" Title="Validation" Tags="validation, edit"/>
+      <page Url="~/?x=File Manager" Title="File Manager" Tags="edit, file manager"/>
+    </group>
+    <group Title="Filtering" >
+      <page Url="~/?x=Data Filter Row" Title="Data Filter Row" Tags="filter, row"/>
+      <page Url="~/?x=Search Panel" Title="Search Panel" Tags="filter, search"/>
+      <page Url="~/?x=Header Filter" Title="Header Filter" Tags="filter, header"/>
+      <page Url="~/?x=Date Range Header Filter" Title="Date Range Header Filter" Tags="filter, range, date, picker"/>
+      <page Url="~/?x=Filter Control" Title="Filter Control" Tags="filter, cotrol, builder"/>
+    </group>
+  </section>
+</namespace>
