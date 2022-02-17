@@ -67,6 +67,8 @@ namespace Dash
         private string admin_id;
         private string databaseName;
         private bool isEditHappening = false;
+        private bool isEditUser;
+        private string userRightNow;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -103,7 +105,6 @@ namespace Dash
                // admin.Visible = true;
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
-                by.Visible = false;
                 companiesGridView.FocusedRowIndex = 0;
 
                 var beginingID = 1;
@@ -562,8 +563,7 @@ namespace Dash
                     }
 
 
-                    byUserListBox.DataSource = byUserList;
-                    byUserListBox.DataBind();
+                
 
 
                     usersGridView.DataSource = usersList;
@@ -614,37 +614,7 @@ namespace Dash
      
         }
 
-        //private void fillCompanies()
-        //{
-
-        //    try
-        //    {
-        //        companiesData.Clear();
-        //        conn = new SqlConnection(connection);
-        //        conn.Open();
-        //        // Create SqlCommand to select pwd field from users table given supplied userName.
-        //        cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
-        //        // Execute command and fetch pwd field into lookupPassword string.
-        //        SqlDataReader sdr = cmd.ExecuteReader();
-        //        while (sdr.Read())
-        //        {
-        //            companiesData.Add(sdr["company_name"].ToString());
-
-        //        }
-        //        companiesListBox.DataSource = companiesData;
-        //        companiesListBox.DataBind();
-
-
-        //        cmd.Dispose();
-        //        conn.Close();
-
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Response.Write(ex.ToString());
-        //    }
-        //}
+   
 
         private void updateForm()
         {
@@ -653,9 +623,18 @@ namespace Dash
                 try
                 {
                     conn.Open();
+                    isEditUser = true;
 
-                    var userRightNow = usersGridView.GetSelectedFieldValues("uname");
-                 
+                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
+                    {
+                       userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                    }
+                    else
+                    {
+                    
+                      userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
+
+                    }
                     SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -722,6 +701,8 @@ namespace Dash
             {
                 try
                 {
+
+                    isEditUser = true;
                     conn.Open();
 
                     SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
@@ -910,6 +891,7 @@ namespace Dash
                             }
                             catch (Exception ex)
                             {
+                       
                                 Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                                 var debug = ex.Message;
                                 TxtName.Text = "";
@@ -1225,25 +1207,24 @@ namespace Dash
             {
                 try
                 {
-                    conn.Open();
-
-                    SqlCommand cmd = new SqlCommand($"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'", conn);
-                    var debug = $"delete from Users where uname='{usersGridView.GetSelectedFieldValues("uname")}'";
-                    deletedID = usersGridView.GetSelectedFieldValues("uname").ToString();
-                    getIdPermision();
+                        conn.Open();
+                        string username = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                        SqlCommand cmd = new SqlCommand($"delete from Users where uname='{username}'", conn);
+                        deletedID = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                        getIdPermision();
                   
-                        var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname").ToString());
+                        var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
                         var spacelessCompany = company.Replace(" ", string.Empty);
                         idFromString = getIdCompany(spacelessCompany);
 
                         cmd.ExecuteNonQuery();
-                        Response.Write($"<script type=\"text/javascript\">alert('Uspešno brisanje.'  );</script>");
   
                         FillListGraphs();
                         List<String> values = FillListGraphsNames();
                         showConfig(values);
                         deletePermisionEntry();                                   
                         FillUsers(idFromString);
+                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
                 }
                 catch (Exception)
                 {
@@ -1418,74 +1399,7 @@ namespace Dash
        
         }
 
-        private void makeSQLqueryByUser()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    for (int i = 0; i < byUserListBox.SelectedValues.Count; i++)
-                    {
-                        var tempGraphStringFullOfStuff = byUserListBox.SelectedValues[i].ToString();
-                        string trimmedless = String.Concat(tempGraphStringFullOfStuff.Where(c => !Char.IsWhiteSpace(c)));
-                        string trimmed = trimmedless.Replace("-", "");
-                        find = String.Format($"SELECT id_permision_user from Users where uname='{trimmed}'");
-                      
-                        cmd = new SqlCommand(find, conn);
-                        try
-                        {
-                            id = cmd.ExecuteScalar();
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-                        Int32 Total_ID = System.Convert.ToInt32(id);
-
-                        for (int j = 0; j < graphsGridView.VisibleRowCount; j++)
-                        {
-
-                            if (graphsGridView.Selection.IsRowSelected(i) == true)
-                            {
-                                flag = 1;
-                            }
-                            else
-                            {
-                                flag = 0;
-                            }
-
-                            tempGraphString = values.ElementAt(j);
-
-                            finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                            var debug = finalQuerys;
-                            help.Add(debug.ToString());
-                            cmd = new SqlCommand(finalQuerys, conn);
-
-                            try
-                            {
-                                cmd.ExecuteNonQuery();
-                            }
-                            catch (Exception e)
-                            {
-                                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
-
-
-                            }
-                        }
-                    }
-                    cmd.Dispose();
-                }
-                catch (Exception )
-                {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-         
-        }
-
+     
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
@@ -1709,113 +1623,18 @@ namespace Dash
 
 
 
-        protected void byUser_Click(object sender, EventArgs e)
-        {
-            if (by.Visible == true)
-            {
-                by.Visible = false;
-            }
-            else
-            {
-                by.Visible = true;
-            }
-        }
+      
 
-        protected void saveByuser_Click(object sender, EventArgs e)
-        {
+     
 
-            if (graphsGridView.GetSelectedFieldValues() == null | byUserListBox.SelectedValues == null)
-            {
-                Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnike in graf.')", true);
-            }
-
-            else
-            {
-                FillListGraphsNames();
-                makeSQLqueryByUser();
-                showConfigByUser();
-            }
-        }
-
-                                   //Default.aspx.cs
+        //Default.aspx.cs
         public static bool testConnection()
         {
             return true;
         }
 
 
-        private void showConfigByUser()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    columnNames.Clear();
-                    config.Clear();
-
-                    // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-                    // SET @ColList = ''
-                    // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-                    // EXEC(@SQLStatment
-
-                    if (byUserListBox.SelectedValues[0] != null)
-                    {
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{byUserListBox.SelectedValues[0]}'");
-                    }
-                    else
-                    {
-                        byUserListBox.SelectedIndex = 0;
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{byUserListBox.SelectedValues[0]}'");
-
-                    }
-                    // Documentation. This query is for getting all the permision table data from the user
-                    cmd = new SqlCommand(findIdString, conn);
-                    idNumber = cmd.ExecuteScalar();
-                    Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-                    permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-                    cmd = new SqlCommand(permisionQuery, conn);
-                    using (SqlConnection connection = new SqlConnection(
-                      this.connection))
-                    {
-                        SqlCommand command = new SqlCommand(permisionQuery, connection);
-                        connection.Open();
-                        SqlDataReader reader =
-                        command.ExecuteReader(CommandBehavior.CloseConnection);
-                        while (reader.Read())
-                        {
-                            for (int i = 0; i < values.Count; i++)
-                            {
-                                int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                                if (bitValueTemp == 1)
-                                {
-
-                                    graphsGridView.Selection.SetSelection(i, true);
-                                    valuesBool.Add(true);
-                                }
-                                else
-                                {
-                                    graphsGridView.Selection.SetSelection(i, false);
-                                    valuesBool.Add(false);
-                                }
-                            }
-                        }
-
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Page.ClientScript.RegisterStartupScript(this.GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-           
-        }
-
+       
 
         protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -1832,6 +1651,7 @@ namespace Dash
             email.Text = "";
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
+            isEditUser = false;
         }
 
 
@@ -1869,7 +1689,7 @@ namespace Dash
 
         protected void new_user_ServerClick2(object sender, EventArgs e)
         {
-
+            isEditUser = false;
             TxtUserName.Enabled = true;
             email.Enabled = true;
             TxtUserName.Text = "";

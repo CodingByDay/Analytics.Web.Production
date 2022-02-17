@@ -342,18 +342,8 @@
     <SettingsBootstrap RenderOption="Primary" />
 
           </dx:BootstrapButton>
-      <dx:BootstrapButton runat="server" ID ="byUser" CssClasses-Control="user"  OnClick="byUser_Click" Text="Po uporabniku">
-    <SettingsBootstrap RenderOption="Info" />
-</dx:BootstrapButton>
-	</div>
-	 <div class="column" id="by" runat="server">
-	 <div class="reverse">
-     	<dx:BootstrapListBox ID="byUserListBox" runat="server" OnSelectedIndexChanged="byUserListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true" CssClasses-Control="control"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
-        <CssClasses Control="control"  />
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-</dx:BootstrapListBox>
+      
          <br />
-      <center><dx:BootstrapButton runat="server" ID ="saveByUser" OnClick="saveByuser_Click" Text="Shrani">
     <SettingsBootstrap RenderOption="Primary" />
 </dx:BootstrapButton></center>
 	</div>
