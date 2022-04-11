@@ -129,10 +129,6 @@ namespace Dash
                 // admin.Visible = true;
                 FillListGraphs();
 
-
-
-
-
                 if (companiesGridView.Selection.Count != 0)
                 {
                     var plurals = companiesGridView.GetSelectedFieldValues("company_name");
@@ -148,9 +144,6 @@ namespace Dash
                 }
 
             }
-
-
-
 
 
 
@@ -1579,12 +1572,13 @@ namespace Dash
 
         private int getIdCompany(string current)
         {
+            string spaceless = current.Trim();
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current.Replace(" ", string.Empty)}'", conn);
+                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{spaceless}'", conn);
                     result = cmd.ExecuteScalar();
                     int finalID = System.Convert.ToInt32(result);
                     return finalID;
