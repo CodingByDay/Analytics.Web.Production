@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<namespace Url="javascript:void(0);" Title="DevExpress.Web.ASPxCallback Namespace">
+	
+	
+	<section Title="Account">
+			<page Url="?x=account" Title="My account" Tags="grid, edit, modes"/>
+	
+
+	</section>
+
+	<section Title="Companies">
+			<page Url="?x=companies" Title="Edit and overview" Tags="grid, edit, modes"/>
+
+	
+
+	</section>
+
+	<section Title="User managment">
+	
+			<page Url="?x=register" Title="Register user" Tags="grid, edit, modes"/>
+			<page Url="?x=overview-user" Title="Overview and edit" Tags="grid, edit, modes"/>
+
+	
+
+	</section>
+
+	<section Title="Graphs managment">
+
+			<page Url="?x=permisions" Title="Permisions" Tags="grid, edit, modes"/>
+
+
+
+
+	</section>
+
+</namespace>
