@@ -41,6 +41,7 @@ namespace Dash
         protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
+            Session["current"] = string.Empty;          
             Response.Redirect("home.aspx", true);
 
 

@@ -31,8 +31,6 @@ function customizeWidgets(sender, args) {
         initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
-
-
         parName.push(dashboard.GetParameters().GetParameterList()[0].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[1].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[2].Name);
@@ -47,12 +45,9 @@ function customizeWidgets(sender, args) {
             window.textNew = textToCheck;
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
-
                      // for each loop for every found parameter
                    parameterized_values.forEach((singular) => {
-
                    const found = parName.find(element => element == singular)
-
                    indexOfElement = parName.indexOf(found)
 
                        if (found != null && indexOfElement != -1) {

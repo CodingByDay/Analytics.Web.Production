@@ -26,7 +26,10 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-
+            if (Session["current"].ToString() != string.Empty)
+            {
+                ASPxDashboard3.InitialDashboardId =Session["current"].ToString();
+            }
 
             authenticate();
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -42,7 +45,7 @@ namespace Dash
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
 
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-
+            ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
             ASPxDashboard3.Visible = true;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
@@ -54,7 +57,7 @@ namespace Dash
             if (!IsPostBack)
 
             {
-
+               
                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
 
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
@@ -66,7 +69,6 @@ namespace Dash
                 {
 
                     Response.Cookies["state"].Value = "light";
-
                 }
                 else
                 {
@@ -80,18 +82,17 @@ namespace Dash
                         case "dark":
                             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
                             break;
-
                     }
                 }
-
-
-
-
             }
-
-
         }
 
+
+
+        private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
+        {
+            Response.Cookies["current"].Value = e.DashboardId.ToString();
+        }
 
         private void authenticate()
 

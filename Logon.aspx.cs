@@ -194,25 +194,9 @@ namespace Dash
         {
             var role = getRole(txtUserName.Value, txtUserPass.Value);
             Session["conn"] = "";
-            //if (Session["passport"].ToString() == "true")
-            //{
-            //    Session["conn"] = databaseList.SelectedValue;
-            validate();
-            //}
-            //else
-            //{
 
-            //    if (role == "SuperAdmin")
-            //    {
-            //        database.Visible = true;
-            //        passport = true;
-            //        Session["passport"] = "true";
-            //    }
-            //    else
-            //    {
-            //        validate();
-            //    }
-            //}
+            validate();
+
 
 
         }
@@ -256,7 +240,7 @@ namespace Dash
                 ck.Path = FormsAuthentication.FormsCookiePath;
                 Response.Cookies.Add(ck);
 
-
+                Session["current"] = "";
                 string strRedirect;
                 role = getRole(txtUserName.Value, txtUserPass.Value);
 
@@ -270,6 +254,7 @@ namespace Dash
                     Session["FirstLoad"] = "true";
                     // For some reason this doesn't fire.
                     Session["value"] = "Skaza";
+
                     Response.Redirect(strRedirect, true);
                 }
                 else

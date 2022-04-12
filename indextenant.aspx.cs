@@ -24,9 +24,12 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["current"].ToString() != string.Empty)
+            {
+                ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
+            }
 
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
@@ -130,46 +133,7 @@ namespace Dash
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            if (Session["DesignerPayed"].ToString() == "true")
-            {
-
-                Session["FirstLoad"] = "false";
-
-                string _initial = Session["InitialPassed"].ToString();
-                string ID = e.DashboardId;
-                var result = checkDB(ID);
-                Session["id"] = e.DashboardId.ToString();
-                if (Session["flag"].ToString() == "false")
-                {
-                    if (result)
-                    {
-                        Session["mode"] = "ViewerOnly";
-                        Session["flag"] = "false";
-                        if (_initial != "false")
-                        {
-                            DevExpress.Web.ASPxWebControl.RedirectOnCallback(Request.RawUrl);
-                            Session["InitialPassed"] = "false";
-
-                        }
-                    }
-                    else
-                    {
-                        Session["mode"] = "Designer";
-                        Session["flag"] = "true";
-
-                    }
-                }
-                else
-                {
-                    Session["flag"] = "false";
-
-                    Session["InitialPassed"] = "true";
-                }
-            }
-            else
-            {
-
-            }
+            Session["Current"] = e.DashboardId;
         }
 
         private bool checkDB(string ID)
