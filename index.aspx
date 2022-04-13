@@ -36,8 +36,26 @@ height: 100% !important;
 
 
             function onItemCaptionToolbarUpdated(s, e) {
-                console.log("works");
-              
+                var list = dashboard.GetParameters().GetParameterList();
+                if (list.length > 0) {
+
+                    window.item_caption = e.Options.staticItems[0].text;
+                    var parameterized_values = regex_return(item_caption);
+                    if (parameterized_values.length != 0) {
+                        parameterized_values.forEach((singular) => {
+                            const found = list.find(element => element.Name == singular)
+                            indexOfElement = list.indexOf(found)
+                            if (found != null && indexOfElement != -1) {
+                                text_to_replace = "#" + found.Name
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                                console.log(window.item_caption)
+                                e.Options.staticItems[0].text = window.item_caption;
+                            }
+                        })
+                    }
+
+                }
             }
 
 
