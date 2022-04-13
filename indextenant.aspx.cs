@@ -24,6 +24,7 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
             if (Session["current"].ToString() != string.Empty)
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
@@ -57,10 +58,11 @@ namespace Dash
 
 
             string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
-            // string TARGET_URL = "https://localhost:44351/";
+
             if (Session != null)
 
             {
+
                 if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
                 {
                     if (Session["UserAllowed"].ToString() == "true")
@@ -133,7 +135,7 @@ namespace Dash
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            Session["Current"] = e.DashboardId;
+            Session["current"] = e.DashboardId;
         }
 
         private bool checkDB(string ID)

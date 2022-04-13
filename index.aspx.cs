@@ -28,7 +28,7 @@ namespace Dash
 
             if (Session["current"].ToString() != string.Empty)
             {
-                ASPxDashboard3.InitialDashboardId =Session["current"].ToString();
+                ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
             }
 
             authenticate();
@@ -57,7 +57,8 @@ namespace Dash
             if (!IsPostBack)
 
             {
-               
+                
+
                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
 
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
@@ -91,7 +92,7 @@ namespace Dash
 
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
         {
-            Response.Cookies["current"].Value = e.DashboardId.ToString();
+           Session["current"]= e.DashboardId.ToString();
         }
 
         private void authenticate()

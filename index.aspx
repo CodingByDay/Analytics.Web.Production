@@ -23,7 +23,7 @@
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-
+        <script src="js/application/admin.js"></script>
         
 <style>
 #MainContent_ASPxDashboard3 {
@@ -36,12 +36,8 @@ height: 100% !important;
 
 
             function onItemCaptionToolbarUpdated(s, e) {
-                console.log("Works");
-           
-                var list = dashboard.GetParameters().GetParameterList();
-                if (list.length > 0) {
-                    e.Options.staticItems[0].text += ' TEST' + dash.GetParameters().GetParameterList()[0].Value;
-                }
+                console.log("works");
+              
             }
 
 
@@ -207,7 +203,9 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"             
+                          ItemWidgetCreated="customizeWidgets"
+                          ItemWidgetUpdated="updatecustomizeWidgets"        
+                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>

@@ -6,6 +6,31 @@ updatedPayload = [];
  * @param args
  */
 
+function onItemCaptionToolbarUpdated(s, e) {
+    console.log("first")
+    var list = dashboard.GetParameters().GetParameterList();
+    if (list.length > 0) {
+
+        window.item_caption = e.Options.staticItems[0].text;
+        var parameterized_values = regex_return(item_caption);
+        if (parameterized_values.length != 0) {
+                parameterized_values.forEach((singular) => {
+                const found = list.find(element => element.Name == singular)
+                indexOfElement = list.indexOf(found)
+                if (found != null && indexOfElement != -1) {
+                    text_to_replace = "#" + found.Name
+                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                    console.log(window.item_caption)
+                    e.Options.staticItems[0].text = window.item_caption;
+                } 
+            })
+        }
+
+    }
+}
+
+
 
 
 
@@ -17,15 +42,11 @@ function regex_return(text_to_search) {
     }
     return matches;
 }
-
-
-
-
-
-
 function customizeWidgets(sender, args) {
+
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
+   
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
         initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
@@ -38,6 +59,9 @@ function customizeWidgets(sender, args) {
 
 
         var grid = args.GetWidget();
+
+        
+
 
         var columns = grid.option("columns");
         for (var i = 0; i < columns.length; i++) {
@@ -72,6 +96,8 @@ function customizeWidgets(sender, args) {
 
 
 function updatecustomizeWidgets(sender, args) {
+    
+
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
 
@@ -129,8 +155,6 @@ function updatecustomizeWidgets(sender, args) {
 
 
 payload = [];
-
-
 
 var extension;
 

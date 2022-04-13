@@ -63,6 +63,7 @@
 
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
+                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           ItemWidgetCreated="customizeWidgets"
                           ItemWidgetUpdated="updatecustomizeWidgets"                   
                           DashboardInitialized="correctTheLoadingState"                      
