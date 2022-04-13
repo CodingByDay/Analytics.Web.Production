@@ -47,7 +47,11 @@ height: 100% !important;
                             indexOfElement = list.indexOf(found)
                             if (found != null && indexOfElement != -1) {
                                 text_to_replace = "#" + found.Name
-                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                try {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                } catch (err) {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                }
                                 window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
                                 console.log(window.item_caption)
                                 e.Options.staticItems[0].text = window.item_caption;
