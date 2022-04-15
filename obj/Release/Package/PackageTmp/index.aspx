@@ -23,7 +23,7 @@
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-
+        <script src="js/application/admin.js"></script>
         
 <style>
 #MainContent_ASPxDashboard3 {
@@ -36,11 +36,29 @@ height: 100% !important;
 
 
             function onItemCaptionToolbarUpdated(s, e) {
-                console.log("Works");
-           
                 var list = dashboard.GetParameters().GetParameterList();
                 if (list.length > 0) {
-                    e.Options.staticItems[0].text += ' TEST' + dash.GetParameters().GetParameterList()[0].Value;
+
+                    window.item_caption = e.Options.staticItems[0].text;
+                    var parameterized_values = regex_return(item_caption);
+                    if (parameterized_values.length != 0) {
+                        parameterized_values.forEach((singular) => {
+                            const found = list.find(element => element.Name == singular)
+                            indexOfElement = list.indexOf(found)
+                            if (found != null && indexOfElement != -1) {
+                                text_to_replace = "#" + found.Name
+                                try {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                } catch (err) {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                }
+                                window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                                console.log(window.item_caption)
+                                e.Options.staticItems[0].text = window.item_caption;
+                            }
+                        })
+                    }
+
                 }
             }
 
@@ -207,7 +225,9 @@ height: 100% !important;
 
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"             
+                          ItemWidgetCreated="customizeWidgets"
+                          ItemWidgetUpdated="updatecustomizeWidgets"        
+                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           DashboardInitialized="correctTheLoadingState"                      
                           />
     </dx:ASPxDashboard>
