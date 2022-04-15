@@ -30,51 +30,32 @@ namespace Dash
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
             }
-
             authenticate();
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
-
             // Hide the back button.  
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-
             admin.Visible = false;
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
-
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
             ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
             ASPxDashboard3.Visible = true;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
-
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
             if (!IsPostBack)
-
-            {
-                
-
+            {        
                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
-
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-
                 HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
-
-
                 if (Request.Cookies.Get("state") is null)
                 {
-
                     Response.Cookies["state"].Value = "light";
                 }
                 else
                 {
                     state = Request.Cookies.Get("state").Value;
-
                     switch (state)
                     {
                         case "light":

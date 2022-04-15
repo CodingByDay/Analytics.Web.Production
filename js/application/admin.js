@@ -9,7 +9,6 @@ updatedPayload = [];
 function onItemCaptionToolbarUpdated(s, e) {
     var list = dashboard.GetParameters().GetParameterList();
     if (list.length > 0) {
-
         window.item_caption = e.Options.staticItems[0].text;
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
@@ -59,20 +58,14 @@ function customizeWidgets(sender, args) {
         parName.push(dashboard.GetParameters().GetParameterList()[1].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[2].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[3].Name);
-
-
         var grid = args.GetWidget();
-
-        
-
-
         var columns = grid.option("columns");
         for (var i = 0; i < columns.length; i++) {
             var textToCheck = columns[i].caption;
             window.textNew = textToCheck;
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
-                     // for each loop for every found parameter
+  
                    parameterized_values.forEach((singular) => {
                    const found = parName.find(element => element == singular)
                    indexOfElement = parName.indexOf(found)
@@ -88,13 +81,9 @@ function customizeWidgets(sender, args) {
                            window.textNew = window.textNew.replace(text_to_replace, text_replace);
                            console.log(window.textNew)
                            columns[i].caption = window.textNew;
-                    } else {
-                       
-                    }
+                    } 
                 })
-            } else {
-              
-            }
+            } 
 
         }
         grid.option("columns", columns);
@@ -103,42 +92,29 @@ function customizeWidgets(sender, args) {
 
 
 function updatecustomizeWidgets(sender, args) {
-    
-
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
-
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
-
         initialPayload = [];
         initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
-
-
         parName.push(dashboard.GetParameters().GetParameterList()[0].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[1].Name);
         parName.push(dashboard.GetParameters().GetParameterList()[2].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[3].Name);
-
-       
+        parName.push(dashboard.GetParameters().GetParameterList()[3].Name);      
         var grid = args.GetWidget();
         var columns = grid.option("columns");
         for (var i = 0; i < columns.length; i++) {
             var textToCheck = columns[i].caption;
             window.textNew = textToCheck;
-
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
-
-                // for each loop for every found parameter
+                
                 parameterized_values.forEach((singular) => {
-
                     const found = parName.find(element => element == singular)
-
                     indexOfElement = parName.indexOf(found)
-
                     if (found != null && indexOfElement != -1) {
 
                         text_to_replace = "#" + found
@@ -150,13 +126,9 @@ function updatecustomizeWidgets(sender, args) {
                         window.textNew = window.textNew.replace(text_to_replace, text_replace);
                         console.log(window.textNew)
                         columns[i].caption = window.textNew;
-                    } else {
-                     
-                    }
+                    } 
                 })
-            } else {
-               
-            }
+            } 
         }
         grid.option("columns", columns);
     }
