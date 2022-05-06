@@ -25,9 +25,12 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (Session["current"].ToString() != string.Empty)
+        
+
+            if (!string.IsNullOrEmpty(Session["current"] as string))
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
+
             }
 
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;

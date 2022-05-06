@@ -32,9 +32,11 @@ header {
     flex-flow: row wrap;
     justify-content: center;
     margin: 5px 0;
+
 }
 
 .column {
+    
     flex: 1;
     margin: 2px;
     padding: 10px;

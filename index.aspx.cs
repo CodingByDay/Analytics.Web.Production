@@ -26,10 +26,13 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            if (Session["current"].ToString() != string.Empty)
+
+            if (!string.IsNullOrEmpty(Session["current"] as string))
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
             }
+
+
             authenticate();
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;

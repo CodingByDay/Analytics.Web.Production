@@ -37,16 +37,17 @@
                      {
                      return false;
                      }
-             
-
-
-    
-        }
+                  }
 
 
 
-      </script>
-    
+    </script>
+    <style>
+
+   
+
+
+    </style>
     <script>
 
 
@@ -168,7 +169,7 @@
 
 		</div>
 	
-<div class="wrapper">
+
 
 	<header>
        
@@ -180,11 +181,7 @@
 		</div>
 
 
-<section class="columns">
-	
-	<div class="column">
-		<h2></h2>
-		<p></h1>
+
 			
 	</header>
 
@@ -345,10 +342,19 @@
       
          <br />
     <SettingsBootstrap RenderOption="Primary" />
-</dx:BootstrapButton></center>
+
 	</div>
 	</div>
+
 </section>	
+
+
+
+
+
+
+
+
 
 	
 	<section class="columns">
