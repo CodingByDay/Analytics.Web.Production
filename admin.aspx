@@ -25,11 +25,7 @@
              [System.Web.Services.WebMethod(EnableSession = true)]
              public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
              {
-
                  var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
-
-
-
                  if(result)
                     {
                      return true;
@@ -38,7 +34,6 @@
                      return false;
                      }
                   }
-
 
 
     </script>
@@ -54,10 +49,11 @@
             
           display: flex;  
           justify-content: center;
-          gap: 10vh;
+          gap: 7vh;
           align-items: center;
           min-height: 150%;
-          margin-bottom:20vh;
+        
+      
         }
    
         .grid {
@@ -65,12 +61,7 @@
         }
 
 
-        .grid, .control, graph {
-            min-width: 120%;
-            min-height:30vh;
-            max-height:30vh;
-
-        }
+ 
 
     </style>
     <script>
@@ -188,8 +179,8 @@
              margin-right: 3px;
         }
       .control_obj {
-          min-width: 42vh;
-          width: 42vh;
+          min-width: 60vh;
+          width: 60vh;
       }
     </style>
 
