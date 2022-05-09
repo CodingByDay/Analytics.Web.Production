@@ -5,14 +5,14 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\inetpub\wwwroot\current-analytics</_PublishTargetUrl>
-    <History>True|2022-04-15T06:19:45.6283169Z;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
+    <History>True|2022-05-06T12:26:30.5343880Z;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="admin.aspx">
-      <publishTime>03/17/2022 14:47:21</publishTime>
+      <publishTime>04/15/2022 11:59:20</publishTime>
     </File>
     <File Include="administrationcompany.aspx">
       <publishTime>03/14/2022 14:01:45</publishTime>
@@ -36,10 +36,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:54</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>04/15/2022 08:17:19</publishTime>
+      <publishTime>05/06/2022 14:26:19</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>04/15/2022 08:17:19</publishTime>
+      <publishTime>05/06/2022 14:26:19</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -834,7 +834,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="css/admincss.css">
-      <publishTime>03/14/2022 14:01:45</publishTime>
+      <publishTime>04/15/2022 12:10:19</publishTime>
     </File>
     <File Include="css/adminpanel.css">
       <publishTime>03/14/2022 14:01:45</publishTime>
@@ -1818,7 +1818,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/15/2022 08:17:20</publishTime>
+      <publishTime>05/06/2022 14:26:21</publishTime>
     </File>
   </ItemGroup>
 </Project>

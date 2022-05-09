@@ -37,16 +37,17 @@
                      {
                      return false;
                      }
-             
-
-
-    
-        }
+                  }
 
 
 
-      </script>
-    
+    </script>
+    <style>
+
+   
+
+
+    </style>
     <script>
 
 
@@ -168,7 +169,7 @@
 
 		</div>
 	
-<div class="wrapper">
+
 
 	<header>
        
@@ -180,11 +181,7 @@
 		</div>
 
 
-<section class="columns">
-	
-	<div class="column">
-		<h2></h2>
-		<p></h1>
+
 			
 	</header>
 
@@ -226,7 +223,7 @@
             </dx:BootstrapGridView>
 	</div>
 		<br />
-        <div class="companyButtons" style="position: relative;top:-15px!important">
+        <div class="companyButtons" style="position: relative;display:flex; justify-content: space-between;">
 		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
@@ -345,10 +342,19 @@
       
          <br />
     <SettingsBootstrap RenderOption="Primary" />
-</dx:BootstrapButton></center>
+
 	</div>
 	</div>
+
 </section>	
+
+
+
+
+
+
+
+
 
 	
 	<section class="columns">
