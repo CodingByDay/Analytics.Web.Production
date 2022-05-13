@@ -25,11 +25,7 @@
              [System.Web.Services.WebMethod(EnableSession = true)]
              public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
              {
-
                  var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
-
-
-
                  if(result)
                     {
                      return true;
@@ -40,12 +36,32 @@
                   }
 
 
-
     </script>
     <style>
+        .inner-item {
 
+        }
+        .control {
+            padding-bottom: 2vh!important;
+        }
+        .content-flex {
+
+            
+          display: flex;  
+          justify-content: center;
+          gap: 7vh;
+          align-items: center;
+          min-height: 150%;
+        
+      
+        }
    
+        .grid {
+        padding-bottom: 2vh;
+        }
 
+
+ 
 
     </style>
     <script>
@@ -152,14 +168,20 @@
             z-index: 0!important;            
             
         }
-
+        .first_button_row {
+         display: flex;
+         justify-content: space-between;
+            }
 
 
         .radio input[type="radio"] {
              margin-left: 3px;
              margin-right: 3px;
         }
-      
+      .control_obj {
+          min-width: 60vh;
+          width: 60vh;
+      }
     </style>
 
 	
@@ -184,19 +206,15 @@
 
 			
 	</header>
-
-<section class="columns">
-	
-	<div class="column">
-        <div class="inv" style="z-index:0!important">
-
+    <div class="content-flex">
+        <div class="inner-item">
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [companies]"></asp:SqlDataSource>
-
-        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" DataSourceID="companiesGrid" CssClasses-Control="control" Width="320px"  AutoGenerateColumns="False">
+            <div class="control_obj">
+        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
               <Settings VerticalScrollBarMode="Visible" />
-             <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+             <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
              </SettingsPager>
             <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
@@ -222,16 +240,13 @@
             <CssClasses Control="control" />
             </dx:BootstrapGridView>
 	</div>
-		<br />
-        <div class="companyButtons" style="position: relative;display:flex; justify-content: space-between;">
-		<center><button type="button" class="btn btn-primary" id="company">Dodaj</button></center>
+            <div class="first_button_row">
+ <button type="button" class="btn btn-primary" id="company">Dodaj</button>
         <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
-            </div>
-	</div>
-
-
+                </div>
+           </div>
    
 	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT Dashboards.Caption, Dashboards.belongsTo, Dashboards.ID FROM Dashboards " UpdateCommand="UPDATE Dashboards SET belongsTo = @belongsTo WHERE (ID = @ID)">
         <UpdateParameters>
@@ -239,16 +254,15 @@
             <asp:Parameter Name="ID" />
         </UpdateParameters>
     </asp:SqlDataSource>
-	
-	<div class="column">
-	
-          <dx:BootstrapGridView ID="usersGridView" AutoPostBack="true" runat="server" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+        <div class="inner-item">
+            <div class="control_obj">
+          <dx:BootstrapGridView ID="usersGridView" AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
           <Settings VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+          <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
           </SettingsPager>
 
 <SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
@@ -272,7 +286,7 @@
           </Columns>
           <SettingsSearchPanel Visible="True"  />
       </dx:BootstrapGridView>
-
+                </div>
 
 
 
@@ -280,7 +294,7 @@
 
 
      
-		<br />  
+
         
 		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"  class="btn btn-primary">Registracija</button>
 
@@ -293,17 +307,18 @@
   
         
 
-	</div>
-  
-  <div class="column">
-	   
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  DataSourceID="query" KeyFieldName="ID" CssClasses-Control="grid">
+
+   </div>
+
+	   <div class="inner-item">
+           <div class="control_obj">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
           <Settings VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+          <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
           </SettingsPager>
 
 <SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
@@ -323,7 +338,7 @@
           <SettingsSearchPanel Visible="True"  />
       </dx:BootstrapGridView>
 
-       
+       </div>
 
 
     
@@ -333,7 +348,7 @@
               <asp:Parameter Name="ID" />
           </UpdateParameters>
       </asp:SqlDataSource>
-      <br />       
+     
 
       <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Primary" />
@@ -343,11 +358,9 @@
          <br />
     <SettingsBootstrap RenderOption="Primary" />
 
-	</div>
-	</div>
+           </div>
 
-</section>	
-
+        </div>
 
 
 

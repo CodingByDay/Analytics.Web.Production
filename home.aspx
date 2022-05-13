@@ -7,8 +7,8 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Analytics </title>
-	<meta name="description" content="Analytics landing page for the dev express backend.">
-	<meta name="keywords" content="website template, css3, one page, bootstrap, app template, web app, start-up">
+	<meta name="description" content="In.SIST Analytics portal">
+	<meta name="keywords" content="In.SIST, Analytics, portal, web app, start-up">
 	<meta name="author" content="IN SIST, trendNET.">
 	<link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
