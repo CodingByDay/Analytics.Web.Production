@@ -94,9 +94,6 @@ namespace Dash
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
-
-
-
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
                 authenticate();
                 // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
@@ -104,7 +101,6 @@ namespace Dash
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 companiesGridView.FocusedRowIndex = 0;
-
                 var beginingID = 1;
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
@@ -117,10 +113,6 @@ namespace Dash
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
-
-
-
-
             }
             else
             {
@@ -128,7 +120,6 @@ namespace Dash
                 // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
                 // admin.Visible = true;
                 FillListGraphs();
-
                 if (companiesGridView.Selection.Count != 0)
                 {
                     var plurals = companiesGridView.GetSelectedFieldValues("company_name");
@@ -144,11 +135,6 @@ namespace Dash
                 }
 
             }
-
-
-
-
-
         }
 
 
@@ -180,9 +166,6 @@ namespace Dash
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
             e.Cancel = true;
         }
-
-
-
 
         private void updateFormCompany(string v)
         {
@@ -240,23 +223,16 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     var plurals = companiesGridView.GetSelectedFieldValues("company_name");
-
                     if (plurals.Count != 0)
                     {
                         var connectionStringName = get_connectionStringName(plurals[0].ToString());
                         Session["conn"] = connectionStringName;
-
-
                         TxtUserName.Enabled = false;
                         email.Enabled = false;
                         current = plurals[0].ToString();
-
                         var id = getIdCompany(plurals[0].ToString());
-
                         FillUsers(id);
-
                         var without = plurals[0].ToString();
                         companiesList.SelectedValue = without;
                         companiesList.Enabled = false;
@@ -267,7 +243,6 @@ namespace Dash
                 catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -277,13 +252,10 @@ namespace Dash
         {
 
             TxtUserName.Enabled = false;
-
             var name = e.EditingKeyValue;
             // Call js. function here if the test passes.
             updateFormName(name.ToString());
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
-
-
             e.Cancel = true;
         }
 
@@ -296,8 +268,6 @@ namespace Dash
             List<String> values = FillListGraphsNames();
             showConfig(values);
             updateForm();
-
-
         }
 
         private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
@@ -306,7 +276,6 @@ namespace Dash
         }
 
         private void authenticate()
-
         {
 
             using (SqlConnection conn = new SqlConnection(connection))
@@ -314,7 +283,6 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
@@ -323,13 +291,9 @@ namespace Dash
                     {
                         role = (reader["userRole"].ToString());
                     }
-
                     cmd.Dispose();
-
-
                     if (role == "SuperAdmin")
                     {
-
                     }
                     else
                     {
@@ -339,7 +303,6 @@ namespace Dash
                 catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -353,13 +316,11 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     admins.Clear();
                     strings.Clear();
 
                     string UserNameForChecking
                         = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
@@ -367,11 +328,9 @@ namespace Dash
                     while (sdr.Read())
                     {
                         admins.Add(sdr["uname"].ToString());
-
                     }
                     listAdmin.DataSource = admins;
                     listAdmin.DataBind();
-
                     //ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
                     //foreach (ConnectionStringSettings setting in connections)
                     //{
@@ -381,13 +340,10 @@ namespace Dash
 
                     //ConnectionStrings.DataSource = strings;
                     //ConnectionStrings.DataBind();
-
-
                 }
                 catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -495,24 +451,19 @@ namespace Dash
 
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-
                     /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
                         graphList.Add(sdr["Caption"].ToString());
-
                     }
-
                 }
                 catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -535,8 +486,6 @@ namespace Dash
                     byUserList.Clear();
                     usersList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"Select * from Users where id_company={companyID}", conn);
 
@@ -553,11 +502,6 @@ namespace Dash
                         byUserList.Add(sdr["uname"].ToString());
 
                     }
-
-
-
-
-
                     usersGridView.DataSource = usersList;
                     usersGridView.DataBind();
                 }
@@ -1031,7 +975,7 @@ namespace Dash
                 build.Password = dbPassword.Text;
 
 
-              //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
 
 
                 updateCompanyData();

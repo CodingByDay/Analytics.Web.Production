@@ -48,7 +48,7 @@ namespace Dash
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             if (!IsPostBack)
-            {        
+            {
                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                 HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
@@ -76,7 +76,7 @@ namespace Dash
 
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
         {
-           Session["current"]= e.DashboardId.ToString();
+            Session["current"] = e.DashboardId.ToString();
         }
 
         private void authenticate()

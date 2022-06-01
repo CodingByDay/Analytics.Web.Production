@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace Dash.HelperClasses
 {
@@ -51,10 +52,10 @@ namespace Dash.HelperClasses
 
             }
 
-            catch
+            catch(Exception err)
 
             {
-
+                string inEx = err.InnerException.ToString();    
                 result = false;
 
             }
