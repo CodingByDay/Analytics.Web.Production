@@ -367,7 +367,7 @@
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="3" Caption="Podjetje" >
+              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="3" Caption="Analiza" >
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True"  />
