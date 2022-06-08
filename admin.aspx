@@ -25,15 +25,20 @@
              [System.Web.Services.WebMethod(EnableSession = true)]
              public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
              {
+                 
                  var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
                  if(result)
                     {
                      return true;
-                    } else
+                    } 
+                 else
                      {
                      return false;
                      }
-                  }
+             }
+
+
+
 
 
     </script>
@@ -49,7 +54,7 @@
             
           display: flex;  
           justify-content: center;
-          gap: 7vh;
+          gap: 5vh;
           align-items: center;
           min-height: 150%;
         
@@ -60,7 +65,10 @@
         padding-bottom: 2vh;
         }
 
+        #companyButton {
 
+            display: none;
+        }
  
 
     </style>
@@ -115,7 +123,29 @@
             }
         }
 
+        function checkFields(company_name, website, company_number) {
 
+            company_name = document.getElementById("companyName").value
+            console.log(company_name);
+            website = document.getElementById("website").value
+            console.log(website);
+            company_number = document.getElementById("companyNumber").value
+            console.log(company_number);
+
+
+            if (company_name == "" || website == "" || company_number == "") {
+               notify(true, "Podatki manjkajo.")
+            } else {
+                if (isNaN(company_number)) {
+                    notify(true, "Številka ni v pravi obliki.")
+                } else {
+                    btnRegistration = document.getElementById('<%=companyButton.ClientID %>');
+                    btnRegistration.click();
+                }
+                
+                
+            }
+        }
 
 
 
@@ -179,8 +209,13 @@
              margin-right: 3px;
         }
       .control_obj {
-          min-width: 60vh;
-          width: 60vh;
+       
+          min-width: 50vh;
+          width: 50vh;
+      }
+      .inner-item {
+         min-height:60vh;
+         max-height:60vh;
       }
     </style>
 
@@ -210,11 +245,11 @@
         <div class="inner-item">
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [companies]"></asp:SqlDataSource>
             <div class="control_obj">
-        <dx:BootstrapGridView ID="companiesGridView" runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+        <dx:BootstrapGridView ID="companiesGridView"  Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
-              <Settings VerticalScrollBarMode="Visible" />
-             <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
+              <Settings VerticalScrollBarMode="Visible"/>
+             <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
             <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
@@ -256,13 +291,13 @@
     </asp:SqlDataSource>
         <div class="inner-item">
             <div class="control_obj">
-          <dx:BootstrapGridView ID="usersGridView" AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView"  Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
-          <Settings VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
+          <Settings VerticalScrollBarMode="Visible"/>
+          <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
 <SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
@@ -312,13 +347,13 @@
 
 	   <div class="inner-item">
            <div class="control_obj">
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server"  Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
-          <Settings VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="12" Visible="False">
+          <Settings VerticalScrollBarMode="Visible"/>
+          <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
 <SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
@@ -477,9 +512,12 @@
 
         <br />
 
-                       <asp:Button CssClass="btn btn-primary" ID="companyButton" Enabled="true" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
+                       <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="companyButton_Click"/> 
 
                        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
+
+                       <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing" style="padding: 3px;">Potrdi</button>
+
 
                       <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
 

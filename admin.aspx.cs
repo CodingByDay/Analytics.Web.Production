@@ -90,6 +90,7 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
+          
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             if (!IsPostBack)
             {
@@ -331,15 +332,6 @@ namespace Dash
                     }
                     listAdmin.DataSource = admins;
                     listAdmin.DataBind();
-                    //ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-                    //foreach (ConnectionStringSettings setting in connections)
-                    //{
-                    //    strings.Add(setting.Name);
-                    //}
-                    //strings.RemoveAt(0);
-
-                    //ConnectionStrings.DataSource = strings;
-                    //ConnectionStrings.DataBind();
                 }
                 catch (Exception)
                 {
@@ -560,16 +552,19 @@ namespace Dash
                 {
                     conn.Open();
                     isEditUser = true;
-
                     if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
                     {
                         userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
                     }
                     else
                     {
+                        try
+                        {
+                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
+                        } catch
+                        {
 
-                        userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
-
+                        }
                     }
                     SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
@@ -581,7 +576,6 @@ namespace Dash
                         int number = (int)sdr["id_company"];
                         string dare = GetCompanyName(number);
                         companiesList.SelectedValue = dare;
-
                         companiesList.Enabled = false;
                         email.Enabled = false;
                         string role = sdr["userRole"].ToString();
@@ -600,26 +594,19 @@ namespace Dash
 
                 }
             }
-
-
         }
         public string GetCompanyName(int company)
         {
-
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
                     string uname = HttpContext.Current.User.Identity.Name;
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     var admin = (string)cmd.ExecuteScalar();
-
                     cmd.Dispose();
                     return admin;
                 }
@@ -628,7 +615,6 @@ namespace Dash
                     return String.Empty;
                 }
             }
-
         }
 
         private void updateFormName(string name)
@@ -637,10 +623,8 @@ namespace Dash
             {
                 try
                 {
-
                     isEditUser = true;
                     conn.Open();
-
                     SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -651,7 +635,6 @@ namespace Dash
                         var number = (int)sdr["id_company"];
                         var data = GetCompanyName(number);
                         companiesList.SelectedValue = data;
-
                         companiesList.Enabled = false;
                         email.Enabled = false;
                         string role = sdr["userRole"].ToString();
@@ -659,7 +642,6 @@ namespace Dash
                         email.Text = sdr["email"].ToString();
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
                         userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-
                     }
                     sdr.Close();
                     cmd.Dispose();
@@ -667,7 +649,6 @@ namespace Dash
                 catch (Exception)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -676,20 +657,13 @@ namespace Dash
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
-
-
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
                     if (TxtUserName.Enabled == true)
                     {
-
-
-
                         SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
                         var result = cmd.ExecuteScalar();
                         Int32 Total_ID = System.Convert.ToInt32(result);
@@ -704,25 +678,18 @@ namespace Dash
                         }
                         else
                         {
-
                             SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
-
-
                             var resultCheck = check.ExecuteScalar();
-
                             Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                             check.Dispose();
                             if (resultUsername > 0)
                             {
                                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-
                             }
                             else
                             {
-
                                 string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
                                 SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-
                                 try
                                 {
                                     createUserPermisions.ExecuteNonQuery();
@@ -732,13 +699,9 @@ namespace Dash
                                     var log = error;
                                 }
                                 createUserPermisions.Dispose();
-
-
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
                                 string companyINSERT = companiesList.SelectedItem.Value;
                                 int idCOMPANY = getIdCompany(companyINSERT);
-
                                 string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
                                 SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                                 var username = TxtUserName.Text;
@@ -748,7 +711,6 @@ namespace Dash
                                     createUser.ExecuteNonQuery();
                                     createUser.Dispose();
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
-
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
                                     TxtRePassword.Text = "";
@@ -758,45 +720,32 @@ namespace Dash
                                     FillUsers(id);
                                     var company = companiesList.SelectedValue;
                                     var spacelessCompany = company.Replace(" ", string.Empty);
-
-
                                 }
                                 catch (Exception ex)
                                 {
                                     var log = ex;
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
                                     TxtRePassword.Text = "";
                                     TxtUserName.Text = "";
                                     email.Text = "";
-
                                 }
                             }
                             cmd.Dispose();
-
                         }
                     }
                     else
                     {
-
                         if (!String.IsNullOrEmpty(TxtRePassword.Text))
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
                             cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
                         }
                         else
                         {
-
                             cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
                         }
-
-
-                        //  debug.Add(dev);
-
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista.')", true);
@@ -805,7 +754,6 @@ namespace Dash
                         }
                         else
                         {
-
                             try
                             {
                                 var username = TxtUserName.Text.Replace(" ", string.Empty); ;
@@ -820,10 +768,6 @@ namespace Dash
                                 TxtUserName.Text = "";
                                 email.Text = "";
                                 var company = companiesList.SelectedValue.Replace(" ", string.Empty);
-
-
-
-
                             }
                             catch (Exception ex)
                             {
@@ -889,7 +833,7 @@ namespace Dash
             }
         }
 
-        private void updateAdminCompany(string admin_value)
+        private void updateAdminCompany(string admin_value, string cName)
         {
 
             using (SqlConnection conn = new SqlConnection(connection))
@@ -898,7 +842,7 @@ namespace Dash
                 {
                     conn.Open();
 
-                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{admin_value}'", conn);
+                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception)
@@ -908,77 +852,39 @@ namespace Dash
                 }
             }
         }
-
-
-
+     
         protected void companyButton_Click(object sender, EventArgs e)
         {
             var ed = Request.Cookies["EDIT"].Value.ToString();
 
             if (!isEditHappening && ed == "no")
-            {
-                if (companyName.Text == "")
-                {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Niste vpisali ime podjetja...')", true);
-
-                    companyNumber.Text = "";
-                    companyName.Text = "";
-                    website.Text = "";
-                }
-                else if (website.Text == "")
-                {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Niste vpisali spletno stran...')", true);
-
-                    companyNumber.Text = "";
-                    companyName.Text = "";
-                    website.Text = "";
-
-                }
-                else if (!checkIfNumber(companyNumber.Text))
-                {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Številka ni v pravi obliki.')", true);
-
-                    companyNumber.Text = "";
-                    companyName.Text = "";
-                    website.Text = "";
-                }
-                else
-                {
+            {                           
                     insertCompany();
                     fillCompaniesRegistration();
-                    createAdminForTheCompany(companyName.Text);
-                    updateAdminCompany(companyName.Text);
+                    var names = companyName.Text.Split(' ');
+                    Random random = new Random();
+                    string adminname = $"{names[0]}{random.Next(1, 1000)}";
+                    createAdminForTheCompany(adminname, companyName.Text);
+                    updateAdminCompany(adminname, companyName.Text);
                     var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
                     companiesGridView.DataSource = sourceID;
-
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
-
-                }
+               
             }
             else
             {
-
-
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-
-                build.InitialCatalog = dbNameInstance.Text;
-
-                build.DataSource = dbDataSource.Text;
-
-                build.UserID = dbUser.Text;
-                build.Password = dbPassword.Text;
-
-
-                //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-
-
-                updateCompanyData();
+                    SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+                    build.InitialCatalog = dbNameInstance.Text;
+                    build.DataSource = dbDataSource.Text;
+                    build.UserID = dbUser.Text;
+                    build.Password = dbPassword.Text;
+                    //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    updateCompanyData();
             }
         }
 
@@ -1004,20 +910,20 @@ namespace Dash
         }
         private void AddConnectionString(string stringConnection)
         {
+            try
+            {
+                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+                var builder = new SqlConnectionStringBuilder(stringConnection);
+                ConnectionStringSettings conn = new ConnectionStringSettings();
+                conn.ConnectionString = builder.ConnectionString;
+                conn.Name = connName.Text;
+                config.ConnectionStrings.ConnectionStrings.Add(conn);
+                config.Save(ConfigurationSaveMode.Modified, true);
+            } catch
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
 
-            Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-
-            var builder = new SqlConnectionStringBuilder(stringConnection);
-
-            ConnectionStringSettings conn = new ConnectionStringSettings();
-
-            conn.ConnectionString = builder.ConnectionString;
-
-            conn.Name = connName.Text;
-
-            config.ConnectionStrings.ConnectionStrings.Add(conn);
-
-            config.Save(ConfigurationSaveMode.Modified, true);
+            }
         }
 
 
@@ -1025,13 +931,9 @@ namespace Dash
         private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-
             build.InitialCatalog = dbNameInstance;
-
             build.DataSource = dbSource;
-
             build.UserID = dbUser;
-
             build.Password = dbPassword;
             AddConnectionString(build.ConnectionString);
             return build.ConnectionString;
@@ -1045,31 +947,19 @@ namespace Dash
             {
                 var ConnectionString = ConfigurationManager.ConnectionStrings[connName].ConnectionString;
                 SqlConnectionStringBuilder build = new SqlConnectionStringBuilder(ConnectionString);
-
                 build.InitialCatalog = dbNameInstance;
-
                 build.DataSource = dbSource;
-
                 build.UserID = dbUser;
-
                 build.Password = dbPassword;
-
                 ConnectionStringSettings stringSettings = new ConnectionStringSettings();
-
                 stringSettings.ConnectionString = build.ConnectionString;
-
-
                 var settings = ConfigurationManager.ConnectionStrings[connName];
                 var fi = typeof(ConfigurationElement).GetField(
                               "_bReadOnly",
                               BindingFlags.Instance | BindingFlags.NonPublic);
                 fi.SetValue(settings, false);
                 settings.ConnectionString = build.ConnectionString;
-
-
-
                 ConfigurationManager.RefreshSection("connectionStrings");
-
                 ConfigurationManager.RefreshSection("connectionStrings");
             }
             catch
@@ -1104,7 +994,7 @@ namespace Dash
 
         }
 
-        private void createAdminForTheCompany(string name)
+        private void createAdminForTheCompany(string name, string cName)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -1120,29 +1010,20 @@ namespace Dash
                     SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
                     createUserPermisions.ExecuteNonQuery();
                     string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
-
-                    string companyINSERT = name;
+                    string companyINSERT = cName;
                     int idCOMPANY = getIdCompany(companyINSERT);
-
                     string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
-
-
-
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                     var username = TxtUserName.Text;
-
-                    var id = getIdCompany(name.Trim());
+                    var id = getIdCompany(cName.Trim());
                     createUser.ExecuteNonQuery();
-
-
                     FillListAdmin();
                     FillUsers(id);
-
                 }
-                catch (Exception)
+                catch (Exception err)
                 {
+                    var er = err; 
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -1159,13 +1040,10 @@ namespace Dash
                     SqlCommand cmd = new SqlCommand($"delete from Users where uname='{username}'", conn);
                     deletedID = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
                     getIdPermision();
-
                     var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
                     var spacelessCompany = company.Replace(" ", string.Empty);
                     idFromString = getIdCompany(spacelessCompany);
-
                     cmd.ExecuteNonQuery();
-
                     FillListGraphs();
                     List<String> values = FillListGraphsNames();
                     showConfig(values);
@@ -1185,7 +1063,6 @@ namespace Dash
         }
         private string get_connectionStringName(string name)
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -1198,7 +1075,6 @@ namespace Dash
                     string result = cmd.ExecuteScalar().ToString();
                     returnString = result;
                     return returnString;
-
                 }
                 catch (Exception)
                 {

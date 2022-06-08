@@ -390,6 +390,9 @@
     <Content Include="fonts\font-awesome-4.3.0\fonts\FontAwesome.otf" />
     <Content Include="Extension.Master" />
     <Content Include="libman.json" />
+    <Content Include="Administracija.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />

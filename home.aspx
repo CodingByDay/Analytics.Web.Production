@@ -147,7 +147,7 @@
 							<li><a href="#">Overview</a></li>
 							<li><a href="#cta">About Analytics</a></li>
 							<%--<li><a href="<%= Page.ResolveUrl("/registration.aspx") %>">Registration</a></li>--%>
-							<li><a href="#footer">Support</a></li>
+							<li><a href="#" onclick="window.open('Administracija.pdf', '_blank', 'fullscreen=yes'); return false;">Support</a></li>
 						</ul>
 					
 					</div>
