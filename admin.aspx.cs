@@ -1,4 +1,5 @@
 ﻿using Dash.HelperClasses;
+using Dash.Log;
 using Dash.ORM;
 using System;
 using System.Collections.Generic;
@@ -206,8 +207,9 @@ namespace Dash
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -241,8 +243,9 @@ namespace Dash
                         usersGridView.Selection.SetSelection(0, true);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -301,8 +304,9 @@ namespace Dash
                         Response.Redirect("logon.aspx", true);
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -333,8 +337,9 @@ namespace Dash
                     listAdmin.DataSource = admins;
                     listAdmin.DataBind();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -420,8 +425,9 @@ namespace Dash
 
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -453,8 +459,9 @@ namespace Dash
                         graphList.Add(sdr["Caption"].ToString());
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -497,8 +504,9 @@ namespace Dash
                     usersGridView.DataSource = usersList;
                     usersGridView.DataBind();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -533,8 +541,9 @@ namespace Dash
                     companiesList.DataSource = companies;
                     companiesList.DataBind();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -588,8 +597,9 @@ namespace Dash
                     sdr.Close();
                     cmd.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -610,8 +620,9 @@ namespace Dash
                     cmd.Dispose();
                     return admin;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return String.Empty;
                 }
             }
@@ -646,8 +657,9 @@ namespace Dash
                     sdr.Close();
                     cmd.Dispose();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -786,8 +798,10 @@ namespace Dash
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -825,8 +839,10 @@ namespace Dash
                     cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -845,8 +861,10 @@ namespace Dash
                     cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
                     cmd.ExecuteNonQuery();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -893,21 +911,16 @@ namespace Dash
         private bool isConnectionOk(string connection)
         {
             var _stringDB = GetResultFromDBTest(connection);
-
             if (connName.Text == null)
             {
-
                 return true;
             }
             else
-
             {
-
                 return false;
-
             }
-
         }
+
         private void AddConnectionString(string stringConnection)
         {
             try
@@ -919,8 +932,9 @@ namespace Dash
                 conn.Name = connName.Text;
                 config.ConnectionStrings.ConnectionStrings.Add(conn);
                 config.Save(ConfigurationSaveMode.Modified, true);
-            } catch
+            } catch(Exception ex)
             {
+                Logger.LogError(typeof(admin), ex.InnerException.Message);
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
 
             }
@@ -985,8 +999,9 @@ namespace Dash
                     cmd.ExecuteNonQuery();
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -1020,9 +1035,9 @@ namespace Dash
                     FillListAdmin();
                     FillUsers(id);
                 }
-                catch (Exception err)
+                catch (Exception ex)
                 {
-                    var er = err; 
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1051,8 +1066,9 @@ namespace Dash
                     FillUsers(idFromString);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1076,8 +1092,9 @@ namespace Dash
                     returnString = result;
                     return returnString;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return String.Empty;
                 }
             }
@@ -1126,8 +1143,9 @@ namespace Dash
                     }
                     return values;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return values;
                 }
             }
@@ -1153,8 +1171,10 @@ namespace Dash
                     var final = companyInfo.Replace(" ", string.Empty);
                     return final;
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return string.Empty;
                 }
             }
@@ -1184,8 +1204,10 @@ namespace Dash
                             id = cmd.ExecuteScalar();
 
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
+                            Logger.LogError(typeof(admin), ex.InnerException.Message);
+
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
                             // error handling
                         }
@@ -1213,8 +1235,10 @@ namespace Dash
                     cmd.Dispose();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -1229,7 +1253,6 @@ namespace Dash
             if (usersGridView.GetSelectedFieldValues() == null)
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
-
             }
             else
             {
@@ -1238,6 +1261,8 @@ namespace Dash
                 showConfig(values);
             }
         }
+
+
         private void getIdPermision()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -1250,8 +1275,9 @@ namespace Dash
                     permisionID = System.Convert.ToInt32(result);
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1274,8 +1300,9 @@ namespace Dash
                     Int32 Total_ID = System.Convert.ToInt32(result);
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1297,64 +1324,43 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     if (companiesGridView.FocusedRowIndex != -1)
                     {
                         var current = Session["current"].ToString();
                         var id = getIdCompany(current);
                         deleteMemberships(id);
                         SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-
                         var deb = $"delete from users where id_company={id}";
-
                         RemoveConnectionString(current);
-
                         SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
                         string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-
                         cmd.ExecuteNonQuery();
-
                         try
                         {
                             user.ExecuteNonQuery();
 
                         }
-                        catch (Exception error)
+                        catch (Exception ex)
                         {
-                            var log = error;
+                            Logger.LogError(typeof(admin), ex.InnerException.Message);
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
                         }
-
-
-
-
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
                         var source = companiesGridView.DataSource;
                         companiesGridView.DataSource = null;
                         companiesGridView.DataSource = source;
-
-
                         FillListGraphs();
-
                         FillListAdmin();
                         cmd.Dispose();
-
                         string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
-
-
-
-
                         int companyID = getIdCompany(companyName);
-
                         FillUsers(companyID);
-
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
                 }
             }
 
@@ -1369,22 +1375,13 @@ namespace Dash
                     conn.Open();
                     SqlCommand cmd = new SqlCommand($"select databaseName from companies where company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
-
-
-
                     Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-
-
-
                     config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
-
                     config.Save(ConfigurationSaveMode.Modified, true);
-
-
-
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return;
                 }
             }
@@ -1420,34 +1417,20 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     var final = getCurrentCompany();
                     SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{number}'";
-
                     cmd.ExecuteNonQuery();
                     // fillUsersDelete();
                     // fillCompanyDelete();
-
-
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
-
-
-
-
-
-
-
         }
-
-
-
-
 
 
 
@@ -1456,8 +1439,6 @@ namespace Dash
         {
             return true;
         }
-
-
 
 
         protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1502,14 +1483,9 @@ namespace Dash
 
             }
 
-
-
-
             return _textResult;
 
         }
-
-
 
         protected void new_user_ServerClick2(object sender, EventArgs e)
         {
@@ -1521,10 +1497,7 @@ namespace Dash
             email.Text = "";
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
-
-
             // Call the client.
-
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
 
         }

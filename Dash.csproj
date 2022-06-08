@@ -596,6 +596,7 @@
     <Compile Include="Logon.aspx.designer.cs">
       <DependentUpon>Logon.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Log\Logger.cs" />
     <Compile Include="membership.aspx.cs">
       <DependentUpon>membership.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -692,6 +693,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Lib\" />
     <Folder Include="UserControl\" />
   </ItemGroup>
   <ItemGroup>

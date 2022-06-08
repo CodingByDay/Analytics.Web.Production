@@ -49,7 +49,7 @@ function customizeWidgets(sender, args) {
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
    
-    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
+    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 3) {
         initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
         initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);

@@ -5,14 +5,17 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\inetpub\wwwroot\current-analytics</_PublishTargetUrl>
-    <History>True|2022-05-09T10:54:47.1748035Z;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
+    <History>True|2022-06-08T11:25:30.6750999Z;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="admin.aspx">
-      <publishTime>05/09/2022 12:43:50</publishTime>
+      <publishTime>06/08/2022 13:20:25</publishTime>
+    </File>
+    <File Include="Administracija.pdf">
+      <publishTime>06/03/2022 11:15:56</publishTime>
     </File>
     <File Include="administrationcompany.aspx">
       <publishTime>03/14/2022 14:01:45</publishTime>
@@ -22,6 +25,9 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
     </File>
     <File Include="App_Readme/Elmah.txt">
       <publishTime>03/14/2022 14:01:45</publishTime>
+    </File>
+    <File Include="bin/Administracija.pdf">
+      <publishTime>06/03/2022 11:15:56</publishTime>
     </File>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>03/14/2022 14:01:54</publishTime>
@@ -36,10 +42,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:54</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>05/09/2022 12:54:39</publishTime>
+      <publishTime>06/08/2022 13:24:39</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>05/09/2022 12:54:39</publishTime>
+      <publishTime>06/08/2022 13:24:39</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -1023,7 +1029,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="home.aspx">
-      <publishTime>03/14/2022 14:01:45</publishTime>
+      <publishTime>06/03/2022 11:19:53</publishTime>
     </File>
     <File Include="images/5f31883b507a4399a9cafe7bd10c269c.png">
       <publishTime>03/14/2022 14:01:45</publishTime>
@@ -1131,7 +1137,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:46</publishTime>
     </File>
     <File Include="js/application/admin.js">
-      <publishTime>04/15/2022 07:22:15</publishTime>
+      <publishTime>06/01/2022 09:24:37</publishTime>
     </File>
     <File Include="js/bootstrap.js">
       <publishTime>03/14/2022 14:01:46</publishTime>
@@ -1818,7 +1824,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>03/14/2022 14:01:45</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/06/2022 14:26:21</publishTime>
+      <publishTime>06/08/2022 13:25:20</publishTime>
     </File>
   </ItemGroup>
 </Project>

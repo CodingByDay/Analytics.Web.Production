@@ -1,4 +1,5 @@
-﻿using Dash.ORM;
+﻿using Dash.Log;
+using Dash.ORM;
 using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
@@ -59,21 +60,14 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
-
-
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-
-
             if (!IsPostBack)
             {
 
@@ -89,14 +83,10 @@ namespace Dash
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
-
-
-
                 if (userObjectList.Count != 0)
                 {
                     usersGridView.Selection.SetSelection(0, true);
                 }
-
             }
             else
             {
@@ -104,42 +94,38 @@ namespace Dash
                 admin.Visible = true;
                 FillUsers();
             }
-
         }
 
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
         {
             var name = e.EditingKeyValue;
-
             updateFormName(name.ToString());
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
-
-
             e.Cancel = true;
         }
         public string GetCompanyName(int company)
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
                     cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
-
                     try
                     {
                         admin = (string)cmd.ExecuteScalar();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                     }
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
 
@@ -173,11 +159,11 @@ namespace Dash
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
 
                     }
-                    //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+
                 }
             }
 
@@ -197,9 +183,7 @@ namespace Dash
 
 
         private void authenticate()
-
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -213,10 +197,6 @@ namespace Dash
                     {
                         role = (reader["userRole"].ToString());
                     }
-
-
-
-
                     if (role == "Admin")
                     {
 
@@ -227,32 +207,24 @@ namespace Dash
                     }
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                 }
             }
 
         }
 
-
-
-
         private List<bool> showConfig()
         {
-
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
-
-
                     if (usersGridView.FocusedRowIndex >= 0)
                     {
                         var plural = usersGridView.GetSelectedFieldValues("uname");
@@ -265,9 +237,9 @@ namespace Dash
                         {
                             idNumber = cmd.ExecuteScalar();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                         }
                     }
                     else
@@ -281,28 +253,20 @@ namespace Dash
                         {
                             idNumber = cmd.ExecuteScalar();
                         }
-                        catch (Exception)
+                        catch (Exception ex)
                         {
-
+                            Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                         }
 
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                 }
             }
-
-
-
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-
             permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-
-
-
             using (SqlConnection connection = new SqlConnection(
               this.connection))
             {
@@ -328,10 +292,6 @@ namespace Dash
                         }
                     }
                 }
-
-
-
-
             }
 
             return valuesBool;
@@ -347,9 +307,6 @@ namespace Dash
                     conn.Open();
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
-
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
@@ -364,13 +321,13 @@ namespace Dash
                     }
 
                     CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
-
                     graphsListBox.DataSource = CurrentPermisionID;
                     graphsListBox.DataBind();
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }   //Connection will autmatically be closed here always
@@ -396,9 +353,6 @@ namespace Dash
                     var id = getIdCompany(name);
                     usersData.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
-
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
 
@@ -421,6 +375,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Response.Write(ex.ToString());
 
                 }
@@ -430,14 +385,11 @@ namespace Dash
         }
         private void fillCompaniesRegistration()
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
@@ -449,28 +401,18 @@ namespace Dash
                     }
                     companiesList.DataSource = companies;
                     companiesList.DataBind();
-
-
-
-
                 }
-
-
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //Handle exception, perhaps log it and do the needful
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+
                 }
             }
-
-
-
         }
 
 
         private void updateForm()
         {
-
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -495,21 +437,19 @@ namespace Dash
                         companiesList.SelectedValue = data;
                         companiesList.Enabled = false;
                         email.Enabled = false;
-
                         string role = sdr["userRole"].ToString();
                         string type = sdr["ViewState"].ToString();
                         email.Text = sdr["email"].ToString();
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-
                         userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-
                     }
                     sdr.Close();
                     cmd.Dispose();
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -522,17 +462,12 @@ namespace Dash
         private string defaultCompany()
         {
             string uname = HttpContext.Current.User.Identity.Name;
-
             string name = getCompanyQuery(uname);
-
             int id = getIdCompany(name);
-
             var data = GetCompanyName(id);
             companiesList.SelectedValue = data;
             companiesList.Enabled = false;
-
             return name;
-
         }
 
         protected void registrationButton_Click(object sender, EventArgs e)
@@ -561,15 +496,9 @@ namespace Dash
                         }
                         else
                         {
-
-
                             SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
-
-
                             var resultCheck = check.ExecuteScalar();
-
                             Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-
                             if (resultUsername > 0)
                             {
                                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
@@ -580,9 +509,6 @@ namespace Dash
 
                                 string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
                                 SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-
-
-
                                 try
                                 {
                                     createUserPermisions.ExecuteNonQuery();
@@ -605,6 +531,8 @@ namespace Dash
                                     createUser.ExecuteNonQuery();
 
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
+                                    Logger.LogInfo(typeof(tenantadmin), "Uspešno kreiran uporabnik.");
+
 
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
@@ -614,11 +542,7 @@ namespace Dash
                                     FillUsers();
                                     var company = companiesList.SelectedValue;
                                     var spacelessCompany = company.Replace(" ", string.Empty);
-
                                     createUser.Dispose();
-
-
-
                                 }
                                 catch (SqlException ex) when (ex.Number == 2627)
                                 {
@@ -687,6 +611,7 @@ namespace Dash
                             }
                             catch (Exception ex)
                             {
+                                Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                                 Response.Write($"<script type=\"text/javascript\">alert('Napaka... {ex.Message}');</script>");
 
@@ -701,8 +626,9 @@ namespace Dash
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -759,8 +685,9 @@ namespace Dash
 
                     //Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -785,15 +712,17 @@ namespace Dash
                             companyInfo = (reader["company_name"].ToString());
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                     }
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -896,16 +825,18 @@ namespace Dash
                     }
 
 
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                        var log = error;
+                      
                     }
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -970,8 +901,9 @@ namespace Dash
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -986,19 +918,15 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
                     var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
-
                     var result = cmd1.ExecuteScalar();
                     Int32 Total_ID = System.Convert.ToInt32(result);
-
-
-                    // Perform DB operation here i.e. any CRUD operation 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // Handle exception, perhaps log it and do the needful
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+
                 }
             }
 
@@ -1013,45 +941,32 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     var id = getIdCompany(current);
                     deleteMemberships(id);
-
                     SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-
                     user.ExecuteNonQuery();
-
-
-
-
-
                     SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{current}'";
                     try
                     {
                         cmd.ExecuteNonQuery();
-
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
-
                     }
 
 
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
-                        // Implement logging here.
-                        var log = error;
-
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
                     }
 
 
                     FillListGraphs();
                     FillUsers();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }
@@ -1065,20 +980,15 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-
                     result = cmd.ExecuteScalar();
-
-
                     var finalID = System.Convert.ToInt32(result);
-
                     return finalID;
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     return -1;
                 }
             }
@@ -1093,19 +1003,15 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     var final = defaultCompany();
                     int idCompany = getIdCompany(final);
-
                     SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
-
                     cmd.ExecuteNonQuery();
-
-
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                 }
             }
@@ -1142,18 +1048,21 @@ namespace Dash
                     }
 
 
-                    catch (Exception error)
+                    catch (Exception ex)
                     {
 
-                        var log = error;
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                     }
 
 
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
 
                 }
