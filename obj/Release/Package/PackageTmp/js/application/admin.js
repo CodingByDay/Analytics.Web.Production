@@ -276,8 +276,30 @@ function onCollapse() {
     });
 }
 
-function correctTheLoadingState() {
+function correctTheLoadingState(s, e) {
+  
     var control = dashboard.GetDashboardControl();
+    //var list = dashboard.GetParameters().GetParameterList();
+    //var control = dashboard.GetDashboardControl();
+    //var items = s.GetDashboardControl().dashboard().items();
+    //tabItems = []
+
+    //for (var i = 0; i < items.length; i++) {
+    //   counter = 0;
+    //    var iCurrent = items[i];
+    //    console.log(iCurrent.name());
+    //    if (iCurrent.name().startsWith("Tab Container")) {
+    //        counter += 1;
+    //        var item = s.GetDashboardControl().dashboard().findItem(`dashboardTabPage${counter}`);
+    //        item.name("*Custom caption");
+    //    }
+        
+    //}
+
+
+
+
+
 
     design = control.isDesignMode();
     if (design == false) {
