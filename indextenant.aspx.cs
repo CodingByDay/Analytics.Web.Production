@@ -60,7 +60,7 @@ namespace Dash
 
 
 
-            string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
+            string TARGET_URL = "https://dash.in-sist.si";
 
             if (Session != null)
 

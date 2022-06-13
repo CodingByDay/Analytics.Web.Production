@@ -494,3 +494,4 @@ C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Release\Dash.csproj.CoreComp
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Release\Dash.csproj.CopyComplete
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Release\Dash.dll
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Release\Dash.pdb
+C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\Log\log.txt

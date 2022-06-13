@@ -55,7 +55,7 @@ namespace Dash.HelperClasses
             catch(Exception err)
 
             {
-                string inEx = err.InnerException.ToString();    
+             
                 result = false;
 
             }

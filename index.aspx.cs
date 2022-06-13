@@ -115,7 +115,7 @@ namespace Dash
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
-            string TARGET_URL = "http://dash.in-sist.si:81/logon?version=1.0.0.1";
+            string TARGET_URL = "https://dash.in-sist.si";
             if (Session != null)
             {
                 if (System.Web.HttpContext.Current.Session["conn"] != null)

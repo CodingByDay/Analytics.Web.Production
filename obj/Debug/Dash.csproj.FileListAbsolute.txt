@@ -487,9 +487,10 @@ C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\de\DevExpress.XtraTreeList.v
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.csproj.AssemblyReference.cache
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.dll.licenses
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.csproj.CoreCompileInputs.cache
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.csproj.CopyComplete
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.dll
 C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.pdb
+C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\bin\Log\log.txt
+C:\Users\jankoj\Desktop\Work\stabile\DASHBOARDS\obj\Debug\Dash.csproj.AssemblyReference.cache
