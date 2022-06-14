@@ -187,7 +187,6 @@ height: 100% !important;
             }
 
             function correctTheLoadingState() {
-                console.log("Loading")
                 var control = dashboard.GetDashboardControl();
                 design = control.isDesignMode();
                 if (design == false) {
@@ -197,7 +196,6 @@ height: 100% !important;
 
 
             function onCollapse() {
-                console.log("On collapse")
 
                 var control = dashboard.GetDashboardControl();
                 extension.hidePanelAsync({}).done(function (e) {

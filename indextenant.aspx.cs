@@ -24,45 +24,26 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
-
             if (!string.IsNullOrEmpty(Session["current"] as string))
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
-
             }
-
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
-
             ASPxDashboard3.AllowCreateNewDashboard = true;
-
             ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
-
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
             ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
-
             string TARGET_URL = "https://dash.in-sist.si";
-
             if (Session != null)
-
             {
-
                 if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
                 {
                     if (Session["UserAllowed"].ToString() == "true")
@@ -84,22 +65,15 @@ namespace Dash
             {
                 DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
             }
-
-
-
             if (Request.Cookies.Get("state") is null)
             {
 
                 Response.Cookies["state"].Value = "light";
 
             }
-
             else
-
             {
-
                 state = Request.Cookies.Get("state").Value;
-
                 switch (state)
                 {
                     case "light":
@@ -111,7 +85,17 @@ namespace Dash
 
                 }
             }
+            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+        }
 
+        private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
+        {
+            var eDocument = e;
+
+
+
+
+            bool stop = true;
         }
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
@@ -119,20 +103,7 @@ namespace Dash
             string group = getCurrentUserID();
             e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
         }
-
-
-
-        /// <summary>
-        /// If database checked disable.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        /// flag starts with false
-        /// mode with viewer only
-        /// id with 2
-        ///
-        ///
-
+       
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
             Session["current"] = e.DashboardId;
@@ -140,7 +111,7 @@ namespace Dash
 
         private bool checkDB(string ID)
         {
-            bool flag = false; /* For added security default=false */
+            bool flag = false; 
 
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -153,13 +124,10 @@ namespace Dash
             {
                 var result = cmd.ExecuteScalar();
                 value = System.Convert.ToInt32(result);
-
             }
 
-            // Comment 42.
             catch (Exception error)
             {
-                // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
             finally
@@ -173,6 +141,7 @@ namespace Dash
             {
                 flag = true;
             }
+
             else
             {
                 flag = false;
@@ -186,16 +155,12 @@ namespace Dash
             if (e.ConnectionParameters is DevExpress.DataAccess.ConnectionParameters.CustomStringConnectionParameters)
             {
                 ConnectionStringSettings conn = GetConnectionString();
-
                 CustomStringConnectionParameters parameters =
                       (CustomStringConnectionParameters)e.ConnectionParameters;
                 MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                // Here is the error.
-
                 parameters.ConnectionString = conn.ConnectionString;
 
             }
-
         }
 
 
@@ -204,37 +169,28 @@ namespace Dash
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
-
             try
             {
                 var result = cmd.ExecuteScalar();
                 companyID = System.Convert.ToInt32(result);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
             finally
             {
                 cmd.Dispose();
                 conn.Close();
             }
-
-
             var a = get_connectionStringName(companyID);
-
-
             return a;
         }
+
         private ConnectionStringSettings GetConnectionString()
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */

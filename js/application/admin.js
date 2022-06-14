@@ -44,7 +44,6 @@ function regex_return(text_to_search) {
     return matches;
 }
 function customizeWidgets(sender, args) {
-
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
    
@@ -90,8 +89,14 @@ function customizeWidgets(sender, args) {
 
 
 function updatecustomizeWidgets(sender, args) {
+    // update
+
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
+
+    setCookie('new', JSON.stringify(collection))
+
+
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
         initialPayload = [];
         initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
@@ -129,6 +134,35 @@ function updatecustomizeWidgets(sender, args) {
         }
         grid.option("columns", columns);
     }
+
+
+
+    var items = dashboard.GetDashboardControl().dashboard().items();
+    tabItems = []
+    window.counter = 0;
+
+    d_old = JSON.parse(getCookie('old'));
+    d_new = JSON.parse(getCookie('new'));
+    console.log(d_old);
+    console.log(d_new);
+    for (var i = 0; i < items.length; i++) {
+        var iCurrent = items[i];
+        item_caption = iCurrent.name();
+        for (var j = 0; j < collection.length; j++) {
+
+            var sDate = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+            console.log(sDate);
+            if (iCurrent.name().includes(sDate)) {
+                old_v = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+                new_v = new Date(d_new[j].Value).toLocaleDateString("uk-Uk");
+                var nName = iCurrent.name().replace(old_v, new_v);
+                iCurrent.name(nName);
+                console.log("Found")
+            }
+         }
+    }
+
+    
 }
 
 
@@ -274,7 +308,6 @@ function onCollapse() {
 }
 
 function correctTheLoadingState(s, e) {
-
     var control = dashboard.GetDashboardControl();
 
     design = control.isDesignMode();
@@ -284,6 +317,9 @@ function correctTheLoadingState(s, e) {
     }
 
     var list = dashboard.GetParameters().GetParameterList();
+    setCookie('old', JSON.stringify(list))
+    setCookie('new', JSON.stringify(list))
+
     var control = dashboard.GetDashboardControl();
     var items = s.GetDashboardControl().dashboard().items();
     tabItems = []
@@ -295,7 +331,7 @@ function correctTheLoadingState(s, e) {
         item_caption = iCurrent.name();
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
-            parameterized_values.forEach((singular) => {
+              parameterized_values.forEach((singular) => {
 
                 const found = list.find(element => element.Name == singular)
                 indexOfElement = list.indexOf(found)

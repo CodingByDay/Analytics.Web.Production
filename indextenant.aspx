@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
+
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
@@ -23,8 +24,9 @@
     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
     <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        <script src="js/application/admin.js"></script>
+    <script src="js/application/admin.js"></script>
         <style>
         .dx-widget{  
         color: #333!important;  
