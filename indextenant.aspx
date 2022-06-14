@@ -24,11 +24,6 @@
     <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
-
-
-
-        <!-- All javascript including the caption logic events
-             12. april 2022 -->
         <script src="js/application/admin.js"></script>
         <style>
         .dx-widget{  
@@ -41,12 +36,7 @@
         height: 100% !important;
         }
 
-
-
-
         </style>
-
-    
         <div class="col-sm-12">
         <div style="position: absolute; left: 80px; right: 0; top:0; bottom:30px;">
  
@@ -71,7 +61,5 @@
       </dx:ASPxDashboard>
         </div>
 
-   
-
-
+  
 </asp:Content>

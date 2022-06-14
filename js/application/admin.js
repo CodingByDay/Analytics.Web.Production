@@ -284,22 +284,34 @@ function correctTheLoadingState(s, e) {
     for (var i = 0; i < items.length; i++) {
    
         var iCurrent = items[i];
-        console.log(iCurrent.componentName());
-        if (iCurrent.name().startsWith("Tab")) {
-            window.counter += 1;
+        item_caption = iCurrent.name();
+
+        var parameterized_values = regex_return(item_caption);
+        if (parameterized_values.length != 0) {
+            parameterized_values.forEach((singular) => {
+                const found = list.find(element => element.Name == singular)
+                indexOfElement = list.indexOf(found)
+                if (found != null && indexOfElement != -1) {
+                    text_to_replace = "#" + found.Name
+                    try {
+                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                    } catch (err) {
+                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                    }
+                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                    iCurrent.name(window.item_caption);
+                }
+            })
         }
+  
+        
+       
+        
+        
         
     }
-    var times = window.counter;
-    console.log(`Final count is ${times}`);
-
-    for (var i = 0; i < times; i++) {
-        var item = s.GetDashboardControl().dashboard().findItem(`dashboardTabPage${i+1}`);
-        var titl = item.name();
-        item.name("*Custom caption");
-        console.log(`The item title is ${titl}`);
-    }
-    control.dashboard().rebuildLayout();
+   
+   
 
 
 
