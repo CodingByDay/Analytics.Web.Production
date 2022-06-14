@@ -274,49 +274,48 @@ function onCollapse() {
 }
 
 function correctTheLoadingState(s, e) {
-  
+
     var control = dashboard.GetDashboardControl();
+
+    design = control.isDesignMode();
+
+    if (design == false) {
+        onCollapse();
+    }
+
     var list = dashboard.GetParameters().GetParameterList();
     var control = dashboard.GetDashboardControl();
     var items = s.GetDashboardControl().dashboard().items();
     tabItems = []
     window.counter = 0;
+
+
     for (var i = 0; i < items.length; i++) {
-   
         var iCurrent = items[i];
         item_caption = iCurrent.name();
-
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
             parameterized_values.forEach((singular) => {
+
                 const found = list.find(element => element.Name == singular)
                 indexOfElement = list.indexOf(found)
+
                 if (found != null && indexOfElement != -1) {
-                    text_to_replace = "#" + found.Name
+                    text_to_replace = "#" + found.Name;
+
                     try {
                         text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
                     } catch (err) {
                         text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                     }
                     window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+
                     iCurrent.name(window.item_caption);
                 }
             })
         }
-  
-        
-       
-        
-        
-        
+
     }
-   
-   
 
 
-
-    design = control.isDesignMode();
-    if (design == false) {
-        onCollapse();
-    }
 }

@@ -37,7 +37,6 @@ namespace Dash
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
 
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -58,8 +57,6 @@ namespace Dash
 
             ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
 
-
-
             string TARGET_URL = "https://dash.in-sist.si";
 
             if (Session != null)
@@ -70,7 +67,7 @@ namespace Dash
                 {
                     if (Session["UserAllowed"].ToString() == "true")
                     {
-                        ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                        ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                     }
                     else
                     {
