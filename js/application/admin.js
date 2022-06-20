@@ -7,7 +7,9 @@ updatedPayload = [];
  */
 
 function onItemCaptionToolbarUpdated(s, e) {
+
     var list = dashboard.GetParameters().GetParameterList();
+    setCookie("params", JSON.stringify(list), 365);
     if (list.length > 0) {
         window.item_caption = e.Options.staticItems[0].text;
         var parameterized_values = regex_return(item_caption);

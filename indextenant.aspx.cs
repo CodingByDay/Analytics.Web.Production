@@ -2,7 +2,11 @@
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
+using DevExpress.XtraReports.UI;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
@@ -92,10 +96,32 @@ namespace Dash
         {
             var eDocument = e;
 
+            foreach (var printControl in e.GetPrintableControls())
+            {
+                XRControl ctr = printControl.Value;
+                var report = ctr.Report;
+                report.Name = GetProperName(report.Name);
+            }
+        
 
 
+            
+        }
 
-            bool stop = true;
+        private string GetProperName(string name)
+        {
+            try
+            {
+                var list = Request.Cookies["params"].Value;
+                var dList = JsonConvert.DeserializeObject(list);
+                var no = dList;
+                return no.ToString();
+
+
+            } catch
+            {
+                return default(string);
+            }
         }
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
