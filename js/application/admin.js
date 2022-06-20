@@ -93,15 +93,43 @@ function customizeWidgets(sender, args) {
         var chart = args.GetWidget();
         var legend = chart.option("legend");
         legend.customizeText = function (arg) {
-            return "Test!!!!";
+            window.item_caption = arg.seriesName;
+            var list = dashboard.GetParameters().GetParameterList();
+            if (list.length > 0) {
+
+                var parameterized_values = regex_return(arg.seriesName);
+                if (parameterized_values.length != 0) {
+                    parameterized_values.forEach((singular) => {
+                        const found = list.find(element => element.Name == singular)
+                        indexOfElement = list.indexOf(found)
+                        if (found != null && indexOfElement != -1) {
+                            text_to_replace = "#" + found.Name
+                            try {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                            } catch (err) {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                            }
+                            window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                            console.log(window.item_caption);
+                           
+                        }
+                    })
+                }
+
+            }
+            var splited = window.item_caption.split(" ");
+            splited_removed = removeItemOnce(splited)
+            return splited_removed.join(" ");
         }
         chart.option("legend", legend);
         
     }
 }
-function customizeText(arg) {
-    return `${arg.valueText} (${arg.percentText})`;
+function removeItemOnce(arr) {
 
+        arr.splice(0, 1);
+
+    return arr;
 }
 
 function updatecustomizeWidgets(sender, args) {
@@ -169,6 +197,43 @@ function updatecustomizeWidgets(sender, args) {
                 iCurrent.name(nName);          
             }
          }
+    }
+
+
+    if (args.ItemName.startsWith("chart")) {
+        var chart = args.GetWidget();
+        var legend = chart.option("legend");
+        legend.customizeText = function (arg) {
+            window.item_caption = arg.seriesName;
+            var list = dashboard.GetParameters().GetParameterList();
+            if (list.length > 0) {
+
+                var parameterized_values = regex_return(arg.seriesName);
+                if (parameterized_values.length != 0) {
+                    parameterized_values.forEach((singular) => {
+                        const found = list.find(element => element.Name == singular)
+                        indexOfElement = list.indexOf(found)
+                        if (found != null && indexOfElement != -1) {
+                            text_to_replace = "#" + found.Name
+                            try {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                            } catch (err) {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                            }
+                            window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                            console.log(window.item_caption);
+
+                        }
+                    })
+                }
+
+            }
+            var splited = window.item_caption.split(" ");
+            splited_removed = removeItemOnce(splited)
+            return splited_removed.join(" ");
+        }
+        chart.option("legend", legend);
+
     }
 }
 
