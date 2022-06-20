@@ -57,6 +57,7 @@
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           ItemWidgetCreated="customizeWidgets"
+                           
                           ItemWidgetUpdated="updatecustomizeWidgets"                   
                           DashboardInitialized="correctTheLoadingState"                      
                           />

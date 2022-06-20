@@ -44,6 +44,7 @@ function regex_return(text_to_search) {
     return matches;
 }
 function customizeWidgets(sender, args) {
+    
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
    
@@ -85,8 +86,23 @@ function customizeWidgets(sender, args) {
         }
         grid.option("columns", columns);
     }
-}
 
+
+
+    if (args.ItemName.startsWith("chart")) {
+        var chart = args.GetWidget();
+        var legend = chart.option("legend");
+        legend.customizeText = function (arg) {
+            return "Test!!!!";
+        }
+        chart.option("legend", legend);
+        
+    }
+}
+function customizeText(arg) {
+    return `${arg.valueText} (${arg.percentText})`;
+
+}
 
 function updatecustomizeWidgets(sender, args) {
     // update
@@ -134,13 +150,9 @@ function updatecustomizeWidgets(sender, args) {
         }
         grid.option("columns", columns);
     }
-
-
-
     var items = dashboard.GetDashboardControl().dashboard().items();
     tabItems = []
     window.counter = 0;
-
     d_old = JSON.parse(getCookie('old'));
     d_new = JSON.parse(getCookie('new'));
     console.log(d_old);
@@ -149,20 +161,15 @@ function updatecustomizeWidgets(sender, args) {
         var iCurrent = items[i];
         item_caption = iCurrent.name();
         for (var j = 0; j < collection.length; j++) {
-
             var sDate = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
-            console.log(sDate);
             if (iCurrent.name().includes(sDate)) {
                 old_v = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
                 new_v = new Date(d_new[j].Value).toLocaleDateString("uk-Uk");
                 var nName = iCurrent.name().replace(old_v, new_v);
-                iCurrent.name(nName);
-                console.log("Found")
+                iCurrent.name(nName);          
             }
          }
     }
-
-    
 }
 
 
