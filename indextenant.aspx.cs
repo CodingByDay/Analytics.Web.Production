@@ -102,6 +102,7 @@ namespace Dash
         private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
         {
             var eDocument = e;
+            
             foreach (var printControl in e.GetPrintableControls())
             {
                 XRControl ctr = printControl.Value;
@@ -121,10 +122,7 @@ namespace Dash
                                     var controlSeries = e.GetChartContext(chartItemName).GetControlSeries(dashSeries);
                                     foreach (var ser in controlSeries)
                                     {
-                                        foreach (CustomLegendItem element in ser.Legend.CustomItems)
-                                        {
-                                            element.Text = "Test!!!";
-                                        }
+                                        ser.Visible = false;
                                     }
                                 }
                             }
@@ -138,10 +136,10 @@ namespace Dash
                         var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
                         foreach (var item in chartDashboardItem.Columns)
                         {
-                            var namestring = item.GetDisplayName();
-                            item.Name = "TEST";
-
+                            var deb = item;
                             var stop = true;
+                        
+                            
                         }
 
                     } catch { }
