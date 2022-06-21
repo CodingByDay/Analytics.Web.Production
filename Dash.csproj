@@ -621,6 +621,7 @@
     <Compile Include="Navigation.ascx.designer.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
     </Compile>
+    <Compile Include="ORM\Parameter.cs" />
     <Compile Include="ORM\User.cs" />
     <Compile Include="plans.aspx.cs">
       <DependentUpon>plans.aspx</DependentUpon>

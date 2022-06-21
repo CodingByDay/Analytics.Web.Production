@@ -1,7 +1,10 @@
 ﻿using Dash.DatabaseStorage;
+using Dash.ORM;
+using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
+using DevExpress.XtraCharts;
 using DevExpress.XtraReports.UI;
 using Newtonsoft.Json;
 using System;
@@ -91,21 +94,59 @@ namespace Dash
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
-
+        /// <summary>
+        /// Custom export event.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
         {
             var eDocument = e;
-
             foreach (var printControl in e.GetPrintableControls())
             {
                 XRControl ctr = printControl.Value;
-                var report = ctr.Report;
-                report.Name = GetProperName(report.Name);
+                if (printControl.Value is XRChart)
+                {
+                    try
+                    {
+                        var chartItemName = printControl.Key;
+                        var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
+                       
+                        foreach (var series in chartDashboardItem.Panes)
+                        {
+                            if (series.Series.Count > 0)
+                            {
+                                foreach (var dashSeries in series.Series)
+                                {
+                                    var controlSeries = e.GetChartContext(chartItemName).GetControlSeries(dashSeries);
+                                    foreach (var ser in controlSeries)
+                                    {
+                                        foreach (CustomLegendItem element in ser.Legend.CustomItems)
+                                        {
+                                            element.Text = "Test!!!";
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } catch { }
+                } else if(printControl.Key.StartsWith("grid"))
+                {
+                    try
+                    {
+                        var ItemName = printControl.Key;
+                        var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
+                        foreach (var item in chartDashboardItem.Columns)
+                        {
+                            var namestring = item.GetDisplayName();
+                            item.Name = "TEST";
+
+                            var stop = true;
+                        }
+
+                    } catch { }
+                }
             }
-        
-
-
-            
         }
 
         private string GetProperName(string name)
@@ -113,13 +154,15 @@ namespace Dash
             try
             {
                 var list = Request.Cookies["params"].Value;
-                var dList = JsonConvert.DeserializeObject(list);
-                var no = dList;
+                var des = JsonConvert.DeserializeObject<List<Parameter>>(list);
+                var no = des;
                 return no.ToString();
 
 
-            } catch
+            }
+            catch(Exception ex)
             {
+                var err = ex.InnerException;
                 return default(string);
             }
         }
