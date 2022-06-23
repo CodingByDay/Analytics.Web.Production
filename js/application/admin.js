@@ -237,6 +237,17 @@ function updatecustomizeWidgets(sender, args) {
         chart.option("legend", legend);
 
     }
+    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
+        d_old = JSON.parse(getCookie('old'));
+        d_new = JSON.parse(getCookie('new'));
+        var grid = args.GetWidget();
+        var columns = grid.option("columns");
+        for (var i = 0; i < columns.length; i++) {
+            var textToCheck = columns[i].name;
+            columns[i].name = "Test";
+        }
+        grid.option("columns", columns);
+    }
 }
 
 

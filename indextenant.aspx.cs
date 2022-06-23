@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Web;
 using System.Web.UI.HtmlControls;
 
@@ -102,47 +103,43 @@ namespace Dash
         private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
         {
             var eDocument = e;
-            
+
             foreach (var printControl in e.GetPrintableControls())
             {
-                XRControl ctr = printControl.Value;
                 if (printControl.Value is XRChart)
                 {
-                    try
+                    XRControl ctr = printControl.Value;
+                    if (printControl.Value is XRChart)
                     {
-                        var chartItemName = printControl.Key;
-                        var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
-                       
-                        foreach (var series in chartDashboardItem.Panes)
+                        try
                         {
-                            if (series.Series.Count > 0)
-                            {
-                                foreach (var dashSeries in series.Series)
-                                {
-                                    var controlSeries = e.GetChartContext(chartItemName).GetControlSeries(dashSeries);
-                                    foreach (var ser in controlSeries)
-                                    {
-                                        ser.Visible = false;
-                                    }
-                                }
-                            }
-                        }
-                    } catch { }
-                } else if(printControl.Key.StartsWith("grid"))
-                {
-                    try
-                    {
-                        var ItemName = printControl.Key;
-                        var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
-                        foreach (var item in chartDashboardItem.Columns)
-                        {
-                            var deb = item;
-                            var stop = true;
-                        
-                            
-                        }
+                            var chartItemName = printControl.Key;
+                            var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
 
-                    } catch { }
+                            var legend = ((XRChart)ctr).Legend;
+
+
+                            var stop = true;
+                        }
+                        catch { }
+                    }
+                    else if (printControl.Key.StartsWith("grid"))
+                    {
+                        try
+                        {
+                            var ItemName = printControl.Key;
+                            var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
+                            foreach (var item in chartDashboardItem.Columns)
+                            {
+                                var deb = item;
+                                var stop = true;
+
+
+                            }
+
+                        }
+                        catch { }
+                    }
                 }
             }
         }
