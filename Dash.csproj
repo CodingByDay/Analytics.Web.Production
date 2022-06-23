@@ -265,6 +265,7 @@
     <Content Include="js\bootstrap.js" />
     <Content Include="js\jquery-1.11.2.min.js" />
     <Content Include="js\jquery.main.js" />
+    <Content Include="js\SaveAsExtension.js" />
     <Content Include="Log\log.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

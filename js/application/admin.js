@@ -257,6 +257,8 @@ function onBeforeRender(sender) {
     extension = new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl);
     dashboardControl.surfaceLeft(extension.panelWidth);
     dashboardControl.registerExtension(extension);
+    dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
+
 
 }
 

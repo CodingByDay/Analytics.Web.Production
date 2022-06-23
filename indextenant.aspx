@@ -25,6 +25,7 @@
     <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/SaveAsExtension.js" type="text/javascript"></script>
 
     <script src="js/application/admin.js"></script>
         <style>
@@ -49,7 +50,12 @@
         
 
         </div>
-   
+    <!-- Defines the "Save As" extension template. -->
+         <script type="text/html" id="dx-save-as-form">
+        <div>Dashboard Name:</div>
+        <div style="margin: 10px 0" data-bind="dxTextBox: { value: newName }"></div>
+        <div data-bind="dxButton: { text: 'Save', onClick: saveAs }"></div>
+         </script>
  
         <div style="position: absolute; left: 0; right: 0; top:35px; bottom:0;">
 
