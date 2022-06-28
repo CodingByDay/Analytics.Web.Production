@@ -1,4 +1,5 @@
-﻿using DevExpress.DashboardWeb;
+﻿using DevExpress.DashboardCommon;
+using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -59,6 +60,13 @@ namespace Dash.DatabaseStorage
 
         public string AddDashboard(XDocument document, string dashboardName)
         {
+            Dashboard d = new Dashboard();
+            //
+            d.LoadFromXDocument(document);
+            d.Title.Text = dashboardName;
+            document = d.SaveToXDocument();
+            // 
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
