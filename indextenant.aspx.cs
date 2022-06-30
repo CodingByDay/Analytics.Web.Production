@@ -32,9 +32,9 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Session["current"] as string))
+            if (Request.Cookies["dashboard"] != null)
             {
-                ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
+                ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
             }
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
@@ -115,11 +115,7 @@ namespace Dash
                         {
                             var chartItemName = printControl.Key;
                             var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
-
                             var legend = ((XRChart)ctr).Legend;
-
-
-                            var stop = true;
                         }
                         catch { }
                     }
@@ -132,9 +128,6 @@ namespace Dash
                             foreach (var item in chartDashboardItem.Columns)
                             {
                                 var deb = item;
-                                var stop = true;
-
-
                             }
 
                         }
@@ -170,20 +163,18 @@ namespace Dash
        
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
+            Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
         }
 
         private bool checkDB(string ID)
         {
             bool flag = false; 
-
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name; 
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
-
             try
             {
                 var result = cmd.ExecuteScalar();
@@ -199,18 +190,14 @@ namespace Dash
                 cmd.Dispose();
                 conn.Close();
             }
-
-
             if (value == 1)
             {
                 flag = true;
             }
-
             else
             {
                 flag = false;
             }
-
             return flag;
         }
 
@@ -243,7 +230,6 @@ namespace Dash
             }
             catch (Exception error)
             {
-                // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
             finally
@@ -259,7 +245,6 @@ namespace Dash
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
@@ -268,17 +253,12 @@ namespace Dash
             {
                 var result = cmd.ExecuteScalar();
                 companyID = System.Convert.ToInt32(result);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
-
             finally
             {
                 cmd.Dispose();
@@ -286,13 +266,8 @@ namespace Dash
             }
 
             var a = get_connectionStringName(companyID);
-
-
-
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
-
             return stringFinal;
-
         }
 
         private string get_connectionStringName(int companyID)
