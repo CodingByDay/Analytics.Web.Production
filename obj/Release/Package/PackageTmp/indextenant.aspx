@@ -6,30 +6,24 @@
 
     <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="js/SaveAsExtension.js" type="text/javascript"></script>
 
-
-
-
-        <!-- All javascript including the caption logic events
-             12. april 2022 -->
-        <script src="js/application/admin.js"></script>
+    <script src="js/application/admin.js"></script>
         <style>
         .dx-widget{  
         color: #333!important;  
@@ -41,12 +35,7 @@
         height: 100% !important;
         }
 
-
-
-
         </style>
-
-    
         <div class="col-sm-12">
         <div style="position: absolute; left: 80px; right: 0; top:0; bottom:30px;">
  
@@ -57,7 +46,12 @@
         
 
         </div>
-   
+    <!-- Defines the "Save As" extension template. -->
+         <script type="text/html" id="dx-save-as-form">
+        <div>Dashboard Name:</div>
+        <div style="margin: 10px 0" data-bind="dxTextBox: { value: newName }"></div>
+        <div data-bind="dxButton: { text: 'Save', onClick: saveAs }"></div>
+         </script>
  
         <div style="position: absolute; left: 0; right: 0; top:35px; bottom:0;">
 
@@ -65,13 +59,12 @@
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           ItemWidgetCreated="customizeWidgets"
+                           
                           ItemWidgetUpdated="updatecustomizeWidgets"                   
                           DashboardInitialized="correctTheLoadingState"                      
                           />
       </dx:ASPxDashboard>
         </div>
 
-   
-
-
+  
 </asp:Content>

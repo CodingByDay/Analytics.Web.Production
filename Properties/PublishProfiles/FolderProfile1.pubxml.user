@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\inetpub\wwwroot\current_update</_PublishTargetUrl>
-    <History>True|2022-06-23T08:36:17.7310037Z;True|2021-12-15T10:50:13.7721976+01:00;True|2021-12-15T09:27:01.6971095+01:00;False|2021-12-15T09:25:29.3635387+01:00;False|2021-12-15T09:22:50.5945792+01:00;False|2021-12-15T09:19:51.6754174+01:00;False|2021-12-15T09:17:45.7134547+01:00;False|2021-12-15T09:09:21.9902681+01:00;</History>
+    <_PublishTargetUrl>C:\Users\jankoj\Desktop\settce</_PublishTargetUrl>
+    <History>True|2022-06-29T11:05:07.1558092Z;True|2022-06-28T14:21:48.0237642+02:00;True|2022-06-23T10:36:17.7310037+02:00;True|2021-12-15T10:50:13.7721976+01:00;True|2021-12-15T09:27:01.6971095+01:00;False|2021-12-15T09:25:29.3635387+01:00;False|2021-12-15T09:22:50.5945792+01:00;False|2021-12-15T09:19:51.6754174+01:00;False|2021-12-15T09:17:45.7134547+01:00;False|2021-12-15T09:09:21.9902681+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -45,10 +45,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2022 08:33:57</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>06/23/2022 10:39:31</publishTime>
+      <publishTime>06/28/2022 14:21:34</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>06/23/2022 10:39:31</publishTime>
+      <publishTime>06/28/2022 14:21:34</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -1839,7 +1839,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/23/2022 08:33:37</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/23/2022 10:36:10</publishTime>
+      <publishTime>06/28/2022 14:21:36</publishTime>
     </File>
   </ItemGroup>
 </Project>

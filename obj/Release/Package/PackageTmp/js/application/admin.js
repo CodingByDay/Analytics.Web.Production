@@ -7,7 +7,9 @@ updatedPayload = [];
  */
 
 function onItemCaptionToolbarUpdated(s, e) {
+
     var list = dashboard.GetParameters().GetParameterList();
+    setCookie("params", JSON.stringify(list), 365);
     if (list.length > 0) {
         window.item_caption = e.Options.staticItems[0].text;
         var parameterized_values = regex_return(item_caption);
@@ -23,7 +25,6 @@ function onItemCaptionToolbarUpdated(s, e) {
                         text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                     }
                     window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                    console.log(window.item_caption)
                     e.Options.staticItems[0].text = window.item_caption;
                 } 
             })
@@ -45,7 +46,7 @@ function regex_return(text_to_search) {
     return matches;
 }
 function customizeWidgets(sender, args) {
-
+    
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
    
@@ -79,7 +80,6 @@ function customizeWidgets(sender, args) {
                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                            }
                            window.textNew = window.textNew.replace(text_to_replace, text_replace);
-                           console.log(window.textNew)
                            columns[i].caption = window.textNew;
                     } 
                 })
@@ -88,12 +88,61 @@ function customizeWidgets(sender, args) {
         }
         grid.option("columns", columns);
     }
+
+
+
+    if (args.ItemName.startsWith("chart")) {
+        var chart = args.GetWidget();
+        var legend = chart.option("legend");
+        legend.customizeText = function (arg) {
+            window.item_caption = arg.seriesName;
+            var list = dashboard.GetParameters().GetParameterList();
+            if (list.length > 0) {
+
+                var parameterized_values = regex_return(arg.seriesName);
+                if (parameterized_values.length != 0) {
+                    parameterized_values.forEach((singular) => {
+                        const found = list.find(element => element.Name == singular)
+                        indexOfElement = list.indexOf(found)
+                        if (found != null && indexOfElement != -1) {
+                            text_to_replace = "#" + found.Name
+                            try {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                            } catch (err) {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                            }
+                            window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                            console.log(window.item_caption);
+                           
+                        }
+                    })
+                }
+
+            }
+            var splited = window.item_caption.split(" ");
+            splited_removed = removeItemOnce(splited)
+            return splited_removed.join(" ");
+        }
+        chart.option("legend", legend);
+        
+    }
+}
+function removeItemOnce(arr) {
+
+        arr.splice(0, 1);
+
+    return arr;
 }
 
-
 function updatecustomizeWidgets(sender, args) {
+    // update
+
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
+
+    setCookie('new', JSON.stringify(collection))
+
+
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
         initialPayload = [];
         initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
@@ -124,11 +173,78 @@ function updatecustomizeWidgets(sender, args) {
                             text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                         }
                         window.textNew = window.textNew.replace(text_to_replace, text_replace);
-                        console.log(window.textNew)
                         columns[i].caption = window.textNew;
                     } 
                 })
             } 
+        }
+        grid.option("columns", columns);
+    }
+    var items = dashboard.GetDashboardControl().dashboard().items();
+    tabItems = []
+    window.counter = 0;
+    d_old = JSON.parse(getCookie('old'));
+    d_new = JSON.parse(getCookie('new'));
+    console.log(d_old);
+    console.log(d_new);
+    for (var i = 0; i < items.length; i++) {
+        var iCurrent = items[i];
+        item_caption = iCurrent.name();
+        for (var j = 0; j < collection.length; j++) {
+            var sDate = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+            if (iCurrent.name().includes(sDate)) {
+                old_v = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+                new_v = new Date(d_new[j].Value).toLocaleDateString("uk-Uk");
+                var nName = iCurrent.name().replace(old_v, new_v);
+                iCurrent.name(nName);          
+            }
+         }
+    }
+
+
+    if (args.ItemName.startsWith("chart")) {
+        var chart = args.GetWidget();
+        var legend = chart.option("legend");
+        legend.customizeText = function (arg) {
+            window.item_caption = arg.seriesName;
+            var list = dashboard.GetParameters().GetParameterList();
+            if (list.length > 0) {
+
+                var parameterized_values = regex_return(arg.seriesName);
+                if (parameterized_values.length != 0) {
+                    parameterized_values.forEach((singular) => {
+                        const found = list.find(element => element.Name == singular)
+                        indexOfElement = list.indexOf(found)
+                        if (found != null && indexOfElement != -1) {
+                            text_to_replace = "#" + found.Name
+                            try {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                            } catch (err) {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                            }
+                            window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                            console.log(window.item_caption);
+
+                        }
+                    })
+                }
+
+            }
+            var splited = window.item_caption.split(" ");
+            splited_removed = removeItemOnce(splited)
+            return splited_removed.join(" ");
+        }
+        chart.option("legend", legend);
+
+    }
+    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
+        d_old = JSON.parse(getCookie('old'));
+        d_new = JSON.parse(getCookie('new'));
+        var grid = args.GetWidget();
+        var columns = grid.option("columns");
+        for (var i = 0; i < columns.length; i++) {
+            var textToCheck = columns[i].name;
+            columns[i].name = "Test";
         }
         grid.option("columns", columns);
     }
@@ -152,6 +268,8 @@ function onBeforeRender(sender) {
     extension = new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl);
     dashboardControl.surfaceLeft(extension.panelWidth);
     dashboardControl.registerExtension(extension);
+    dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
+
 
 }
 
@@ -277,32 +395,50 @@ function onCollapse() {
 }
 
 function correctTheLoadingState(s, e) {
-  
     var control = dashboard.GetDashboardControl();
-    //var list = dashboard.GetParameters().GetParameterList();
-    //var control = dashboard.GetDashboardControl();
-    //var items = s.GetDashboardControl().dashboard().items();
-    //tabItems = []
-
-    //for (var i = 0; i < items.length; i++) {
-    //   counter = 0;
-    //    var iCurrent = items[i];
-    //    console.log(iCurrent.name());
-    //    if (iCurrent.name().startsWith("Tab Container")) {
-    //        counter += 1;
-    //        var item = s.GetDashboardControl().dashboard().findItem(`dashboardTabPage${counter}`);
-    //        item.name("*Custom caption");
-    //    }
-        
-    //}
-
-
-
-
-
 
     design = control.isDesignMode();
+
     if (design == false) {
         onCollapse();
     }
+
+    var list = dashboard.GetParameters().GetParameterList();
+    setCookie('old', JSON.stringify(list))
+    setCookie('new', JSON.stringify(list))
+
+    var control = dashboard.GetDashboardControl();
+    var items = s.GetDashboardControl().dashboard().items();
+    tabItems = []
+    window.counter = 0;
+
+
+    for (var i = 0; i < items.length; i++) {
+        var iCurrent = items[i];
+        item_caption = iCurrent.name();
+        var parameterized_values = regex_return(item_caption);
+        if (parameterized_values.length != 0) {
+              parameterized_values.forEach((singular) => {
+
+                const found = list.find(element => element.Name == singular)
+                indexOfElement = list.indexOf(found)
+
+                if (found != null && indexOfElement != -1) {
+                    text_to_replace = "#" + found.Name;
+
+                    try {
+                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                    } catch (err) {
+                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                    }
+                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+
+                    iCurrent.name(window.item_caption);
+                }
+            })
+        }
+
+    }
+
+
 }

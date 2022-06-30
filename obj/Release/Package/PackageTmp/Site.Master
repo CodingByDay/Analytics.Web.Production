@@ -6,10 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <link href= "~/css/website.css" rel="stylesheet" runat="server" type="text/css" />
     <webopt:bundlereference runat="server" path="~/css/website.css" />
-    <link href= "~/fonts/css/font-awesome.css" rel="stylesheet" runat="server" type="text/css" />
-    <webopt:bundlereference runat="server" path="~/fonts/css/font-awesome.css" />
     <style>
 </style>
 
@@ -21,10 +18,17 @@
   
     </style>
 
-    <asp:PlaceHolder runat="server">
+   
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicons/apple.png" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+     <asp:PlaceHolder runat="server">
     <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
-      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <script>
 
             function checkCookie() {
@@ -96,19 +100,8 @@
             });
 
         </script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <webopt:bundlereference runat="server" path="~/Content/css" />
-    <link href="~/favicons/apple.png" rel="shortcut icon" type="image/x-icon" />
 
-</head>
-<body>
 
-    <script src="Content/feedback.js?v=2013"></script>
-    <script src="Content/sidebar/sidebar.js?v=2013"></script>
-        <script src="Content/scripts.js?v=2013"></script>
-
-     <link href="Content/styles.css?v=2013" rel="stylesheet" />
-    <link href="Content/sidebar/sidebar.css" rel="stylesheet" />
     <form runat="server">
 
         <asp:ScriptManager runat="server" EnablePageMethods="true">
@@ -190,7 +183,6 @@
         var toggle = document.getElementById("toggle");
 
         var state = getCookie("state");
-        console.log(state);
         if (state == "light") {
 
             toggle.checked = true;

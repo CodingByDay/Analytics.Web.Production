@@ -92,7 +92,58 @@ function customizeWidgets(sender, args) {
 
 
     if (args.ItemName.startsWith("chart")) {
+
+
+
         var chart = args.GetWidget();
+        let tip = chart.tooltip =
+        {
+            enabled: true,
+            customizeTooltip(arg) {
+                let rWork = arg.seriesName;
+                window.item_caption = rWork;
+                var list = dashboard.GetParameters().GetParameterList();
+                if (list.length > 0) {
+
+                    var parameterized_values = regex_return(arg.seriesName);
+                    if (parameterized_values.length != 0) {
+                        parameterized_values.forEach((singular) => {
+                            const found = list.find(element => element.Name == singular)
+                            indexOfElement = list.indexOf(found)
+                            if (found != null && indexOfElement != -1) {
+                                text_to_replace = "#" + found.Name
+                                try {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                } catch (err) {
+                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                }
+                                window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                                console.log(window.item_caption);
+
+                            }
+                        })
+                    }
+
+                }
+                var splited = window.item_caption.split(" ");
+                splited_removed = removeItemOnce(splited)
+                let replaced = splited_removed.join(" ");
+
+
+
+                return {
+                    text: `${replaced}: ${arg.valueText}`,
+                };
+            }
+     
+        };
+        chart.option("tooltip", tip);
+
+
+
+
+
+        console.log(chart);
         var legend = chart.option("legend");
         legend.customizeText = function (arg) {
             window.item_caption = arg.seriesName;
