@@ -35,6 +35,9 @@
 	<link rel="stylesheet" href="css/all.css">
 	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
 	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
 </head>
 	<!--Start of Tawk.to Script-->
 <script type="text/javascript">
@@ -92,24 +95,28 @@
     </script>
 	<style>
 
-
+@media only screen and (max-width: 600px){
+	/*Big smartphones [426px -> 600px]*/
+	.heading-holder {
+		display:none;
+	}
+}
+@media only screen and (max-width: 425px){
+	/*Small smartphones [325px -> 425px]*/
+	.heading-holder {
+		display:none;
+	}
+}
 
 	 #cookieNotice {
-
 		 min-width:600px!important;
-
 		 max-width:600px!important;
-
 		 position:fixed;
-
 		 background-color: white;
 		 left: 10px!important;
 		 bottom: 10px!important;
 		 z-index: 1;
 		 opacity: 1;
-
-
-
 	 }
 
 

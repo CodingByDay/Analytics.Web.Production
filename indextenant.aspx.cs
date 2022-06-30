@@ -4,15 +4,12 @@ using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using DevExpress.XtraCharts;
 using DevExpress.XtraReports.UI;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Drawing;
 using System.Web;
 using System.Web.UI.HtmlControls;
 
@@ -61,7 +58,6 @@ namespace Dash
                     else
                     {
                         ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-
                     }
                 }
                 else
@@ -75,9 +71,7 @@ namespace Dash
             }
             if (Request.Cookies.Get("state") is null)
             {
-
                 Response.Cookies["state"].Value = "light";
-
             }
             else
             {
@@ -87,14 +81,15 @@ namespace Dash
                     case "light":
                         ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
                         break;
+
                     case "dark":
                         ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
                         break;
-
                 }
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
+
         /// <summary>
         /// Custom export event.
         /// </summary>
@@ -129,7 +124,6 @@ namespace Dash
                             {
                                 var deb = item;
                             }
-
                         }
                         catch { }
                     }
@@ -145,10 +139,8 @@ namespace Dash
                 var des = JsonConvert.DeserializeObject<List<Parameter>>(list);
                 var no = des;
                 return no.ToString();
-
-
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 var err = ex.InnerException;
                 return default(string);
@@ -160,7 +152,7 @@ namespace Dash
             string group = getCurrentUserID();
             e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
         }
-       
+
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
             Response.Cookies["dashboard"].Value = e.DashboardId;
@@ -169,8 +161,8 @@ namespace Dash
 
         private bool checkDB(string ID)
         {
-            bool flag = false; 
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; 
+            bool flag = false;
+            string UserNameForChecking = HttpContext.Current.User.Identity.Name;
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             conn = new SqlConnection(ConnectionString);
             conn.Open();
@@ -180,7 +172,6 @@ namespace Dash
                 var result = cmd.ExecuteScalar();
                 value = System.Convert.ToInt32(result);
             }
-
             catch (Exception error)
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
@@ -210,11 +201,8 @@ namespace Dash
                       (CustomStringConnectionParameters)e.ConnectionParameters;
                 MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
                 parameters.ConnectionString = conn.ConnectionString;
-
             }
         }
-
-
 
         private string getCurrentUserID()
         {
@@ -284,17 +272,12 @@ namespace Dash
             {
                 string result = cmd.ExecuteScalar().ToString();
                 returnString = result;
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
-
             finally
             {
                 cmd.Dispose();
@@ -303,9 +286,8 @@ namespace Dash
             return returnString;
         }
 
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -323,16 +305,12 @@ namespace Dash
             {
                 var result = cmd.ExecuteScalar();
                 stringID = System.Convert.ToInt32(result);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
             finally
             {
                 cmd.Dispose();
@@ -340,8 +318,6 @@ namespace Dash
             }
             return stringID;
         }
-
-
 
         public string get_conn_name(int id)
         {
@@ -356,17 +332,12 @@ namespace Dash
             {
                 var result = cmd.ExecuteScalar();
                 stringConnection = result.ToString().Replace(" ", string.Empty);
-
             }
-
-
             catch (Exception error)
             {
                 // Implement logging here.
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-
-
             finally
             {
                 cmd.Dispose();

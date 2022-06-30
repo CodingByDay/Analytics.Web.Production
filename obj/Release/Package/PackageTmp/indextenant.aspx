@@ -25,7 +25,7 @@
 
     <script src="js/application/admin.js"></script>
         <style>
-        .dx-widget{  
+        .dx-widget  {  
         color: #333!important;  
         font-weight: normal!important;  
         font-size: 11px!important;  
@@ -46,7 +46,7 @@
         
 
         </div>
-    <!-- Defines the "Save As" extension template. -->
+         <!-- Defines the "Save As" extension template. -->
          <script type="text/html" id="dx-save-as-form">
         <div>Dashboard Name:</div>
         <div style="margin: 10px 0" data-bind="dxTextBox: { value: newName }"></div>
