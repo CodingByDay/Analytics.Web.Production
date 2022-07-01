@@ -29,7 +29,9 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
-
+        .box {
+            min-height:485px;
+        }
 
         .radio input[type="radio"] {
         margin-left: 3px;
@@ -151,10 +153,10 @@
                 )
             }
         }
-      
 
 
-    
+
+
 
 
         function showDialogSync() {
@@ -173,40 +175,40 @@
         }
 
 
-        
+
         function showOrHideDivUser() {
             var v = document.getElementById("userForm");
-         
+
             if (v.style.display === "none") {
 
-                    v.style.display = "block";
+                v.style.display = "block";
             } else {
                 v.style.display = "none"
-                }
-           
+            }
+
 
         }
         function showOrHideDivByUser() {
 
             var v = document.getElementById("by");
             var button = document.getElementById("byUser");
-            
+
             if (v.style.display === "none") {
-               
+
 
                 v.style.display = "block";
                 button.innerHTML = "Skrij";
 
-                } else {
+            } else {
                 //pass
                 v.style.display = "none";
                 button.innerHTML = "Po uporabniku";
 
-                }
-            } 
+            }
+        }
 
-        
-       
+
+
 
     </script>
 
@@ -235,7 +237,7 @@
 	
 	
 	<div class="column">
-		          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+		          <dx:BootstrapGridView ID="usersGridView" runat="server"  Settings-VerticalScrollableHeight="400"  Settings-VerticalScrollBarMode="Visible" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -282,7 +284,7 @@
 
 
 	<dx:BootstrapListBox ID="graphsListBox" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
-                <CssClasses Control="control"  CheckBox="item"  />
+                <CssClasses Control="box"  CheckBox="item"  />
 
        <FilteringSettings  ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
@@ -296,6 +298,36 @@
 
           </dx:BootstrapButton>
     
+	</div>
+     <div class="column">
+
+
+	   <dx:BootstrapGridView ID="namesGridView" runat="server"  Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="300"  CssClasses-Control="graph">
+<CssClasses Control="grid"></CssClasses>
+
+<CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+
+          <Settings VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
+          </SettingsPager>
+
+<SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+
+          <SettingsDataSecurity AllowEdit="True" />
+          <Columns>
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
+              </dx:BootstrapGridViewCommandColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="ID" Name="ID" Caption="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
+                  <SettingsEditForm Visible="False" />
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="Name" Name="Name" VisibleIndex="2" Caption="Naziv">
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="CustomName" Name="CustomName" VisibleIndex="3" Caption="Analiza">
+              </dx:BootstrapGridViewTextColumn>
+          </Columns>
+          <SettingsSearchPanel Visible="True" />
+      </dx:BootstrapGridView>
+
 	</div>
 	</div>
 </section>	
@@ -408,43 +440,43 @@
 </section>
             <script>
 
-    $("#newUser").click(function (e) {
+                $("#newUser").click(function (e) {
 
-        e.preventDefault();
+                    e.preventDefault();
 
-    })
-
-
-    function user() {
-
-        var userForm = $("#userForm");
-        userForm.show();
-    }
-
-  
-
-    $(document).ready(function () {
-        $("#user").click(function () {
-            $("#userForm").css('display', 'flex');
-
-        });
-    });
+                })
 
 
-   
+                function user() {
+
+                    var userForm = $("#userForm");
+                    userForm.show();
+                }
 
 
-    $(document).ready(function () {
-        $("#closeCompany").click(function () {
-            $("#companyForm").css('display', 'none');
-        });
-    });
 
-    $(document).ready(function () {
-        $("#closeUser").click(function () {
-            $("#userForm").css('display', 'none');
-        });
-    });
+                $(document).ready(function () {
+                    $("#user").click(function () {
+                        $("#userForm").css('display', 'flex');
+
+                    });
+                });
+
+
+
+
+
+                $(document).ready(function () {
+                    $("#closeCompany").click(function () {
+                        $("#companyForm").css('display', 'none');
+                    });
+                });
+
+                $(document).ready(function () {
+                    $("#closeUser").click(function () {
+                        $("#userForm").css('display', 'none');
+                    });
+                });
 
             </script>
      </div>
@@ -561,6 +593,26 @@
    
   
      </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
   
    
   

@@ -68,9 +68,12 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+            namesGridView.RowUpdated += NamesGridView_RowUpdated;
+
+    
             if (!IsPostBack)
             {
-
+                
                 authenticate();
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -94,6 +97,23 @@ namespace Dash
                 admin.Visible = true;
                 FillUsers();
             }
+        }
+
+        private void NamesGridView_RowUpdated(object sender, ASPxDataUpdatedEventArgs e)
+        {
+            string uname = HttpContext.Current.User.Identity.Name;
+            string name = getCompanyQuery(uname);
+            int id = getIdCompany(name);
+            Graph graph = new Graph(id);
+            var payload = graph.GetNames(id);
+            var s = e.OldValues;
+            var updated = payload.FirstOrDefault(x => x.original == e.OldValues[0].ToString()).custom = e.NewValues[1].ToString();
+            graph.UpdateGraphs(payload, id);
+            var data_payload = graph.GetGraphs(id);
+            namesGridView.AutoGenerateColumns = false;
+            namesGridView.DataSource = null;
+            namesGridView.DataSource = data_payload;
+            namesGridView.DataBind();
         }
 
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
@@ -330,7 +350,7 @@ namespace Dash
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
-            }   //Connection will autmatically be closed here always
+            }   // Connection will autmatically be closed here always
 
 
 
@@ -464,6 +484,18 @@ namespace Dash
             string uname = HttpContext.Current.User.Identity.Name;
             string name = getCompanyQuery(uname);
             int id = getIdCompany(name);
+
+
+            Graph graph = new Graph(id);
+
+            var payload = graph.AllGraphs;
+
+
+            namesGridView.AutoGenerateColumns = false;
+            namesGridView.DataSource = payload;
+            namesGridView.DataBind();
+
+
             var data = GetCompanyName(id);
             companiesList.SelectedValue = data;
             companiesList.Enabled = false;
@@ -830,7 +862,7 @@ namespace Dash
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                      
+
                     }
 
                 }
