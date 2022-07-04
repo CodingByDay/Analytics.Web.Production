@@ -302,7 +302,7 @@
      <div class="column">
 
 
-	   <dx:BootstrapGridView ID="namesGridView" runat="server"  Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="300"  CssClasses-Control="graph">
+	   <dx:BootstrapGridView ID="namesGridView" runat="server"   Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="300"  CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -593,6 +593,18 @@
    
   
      </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
+  
+   
+  
+    </div>
   
    
   

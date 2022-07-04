@@ -82,7 +82,7 @@ namespace Dash.ORM
 
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"select d.ID, d.Caption, cn.company_id, cn.names from Dashboards d, CustomNames cn where cn.company_id=9;", conn);
+                    var cmd = new SqlCommand($"select d.ID, d.Caption, cn.company_id, cn.names from Dashboards d, CustomNames cn where cn.company_id={id};", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Names> data = new List<Names>();
                     while (reader.Read())

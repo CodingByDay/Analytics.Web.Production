@@ -1,4 +1,6 @@
-﻿using DevExpress.DashboardCommon;
+﻿using Dash.Log;
+using Dash.ORM;
+using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
@@ -22,6 +24,7 @@ namespace Dash.DatabaseStorage
         private string adminName;
         private string company;
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+        private object result;
 
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
@@ -285,17 +288,48 @@ namespace Dash.DatabaseStorage
                 SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {FinalString}");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
+
+                string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+
+
+                int id = getIdCompany(getcompanyForUser());
+                Graph graph = new Graph(id);
+                var payload = graph.GetNames(id);
+
+
                 while (reader.Read())
                 {
                     string ID = reader.GetInt32(0).ToString();
                     string Caption = reader.GetString(1);
-                    list.Add(new DashboardInfo() { ID = ID, Name = Caption });
+                    var custom = payload.FirstOrDefault(x => x.original == Caption).custom;
+
+                    list.Add(new DashboardInfo() { ID = ID, Name = custom  });
                 }
                 connection.Close();
             }
             return list;
         }
+        private int getIdCompany(string current)
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    result = cmd.ExecuteScalar();
+                    var finalID = System.Convert.ToInt32(result);
+                    return finalID;
 
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                    return -1;
+                }
+            }
+
+        }
         public void SaveDashboard(string dashboardID, XDocument document)
         {
             using (SqlConnection connection = new SqlConnection(this.connection))

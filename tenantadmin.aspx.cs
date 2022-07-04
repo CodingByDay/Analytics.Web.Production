@@ -68,9 +68,10 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+            namesGridView.RowUpdating += NamesGridView_RowUpdating;
             namesGridView.RowUpdated += NamesGridView_RowUpdated;
-
-    
+ 
+            
             if (!IsPostBack)
             {
                 
@@ -101,6 +102,11 @@ namespace Dash
 
         private void NamesGridView_RowUpdated(object sender, ASPxDataUpdatedEventArgs e)
         {
+            string uname = HttpContext.Current.User.Identity.Name;     
+        }
+
+        private void NamesGridView_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
+        {
             string uname = HttpContext.Current.User.Identity.Name;
             string name = getCompanyQuery(uname);
             int id = getIdCompany(name);
@@ -113,9 +119,21 @@ namespace Dash
             namesGridView.AutoGenerateColumns = false;
             namesGridView.DataSource = null;
             namesGridView.DataSource = data_payload;
-            namesGridView.DataBind();
+            namesGridView.EndUpdate();
+            namesGridView.DataBind();           
+            e.Cancel = true;
+            namesGridView.CancelEdit();
+            updateControl();
+       
         }
 
+        private void updateControl()
+        {
+            var source = namesGridView.DataSource;
+            namesGridView.DataSource = null;
+            namesGridView.DataSource = source;
+            namesGridView.DataBind();
+        }
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
         {
             var name = e.EditingKeyValue;
