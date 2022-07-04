@@ -107,23 +107,32 @@ namespace Dash
 
         private void NamesGridView_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
         {
-            string uname = HttpContext.Current.User.Identity.Name;
-            string name = getCompanyQuery(uname);
-            int id = getIdCompany(name);
-            Graph graph = new Graph(id);
-            var payload = graph.GetNames(id);
-            var s = e.OldValues;
-            var updated = payload.FirstOrDefault(x => x.original == e.OldValues[0].ToString()).custom = e.NewValues[1].ToString();
-            graph.UpdateGraphs(payload, id);
-            var data_payload = graph.GetGraphs(id);
-            namesGridView.AutoGenerateColumns = false;
-            namesGridView.DataSource = null;
-            namesGridView.DataSource = data_payload;
-            namesGridView.EndUpdate();
-            namesGridView.DataBind();           
-            e.Cancel = true;
-            namesGridView.CancelEdit();
-            updateControl();
+            try
+            {
+                string uname = HttpContext.Current.User.Identity.Name;
+                string name = getCompanyQuery(uname);
+                int id = getIdCompany(name);
+                Graph graph = new Graph(id);
+                var payload = graph.GetNames(id);
+                var s = e.OldValues;
+                var names = graph.getNamesCurrent(id);
+            
+                names.FirstOrDefault(x => x.original == e.OldValues[0].ToString()).custom = e.NewValues[1].ToString();
+
+                graph.UpdateGraphs(names, id);
+                var data_payload = graph.GetGraphs(id);
+                namesGridView.AutoGenerateColumns = false;
+                namesGridView.DataSource = null;
+                namesGridView.DataSource = data_payload;
+                namesGridView.EndUpdate();
+                namesGridView.DataBind();
+                e.Cancel = true;
+                namesGridView.CancelEdit();
+                updateControl();
+            } catch
+            {
+
+            }
        
         }
 

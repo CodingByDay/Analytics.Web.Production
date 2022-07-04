@@ -1,28 +1,24 @@
 ﻿using Dash.Log;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
-using System.Text;
-using System.Collections.Specialized;
-using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Dash.ORM
 {
     public class Graph
     {
         public string Connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-    
 
         public class GraphInternal
         {
             public string ID { get; set; }
             public string Name { get; set; }
             public string CustomName { get; set; }
-
         }
 
         public List<GraphInternal> AllGraphs { get; set; } = new List<GraphInternal>();
@@ -32,6 +28,7 @@ namespace Dash.ORM
             this.AllGraphs = GetGraphs(id_company);
             // SetGraphs(id_company);
         }
+
         public void UpdateCompanyNames(List<GraphInternal> data, int id)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -43,15 +40,15 @@ namespace Dash.ORM
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     var cmd = new SqlCommand($"update CustomNames set names='{json}' where company_id={id}", conn);
-                    cmd.ExecuteNonQuery();                 
+                    cmd.ExecuteNonQuery();
                 }
-
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(admin), ex.InnerException.Message);
                 }
             }
         }
+
         public void UpdateGraphs(List<Names> payload, int companyID)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -63,11 +60,9 @@ namespace Dash.ORM
                     var insert = new SqlCommand($"update CustomNames set names='{json}' where company_id={companyID};", conn);
                     insert.ExecuteNonQuery();
                 }
-
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(admin), ex.InnerException.Message);
-
                 }
             }
         }
@@ -87,32 +82,26 @@ namespace Dash.ORM
                     List<Names> data = new List<Names>();
                     while (reader.Read())
                     {
-
                         var Caption = (reader["Caption"].ToString());
                         data.Add(new Names { original = Caption, custom = Caption });
-
-
                     }
 
                     var json = JsonConvert.SerializeObject(data);
                     var insert = new SqlCommand($"insert into CustomNames(names, company_id) values({json}, {id});");
                     insert.ExecuteNonQuery();
                 }
-
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(admin), ex.InnerException.Message);
-
                 }
             }
         }
+
         public class Names
         {
             public string original { get; set; }
             public string custom { get; set; }
         }
-
-
 
         public List<Names> GetNames(int id)
         {
@@ -137,12 +126,10 @@ namespace Dash.ORM
                         lc = JsonConvert.DeserializeObject<List<Names>>(uscaped, new JsonSerializerSettings
                         {
                             NullValueHandling = NullValueHandling.Ignore
-                        });                    
-
+                        });
                     }
 
                     return lc;
-
                 }
                 catch (Exception ex)
                 {
@@ -150,6 +137,17 @@ namespace Dash.ORM
                     return lc;
                 }
             }
+        }
+
+        public List<Names> getNamesCurrent(int id)
+        {
+            var graphs = GetGraphs(id);
+            List<Graph.Names> data = new List<Graph.Names>();
+            foreach (var obj in graphs)
+            {
+                data.Add(new Graph.Names { original = obj.Name, custom = obj.CustomName });
+            }
+            return data;
         }
 
         public List<GraphInternal> GetGraphs(int id)
@@ -179,14 +177,17 @@ namespace Dash.ORM
                         GraphInternal graph = new GraphInternal();
                         graph.ID = ID;
                         graph.Name = Caption;
-                        
-                        graph.CustomName = lc.FirstOrDefault(x => x.original == Caption).custom;
-
+                        try
+                        {
+                            graph.CustomName = lc.FirstOrDefault(x => x.original == Caption).custom;
+                        }
+                        catch
+                        {
+                            graph.CustomName = Caption;
+                        }
 
                         AllGraphs.Add(graph);
-
                     }
-
 
                     return AllGraphs;
                 }
@@ -196,7 +197,6 @@ namespace Dash.ORM
                     return AllGraphs;
                 }
             }
-
         }
     }
 }

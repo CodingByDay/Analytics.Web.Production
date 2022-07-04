@@ -275,12 +275,8 @@ namespace Dash.DatabaseStorage
                 else
                 {
                     FinalString += "'" + available[i] + "'" + ")";
-
                 }
             }
-
-
-
             List<DashboardInfo> list = new List<DashboardInfo>();
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
@@ -288,27 +284,36 @@ namespace Dash.DatabaseStorage
                 SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {FinalString}");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
-
                 string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
-
                 int id = getIdCompany(getcompanyForUser());
                 Graph graph = new Graph(id);
                 var payload = graph.GetNames(id);
-
-
                 while (reader.Read())
                 {
                     string ID = reader.GetInt32(0).ToString();
                     string Caption = reader.GetString(1);
-                    var custom = payload.FirstOrDefault(x => x.original == Caption).custom;
+                    try
+                    {
+                        var custom = payload.FirstOrDefault(x => x.original == Caption).custom;
 
-                    list.Add(new DashboardInfo() { ID = ID, Name = custom  });
-                }
-                connection.Close();
+                        list.Add(new DashboardInfo() { ID = ID, Name = custom });
+                    } catch
+                    {
+                        list.Add(new DashboardInfo() { ID = ID, Name = Caption });
+                    }
+                }         
+                    var graphs = graph.GetGraphs(id);
+                    List <Graph.Names> data = new List<Graph.Names>();
+                    foreach(var obj in graphs)
+                    {
+                        data.Add(new Graph.Names { original = obj.Name, custom = obj.CustomName });
+                    }
+                    graph.UpdateGraphs(data, id);
+               
             }
             return list;
         }
+
         private int getIdCompany(string current)
         {
             using (SqlConnection conn = new SqlConnection(connection))
