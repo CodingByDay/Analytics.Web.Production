@@ -11,37 +11,6 @@ using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
 {
-    /*
-     GO
-    SET ANSI_NULLS ON
-    GO
-
-    SET QUOTED_IDENTIFIER ON
-    GO
-
-    SET ANSI_PADDING ON
-    GO
-
-    CREATE TABLE[dbo].[Dashboards]
-    (
-
-    [ID][int] IDENTITY(1,1) NOT NULL,
-
-    [Dashboard] [varbinary]
-    (max) NULL,
-
-    [Caption] [nvarchar] (255) NULL,
-    CONSTRAINT[PK_Dashboards] PRIMARY KEY CLUSTERED
-    (
-    [ID] ASC
-    )WITH(PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON[PRIMARY]
-    ) ON[PRIMARY]
-
-    GO
-
-    SET ANSI_PADDING OFF
-    GO
-     */
 
     public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
     {
@@ -55,17 +24,14 @@ namespace Dash.DatabaseStorage
             this.connectionString = connectionString;
         }
 
-
-
-
         public string AddDashboard(XDocument document, string dashboardName)
         {
             Dashboard d = new Dashboard();
-            //
+
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-            // 
+
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -101,8 +67,6 @@ namespace Dash.DatabaseStorage
                     var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
                     SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
                     cmd.ExecuteNonQuery();
-
-
                 }
                 catch (Exception)
                 {

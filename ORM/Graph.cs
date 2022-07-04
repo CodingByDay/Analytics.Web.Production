@@ -48,7 +48,7 @@ namespace Dash.ORM
                 }
             }
         }
-
+        
         public void UpdateGraphs(List<Names> payload, int companyID)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -74,10 +74,9 @@ namespace Dash.ORM
                 try
                 {
                     conn.Open();
-
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"select d.ID, d.Caption, cn.company_id, cn.names from Dashboards d, CustomNames cn where cn.company_id={id};", conn);
+                    var cmd = new SqlCommand($"select d.ID, d.Caption from Dashboards d;", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Names> data = new List<Names>();
                     while (reader.Read())
@@ -85,9 +84,9 @@ namespace Dash.ORM
                         var Caption = (reader["Caption"].ToString());
                         data.Add(new Names { original = Caption, custom = Caption });
                     }
-
+                    reader.Close();
                     var json = JsonConvert.SerializeObject(data);
-                    var insert = new SqlCommand($"insert into CustomNames(names, company_id) values({json}, {id});");
+                    var insert = new SqlCommand($"insert into CustomNames(names, company_id) values('{json}', {id});", conn);
                     insert.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -195,6 +194,23 @@ namespace Dash.ORM
                 {
                     Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return AllGraphs;
+                }
+            }
+        }
+
+        internal void Delete(int companyID)
+        {
+            using (SqlConnection conn = new SqlConnection(Connection))
+            {
+                try
+                {
+                    conn.Open();                 
+                    var insert = new SqlCommand($"DELETE FROM CustomNames WHERE company_id={companyID};", conn);
+                    insert.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                 }
             }
         }

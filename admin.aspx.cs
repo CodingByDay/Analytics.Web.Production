@@ -838,6 +838,8 @@ namespace Dash
                     Int32 next = System.Convert.ToInt32(result) + 1;
                     cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
                     cmd.ExecuteNonQuery();
+                    Graph graph = new Graph(next);
+                    graph.SetGraphs(next);
                 }
                 catch (Exception ex)
                 {
@@ -1326,8 +1328,18 @@ namespace Dash
                     conn.Open();
                     if (companiesGridView.FocusedRowIndex != -1)
                     {
+                        //////////////////////////////////////////////////////////////////////////////////////////////
+                        //
+                        // Deleting the entry.
+                        //
                         var current = Session["current"].ToString();
                         var id = getIdCompany(current);
+                        Graph graph = new Graph(id);
+                        graph.Delete(id);
+                        //
+                        // Deleting the entry.
+                        //
+                        /////////////////////////////////////////////////////////////////////////////////////////////
                         deleteMemberships(id);
                         SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
                         var deb = $"delete from users where id_company={id}";
@@ -1355,11 +1367,12 @@ namespace Dash
                         string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
                         int companyID = getIdCompany(companyName);
                         FillUsers(companyID);
+                        
                     }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    var d = ex;
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
