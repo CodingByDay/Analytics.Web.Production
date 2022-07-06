@@ -84,7 +84,7 @@ namespace Dash
             companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
             companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
-            // All of this config is neccessary.
+            // All of this config is neccessary.           
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -1339,7 +1339,7 @@ namespace Dash
                         //
                         // Deleting the entry.
                         //
-                        /////////////////////////////////////////////////////////////////////////////////////////////
+                        //////////////////////////////////////////////////////////////////////////////////////////////
                         deleteMemberships(id);
                         SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
                         var deb = $"delete from users where id_company={id}";
@@ -1434,8 +1434,7 @@ namespace Dash
                     SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
                     string dev = $"DELETE FROM companies WHERE company_name='{number}'";
                     cmd.ExecuteNonQuery();
-                    // fillUsersDelete();
-                    // fillCompanyDelete();
+
                 }
                 catch (Exception ex)
                 {
@@ -1447,7 +1446,7 @@ namespace Dash
 
 
 
-        //Default.aspx.cs
+
         public static bool testConnection()
         {
             return true;
@@ -1531,6 +1530,11 @@ namespace Dash
         }
 
         protected void test_Click1(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void hidden_Click(object sender, EventArgs e)
         {
 
         }

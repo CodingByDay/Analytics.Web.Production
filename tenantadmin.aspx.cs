@@ -70,7 +70,8 @@ namespace Dash
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             namesGridView.RowUpdating += NamesGridView_RowUpdating;
             namesGridView.RowUpdated += NamesGridView_RowUpdated;
- 
+
+            
             
             if (!IsPostBack)
             {
@@ -91,7 +92,7 @@ namespace Dash
                 {
                     usersGridView.Selection.SetSelection(0, true);
                 }
-            }
+            } 
             else
             {
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
@@ -142,6 +143,10 @@ namespace Dash
             namesGridView.DataSource = null;
             namesGridView.DataSource = source;
             namesGridView.DataBind();
+            DevExpress.Web.ASPxWebControl.RedirectOnCallback(Page.Request.Url.ToString());
+
+
+
         }
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
         {
@@ -160,7 +165,7 @@ namespace Dash
                     cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
                     try
                     {
-                        admin = (string)cmd.ExecuteScalar();
+                        admin = (string) cmd.ExecuteScalar();
                     }
                     catch (Exception ex)
                     {
@@ -1176,6 +1181,11 @@ namespace Dash
             FillListGraphs();
             showConfig();
             updateForm();
+        }
+
+        protected void hidden_Click(object sender, EventArgs e)
+        {
+            var mat = 3;
         }
     }
 }

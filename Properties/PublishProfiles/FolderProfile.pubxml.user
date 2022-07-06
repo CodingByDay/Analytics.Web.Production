@@ -4,15 +4,15 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\inetpub\wwwroot\Analytics</_PublishTargetUrl>
-    <History>True|2022-06-30T08:46:40.6145143Z;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\Alternative</_PublishTargetUrl>
+    <History>True|2022-07-04T11:24:46.6332698Z;True|2022-06-30T10:46:40.6145143+02:00;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
       <publishTime>06/30/2022 10:17:21</publishTime>
     </File>
     <File Include="admin.aspx">
-      <publishTime>06/30/2022 10:17:22</publishTime>
+      <publishTime>07/04/2022 13:46:33</publishTime>
     </File>
     <File Include="Administracija.pdf">
       <publishTime>06/30/2022 10:17:22</publishTime>
@@ -42,10 +42,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:49</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>06/30/2022 10:43:30</publishTime>
+      <publishTime>07/05/2022 08:35:58</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>06/30/2022 10:43:30</publishTime>
+      <publishTime>07/05/2022 08:35:58</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -1032,7 +1032,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:22</publishTime>
     </File>
     <File Include="home.aspx">
-      <publishTime>06/30/2022 10:17:28</publishTime>
+      <publishTime>06/30/2022 11:01:35</publishTime>
     </File>
     <File Include="images/5f31883b507a4399a9cafe7bd10c269c.png">
       <publishTime>06/30/2022 10:17:28</publishTime>
@@ -1827,13 +1827,13 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:22</publishTime>
     </File>
     <File Include="tenantadmin.aspx">
-      <publishTime>06/30/2022 10:17:51</publishTime>
+      <publishTime>07/05/2022 08:18:40</publishTime>
     </File>
     <File Include="ViewSwitcher.ascx">
       <publishTime>06/30/2022 10:17:22</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>06/30/2022 10:44:06</publishTime>
+      <publishTime>07/04/2022 13:22:11</publishTime>
     </File>
   </ItemGroup>
 </Project>

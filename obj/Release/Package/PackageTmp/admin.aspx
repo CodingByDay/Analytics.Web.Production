@@ -281,6 +281,10 @@
         <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="delete">
 
         <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+
+                                <dx:BootstrapButton runat="server" Visible="false"  OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
+                                            <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+
    </div>
 
 	   <div class="inner-item">
