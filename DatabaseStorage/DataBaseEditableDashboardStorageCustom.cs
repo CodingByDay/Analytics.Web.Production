@@ -38,6 +38,7 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
+            
             // 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -71,18 +72,11 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name;
-
                     SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
-
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
-
-
                     cmd.Dispose();
-
-
                     return permisionID;
                 }
                 catch (Exception)
@@ -147,21 +141,18 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-
                     string uname = HttpContext.Current.User.Identity.Name;
                     var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader reader = cmd.ExecuteReader();
-
                     while (reader.Read())
                     {
                         adminName = (reader["admin_id"].ToString());
                     }
 
                     cmd.Dispose();
-
                     return adminName;
                 }
                 catch (Exception)
@@ -234,6 +225,7 @@ namespace Dash.DatabaseStorage
                 byte[] data = reader.GetValue(0) as byte[];
                 MemoryStream stream = new MemoryStream(data);
                 connection.Close();
+           
                 return XDocument.Load(stream);
             }
         }
@@ -363,28 +355,20 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-
                     List<String> captions = getCaptions();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-
                     List<String> permisions = new List<string>();
-
                     SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
-
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
-
                     int idUser = permisionID;
                     cmd.Dispose();
-
                     foreach (String graph in captions)
                     {
                         string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
                         string stripped = whiteless.Replace("-", "");
-
                         SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
                         string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
-
                         var resultID = graphResult.ExecuteScalar();
                         int permision = (int)resultID;
                         graphResult.Dispose();
@@ -396,7 +380,6 @@ namespace Dash.DatabaseStorage
                         {
                             continue;
                         }
-
                     }
 
                     return permisions;

@@ -19,11 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 
-
-
-    
-   
-
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
     <style>
         .box {
@@ -318,7 +313,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
+              <dx:BootstrapGridViewCommandColumn VisibleIndex="0" ShowEditButton="True">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="ID" Name="ID" Caption="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />

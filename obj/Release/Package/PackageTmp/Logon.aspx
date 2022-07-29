@@ -5,7 +5,26 @@
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head runat="server">
+    <link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="images/logo.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
+	<link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="images/logo.png" sizes="194x194">
+	<link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
+	<link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
+	<link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
+	<link rel="manifest" href="favicons/manifest.json">
+	<link rel="shortcut icon" href="images/logo.png">
+	<meta name="msapplication-TileColor" content="#603cba">
+	<meta name="msapplication-TileImage" content="images/logo.png">
     <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
 
     <title></title>

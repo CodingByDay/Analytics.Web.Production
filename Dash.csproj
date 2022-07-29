@@ -553,6 +553,7 @@
     </Compile>
     <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorage.cs" />
     <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorageCustom.cs" />
+    <Compile Include="DataExtract\DataExtractClass.cs" />
     <Compile Include="Emulator.aspx.cs">
       <DependentUpon>Emulator.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -1,4 +1,5 @@
 ﻿using Dash.DatabaseStorage;
+using Dash.DataExtract;
 using Dash.ORM;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
@@ -33,6 +34,7 @@ namespace Dash
             {
                 ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
             }
+            ASPxDashboard3.DataBinding += ASPxDashboard3_DataBinding;
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -46,6 +48,8 @@ namespace Dash
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+            ASPxDashboard3.ConnectionError += ASPxDashboard3_ConnectionError;
+
             string TARGET_URL = "https://dash.in-sist.si";
             if (Session != null)
             {
@@ -88,6 +92,20 @@ namespace Dash
                 }
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+
+            // DataExtractClass.Perform();
+        }
+
+        private void ASPxDashboard3_DataBinding(object sender, EventArgs e)
+        {
+            var error = e;
+            var s = 3;
+        }
+
+        private void ASPxDashboard3_ConnectionError(object sender, ConnectionErrorWebEventArgs e)
+        {
+            var error = e;
+            var s = 3;
         }
 
         /// <summary>
@@ -155,6 +173,7 @@ namespace Dash
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
+            
             Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
         }
@@ -194,14 +213,33 @@ namespace Dash
 
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
-            if (e.ConnectionParameters is DevExpress.DataAccess.ConnectionParameters.CustomStringConnectionParameters)
-            {
-                ConnectionStringSettings conn = GetConnectionString();
-                CustomStringConnectionParameters parameters =
-                      (CustomStringConnectionParameters)e.ConnectionParameters;
-                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                parameters.ConnectionString = conn.ConnectionString;
-            }
+            var ed = e.ConnectionParameters;
+            string type_string = e.ConnectionParameters.GetType().Name;
+            // MsSqlConnectionParameters
+          
+                if (type_string == "MsSqlConnectionParameters") {
+
+                        ConnectionStringSettings conn = GetConnectionString();
+                        MsSqlConnectionParameters parameters =
+                              (MsSqlConnectionParameters) e.ConnectionParameters;
+                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                        
+                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
+                        msSqlConnection.ServerName = builder.DataSource;
+                        msSqlConnection.DatabaseName = builder.InitialCatalog;
+                        msSqlConnection.UserName = builder.UserID;
+                        msSqlConnection.Password = builder.Password;
+                        e.ConnectionParameters = msSqlConnection;
+                                    
+               } else
+               {
+                        ConnectionStringSettings conn = GetConnectionString();
+                        CustomStringConnectionParameters parameters =
+                                (CustomStringConnectionParameters)e.ConnectionParameters;
+                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                        parameters.ConnectionString = conn.ConnectionString;
+               }
+            
         }
 
         private string getCurrentUserID()
@@ -239,6 +277,7 @@ namespace Dash
 
             try
             {
+              
                 var result = cmd.ExecuteScalar();
                 companyID = System.Convert.ToInt32(result);
             }

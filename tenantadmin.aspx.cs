@@ -17,7 +17,6 @@ namespace Dash
 {
     public partial class tenantadmin : System.Web.UI.Page
     {
-
         private string connection;
 
         private List<string> permisionsReturn = new List<string>();
@@ -71,11 +70,8 @@ namespace Dash
             namesGridView.RowUpdating += NamesGridView_RowUpdating;
             namesGridView.RowUpdated += NamesGridView_RowUpdated;
 
-            
-            
             if (!IsPostBack)
             {
-                
                 authenticate();
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
@@ -92,7 +88,7 @@ namespace Dash
                 {
                     usersGridView.Selection.SetSelection(0, true);
                 }
-            } 
+            }
             else
             {
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
@@ -103,7 +99,7 @@ namespace Dash
 
         private void NamesGridView_RowUpdated(object sender, ASPxDataUpdatedEventArgs e)
         {
-            string uname = HttpContext.Current.User.Identity.Name;     
+            string uname = HttpContext.Current.User.Identity.Name;
         }
 
         private void NamesGridView_RowUpdating(object sender, ASPxDataUpdatingEventArgs e)
@@ -117,7 +113,7 @@ namespace Dash
                 var payload = graph.GetNames(id);
                 var s = e.OldValues;
                 var names = graph.getNamesCurrent(id);
-            
+
                 names.FirstOrDefault(x => x.original == e.OldValues[0].ToString()).custom = e.NewValues[1].ToString();
 
                 graph.UpdateGraphs(names, id);
@@ -130,11 +126,10 @@ namespace Dash
                 e.Cancel = true;
                 namesGridView.CancelEdit();
                 updateControl();
-            } catch
-            {
-
             }
-       
+            catch
+            {
+            }
         }
 
         private void updateControl()
@@ -144,10 +139,8 @@ namespace Dash
             namesGridView.DataSource = source;
             namesGridView.DataBind();
             DevExpress.Web.ASPxWebControl.RedirectOnCallback(Page.Request.Url.ToString());
-
-
-
         }
+
         private void UsersGridView_StartRowEditing(object sender, ASPxStartRowEditingEventArgs e)
         {
             var name = e.EditingKeyValue;
@@ -155,6 +148,7 @@ namespace Dash
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
             e.Cancel = true;
         }
+
         public string GetCompanyName(int company)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -162,28 +156,24 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0
                     try
                     {
-                        admin = (string) cmd.ExecuteScalar();
+                        admin = (string)cmd.ExecuteScalar();
                     }
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                     }
-
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
-
             }
             return admin;
         }
+
         private void updateFormName(string name)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -209,16 +199,13 @@ namespace Dash
                         email.Text = sdr["email"].ToString();
 
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
-
         }
 
         protected void newUser_Click(object sender, EventArgs e)
@@ -232,7 +219,6 @@ namespace Dash
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
         }
-
 
         private void authenticate()
         {
@@ -251,20 +237,17 @@ namespace Dash
                     }
                     if (role == "Admin")
                     {
-
                     }
                     else
                     {
                         Response.Redirect("logon.aspx", true);
                     }
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                 }
             }
-
         }
 
         private List<bool> showConfig()
@@ -309,7 +292,6 @@ namespace Dash
                         {
                             Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                         }
-
                     }
                 }
                 catch (Exception ex)
@@ -349,7 +331,6 @@ namespace Dash
             return valuesBool;
         }
 
-
         public void FillListGraphs()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -366,38 +347,31 @@ namespace Dash
                     {
                         graphList.Add(sdr["Caption"].ToString());
                         string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-
                         // Refils potential new tables.
                         // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                         values.Add(trimmed);
                     }
-
                     CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
                     graphsListBox.DataSource = CurrentPermisionID;
                     graphsListBox.DataBind();
-                    //Perform DB operation here i.e. any CRUD operation 
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
-            }   // Connection will autmatically be closed here always
-
-
-
-
+            } 
         }
+
         public void FillUsers()
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
 
-                    //Perform DB operation here i.e. any CRUD operation 
+                    //Perform DB operation here i.e. any CRUD operation
                     userObjectList.Clear();
                     string uname = HttpContext.Current.User.Identity.Name;
                     string name = getCompanyQuery(uname);
@@ -408,17 +382,14 @@ namespace Dash
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
 
-                    /// Intepolation or the F string. C# > 5.0       
+                    /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-
                         User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
                         var test = user.uname;
                         userObjectList.Add(user);
-
-
                     }
 
                     usersGridView.DataSource = null;
@@ -429,12 +400,10 @@ namespace Dash
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Response.Write(ex.ToString());
-
                 }
             }
-
-
         }
+
         private void fillCompaniesRegistration()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -443,13 +412,12 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
                         companies.Add(sdr["company_name"].ToString());
-
                     }
                     companiesList.DataSource = companies;
                     companiesList.DataBind();
@@ -457,11 +425,9 @@ namespace Dash
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
         }
-
 
         private void updateForm()
         {
@@ -497,19 +463,13 @@ namespace Dash
                     }
                     sdr.Close();
                     cmd.Dispose();
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
-
         }
-
-
-
 
         private string defaultCompany()
         {
@@ -517,16 +477,13 @@ namespace Dash
             string name = getCompanyQuery(uname);
             int id = getIdCompany(name);
 
-
             Graph graph = new Graph(id);
 
             var payload = graph.AllGraphs;
 
-
             namesGridView.AutoGenerateColumns = false;
             namesGridView.DataSource = payload;
             namesGridView.DataBind();
-
 
             var data = GetCompanyName(id);
             companiesList.SelectedValue = data;
@@ -536,7 +493,6 @@ namespace Dash
 
         protected void registrationButton_Click(object sender, EventArgs e)
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -548,7 +504,6 @@ namespace Dash
                         SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM permisions_user;", conn);
                         var result = cmd.ExecuteScalar();
                         Int32 Total_ID = System.Convert.ToInt32(result);
-
 
                         int next = Total_ID + 1;
                         if (TxtPassword.Text != TxtRePassword.Text)
@@ -566,11 +521,9 @@ namespace Dash
                             if (resultUsername > 0)
                             {
                                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-
                             }
                             else
                             {
-
                                 string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
                                 SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
                                 try
@@ -582,7 +535,6 @@ namespace Dash
                                     Response.Write(error.ToString());
                                 }
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
 
                                 createUserPermisions.Dispose();
                                 var companyIndex = getIdCompany(companiesList.SelectedValue);
@@ -596,7 +548,6 @@ namespace Dash
 
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
                                     Logger.LogInfo(typeof(tenantadmin), "Uspešno kreiran uporabnik.");
-
 
                                     TxtName.Text = "";
                                     TxtPassword.Text = "";
@@ -618,19 +569,14 @@ namespace Dash
                                     TxtRePassword.Text = "";
                                     TxtUserName.Text = "";
                                     email.Text = "";
-
                                 }
-
                             }
                         }
-
                     }
                     else
                     {
                         conn.Open();
                         string HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-
-
 
                         var dev = $"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', where uname='{TxtUserName.Text}'";
                         //  debug.Add(dev);
@@ -639,13 +585,10 @@ namespace Dash
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
                             cmd = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
                         }
                         else
                         {
-
                             cmd = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
@@ -655,7 +598,6 @@ namespace Dash
                         }
                         else
                         {
-
                             try
                             {
                                 var username = TxtUserName.Text.Replace(" ", string.Empty); ;
@@ -667,11 +609,6 @@ namespace Dash
                                 TxtUserName.Text = "";
                                 email.Text = "";
                                 var company = companiesList.SelectedValue.Replace(" ", string.Empty); ;
-
-
-
-
-
                             }
                             catch (Exception ex)
                             {
@@ -684,20 +621,16 @@ namespace Dash
                                 TxtRePassword.Text = "";
                                 TxtUserName.Text = "";
                                 email.Text = "";
-
                             }
-
                         }
                     }
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
         }
-
 
         private bool checkIfNumber(string parametar)
         {
@@ -709,12 +642,7 @@ namespace Dash
                 return true;
             else
                 return false;
-
-
         }
-
-
-
 
         public void FillListGraphsNames()
         {
@@ -729,7 +657,7 @@ namespace Dash
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
 
-                    /// Intepolation or the F string. C# > 5.0       
+                    /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -747,7 +675,7 @@ namespace Dash
                     graphsListBox.DataSource = CurrentPermisionID;
                     graphsListBox.DataBind();
 
-                    //Perform DB operation here i.e. any CRUD operation 
+                    //Perform DB operation here i.e. any CRUD operation
                 }
                 catch (Exception ex)
                 {
@@ -755,7 +683,6 @@ namespace Dash
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
-
         }
 
         private string getCompanyQuery(string uname)
@@ -764,7 +691,6 @@ namespace Dash
             {
                 try
                 {
-
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
@@ -779,20 +705,15 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                     }
-
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
             return companyInfo;
         }
-
 
         private void makeSQLquery()
         {
@@ -805,7 +726,6 @@ namespace Dash
                     {
                         var tempGraphString = values.ElementAt(i);
                         var plural = usersGridView.GetSelectedFieldValues("uname");
-
                         var singular = plural[0].ToString();
                         findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
                         // execute query
@@ -814,7 +734,6 @@ namespace Dash
                         try
                         {
                             id = cmd.ExecuteScalar();
-
                         }
                         catch (Exception)
                         {
@@ -839,24 +758,13 @@ namespace Dash
                         {
                             continue;
                         }
-
                     }
                 }
-
-
-
                 catch (Exception)
                 {
-
                 }
             }
-
-
-
-
         }
-
-
 
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
@@ -871,13 +779,13 @@ namespace Dash
                 showConfig();
             }
         }
+
         private void getIdPermision()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
-
                     conn.Open();
                     SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
 
@@ -885,30 +793,19 @@ namespace Dash
                     {
                         var result = cmd.ExecuteScalar();
                         permisionID = System.Convert.ToInt32(result);
-
                     }
-
-
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
                     }
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
-
-
-
-
-
         }
 
         private List<String> getIdPermisionCurrentUser(string uname, List<String> obj)
@@ -923,15 +820,10 @@ namespace Dash
 
                     SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{uname}'", conn);
 
-
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
 
-
-
-
                     int idUser = permisionID;
-
 
                     foreach (String graph in obj)
                     {
@@ -952,27 +844,19 @@ namespace Dash
                             {
                                 continue;
                             }
-
                         }
                         catch (Exception)
                         {
                             continue;
                         }
                     }
-
-
-
-
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
             return permisionsReturn;
-
         }
 
         private void deletePermisionEntry()
@@ -990,12 +874,8 @@ namespace Dash
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
-
-
-
         }
 
         protected void deleteCompany_Click(object sender, EventArgs e)
@@ -1016,14 +896,11 @@ namespace Dash
                         cmd.ExecuteNonQuery();
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
                     }
-
-
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                     }
-
 
                     FillListGraphs();
                     FillUsers();
@@ -1034,7 +911,6 @@ namespace Dash
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
             }
-
         }
 
         private int getIdCompany(string current)
@@ -1048,7 +924,6 @@ namespace Dash
                     result = cmd.ExecuteScalar();
                     var finalID = System.Convert.ToInt32(result);
                     return finalID;
-
                 }
                 catch (Exception ex)
                 {
@@ -1056,12 +931,10 @@ namespace Dash
                     return -1;
                 }
             }
-
         }
 
         private void deleteMemberships(int number)
         {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -1076,11 +949,8 @@ namespace Dash
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
                 }
             }
-
-
         }
 
         protected void deleteUser_Click(object sender, EventArgs e)
@@ -1108,46 +978,25 @@ namespace Dash
                         FillUsers();
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
                     }
-
-
                     catch (Exception ex)
                     {
-
                         Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-
 
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                     }
-
-
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
 
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-
                 }
             }
-
-
-
         }
-
-
-
-
-
-
-
-
-
 
         protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         protected void usersGridView_SelectionChanged(object sender, EventArgs e)
@@ -1156,7 +1005,6 @@ namespace Dash
             FillListGraphs();
             showConfig();
             updateForm();
-
         }
 
         protected void new_user_ServerClick(object sender, EventArgs e)
@@ -1168,7 +1016,6 @@ namespace Dash
             email.Text = "";
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
-
 
             // Call the client.
 

@@ -987,9 +987,9 @@ C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\bin\de\DevExpress.XtraTr
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\bin\es\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\bin\ja\DevExpress.XtraTreeList.v20.2.resources.dll
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\bin\ru\DevExpress.XtraTreeList.v20.2.resources.dll
-C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.AssemblyReference.cache
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.dll.licenses
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.CoreCompileInputs.cache
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.CopyComplete
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.dll
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.pdb
+C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.AssemblyReference.cache

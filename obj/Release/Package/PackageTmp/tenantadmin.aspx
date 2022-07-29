@@ -9,25 +9,17 @@
     <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <link rel="stylesheet" href="css/all.css" />
     <link rel="stylesheet" href="css/admin.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
+	<link href='https://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <webopt:bundlereference runat="server" path="~/css/shared.css" />
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 
-    <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
-
-
-    
-   
-
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
         .box {
             min-height:485px;
@@ -321,7 +313,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
+              <dx:BootstrapGridViewCommandColumn VisibleIndex="0" ShowEditButton="True">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="ID" Name="ID" Caption="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
