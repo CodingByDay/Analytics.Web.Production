@@ -34,7 +34,6 @@ namespace Dash
             {
                 ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
             }
-            ASPxDashboard3.DataBinding += ASPxDashboard3_DataBinding;
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -48,7 +47,6 @@ namespace Dash
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
-            ASPxDashboard3.ConnectionError += ASPxDashboard3_ConnectionError;
 
             string TARGET_URL = "https://dash.in-sist.si";
             if (Session != null)
@@ -92,22 +90,9 @@ namespace Dash
                 }
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-
-            // DataExtractClass.Perform();
         }
 
-        private void ASPxDashboard3_DataBinding(object sender, EventArgs e)
-        {
-            var error = e;
-            var s = 3;
-        }
-
-        private void ASPxDashboard3_ConnectionError(object sender, ConnectionErrorWebEventArgs e)
-        {
-            var error = e;
-            var s = 3;
-        }
-
+   
         /// <summary>
         /// Custom export event.
         /// </summary>

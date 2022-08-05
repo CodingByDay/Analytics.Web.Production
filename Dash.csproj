@@ -164,6 +164,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="admin-panel.aspx" />
     <Content Include="admin.aspx" />
     <Content Include="administrationcompany.aspx" />
     <Content Include="App_Data\Navigation.xml" />
@@ -501,6 +502,7 @@
     <Content Include="Search.ascx" />
     <Content Include="Site.Master" />
     <Content Include="Success.aspx" />
+    <Content Include="super_admin_panel.aspx" />
     <Content Include="tenantadmin.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
@@ -508,6 +510,13 @@
     <Content Include="Site.Mobile.Master" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="admin-panel.aspx.cs">
+      <DependentUpon>admin-panel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="admin-panel.aspx.designer.cs">
+      <DependentUpon>admin-panel.aspx</DependentUpon>
+    </Compile>
     <Compile Include="admin.aspx.cs">
       <DependentUpon>admin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -683,6 +692,13 @@
     </Compile>
     <Compile Include="Success.aspx.designer.cs">
       <DependentUpon>Success.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="super_admin_panel.aspx.cs">
+      <DependentUpon>super_admin_panel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="super_admin_panel.aspx.designer.cs">
+      <DependentUpon>super_admin_panel.aspx</DependentUpon>
     </Compile>
     <Compile Include="tenantadmin.aspx.cs">
       <DependentUpon>tenantadmin.aspx</DependentUpon>

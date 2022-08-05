@@ -15,7 +15,7 @@ using System.Web.UI.HtmlControls;
 
 namespace Dash
 {
-    public partial class tenantadmin : System.Web.UI.Page
+    public partial class admin_panel : System.Web.UI.Page
     {
         private string connection;
 
@@ -317,7 +317,7 @@ namespace Dash
                         if (bitValueTemp == 1)
                         {
                             graphsListBox.Items.ElementAt(i).Selected = true;
-                            
+
                             valuesBool.Add(true);
                         }
                         else
@@ -361,7 +361,7 @@ namespace Dash
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
-            } 
+            }
         }
 
         public void FillUsers()
@@ -725,9 +725,7 @@ namespace Dash
                     conn.Open();
                     for (int i = 0; i < graphsListBox.Items.Count; i++)
                     {
-                        var item_check = graphsListBox.Items.ElementAt(i);
-
-                        var tempGraphString = values.ElementAt(values.IndexOf(item_check.Text));
+                        var tempGraphString = values.ElementAt(i);
                         var plural = usersGridView.GetSelectedFieldValues("uname");
                         var singular = plural[0].ToString();
                         findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
