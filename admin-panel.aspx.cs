@@ -725,7 +725,9 @@ namespace Dash
                     conn.Open();
                     for (int i = 0; i < graphsListBox.Items.Count; i++)
                     {
-                        var tempGraphString = values.ElementAt(i);
+                        var item_check = graphsListBox.Items.ElementAt(i);
+
+                        var tempGraphString = values.ElementAt(values.IndexOf(item_check.Text));
                         var plural = usersGridView.GetSelectedFieldValues("uname");
                         var singular = plural[0].ToString();
                         findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
