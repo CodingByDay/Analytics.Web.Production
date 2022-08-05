@@ -4,8 +4,8 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 -->
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <_PublishTargetUrl>C:\inetpub\wwwroot\Alternative</_PublishTargetUrl>
-    <History>True|2022-07-20T16:21:39.4008121Z;False|2022-07-20T18:19:17.7856312+02:00;True|2022-07-14T14:05:59.9618782+02:00;False|2022-07-14T14:03:09.2456684+02:00;True|2022-07-04T13:24:46.6332698+02:00;True|2022-06-30T10:46:40.6145143+02:00;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
+    <_PublishTargetUrl>C:\inetpub\wwwroot\Alternative\moved</_PublishTargetUrl>
+    <History>True|2022-07-29T10:55:53.6883258Z;True|2022-07-20T18:21:39.4008121+02:00;False|2022-07-20T18:19:17.7856312+02:00;True|2022-07-14T14:05:59.9618782+02:00;False|2022-07-14T14:03:09.2456684+02:00;True|2022-07-04T13:24:46.6332698+02:00;True|2022-06-30T10:46:40.6145143+02:00;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -42,10 +42,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:49</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>07/20/2022 18:19:15</publishTime>
+      <publishTime>07/29/2022 12:55:45</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>07/20/2022 18:19:15</publishTime>
+      <publishTime>07/29/2022 12:55:45</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -1833,7 +1833,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:22</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/20/2022 18:19:16</publishTime>
+      <publishTime>07/29/2022 12:55:46</publishTime>
     </File>
   </ItemGroup>
 </Project>

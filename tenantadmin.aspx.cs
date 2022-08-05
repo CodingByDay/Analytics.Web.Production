@@ -317,6 +317,7 @@ namespace Dash
                         if (bitValueTemp == 1)
                         {
                             graphsListBox.Items.ElementAt(i).Selected = true;
+                            
                             valuesBool.Add(true);
                         }
                         else
@@ -740,6 +741,11 @@ namespace Dash
                             continue;
                         }
                         Int32 Total_ID = System.Convert.ToInt32(id);
+
+
+
+                        var item = graphsListBox.Items.ElementAt(i);
+
                         if (graphsListBox.Items.ElementAt(i).Selected == true)
                         {
                             flag = 1;
