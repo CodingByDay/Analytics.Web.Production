@@ -35,13 +35,13 @@ namespace Dash
         {
 
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
-
             if (Request.Cookies["dashboard"] != null)
             {
                 bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
-                ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                if (isAllowed)
+                {
+                    ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                }
             }
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
@@ -142,7 +142,6 @@ namespace Dash
                         var stop = true;
                         if(isOk==1)
                         {
-                            var s = 4;
                             return true;
                         } else
                         {
