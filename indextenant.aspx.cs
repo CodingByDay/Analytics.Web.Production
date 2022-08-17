@@ -18,6 +18,7 @@ namespace Dash
 {
     public partial class indextenant : System.Web.UI.Page
     {
+        private string connection;
         public static string ConnectionString;
         private SqlConnection conn;
         private int companyID;
@@ -27,11 +28,19 @@ namespace Dash
         private bool flag = false;
         private string state;
         private string returnString;
+        private SqlCommand cmd;
+        private int permisionID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
+
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+
+
             if (Request.Cookies["dashboard"] != null)
             {
+                bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
                 ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
             }
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
@@ -91,8 +100,67 @@ namespace Dash
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
+        private int getIdPermision()
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{HttpContext.Current.User.Identity.Name}'", conn);
+                    var result = cmd.ExecuteScalar();
+                    permisionID = System.Convert.ToInt32(result);
+                    return permisionID;
 
-   
+                }
+                catch (Exception ex)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    return -1;
+                }
+            }
+
+
+        }
+        private bool isUserOk(string id)
+        {
+            string ID = id;
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"select Caption from Dashboards where ID = {id};", conn); /// Intepolation or the F string. C# > 5.0       
+                    // Execute command and fetch pwd field into lookupPassword string.
+                    string ok = (string) cmd.ExecuteScalar();
+                    if(ok!=string.Empty)
+                    {
+                        int id_user = getIdPermision();
+                        var allowed = new SqlCommand($"select {ok} from permisions_user where id_permisions_user = {id_user};", conn);
+                        int isOk = (int) allowed.ExecuteScalar();
+                        var stop = true;
+                        if(isOk==1)
+                        {
+                            var s = 4;
+                            return true;
+                        } else
+                        {
+                            return false;
+                        }
+                    } else
+                    {
+                        return false;
+                    }                    
+                }
+                catch (Exception ex)
+                {
+                    return false;
+                }
+            }
+        }
+
+
         /// <summary>
         /// Custom export event.
         /// </summary>
