@@ -76,36 +76,36 @@ namespace Dash
 
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
-
-            string email = ConfigurationManager.AppSettings["email"];
-            string username = ConfigurationManager.AppSettings["username"];
-            string password = ConfigurationManager.AppSettings["password"];
-            // MailMessage class is present is System.Net.Mail namespace
-            MailMessage mailMessage = new MailMessage(email, ToEmail);
-
-
-            // StringBuilder class is present in System.Text namespace
-            StringBuilder sbEmailBody = new StringBuilder();
-            sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
-            sbEmailBody.Append("Prosimo sledite link da resetirate geslo.");
-            sbEmailBody.Append("<br/>"); sbEmailBody.Append("https://dash.in-sist.si:81/ChangePassword.aspx?uid=" + UniqueId);
-            sbEmailBody.Append("<br/><br/>");
-            sbEmailBody.Append("<b>IN SIST d.o.o.</b>");
-
-            mailMessage.IsBodyHtml = true;
-
-            mailMessage.Body = sbEmailBody.ToString();
-            mailMessage.Subject = "Resetiranje gesla IN SIST";
-            SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
-
-            smtpClient.Credentials = new System.Net.NetworkCredential()
+            try
             {
-                UserName = username,
-                Password = password
-            };
-
-            smtpClient.EnableSsl = true;
-            smtpClient.Send(mailMessage);
+                string email = ConfigurationManager.AppSettings["email"];
+                string username = ConfigurationManager.AppSettings["username"];
+                string password = ConfigurationManager.AppSettings["password"];
+                // MailMessage class is present is System.Net.Mail namespace
+                MailMessage mailMessage = new MailMessage(email, ToEmail);
+                // StringBuilder class is present in System.Text namespace
+                StringBuilder sbEmailBody = new StringBuilder();
+                sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
+                sbEmailBody.Append("Prosimo da na naslednji povezavi resetirate geslo.");
+                sbEmailBody.Append("<br/>"); sbEmailBody.Append("https://dash.in-sist.si/ChangePassword.aspx?uid=" + UniqueId);
+                sbEmailBody.Append("<br/><br/>");
+                sbEmailBody.Append("<b>IN SIST d.o.o.</b>");
+                mailMessage.IsBodyHtml = true;
+                mailMessage.Body = sbEmailBody.ToString();
+                mailMessage.Subject = "Resetiranje gesla IN SIST";
+                SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+                smtpClient.Credentials = new System.Net.NetworkCredential()
+                {
+                    UserName = username,
+                    Password = "edtstqntgzlaszcr"
+                };
+                smtpClient.EnableSsl = true;
+                smtpClient.Send(mailMessage);
+            } catch (Exception ex)
+            {
+                var s = ex;
+                var stop = true;
+            }
         }
 
 
