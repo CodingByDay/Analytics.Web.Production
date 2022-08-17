@@ -28,6 +28,7 @@ namespace Dash
                 FetchDataFillList();
                 Session["passport"] = "false";
             }
+            
         }
 
         private string getRole(string username, string password)
@@ -82,7 +83,6 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"select id_company from users where uname='{name}';", conn);

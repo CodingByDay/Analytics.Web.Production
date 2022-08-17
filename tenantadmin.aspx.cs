@@ -252,6 +252,7 @@ namespace Dash
 
         private List<bool> showConfig()
         {
+            string singular;
             valuesBool.Clear();
             columnNames.Clear();
             config.Clear();
@@ -263,8 +264,17 @@ namespace Dash
                     if (usersGridView.FocusedRowIndex >= 0)
                     {
                         var plural = usersGridView.GetSelectedFieldValues("uname");
+                        if (plural.Count==0)
+                        {
+                            usersGridView.Selection.SelectRow(0);
+                            var plural_new = usersGridView.GetSelectedFieldValues("uname");
+                            singular = plural_new[0].ToString();
 
-                        var singular = plural[0].ToString();
+                        } else
+                        {
+                            var plural_new = usersGridView.GetSelectedFieldValues("uname");
+                            singular = plural_new[0].ToString();
+                        }
 
                         findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
                         cmd = new SqlCommand(findIdString, conn);
@@ -280,7 +290,7 @@ namespace Dash
                     else
                     {
                         var plural = usersGridView.GetSelectedFieldValues("uname");
-                        var singular = plural[0].ToString();
+                        singular = plural[0].ToString();
                         usersGridView.Selection.SetSelection(0, true);
                         findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
                         cmd = new SqlCommand(findIdString, conn);
@@ -979,7 +989,7 @@ namespace Dash
                         var company = getCompanyQuery(singular);
                         var spacelessCompany = company.Replace(" ", string.Empty);
                         cmd.ExecuteNonQuery();
-
+                        usersGridView.Selection.SetSelection(0, true);
                         FillListGraphs();
                         showConfig();
                         deletePermisionEntry();

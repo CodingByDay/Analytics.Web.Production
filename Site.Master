@@ -39,7 +39,7 @@
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="images/logo.png">
 </head>
-<body>
+<body onkeydown="return (event.keyCode!=13)">
      <asp:PlaceHolder runat="server">
     <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>

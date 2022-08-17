@@ -71,7 +71,6 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             //  HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
             //  adminButton.Visible = false;
@@ -1048,6 +1047,7 @@ namespace Dash
 
         protected void deleteUser_Click(object sender, EventArgs e)
         {
+           
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
