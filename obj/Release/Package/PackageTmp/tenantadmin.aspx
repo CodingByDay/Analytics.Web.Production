@@ -21,6 +21,14 @@
 
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
     <style>
+
+         .outer_p {
+         display: flex;
+         gap: 3vh;
+         justify-content: center;
+         align-items: center;
+         }
+
         .box {
             min-height:485px;
         }
@@ -76,6 +84,9 @@
        
             display: inline-block;
             
+        }
+        .grid_w {
+         margin-bottom: 35px;
         }
         .item {
             padding-left: 15px!important;
@@ -210,31 +221,11 @@
     </script>
 
 
-	<div id="boot">
 
-		</div>
-	
-<div class="wrapper">
+	<div class="outer_p"> 
+	        <div class="inner_p">
 
-	<header>
-		<h1></h1>
-	</header>
-		
-<section class="columns">
-	
-	<div class="column">
-		<h2></h2>
-		<p></h1>
-			
-	</header>
-
-<section class="columns">
-	
-
-	
-	
-	<div class="column">
-		          <dx:BootstrapGridView ID="usersGridView" runat="server"  Settings-VerticalScrollableHeight="400"  Settings-VerticalScrollBarMode="Visible" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+		          <dx:BootstrapGridView ID="usersGridView" runat="server" Width="400"  Settings-VerticalScrollableHeight="400"  Settings-VerticalScrollBarMode="Visible" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -268,20 +259,29 @@
 
 
 
-
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 		<br />
 		<button type="button"  runat="server" onserverclick="new_user_ServerClick" id="new_user" class="btn btn-success">Registracija</button>
            <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" CssClasses-Control="delete" OnClick="deleteUser_Click" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
-	</div>
+
    <dx:BootstrapButton runat="server" Visible="false" OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
                                             <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
-  <div class="column">
 
 
-	<dx:BootstrapListBox ID="graphsListBox" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
+                </div>
+
+
+
+
+
+
+
+
+        <div class="inner_p">
+
+	<dx:BootstrapListBox ID="graphsListBox" Width="400" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
                 <CssClasses Control="box"  CheckBox="item"  />
 
        <FilteringSettings  ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
@@ -296,12 +296,22 @@
 
           </dx:BootstrapButton>
     
-	</div>
-     <div class="column">
 
 
-	   <dx:BootstrapGridView ID="namesGridView" runat="server"   Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="300"  CssClasses-Control="graph">
-<CssClasses Control="grid"></CssClasses>
+            </div>
+
+
+
+
+
+
+
+
+
+        <div class="inner_p">
+
+	   <dx:BootstrapGridView ID="namesGridView" runat="server" Width="400"   Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"    CssClasses-Control="graph">
+<CssClasses Control="grid_w"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
@@ -325,9 +335,10 @@
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
+          
+            </div>
 
-	</div>
-	</div>
+</div>
 </section>	
 
 	

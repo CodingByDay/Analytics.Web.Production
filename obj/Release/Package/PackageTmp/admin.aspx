@@ -230,7 +230,7 @@
 	</div>
             <div class="first_button_row">
  <button type="button" class="btn btn-primary" id="company">Dodaj</button>
-        <dx:BootstrapButton runat="server" ID ="deleteCompany"  OnClick="deleteCompany_Click" Text="Briši">
+        <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False"  OnClick="deleteCompany_Click" Text="Briši">
     <SettingsBootstrap RenderOption="Danger" />
 </dx:BootstrapButton>
                 </div>
@@ -277,9 +277,9 @@
 
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
-		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"  class="btn btn-primary">Registracija</button>
+		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"   class="btn btn-primary">Registracija</button>
 
-        <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="delete">
+        <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="delete">
 
         <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 

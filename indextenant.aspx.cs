@@ -33,7 +33,7 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+          
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             if (Request.Cookies["dashboard"] != null)
             {
@@ -111,7 +111,6 @@ namespace Dash
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
                     return permisionID;
-
                 }
                 catch (Exception ex)
                 {
@@ -282,6 +281,7 @@ namespace Dash
                         msSqlConnection.UserName = builder.UserID;
                         msSqlConnection.Password = builder.Password;
                         e.ConnectionParameters = msSqlConnection;
+                
                                     
                } else
                {
