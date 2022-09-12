@@ -11,7 +11,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
+    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
          <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
@@ -20,7 +20,7 @@
     <div class="row">
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-        <script src="js/application/admin.js" async></script>
+        <script src="js/application/admin.js"></script>
         
 <style>
 #MainContent_ASPxDashboard3 {

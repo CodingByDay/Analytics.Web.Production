@@ -18,9 +18,9 @@
     <div class="row">
     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer" async></script>
-    <script src="js/SaveAsExtension.js" type="text/javascript" async></script>
+    <script src="js/SaveAsExtension.js" type="text/javascript"></script>
 
-    <script src="js/application/admin.js" async></script>
+    <script src="js/application/admin.js"></script>
         <style>
         .dx-widget  {  
         color: #333!important;  

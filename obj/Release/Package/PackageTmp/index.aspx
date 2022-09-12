@@ -8,21 +8,18 @@
      <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
+    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
          <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-           <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+   <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
         <script src="js/application/admin.js"></script>
         
 <style>
@@ -32,7 +29,7 @@ height: 100% !important;
 
 }</style>
 
-        <script>
+        <script async>
 
 
             function onItemCaptionToolbarUpdated(s, e) {
@@ -223,7 +220,7 @@ height: 100% !important;
  
 <div style="position: absolute; left: 0; right: 0; top:35px; bottom:0;">
 
-    <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
+    <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemWidgetCreated="customizeWidgets"
                           ItemWidgetUpdated="updatecustomizeWidgets"        

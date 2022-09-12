@@ -11,7 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web;
+using System.Web.SessionState;
 using System.Web.UI.HtmlControls;
 
 namespace Dash
@@ -55,8 +57,10 @@ namespace Dash
             ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+      
 
+            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+ 
             string TARGET_URL = "https://dash.in-sist.si";
             if (Session != null)
             {
@@ -227,6 +231,13 @@ namespace Dash
             
             Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
+            Dashboard dashboard = new Dashboard();
+            dashboard.LoadFromXDocument(e.DashboardXml);
+            dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource => {
+                dataSource.DataProcessingMode = DataProcessingMode.Client;
+            });
+            Response.Cookies["dashboard"].Value = e.DashboardId;
+            e.DashboardXml = dashboard.SaveToXDocument();
         }
 
         private bool checkDB(string ID)
