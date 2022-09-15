@@ -225,8 +225,12 @@ namespace Dash.DatabaseStorage
                 byte[] data = reader.GetValue(0) as byte[];
                 MemoryStream stream = new MemoryStream(data);
                 connection.Close();
-           
-                return XDocument.Load(stream);
+                Dashboard dashboard = new Dashboard();
+                dashboard.LoadFromXDocument(XDocument.Load(stream));
+                dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource => {
+                    dataSource.DataProcessingMode = DataProcessingMode.Client;
+                });
+                return dashboard.SaveToXDocument();
             }
         }
 

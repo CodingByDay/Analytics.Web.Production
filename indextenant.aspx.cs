@@ -231,13 +231,7 @@ namespace Dash
             
             Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
-            Dashboard dashboard = new Dashboard();
-            dashboard.LoadFromXDocument(e.DashboardXml);
-            dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource => {
-                dataSource.DataProcessingMode = DataProcessingMode.Client;
-            });
-            Response.Cookies["dashboard"].Value = e.DashboardId;
-            e.DashboardXml = dashboard.SaveToXDocument();
+           
         }
 
         private bool checkDB(string ID)

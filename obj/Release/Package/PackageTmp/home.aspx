@@ -81,7 +81,7 @@
         <div class="msg-wrap">
             <p>This website uses cookies or similar technologies, to enhance your browsing experience and provide personalized recommendations. By continuing to use our website, you agree with this.</p>
             <div class="btn-wrap">
-                <button class="btn-primary" onclick="acceptCookieConsent();">Accept</button>
+                <button class="btn_accept" onclick="acceptCookieConsent();">Accept</button>
             </div>
         </div>
     </div>
@@ -138,11 +138,22 @@
 			width: 850px!important;
 			height: 500px!important;
 		}
-
+		button.btn_accept {
+    background-color: #236fc4;
+    color: white;
+}
+		.logo {
+			display:flex;
+			gap: 15vh;
+		}
 	</style>
 		<header id="header">
 			<div class="container">
-				<div class="logo"><a href="#"><img src="images/logo.png" alt="Analytics" style="top: 0;position: absolute;top: 0px !important; width: 100px;"></a></div>
+				<div class="logo"><a href="#"><img src="images/logo.png" alt="Analytics" style="top: 0;position: absolute;top: 0px !important; width: 100px;"></a> 
+
+					<a href="#"><img src="images/sist.png" alt="Analytics"  width="100" ></a>
+				</div>
+
 				<nav id="nav">
 					<div class="opener-holder">
 						<a href="#" class="nav-opener"><span></span></a>
@@ -150,11 +161,12 @@
 					<asp:Button ID="login" runat="server" Text="Login" CssClass="btn btn-primary rounded" />
 					<div class="nav-drop">
 						<ul>
+						
 							<li class="active visible-sm visible-xs"><a href="#">Home</a></li>
-							<li><a href="#">Overview</a></li>
-							<li><a href="#cta">About Analytics</a></li>
+							<li><a href="#" style="color:#236fc4!important">Overview</a></li>
+							<li><a href="#cta" style="color:#236fc4!important">About Analytics</a></li>
 							<%--<li><a href="<%= Page.ResolveUrl("/registration.aspx") %>">Registration</a></li>--%>
-							<li><a href="#" onclick="window.open('Administracija.pdf', '_blank', 'fullscreen=yes'); return false;">Support</a></li>
+							<li><a href="#" onclick="window.open('Administracija.pdf', '_blank', 'fullscreen=yes'); return false;" style="color:#236fc4!important">Support</a></li>
 						</ul>
 					
 					</div>
@@ -165,9 +177,10 @@
 		<div class="container">
 			<div class="text-block">
 				<div class="heading-holder">
+
 					<h1>Analytics services for business of any size.</h1>
 				</div>
-				<p class="tagline">A real gamechanger in the world of data consumption.</p>
+				<p class="tagline" style="color:#236fc4!important">A real gamechanger in the world of data consumption.</p>
 				<span class="info"></span>
 			</div>
 		</div>
@@ -181,7 +194,7 @@
 			<div class="row">
 				<div class="text-box col-md-offset-1 col-md-10">
 					<h2>Revolutionary software</h2>
-					<p>Data = Knowledge. Good data provides indisputable evidence, while anecdotal evidence, assumptions, or abstract observation might lead to wasted resources due to taking action based on an incorrect conclusion. </p>
+					<p style="color:#236fc4!important">Data = Knowledge. Good data provides indisputable evidence, while anecdotal evidence, assumptions, or abstract observation might lead to wasted resources due to taking action based on an incorrect conclusion. </p>
 				</div>
 			</div>
 		</div>
