@@ -1,5 +1,6 @@
 ﻿using DevExpress.Web;
 using System;
+using System.IO;
 using System.Web;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -17,6 +18,7 @@ namespace Dash
           //  DevExpress.Web.ASPxWebControl.CallbackError += Application_Error;
             log4net.Config.XmlConfigurator.Configure();
             ASPxWebControl.CallbackError += ASPxWebControl_CallbackError;
+ 
 
         }
      
@@ -24,6 +26,7 @@ namespace Dash
         {
             Exception exception = HttpContext.Current.Server.GetLastError();
             logger.Error(exception.InnerException);
+         
         }
 
     

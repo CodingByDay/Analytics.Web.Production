@@ -214,23 +214,29 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
+
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
-                connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
-                GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
-                GetCommand.Connection = connection;
-                SqlDataReader reader = GetCommand.ExecuteReader();
-                reader.Read();
-                byte[] data = reader.GetValue(0) as byte[];
-                MemoryStream stream = new MemoryStream(data);
-                connection.Close();
-                Dashboard dashboard = new Dashboard();
-                dashboard.LoadFromXDocument(XDocument.Load(stream));
-                dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource => {
-                    dataSource.DataProcessingMode = DataProcessingMode.Client;
-                });
-                return dashboard.SaveToXDocument();
+
+                    connection.Open();
+                    SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
+                    GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                    GetCommand.Connection = connection;
+                    SqlDataReader reader = GetCommand.ExecuteReader();
+                    reader.Read();
+                    byte[] data = reader.GetValue(0) as byte[];
+                    MemoryStream stream = new MemoryStream(data);
+                    Dashboard dashboard = new Dashboard();
+                    dashboard.LoadFromXDocument(XDocument.Load(stream));
+                    dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource =>
+                    {
+                        dataSource.DataProcessingMode = DataProcessingMode.Client;
+                    });
+                    connection.Close();
+
+                    return dashboard.SaveToXDocument();
+                
+ 
             }
         }
 
