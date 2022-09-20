@@ -19,8 +19,32 @@
     <webopt:bundlereference runat="server" path="~/css/graphs.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer" async></script>
     <script src="js/SaveAsExtension.js" type="text/javascript"></script>
+    <script src="js/DeleteExtension.js" type="text/javascript"></script>
 
     <script src="js/application/admin.js"></script>
+
+
+        <script>
+
+
+
+            function PerformDelete(dashboardid) {
+                setCookie("temp", dashboardid, 365);
+                $.ajax({
+                    type: "POST",
+                    url: 'indextenant.aspx/DeleteItem',
+                    data: `{id: ${dashboardid}}`,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        $("#divResult").html("success");
+                    },
+                    error: function (e) {
+                        $("#divResult").html("Something Wrong.");
+                    }
+                });
+            }
+        </script>
         <style>
         .dx-widget  {  
         color: #333!important;  
@@ -54,12 +78,10 @@
 
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
-                          ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
-                          ItemWidgetCreated="customizeWidgets"
-                           
-                          ItemWidgetUpdated="updatecustomizeWidgets"                   
-                          DashboardInitialized="correctTheLoadingState"                      
-                          />
+            ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
+            ItemWidgetCreated="customizeWidgets"
+            ItemWidgetUpdated="updatecustomizeWidgets"
+            DashboardInitialized="correctTheLoadingState" />
       </dx:ASPxDashboard>
         </div>
 

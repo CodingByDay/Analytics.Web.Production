@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI.HtmlControls;
 
 namespace Dash
@@ -22,6 +23,7 @@ namespace Dash
         private SqlConnection conn;
         private SqlCommand cmd;
         private string role;
+        private static int permisionID;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -74,6 +76,29 @@ namespace Dash
         }
 
 
+
+        [WebMethod]
+        public static void DeleteItem(string id)
+        {
+            string ID = id;
+            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"delete from Dashboards where ID={ID}", conn);
+                    var result = cmd.ExecuteNonQuery();
+                }
+                catch
+                {
+                } finally
+                {
+                    
+                }
+            }
+
+        }
 
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
         {

@@ -17,14 +17,9 @@
 DeleteDashboardExtension.prototype.deleteDashboard = function () {
 	if (this._toolbox) {
 		if (confirm("Delete this Dashboard?")) {
-			var dashboardid = this._dashboardControl.dashboardContainer().id;
-			this._toolbox.menuVisible(false);
-			$.ajax({
-				url: 'Home/DeleteDashboard',
-				data: { DashboardID: dashboardid },
-				type: 'POST',
-				success: (function () { this._dashboardControl.unloadDashboard(); }).bind(this)
-			});
+			var dashboardid = this._dashboarControl.getDashboardId();
+			var param = JSON.stringify({ DashboardID: dashboardid, ExtensionName: this.name });
+			PerformDelete(dashboardid);
 		}
 	}
 }

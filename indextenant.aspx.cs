@@ -13,6 +13,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.SessionState;
 using System.Web.UI.HtmlControls;
 
@@ -32,10 +33,10 @@ namespace Dash
         private string returnString;
         private SqlCommand cmd;
         private int permisionID;
-
+        HttpRequest httpRequest;
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+         
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             if (Request.Cookies["dashboard"] != null)
             {
@@ -104,6 +105,11 @@ namespace Dash
             }
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
+
+
+
+
+
         private int getIdPermision()
         {
             using (SqlConnection conn = new SqlConnection(connection))
