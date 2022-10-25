@@ -33,9 +33,14 @@ function onItemCaptionToolbarUpdated(s, e) {
     }
 }
 
+var firstUse = true;
 
-
-
+function ask(e) {
+    if (!firstUse) {
+        alert("YRD");
+    }
+    firstUse = false;
+}
 
 
 function regex_return(text_to_search) {

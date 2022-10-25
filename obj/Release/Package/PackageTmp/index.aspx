@@ -21,6 +21,8 @@
              <webopt:bundlereference runat="server" path="~/css/graphs.css" />
    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
         <script src="js/application/admin.js"></script>
+        <script src="js/DeleteExtension.js"></script>
+
         
 <style>
 #MainContent_ASPxDashboard3 {
@@ -30,7 +32,25 @@ height: 100% !important;
 }</style>
 
         <script async>
-
+        
+              
+   
+            function PerformDelete(dashboardid) {
+                setCookie("temp", dashboardid, 365);
+                $.ajax({
+                    type: "POST",
+                    url: 'index.aspx/DeleteItem',
+                    data: `{id: ${dashboardid}}`,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (msg) {
+                        window.location.reload();
+                    },
+                    error: function (e) {
+                        window.location.reload();
+                    }
+                });
+            }
 
             function onItemCaptionToolbarUpdated(s, e) {
                 var list = dashboard.GetParameters().GetParameterList();
@@ -73,6 +93,8 @@ height: 100% !important;
                 extension = new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl);
                 dashboardControl.surfaceLeft(extension.panelWidth);
                 dashboardControl.registerExtension(extension);
+                dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
+
 
             }
 

@@ -1,5 +1,6 @@
 ﻿using Dash.DatabaseStorage;
 using Dash.DataExtract;
+using Dash.Log;
 using Dash.ORM;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
@@ -34,9 +35,46 @@ namespace Dash
         private SqlCommand cmd;
         private int permisionID;
         HttpRequest httpRequest;
+        private string companyInfo;
+        private object result;
+
+        private int getIdCompany(string current)
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    result = cmd.ExecuteScalar();
+                    var finalID = System.Convert.ToInt32(result);
+                    return finalID;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                    return -1;
+                }
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-         
+            try
+            {
+                if (Request.Cookies["tab"].Value.ToString() != null)
+                {
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    string name = getCompanyQuery(uname);
+                    int id = getIdCompany(name);
+
+                    Graph graph = new Graph(id);
+
+                    var dataX = graph.GetGraphs(id);
+
+
+                    var stop = true;
+                }
+            } catch { }
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             if (Request.Cookies["dashboard"] != null)
             {
@@ -107,6 +145,59 @@ namespace Dash
         }
 
 
+        [WebMethod]
+        public static void DeleteItem(string id)
+        {
+            string ID = id;
+            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"delete from Dashboards where ID={ID}", conn);
+                    var result = cmd.ExecuteNonQuery();
+                }
+                catch
+                {
+                }
+                finally
+                {
+
+                }
+            }
+        }
+
+
+        private string getCompanyQuery(string uname)
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                    try
+                    {
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            companyInfo = (reader["company_name"].ToString());
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                }
+            }
+            return companyInfo;
+        }
 
 
 
@@ -237,6 +328,7 @@ namespace Dash
             
             Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
+            return;
            
         }
 

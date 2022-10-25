@@ -320,6 +320,8 @@ function onBeforeRender(sender) {
     dashboardControl.surfaceLeft(extension.panelWidth);
     dashboardControl.registerExtension(extension);
     dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
+    dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
+
 
 
 }

@@ -15,7 +15,7 @@ namespace Dash
             // Code that runs on application startup
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-          //  DevExpress.Web.ASPxWebControl.CallbackError += Application_Error;
+            // DevExpress.Web.ASPxWebControl.CallbackError += Application_Error;
             log4net.Config.XmlConfigurator.Configure();
             ASPxWebControl.CallbackError += ASPxWebControl_CallbackError;
  
