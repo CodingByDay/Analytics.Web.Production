@@ -59,89 +59,103 @@ namespace Dash
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            try
-            {
-                if (Request.Cookies["tab"].Value.ToString() != null)
+
+            string p = Request.QueryString["p"];
+           
+          
+                try
                 {
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    string name = getCompanyQuery(uname);
-                    int id = getIdCompany(name);
-
-                    Graph graph = new Graph(id);
-
-                    var dataX = graph.GetGraphs(id);
-
-
-                    var stop = true;
-                }
-            } catch { }
-            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            if (Request.Cookies["dashboard"] != null)
-            {
-                bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
-                if (isAllowed)
-                {
-                    ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                }
-            }
-            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-            admin.Visible = false;
-            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-            var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
-            ASPxDashboard3.AllowCreateNewDashboard = true;
-            ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
-            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-      
-
-            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
- 
-            string TARGET_URL = "https://dash.in-sist.si";
-            if (Session != null)
-            {
-                if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
-                {
-                    if (Session["UserAllowed"].ToString() == "true")
+                    if (Request.Cookies["tab"].Value.ToString() != null)
                     {
-                        ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                        string uname = HttpContext.Current.User.Identity.Name;
+                        string name = getCompanyQuery(uname);
+                        int id = getIdCompany(name);
+
+                        Graph graph = new Graph(id);
+
+                        var dataX = graph.GetGraphs(id);
+
+                    }
+                }
+                catch { }
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                if (Request.Cookies["dashboard"] != null | !String.IsNullOrEmpty(p))
+                {
+                    if (!String.IsNullOrEmpty(p))
+                    {
+                            string uname = HttpContext.Current.User.Identity.Name;
+                            string name = getCompanyQuery(uname);
+                            int id = getIdCompany(name);
+                            Graph graph = new Graph(id);
+                            var dataX = graph.getSingularNameOriginal(id, p);
+                            ASPxDashboard3.InitialDashboardId = dataX;
+                    } else {
+                        bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
+                        if (isAllowed)
+                        {
+                            ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                        } 
+                    }
+                }
+                HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
+                admin.Visible = false;
+                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+                ASPxDashboard3.AllowCreateNewDashboard = true;
+                ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
+
+                ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+
+                string TARGET_URL = "https://dash.in-sist.si";
+                if (Session != null)
+                {
+                    if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
+                    {
+                        if (Session["UserAllowed"].ToString() == "true")
+                        {
+                            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                        }
+                        else
+                        {
+                            ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+                        }
                     }
                     else
                     {
-                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                     }
                 }
                 else
                 {
                     DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                 }
-            }
-            else
-            {
-                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-            }
-            if (Request.Cookies.Get("state") is null)
-            {
-                Response.Cookies["state"].Value = "light";
-            }
-            else
-            {
-                state = Request.Cookies.Get("state").Value;
-                switch (state)
+                if (Request.Cookies.Get("state") is null)
                 {
-                    case "light":
-                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
-                        break;
-
-                    case "dark":
-                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
-                        break;
+                    Response.Cookies["state"].Value = "light";
                 }
-            }
-            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+                else
+                {
+                    state = Request.Cookies.Get("state").Value;
+                    switch (state)
+                    {
+                        case "light":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                            break;
+
+                        case "dark":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                            break;
+                    }
+                }
+                ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+            
         }
 
 

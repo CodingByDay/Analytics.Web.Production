@@ -137,7 +137,37 @@ namespace Dash.ORM
                 }
             }
         }
+        public string getSingularNameOriginal(int id, string customInner)
+        {
+            string original = string.Empty;
+            var names = getNamesCurrent(id);
+            
+            try
+            {
+                original = names.FirstOrDefault(x => x.custom == customInner).original;
+                using(SqlConnection conn = new SqlConnection(Connection))
+                {
+                    conn.Open();
 
+
+                    var cmd = new SqlCommand($"select d.ID from Dashboards d where d.Caption = '{original}'", conn);
+
+                    int result = (int) cmd.ExecuteScalar();
+
+                    original = result.ToString();
+
+                }
+            } catch(Exception e) {
+
+
+
+                return original; 
+            
+            
+            }
+
+            return original;
+        }
         public List<Names> getNamesCurrent(int id)
         {
             var graphs = GetGraphs(id);

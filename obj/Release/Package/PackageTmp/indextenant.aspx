@@ -22,11 +22,33 @@
     <script src="js/DeleteExtension.js" type="text/javascript"></script>
 
     <script src="js/application/admin.js"></script>
-
+      <div class="overlay" id="overlay" hidden>
+    
 
         <script>
 
+            //var contextMenu = false;
+            //window.oncontextmenu = function (e) {
+            //        var x = e.pageX;
+            //        var y = e.pageY;
+            //        var frompoint = document.elementsFromPoint(x, y);
+            //        var dash = frompoint[1].textContent.trim();
+            //        if (confirm(`Odpri ${dash} v novi kartici?`)) {
+            //            setCookie("tab", dash, 365);
+            //            NewTab();
+            //        }
+            //        e.preventDefault();
+            //}
 
+
+            //function NewTab() {
+            //    window.open(
+            //        "https://dash.in-sist.si/indextenant.aspx", "_blank");
+            //}
+
+            //function askPopup() {
+            //    console.log("ask");
+            //}
 
             function PerformDelete(dashboardid) {
                 setCookie("temp", dashboardid, 365);
@@ -37,12 +59,12 @@
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
-                        $("#divResult").html("success");
                     },
                     error: function (e) {
-                        $("#divResult").html("Something Wrong.");
                     }
                 });
+                window.location.reload();
+
             }
         </script>
         <style>
@@ -78,6 +100,7 @@
 
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
+            DashboardInitializing ="ask"
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"
             ItemWidgetUpdated="updatecustomizeWidgets"

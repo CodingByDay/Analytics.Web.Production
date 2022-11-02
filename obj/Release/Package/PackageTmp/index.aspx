@@ -44,12 +44,14 @@ height: 100% !important;
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (msg) {
-                        window.location.reload();
                     },
                     error: function (e) {
-                        window.location.reload();
                     }
+
+
                 });
+                window.location.reload();
+
             }
 
             function onItemCaptionToolbarUpdated(s, e) {
