@@ -14,7 +14,8 @@ function onItemCaptionToolbarUpdated(s, e) {
         window.item_caption = e.Options.staticItems[0].text;
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
-                parameterized_values.forEach((singular) => {
+            parameterized_values.forEach((singular) => {
+
                 const found = list.find(element => element.Name == singular)
                 indexOfElement = list.indexOf(found)
                 if (found != null && indexOfElement != -1) {
@@ -37,7 +38,6 @@ var firstUse = true;
 
 function ask(e) {
     if (!firstUse) {
-        alert("YRD");
     }
     firstUse = false;
 }
@@ -51,28 +51,30 @@ function regex_return(text_to_search) {
     return matches;
 }
 function customizeWidgets(sender, args) {
-    
+    // On load method
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
-   
-    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 3) {
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
-        parName.push(dashboard.GetParameters().GetParameterList()[0].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[1].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[2].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[3].Name);
+    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
+      
+        for (var j = 0; j < collection.length; j++) {
+            initialPayload.push(dashboard.GetParameters().GetParameterList()[j].Value);
+            parName.push(dashboard.GetParameters().GetParameterList()[j].Name);
+        }
+
         var grid = args.GetWidget();
         var columns = grid.option("columns");
+        console.log(columns);
         for (var i = 0; i < columns.length; i++) {
+            
+
             var textToCheck = columns[i].caption;
+
             window.textNew = textToCheck;
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
   
-                   parameterized_values.forEach((singular) => {
+                parameterized_values.forEach((singular) => {
+
                    const found = parName.find(element => element == singular)
                    indexOfElement = parName.indexOf(found)
 
@@ -113,6 +115,7 @@ function customizeWidgets(sender, args) {
                     var parameterized_values = regex_return(arg.seriesName);
                     if (parameterized_values.length != 0) {
                         parameterized_values.forEach((singular) => {
+
                             const found = list.find(element => element.Name == singular)
                             indexOfElement = list.indexOf(found)
                             if (found != null && indexOfElement != -1) {
@@ -148,7 +151,7 @@ function customizeWidgets(sender, args) {
 
 
 
-        console.log(chart);
+
         var legend = chart.option("legend");
         legend.customizeText = function (arg) {
             window.item_caption = arg.seriesName;
@@ -158,6 +161,7 @@ function customizeWidgets(sender, args) {
                 var parameterized_values = regex_return(arg.seriesName);
                 if (parameterized_values.length != 0) {
                     parameterized_values.forEach((singular) => {
+
                         const found = list.find(element => element.Name == singular)
                         indexOfElement = list.indexOf(found)
                         if (found != null && indexOfElement != -1) {
@@ -199,16 +203,12 @@ function updatecustomizeWidgets(sender, args) {
     setCookie('new', JSON.stringify(collection))
 
 
-    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
+    if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
         initialPayload = [];
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[0].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[1].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[2].Value);
-        initialPayload.push(dashboard.GetParameters().GetParameterList()[3].Value);
-        parName.push(dashboard.GetParameters().GetParameterList()[0].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[1].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[2].Name);
-        parName.push(dashboard.GetParameters().GetParameterList()[3].Name);      
+        for (var j = 0; j < collection.length; j++) {
+            initialPayload.push(dashboard.GetParameters().GetParameterList()[j].Value);
+            parName.push(dashboard.GetParameters().GetParameterList()[j].Name);
+        }
         var grid = args.GetWidget();
         var columns = grid.option("columns");
         for (var i = 0; i < columns.length; i++) {
@@ -218,6 +218,7 @@ function updatecustomizeWidgets(sender, args) {
             if (parameterized_values.length != 0) {
                 
                 parameterized_values.forEach((singular) => {
+
                     const found = parName.find(element => element == singular)
                     indexOfElement = parName.indexOf(found)
                     if (found != null && indexOfElement != -1) {
@@ -240,6 +241,7 @@ function updatecustomizeWidgets(sender, args) {
     tabItems = []
     window.counter = 0;
     d_old = JSON.parse(getCookie('old'));
+
     d_new = JSON.parse(getCookie('new'));
     console.log(d_old);
     console.log(d_new);
@@ -247,13 +249,24 @@ function updatecustomizeWidgets(sender, args) {
         var iCurrent = items[i];
         item_caption = iCurrent.name();
         for (var j = 0; j < collection.length; j++) {
-            var sDate = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
-            if (iCurrent.name().includes(sDate)) {
-                old_v = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
-                new_v = new Date(d_new[j].Value).toLocaleDateString("uk-Uk");
-                var nName = iCurrent.name().replace(old_v, new_v);
-                iCurrent.name(nName);          
+            try {
+                var sDate = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+                if (iCurrent.name().includes(sDate)) {
+                    old_v = new Date(d_old[j].Value).toLocaleDateString("uk-Uk");
+                    new_v = new Date(d_new[j].Value).toLocaleDateString("uk-Uk");
+                    var nName = iCurrent.name().replace(old_v, new_v);
+                    iCurrent.name(nName);
+                }
+            } catch {
+                var valField = d_old[j].Value;
+                if (iCurrent.name().includes(valField)) {
+                    old_v = d_old[j].Value
+                    new_v = new d_new[j].Value;
+                    var nName = iCurrent.name().replace(old_v, new_v);
+                    iCurrent.name(nName);
+                }
             }
+          
          }
     }
 
@@ -269,6 +282,7 @@ function updatecustomizeWidgets(sender, args) {
                 var parameterized_values = regex_return(arg.seriesName);
                 if (parameterized_values.length != 0) {
                     parameterized_values.forEach((singular) => {
+
                         const found = list.find(element => element.Name == singular)
                         indexOfElement = list.indexOf(found)
                         if (found != null && indexOfElement != -1) {

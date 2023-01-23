@@ -37,7 +37,6 @@ var firstUse = true;
 
 function ask(e) {
     if (!firstUse) {
-        alert("YRD");
     }
     firstUse = false;
 }

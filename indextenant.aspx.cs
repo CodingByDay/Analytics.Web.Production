@@ -452,7 +452,7 @@ namespace Dash
             }
             catch (Exception error)
             {
-                // Implement logging here.
+                // Implement logging here
                 Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
             finally

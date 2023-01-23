@@ -33,17 +33,21 @@
                     var y = e.pageY;
                     var frompoint = document.elementsFromPoint(x, y);
                     var dash = frompoint[1].textContent.trim();
+                    if (dash.length < 50 && x <= 250) {
+
                     if (confirm(`Odpri ${dash} v novi kartici?`)) {
                         setCookie("tab", dash, 365);
                         NewTab(dash);
                     }
                     e.preventDefault();
+
+                }
             }
 
 
             function NewTab(dash) {
                 window.open(
-                    `https://localhost:44355/indextenant.aspx?p=${dash}`, "_blank");
+                    `https://dash.in-sist.si/indextenant.aspx?p=${dash}`, "_blank");
             }
 
             function askPopup() {

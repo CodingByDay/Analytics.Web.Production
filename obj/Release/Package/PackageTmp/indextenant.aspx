@@ -27,28 +27,28 @@
 
         <script>
 
-            //var contextMenu = false;
-            //window.oncontextmenu = function (e) {
-            //        var x = e.pageX;
-            //        var y = e.pageY;
-            //        var frompoint = document.elementsFromPoint(x, y);
-            //        var dash = frompoint[1].textContent.trim();
-            //        if (confirm(`Odpri ${dash} v novi kartici?`)) {
-            //            setCookie("tab", dash, 365);
-            //            NewTab();
-            //        }
-            //        e.preventDefault();
-            //}
+            var contextMenu = false;
+            window.oncontextmenu = function (e) {
+                    var x = e.pageX;
+                    var y = e.pageY;
+                    var frompoint = document.elementsFromPoint(x, y);
+                    var dash = frompoint[1].textContent.trim();
+                    if (confirm(`Odpri ${dash} v novi kartici?`)) {
+                        setCookie("tab", dash, 365);
+                        NewTab(dash);
+                    }
+                    e.preventDefault();
+            }
 
 
-            //function NewTab() {
-            //    window.open(
-            //        "https://dash.in-sist.si/indextenant.aspx", "_blank");
-            //}
+            function NewTab(dash) {
+                window.open(
+                    `https://dash.in-sist.si/indextenant.aspx?p=${dash}`, "_blank");
+            }
 
-            //function askPopup() {
-            //    console.log("ask");
-            //}
+            function askPopup() {
+                console.log("ask");
+            }
 
             function PerformDelete(dashboardid) {
                 setCookie("temp", dashboardid, 365);
