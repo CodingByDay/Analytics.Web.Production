@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
@@ -88,8 +89,25 @@ namespace Dash.DatabaseStorage
                 byte[] data = reader.GetValue(0) as byte[];
                 MemoryStream stream = new MemoryStream(data);
                 connection.Close();
-                return XDocument.Load(stream);
+                var doc = XDocument.Load(stream);
+                var manipulated =  ManipulateDocument(doc);
+                return manipulated;
             }
+        }
+
+        private XDocument ManipulateDocument(XDocument doc)
+        {
+            XmlDocument document = new XmlDocument();
+            var sql = doc.Root.Element("DataSources").Element("SqlDataSource").Element("Query").Element("Sql");
+
+
+            var queryToChange = sql.Value;
+
+
+            queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
+            queryToChange = queryToChange + " WHERE ProdajaReferent = 'Tobias Fischer'";
+            sql.Value = queryToChange; 
+            return doc;
         }
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
