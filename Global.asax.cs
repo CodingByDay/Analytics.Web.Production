@@ -29,8 +29,7 @@ namespace Dash
 
             if (exception.Message.Contains("ProdajaReferent"))
             {
-                Response.Cookies["referer"].Value = "false";
-                Response.Redirect(Request.RawUrl);
+                return;
             }
 
 

@@ -283,9 +283,24 @@ namespace Dash.DatabaseStorage
             var queryToChange = sql.Value;
             if (queryToChange.Contains("ProdajaReferent"))
             {
-                queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
-                queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
-                sql.Value = queryToChange;
+                if (queryToChange.Contains("WHERE"))
+                {
+                    if (queryToChange.Last() == ';')
+                    {
+                        queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
+                    }
+                    queryToChange = queryToChange + $" AND ProdajaReferent = '{referer}';";
+                    sql.Value = queryToChange;
+                }
+                else
+                {
+                    if (queryToChange.Last() == ';')
+                    {
+                        queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
+                    }
+                    queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
+                    sql.Value = queryToChange;
+                }
             }
             return doc;
         }
