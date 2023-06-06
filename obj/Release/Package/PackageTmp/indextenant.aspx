@@ -33,11 +33,15 @@
                     var y = e.pageY;
                     var frompoint = document.elementsFromPoint(x, y);
                     var dash = frompoint[1].textContent.trim();
+                    if (dash.length < 50 && x <= 250) {
+
                     if (confirm(`Odpri ${dash} v novi kartici?`)) {
                         setCookie("tab", dash, 365);
                         NewTab(dash);
                     }
                     e.preventDefault();
+
+                }
             }
 
 

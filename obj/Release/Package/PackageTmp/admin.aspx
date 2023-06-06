@@ -36,6 +36,7 @@
              }
     </script>
     <style>
+     
         .inner-item {
         }
 
@@ -449,8 +450,13 @@
 <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
                         <asp:TextBox ID="TxtUserName" runat="server" Enabled="true" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>
 
+          </div>
+                       <br />
+<div class="form-row">
+             <label class="col-sm-2 col-form-label" for="name">Referant</label>
+                        <asp:TextBox ID="referer" runat="server" Enabled="true" placeholder="Referant" CssClass="form-control form-control-lg"></asp:TextBox>
+          </div>
                       <br />
                        <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>

@@ -757,7 +757,7 @@ namespace Dash
                         }
                         else
                         {
-                            cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referer.Text}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {

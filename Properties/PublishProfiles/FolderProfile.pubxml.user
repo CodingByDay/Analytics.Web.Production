@@ -5,7 +5,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <_PublishTargetUrl>C:\Users\jankoj\Desktop\NewestAnalytics</_PublishTargetUrl>
-    <History>True|2022-11-02T08:04:48.1092340Z;False|2022-11-02T09:03:49.2594947+01:00;True|2022-10-25T12:25:36.4018392+02:00;True|2022-10-03T21:44:03.1793719+02:00;True|2022-09-15T18:23:51.0109635+02:00;True|2022-09-12T12:10:59.7638535+02:00;False|2022-08-22T10:09:36.7817341+02:00;True|2022-08-18T07:31:00.1714412+02:00;True|2022-07-29T12:55:53.6883258+02:00;True|2022-07-20T18:21:39.4008121+02:00;False|2022-07-20T18:19:17.7856312+02:00;True|2022-07-14T14:05:59.9618782+02:00;False|2022-07-14T14:03:09.2456684+02:00;True|2022-07-04T13:24:46.6332698+02:00;True|2022-06-30T10:46:40.6145143+02:00;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
+    <History>True|2023-06-06T08:04:19.3653962Z;True|2022-11-02T09:04:48.1092340+01:00;False|2022-11-02T09:03:49.2594947+01:00;True|2022-10-25T12:25:36.4018392+02:00;True|2022-10-03T21:44:03.1793719+02:00;True|2022-09-15T18:23:51.0109635+02:00;True|2022-09-12T12:10:59.7638535+02:00;False|2022-08-22T10:09:36.7817341+02:00;True|2022-08-18T07:31:00.1714412+02:00;True|2022-07-29T12:55:53.6883258+02:00;True|2022-07-20T18:21:39.4008121+02:00;False|2022-07-20T18:19:17.7856312+02:00;True|2022-07-14T14:05:59.9618782+02:00;False|2022-07-14T14:03:09.2456684+02:00;True|2022-07-04T13:24:46.6332698+02:00;True|2022-06-30T10:46:40.6145143+02:00;True|2022-06-13T07:43:29.0319974+02:00;False|2022-06-13T07:41:01.7555449+02:00;True|2022-06-08T13:25:30.6750999+02:00;True|2022-05-09T12:54:47.1748035+02:00;True|2022-05-06T14:26:30.5343880+02:00;True|2022-04-15T08:19:45.6283169+02:00;True|2022-04-11T11:39:37.3234127+02:00;True|2022-01-11T14:54:44.2791739+01:00;False|2022-01-11T14:52:05.5256775+01:00;False|2022-01-11T14:48:12.6197166+01:00;</History>
   </PropertyGroup>
   <ItemGroup>
     <File Include="About.aspx">
@@ -15,7 +15,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>08/05/2022 07:59:07</publishTime>
     </File>
     <File Include="admin.aspx">
-      <publishTime>09/20/2022 07:37:44</publishTime>
+      <publishTime>06/06/2023 07:40:55</publishTime>
     </File>
     <File Include="Administracija.pdf">
       <publishTime>06/30/2022 10:17:22</publishTime>
@@ -45,10 +45,10 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:49</publishTime>
     </File>
     <File Include="bin/Dash.dll">
-      <publishTime>11/14/2022 06:05:27</publishTime>
+      <publishTime>06/06/2023 10:03:48</publishTime>
     </File>
     <File Include="bin/Dash.pdb">
-      <publishTime>11/14/2022 06:05:27</publishTime>
+      <publishTime>06/06/2023 10:03:48</publishTime>
     </File>
     <File Include="bin/de/DevExpress.Dashboard.v20.2.Core.resources.dll">
       <publishTime>02/01/2021 12:12:00</publishTime>
@@ -1125,7 +1125,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>10/25/2022 12:21:14</publishTime>
     </File>
     <File Include="indextenant.aspx">
-      <publishTime>11/02/2022 09:09:11</publishTime>
+      <publishTime>11/21/2022 09:20:29</publishTime>
     </File>
     <File Include="js/.subl51.tmp">
       <publishTime>06/30/2022 10:17:28</publishTime>
@@ -1143,7 +1143,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:28</publishTime>
     </File>
     <File Include="js/application/admin.js">
-      <publishTime>11/03/2022 13:44:41</publishTime>
+      <publishTime>02/22/2023 09:59:05</publishTime>
     </File>
     <File Include="js/bootstrap.js">
       <publishTime>06/30/2022 10:17:28</publishTime>
@@ -1842,7 +1842,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
       <publishTime>06/30/2022 10:17:22</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>11/03/2022 13:40:43</publishTime>
+      <publishTime>06/06/2023 10:04:11</publishTime>
     </File>
   </ItemGroup>
 </Project>
