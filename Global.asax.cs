@@ -25,6 +25,15 @@ namespace Dash
         private void ASPxWebControl_CallbackError(object sender, EventArgs e)
         {
             Exception exception = HttpContext.Current.Server.GetLastError();
+
+
+            if (exception.Message.Contains("ProdajaReferent"))
+            {
+                Response.Cookies["referer"].Value = "false";
+                Response.Redirect(Request.RawUrl);
+            }
+
+
             logger.Error(exception.InnerException);
          
         }

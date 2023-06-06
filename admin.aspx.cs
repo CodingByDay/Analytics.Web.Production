@@ -581,6 +581,7 @@ namespace Dash
                         TxtName.Text = sdr["FullName"].ToString();
                         TxtUserName.Text = sdr["uname"].ToString();
                         TxtUserName.Enabled = false;
+                        referer.Text = sdr["referer"].ToString();
                         int number = (int)sdr["id_company"];
                         string dare = GetCompanyName(number);
                         companiesList.SelectedValue = dare;
@@ -642,6 +643,7 @@ namespace Dash
                         TxtName.Text = sdr["FullName"].ToString();
                         TxtUserName.Text = sdr["uname"].ToString();
                         TxtUserName.Enabled = false;
+                        referer.Text = sdr["referer"].ToString();
                         var number = (int)sdr["id_company"];
                         var data = GetCompanyName(number);
                         companiesList.SelectedValue = data;

@@ -273,10 +273,7 @@ namespace Dash.DatabaseStorage
                 {
                     return string.Empty;
                 }
-
-
-            }
-           
+            }          
         }
 
         private XDocument ManipulateDocument(XDocument doc, string referer)
@@ -284,9 +281,12 @@ namespace Dash.DatabaseStorage
             XmlDocument document = new XmlDocument();
             var sql = doc.Root.Element("DataSources").Element("SqlDataSource").Element("Query").Element("Sql");
             var queryToChange = sql.Value;
-            queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
-            queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
-            sql.Value = queryToChange;
+            if (queryToChange.Contains("ProdajaReferent"))
+            {
+                queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
+                queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
+                sql.Value = queryToChange;
+            }
             return doc;
         }
 
