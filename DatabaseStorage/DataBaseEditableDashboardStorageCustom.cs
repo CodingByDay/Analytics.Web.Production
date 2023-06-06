@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
@@ -234,12 +235,60 @@ namespace Dash.DatabaseStorage
                     });
                     connection.Close();
 
-                    return dashboard.SaveToXDocument();
-                
- 
+                    string referer = GetRefererName(HttpContext.Current.User.Identity.Name);
+
+                    if (!String.IsNullOrEmpty(referer))
+                    {
+                        var manipulated = ManipulateDocument(dashboard.SaveToXDocument(), referer);
+                        return manipulated;
+                    }
+                    else
+                    {
+                        return dashboard.SaveToXDocument();
+                    }
             }
         }
 
+        private string GetRefererName(string name)
+        {
+#nullable enable
+            string? referer = string.Empty;
+#nullable disable
+            using (SqlConnection connection = new SqlConnection(this.connection))
+            {
+                connection.Open();
+                SqlCommand cmd = new SqlCommand($"select referer from Users where uname='{name}'", connection);
+
+                try
+                {
+                    string result = (string)cmd.ExecuteScalar();
+                    if(!String.IsNullOrEmpty(result))
+                    {
+                        return result;
+                    } else
+                    {
+                        return string.Empty;
+                    }
+                } catch
+                {
+                    return string.Empty;
+                }
+
+
+            }
+           
+        }
+
+        private XDocument ManipulateDocument(XDocument doc, string referer)
+        {
+            XmlDocument document = new XmlDocument();
+            var sql = doc.Root.Element("DataSources").Element("SqlDataSource").Element("Query").Element("Sql");
+            var queryToChange = sql.Value;
+            queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
+            queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
+            sql.Value = queryToChange;
+            return doc;
+        }
 
         private List<String> getCaptions()
         {

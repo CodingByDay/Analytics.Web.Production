@@ -713,7 +713,7 @@ namespace Dash
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
                                 string companyINSERT = companiesList.SelectedItem.Value;
                                 int idCOMPANY = getIdCompany(companyINSERT);
-                                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next})");
+                                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user, referer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next}, '{referer.Text}')");
                                 SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                                 var username = TxtUserName.Text;
                                 try
@@ -751,7 +751,7 @@ namespace Dash
                         if (!String.IsNullOrEmpty(TxtRePassword.Text))
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referer.Text}' where uname='{TxtUserName.Text}'", conn);
                         }
                         else
                         {
@@ -759,7 +759,7 @@ namespace Dash
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista.')", true);
+                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso enaka.')", true);
                             TxtPassword.Text = "";
                             TxtRePassword.Text = "";
                         }

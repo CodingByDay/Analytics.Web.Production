@@ -90,25 +90,16 @@ namespace Dash.DatabaseStorage
                 MemoryStream stream = new MemoryStream(data);
                 connection.Close();
                 var doc = XDocument.Load(stream);
-                var manipulated =  ManipulateDocument(doc);
-                return manipulated;
+
+
+
+
+
+                return doc;
             }
         }
 
-        private XDocument ManipulateDocument(XDocument doc)
-        {
-            XmlDocument document = new XmlDocument();
-            var sql = doc.Root.Element("DataSources").Element("SqlDataSource").Element("Query").Element("Sql");
-
-
-            var queryToChange = sql.Value;
-
-
-            queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
-            queryToChange = queryToChange + " WHERE ProdajaReferent = 'Tobias Fischer'";
-            sql.Value = queryToChange; 
-            return doc;
-        }
+       
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
