@@ -36,7 +36,9 @@
              }
     </script>
     <style>
-     
+      #TxtPassword, #TxtRePassword {
+            -webkit-text-security: circle!important;
+        }
         .inner-item {
         }
 
@@ -460,13 +462,13 @@
                       <br />
                        <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" Enabled="true" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>
+<asp:TextBox ID="TxtPassword" runat="server"   Enabled="true" style="-webkit-text-security: circle" placeholder="Geslo"  CssClass="form-control form-control-lg"></asp:TextBox>
                        </div>
 
                       <br />
                         <div class="form-row">
              <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
-                        <asp:TextBox ID="TxtRePassword" runat="server" Enabled="true" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>
+                        <asp:TextBox ID="TxtRePassword" style="-webkit-text-security: circle" runat="server" Enabled="true"  placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>
                        </div>
 
                          <br />

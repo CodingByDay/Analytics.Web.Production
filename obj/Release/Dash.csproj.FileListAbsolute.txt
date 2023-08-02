@@ -992,3 +992,4 @@ C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.CopyComplete
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.dll
 C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.pdb
+C:\Users\jankoj\Desktop\Projects\Development\DASHBOARDS\obj\Release\Dash.csproj.AssemblyReference.cache
