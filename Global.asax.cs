@@ -27,7 +27,7 @@ namespace Dash
             Exception exception = HttpContext.Current.Server.GetLastError();
 
 
-            if (exception.Message.Contains("ProdajaReferent"))
+            if (exception.Message.Contains("ProdajaKomercialist"))
             {
                 return;
             }

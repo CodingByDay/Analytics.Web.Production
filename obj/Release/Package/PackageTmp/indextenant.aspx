@@ -70,6 +70,42 @@
                 window.location.reload();
 
             }
+
+
+
+
+            function onDashboardTitleToolbarUpdated(sender, e) {
+                e.Options.actionItems.unshift({
+                    type: "button",
+                    icon: "dx-dashboard-clear-master-filter",
+                    hint: "Clear all filters",
+                    click: function (element) {
+                        ClearMasterFilterState();
+                    }
+                });
+            }
+            function ClearMasterFilterState() {
+
+                var state = JSON.parse(dashboard.GetDashboardState());
+                $.each(state.Items, function (index, element) {
+                    var startState = JSON.parse(initialState);
+                    debugger;
+                    if (startState.Items[index]) {
+                        element.MasterFilterValues = startState.Items[index].MasterFilterValues;
+                    }
+                    else
+                        element.MasterFilterValues = [];
+                });
+                var newState = JSON.stringify(state);
+                dashboard.SetDashboardState(newState);
+            }
+            var initialState = '';
+
+            function onDashboardEndUpdate(s, e) {
+                if (initialState == '') {
+                    initialState = s.GetDashboardState();
+                }
+            }
         </script>
         <style>
         .dx-widget  {  
@@ -107,6 +143,8 @@
             DashboardInitializing ="ask"
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"
+            DashboardEndUpdate="onDashboardEndUpdate"
+            DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
             ItemWidgetUpdated="updatecustomizeWidgets"
             DashboardInitialized="correctTheLoadingState" />
       </dx:ASPxDashboard>

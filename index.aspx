@@ -227,6 +227,37 @@ height: 100% !important;
                 });
             }
 
+            function onDashboardTitleToolbarUpdated(sender, e) {
+                e.Options.actionItems.unshift({
+                    type: "button",
+                    icon: "dx-dashboard-clear-master-filter",
+                    hint: "Clear all filters",
+                    click: function (element) {
+                        ClearMasterFilterState();
+                    }
+                });
+            }
+            function ClearMasterFilterState() {
+
+                var state = JSON.parse(dashboard.GetDashboardState());
+                $.each(state.Items, function (index, element) {
+                    var startState = JSON.parse(initialState);
+                    debugger;
+                    if (startState.Items[index]) {
+                        element.MasterFilterValues = startState.Items[index].MasterFilterValues;
+                    }
+                    else
+                        element.MasterFilterValues = [];
+                });
+                var newState = JSON.stringify(state);
+                dashboard.SetDashboardState(newState);
+            }
+            var initialState = '';
+            function onDashboardEndUpdate(s, e) {
+                if (initialState == '') {
+                    initialState = s.GetDashboardState();
+                }
+            }
 
         </script>
     
@@ -247,6 +278,8 @@ height: 100% !important;
     <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents BeforeRender="onBeforeRender"
                           ItemWidgetCreated="customizeWidgets"
+                          DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
+                          DashboardEndUpdate="onDashboardEndUpdate"
                           ItemWidgetUpdated="updatecustomizeWidgets"        
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           DashboardInitialized="correctTheLoadingState"                      

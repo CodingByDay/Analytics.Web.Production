@@ -456,8 +456,8 @@
           </div>
                        <br />
 <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="referer">Referent</label>
-                        <asp:TextBox ID="referer" runat="server" Enabled="true" placeholder="Referent" CssClass="form-control form-control-lg"></asp:TextBox>
+             <label class="col-sm-2 col-form-label" for="referer">Komercialist</label>
+                        <asp:TextBox ID="referer" runat="server" Enabled="true" placeholder="Komercialist" CssClass="form-control form-control-lg"></asp:TextBox>
           </div>
                       <br />
                        <div class="form-row">

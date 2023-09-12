@@ -281,7 +281,7 @@ namespace Dash.DatabaseStorage
             XmlDocument document = new XmlDocument();
             var sql = doc.Root.Element("DataSources").Element("SqlDataSource").Element("Query").Element("Sql");
             var queryToChange = sql.Value;
-            if (queryToChange.Contains("ProdajaReferent"))
+            if (queryToChange.Contains("ProdajaKomercialist"))
             {
                 if (queryToChange.Contains("WHERE"))
                 {
@@ -289,7 +289,7 @@ namespace Dash.DatabaseStorage
                     {
                         queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
                     }
-                    queryToChange = queryToChange + $" AND ProdajaReferent = '{referer}';";
+                    queryToChange = queryToChange + $" AND ProdajaKomercialist = '{referer}';";
                     sql.Value = queryToChange;
                 }
                 else
@@ -298,7 +298,7 @@ namespace Dash.DatabaseStorage
                     {
                         queryToChange = queryToChange.Substring(0, queryToChange.Length - 1);
                     }
-                    queryToChange = queryToChange + $" WHERE ProdajaReferent = '{referer}';";
+                    queryToChange = queryToChange + $" WHERE ProdajaKomercialist = '{referer}';";
                     sql.Value = queryToChange;
                 }
             }
