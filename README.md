@@ -1,4 +1,4 @@
-# WMS 
+# DASHBOARDS
 
 Dashboard application written in .NET
 
