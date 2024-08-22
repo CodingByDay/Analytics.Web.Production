@@ -87,7 +87,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"delete from Dashboards where ID={ID}", conn);
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
                     var result = cmd.ExecuteNonQuery();
                 }
                 catch
@@ -116,7 +116,7 @@ namespace Dash
             conn.Open();
             var username = HttpContext.Current.User.Identity.Name;
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {

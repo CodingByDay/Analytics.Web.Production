@@ -288,7 +288,7 @@ namespace Dash
                     conn.Open();
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -326,7 +326,7 @@ namespace Dash
                     string UserNameForChecking
                         = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand("SELECT uname FROM Users", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -372,12 +372,12 @@ namespace Dash
                         if (namePlural.Count == 0)
                         {
                             string nameUser = usersList.ElementAt(0).uname;
-                            findIdString = String.Format($"SELECT id_permision_user from Users where uname='{nameUser}'");
+                            findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{nameUser}'");
                         }
                         else
                         {
                             string name = namePlural[0].ToString();
-                            findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
+                            findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{name}'");
                         }
 
                         // Documentation. This query is for getting all the permision table data from the user
@@ -449,7 +449,7 @@ namespace Dash
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
+                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
                     /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
@@ -485,7 +485,7 @@ namespace Dash
                     usersList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"Select * from Users where id_company={companyID}", conn);
+                    cmd = new SqlCommand($"SELECT * FROM Users WHERE id_company={companyID}", conn);
 
                     // Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
@@ -691,7 +691,7 @@ namespace Dash
                         }
                         else
                         {
-                            SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
+                            SqlCommand check = new SqlCommand($"SELECT count(*) FROM Users WHERE uname='{TxtUserName.Text}'", conn);
                             var resultCheck = check.ExecuteScalar();
                             Int32 resultUsername = System.Convert.ToInt32(resultCheck);
                             check.Dispose();
@@ -715,7 +715,7 @@ namespace Dash
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
                                 string companyINSERT = companiesList.SelectedItem.Value;
                                 int idCOMPANY = getIdCompany(companyINSERT);
-                                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user, referer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next}, '{referer.Text}')");
+                                string finalQueryRegistration = String.Format($"INSERT INTO Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user, referer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next}, '{referer.Text}')");
                                 SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                                 var username = TxtUserName.Text;
                                 try
@@ -753,11 +753,11 @@ namespace Dash
                         if (!String.IsNullOrEmpty(TxtRePassword.Text))
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referer.Text}' where uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users SET Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         else
                         {
-                            cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referer.Text}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users SET userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referer.Text}', FullName='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
@@ -1030,7 +1030,7 @@ namespace Dash
                     string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
                     string companyINSERT = cName;
                     int idCOMPANY = getIdCompany(companyINSERT);
-                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
+                    string finalQueryRegistration = String.Format($"INSERT INTO Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
                     SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                     var username = TxtUserName.Text;
                     var id = getIdCompany(cName.Trim());
@@ -1056,7 +1056,7 @@ namespace Dash
                 {
                     conn.Open();
                     string username = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    SqlCommand cmd = new SqlCommand($"delete from Users where uname='{username}'", conn);
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM Users WHERE uname='{username}'", conn);
                     deletedID = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
                     getIdPermision();
                     var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
@@ -1129,7 +1129,7 @@ namespace Dash
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
+                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
 
 
                     // Execute command and fetch pwd field into lookupPassword string.
@@ -1197,7 +1197,7 @@ namespace Dash
 
                         var name = usersGridView.GetSelectedFieldValues("uname");
                         var singular = name[0].ToString();
-                        findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        findId = String.Format($"SELECT id_permision_user FROM Users where uname='{singular}'");
                         // execute query
                         // Create SqlCommand to select pwd field from users table given supplied userName.
                         cmd = new SqlCommand(findId, conn);
@@ -1272,7 +1272,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{deletedID}'", conn);
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
 
@@ -1328,10 +1328,6 @@ namespace Dash
                     conn.Open();
                     if (companiesGridView.FocusedRowIndex != -1)
                     {
-                        //////////////////////////////////////////////////////////////////////////////////////////////
-                        //
-                        // Deleting the entry.
-                        //
                         var current = Session["current"].ToString();
                         var id = getIdCompany(current);
                         Graph graph = new Graph(id);

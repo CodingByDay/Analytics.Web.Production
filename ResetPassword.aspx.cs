@@ -22,10 +22,6 @@ namespace Dash
         }
 
 
-
-
-
-
         /// <summary>
         /// Stored procedure checking if the user exists and fetching the uuid and an emal.
         ///  Stored procedure: spResetPassword

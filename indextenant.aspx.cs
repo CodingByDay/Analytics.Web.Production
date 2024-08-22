@@ -169,7 +169,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"delete from Dashboards where ID={ID}", conn);
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
                     var result = cmd.ExecuteNonQuery();
                 }
                 catch
@@ -222,7 +222,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{HttpContext.Current.User.Identity.Name}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{HttpContext.Current.User.Identity.Name}'", conn);
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
                     return permisionID;
@@ -353,7 +353,7 @@ namespace Dash
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT isViewerOnly FROM Dashboards WHERE ID={ID}", conn);
             try
             {
                 var result = cmd.ExecuteScalar();
@@ -417,7 +417,7 @@ namespace Dash
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Users WHERE uname='{UserNameForChecking}'", conn);
             try
             {
                 var result = cmd.ExecuteScalar();
@@ -442,7 +442,7 @@ namespace Dash
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Users WHERE uname='{UserNameForChecking}'", conn);
 
             try
             {
@@ -534,7 +534,7 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT string from CompanyStrings where ID={id}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT string FROM CompanyStrings WHERE ID={id}", conn);
 
             try
             {

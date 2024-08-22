@@ -43,7 +43,7 @@ namespace Dash
                     var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select userRole from Users where uname='{username}' and Pwd='{hashed}';", conn);
+                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}' AND Pwd='{hashed}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -85,7 +85,7 @@ namespace Dash
                     conn.Open();
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select id_company from users where uname='{name}';", conn);
+                    cmd = new SqlCommand($"SELECT id_company FROM users WHERE uname='{name}';", conn);
                     var result = cmd.ExecuteScalar();
                     int FinalCurrentID = (int)result;
 
@@ -153,7 +153,7 @@ namespace Dash
                         // Consult with your SQL Server administrator for an appropriate connection
                         // string to use to connect to your local SQL Server.
                         // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand("Select pwd from users where uname=@userName", conn);
+                        cmd = new SqlCommand("SELECT pwd FROM users WHERE uname=@userName", conn);
                         cmd.Parameters.Add("@userName", SqlDbType.VarChar, 25);
                         cmd.Parameters["@userName"].Value = userName;
 
@@ -288,7 +288,7 @@ namespace Dash
                 {
                     conn.Open();
 
-                    var checkingDesigner = new SqlCommand($"select ViewState from users where uname='{value}';", conn);
+                    var checkingDesigner = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='{value}';", conn);
 
                     var flag = checkingDesigner.ExecuteScalar();
 
