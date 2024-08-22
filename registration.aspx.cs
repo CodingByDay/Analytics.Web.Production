@@ -73,16 +73,12 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"Select count(*) from companies", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT count(*) FROM Companies", conn);
             var result = cmd.ExecuteScalar();
             Int32 next = System.Convert.ToInt32(result) + 1;
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
-
-            // company insert works.
-            // var deb = $"INSERT INTO companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)";
-            // Response.Write(deb);
+            cmd = new SqlCommand($"INSERT INTO Companies(id_company, company_name, company_number, website, admin_id, databaseName) VALUES({next}, '{company.Replace(" ", string.Empty)}', {phone.Replace(" ", string.Empty)}, '{website.Replace(" ", string.Empty)}', null, null)", conn);
 
             try
             {
@@ -108,7 +104,7 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{name}'", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{name}'", conn);
             var result = cmd.ExecuteScalar();
             if (result != null)
             {
@@ -153,7 +149,7 @@ namespace Dash
             else
             {
 
-                string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                string finalQueryPermsions = String.Format($"INSERT INTO Permissions(id_permisions) VALUES ({next});");
                 SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
 
                 try
@@ -170,7 +166,7 @@ namespace Dash
 
 
 
-                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{username.Replace(" ", string.Empty)}', '{HashedPassword}', 'Admin', '{next}', '{getCompanyID(company.Replace(" ", string.Empty))}','Viewer&Designer','{name}', '{email.Replace(" ", string.Empty)}')");
+                string finalQueryRegistration = String.Format($"INSERT INTO Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email) VALUES ('{username.Replace(" ", string.Empty)}', '{HashedPassword}', 'Admin', '{next}', '{getCompanyID(company.Replace(" ", string.Empty))}','Viewer&Designer','{name}', '{email.Replace(" ", string.Empty)}')");
                 SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
                 try
                 {
@@ -212,7 +208,7 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"update companies set admin_id='{username}' where company_name='{company}';", conn);
+            SqlCommand cmd = new SqlCommand($"UPDATE Companies SET admin_id='{username}' WHERE company_name='{company}';", conn);
             try
             {
                 cmd.ExecuteNonQuery();

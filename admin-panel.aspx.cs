@@ -156,7 +156,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0
+                    cmd = new SqlCommand($"SELECT company_name FROM Companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0
                     try
                     {
                         admin = (string)cmd.ExecuteScalar();
@@ -228,8 +228,7 @@ namespace Dash
                 {
                     conn.Open();
                     var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
+                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -266,7 +265,7 @@ namespace Dash
 
                         var singular = plural[0].ToString();
 
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{singular}'");
                         cmd = new SqlCommand(findIdString, conn);
                         try
                         {
@@ -282,7 +281,7 @@ namespace Dash
                         var plural = usersGridView.GetSelectedFieldValues("uname");
                         var singular = plural[0].ToString();
                         usersGridView.Selection.SetSelection(0, true);
-                        findIdString = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
+                        findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{singular}'");
                         cmd = new SqlCommand(findIdString, conn);
                         try
                         {
@@ -300,7 +299,7 @@ namespace Dash
                 }
             }
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
-            permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
+            permisionQuery = $"SELECT * FROM PermissionsUsers WHERE id_permisions_user={Total_Key}";
             using (SqlConnection connection = new SqlConnection(
               this.connection))
             {
@@ -342,14 +341,12 @@ namespace Dash
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
+                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
                         graphList.Add(sdr["Caption"].ToString());
                         string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                        // Refils potential new tables.
-                        // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                         values.Add(trimmed);
                     }
                     CurrentPermisionID = getIdPermisionCurrentUser(UserNameForChecking, graphList);
@@ -381,9 +378,8 @@ namespace Dash
                     usersData.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"Select * from Users where id_company={id}", conn);
+                    cmd = new SqlCommand($"SELECT * FROM Users WHERE id_company={id}", conn);
 
-                    /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -413,7 +409,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0
+                    cmd = new SqlCommand("SELECT * FROM Companies", conn); /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -502,7 +498,7 @@ namespace Dash
                     {
                         conn.Open();
 
-                        SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM permisions_user;", conn);
+                        SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM PermissionsUsers;", conn);
                         var result = cmd.ExecuteScalar();
                         Int32 Total_ID = System.Convert.ToInt32(result);
 
@@ -525,7 +521,7 @@ namespace Dash
                             }
                             else
                             {
-                                string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
+                                string finalQueryPermsions = String.Format($"INSERT INTO PermissionsUsers(id_permisions_user) VALUES ({next});");
                                 SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
                                 try
                                 {
@@ -658,16 +654,12 @@ namespace Dash
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
 
-                    /// Intepolation or the F string. C# > 5.0
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
                         graphList.Add(sdr["Caption"].ToString());
                         string trimmed = String.Concat(sdr["Caption"].ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-
-                        // Refils potential new tables.
-                        // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                         values.Add(trimmed);
                     }
 
@@ -676,7 +668,6 @@ namespace Dash
                     graphsListBox.DataSource = CurrentPermisionID;
                     graphsListBox.DataBind();
 
-                    //Perform DB operation here i.e. any CRUD operation
                 }
                 catch (Exception ex)
                 {
@@ -694,7 +685,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
                     try
                     {
                         SqlDataReader reader = cmd.ExecuteReader();
@@ -756,7 +747,7 @@ namespace Dash
                         {
                             flag = 0;
                         }
-                        finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
+                        finalQuerys = String.Format($"UPDATE PermissionsUsers SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
                         cmd = new SqlCommand(finalQuerys, conn);
                         try
                         {
@@ -837,8 +828,8 @@ namespace Dash
                     {
                         string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
                         string stripped = whiteless.Replace("-", "");
-                        SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
-                        string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
+                        SqlCommand graphResult = new SqlCommand($"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}", conn);
+                        string deb = $"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}";
                         try
                         {
                             var resultID = graphResult.ExecuteScalar();
@@ -874,8 +865,8 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
-                    var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
+                    SqlCommand cmd1 = new SqlCommand($"DELETE FROM PermissionsUsers WHERE id_permisions_user={permisionID}", conn);
+                    var final = $"DELETE FROM Permissions WHERE id_permisions={permisionID}";
                     var result = cmd1.ExecuteScalar();
                     Int32 Total_ID = System.Convert.ToInt32(result);
                 }
@@ -895,10 +886,10 @@ namespace Dash
                     conn.Open();
                     var id = getIdCompany(current);
                     deleteMemberships(id);
-                    SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
+                    SqlCommand user = new SqlCommand($"DELETE FROM Users WHERE id_company={id}", conn);
                     user.ExecuteNonQuery();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-                    string dev = $"DELETE FROM companies WHERE company_name='{current}'";
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM Companies WHERE company_name='{current}'", conn);
+                    string dev = $"DELETE FROM Companies WHERE company_name='{current}'";
                     try
                     {
                         cmd.ExecuteNonQuery();
@@ -928,7 +919,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     var finalID = System.Convert.ToInt32(result);
                     return finalID;
@@ -950,8 +941,8 @@ namespace Dash
                     conn.Open();
                     var final = defaultCompany();
                     int idCompany = getIdCompany(final);
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={idCompany}", conn);
-                    string dev = $"DELETE FROM companies WHERE company_name='{idCompany}'";
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM Memberships WHERE id_company={idCompany}", conn);
+                    string dev = $"DELETE FROM Companies WHERE company_name='{idCompany}'";
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)

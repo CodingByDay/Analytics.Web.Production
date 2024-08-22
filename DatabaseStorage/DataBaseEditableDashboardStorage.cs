@@ -66,7 +66,7 @@ namespace Dash.DatabaseStorage
                 {
                     conn.Open();
                     var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+                    SqlCommand cmd = new SqlCommand($"ALTER TABLE PermissionsUsers ADD {dashboardName} int not null default(0);", conn);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception)

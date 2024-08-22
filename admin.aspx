@@ -200,7 +200,7 @@
 	</header>
     <div class="content-flex">
         <div class="inner-item">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [companies]"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [Companies]"></asp:SqlDataSource>
             <div class="control_obj">
         <dx:BootstrapGridView ID="companiesGridView"  Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>

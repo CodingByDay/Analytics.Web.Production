@@ -91,7 +91,7 @@ namespace Dash
 
 
 
-                    var checkingDesigner = new SqlCommand($"select Designer from companies where id_company={FinalCurrentID};", conn);
+                    var checkingDesigner = new SqlCommand($"SELECT Designer FROM Companies WHERE id_company={FinalCurrentID};", conn);
 
                     var flag = checkingDesigner.ExecuteScalar();
 

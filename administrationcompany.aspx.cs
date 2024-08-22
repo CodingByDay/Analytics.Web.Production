@@ -105,7 +105,7 @@ namespace Dash
                 conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
                 conn.Open();
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
+                cmd = new SqlCommand("SELECT * FROM Companies", conn); 
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader sdr = cmd.ExecuteReader();
                 while (sdr.Read())
@@ -133,7 +133,7 @@ namespace Dash
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -155,7 +155,7 @@ namespace Dash
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT company_name FROM Companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             admin = (string)cmd.ExecuteScalar();
 
@@ -183,7 +183,7 @@ namespace Dash
             Int32 Total_Key = System.Convert.ToInt32(idNumber);
             conn.Close();
             conn.Dispose();
-            permisionQuery = $"SELECT * FROM permisions WHERE id_permisions={Total_Key}";
+            permisionQuery = $"SELECT * FROM Permissions WHERE id_permisions={Total_Key}";
             cmd = new SqlCommand(permisionQuery, conn);
             debug.Add(permisionQuery);
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
@@ -349,7 +349,7 @@ namespace Dash
                     string trimmed = trimmedless.Replace("-", "");
                     fileNames.Add(file.Name);
                     // Refils potential new tables.
-                    finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
+                    finalQuery = String.Format($"ALTER TABLE Permissions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                     values.Add(trimmed);
                     // Execute query.
                     conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
@@ -396,9 +396,6 @@ namespace Dash
                 var tempXmlName = doc.Root.Element("Title").Attribute("Text").Value;
                 graphNames.Add(file.Name + " " + tempXmlName);
                 string trimmed = String.Concat(tempXmlName.Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-
-                // Refils potential new tables.
-                // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
                 values.Add(trimmed);
 
             }
@@ -435,7 +432,7 @@ namespace Dash
                 {
                     flag = 0;
                 }
-                finalQuerys = String.Format($"UPDATE permisions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
+                finalQuerys = String.Format($"UPDATE Permissions SET {tempGraphString}={flag} WHERE id_permisions={Total_ID};");
                 cmd = new SqlCommand(finalQuerys, conn);
                 try
                 {
@@ -485,7 +482,7 @@ namespace Dash
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{uname}';", conn);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
@@ -592,8 +589,8 @@ namespace Dash
 
             conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
             conn.Open();
-            SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions WHERE id_permisions={permisionID}", conn);
-            var final = $"DELETE FROM permisions WHERE id_permisions={permisionID}";
+            SqlCommand cmd1 = new SqlCommand($"DELETE FROM Permissions WHERE id_permisions={permisionID}", conn);
+            var final = $"DELETE FROM Permissions WHERE id_permisions={permisionID}";
             try
             {
                 var result = cmd1.ExecuteScalar();
@@ -702,28 +699,7 @@ namespace Dash
 
         }
 
-        private void fillCompanyDelete()
-        {
-            CompanyDestroy.Clear(); conn = new SqlConnection("server=10.100.100.25\\SPLAHOST;Database=graphs;Integrated Security=false;User ID=petpakn;Password=net123tnet!;");
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand("select company_name from companies ", conn); /// Intepolation or the F string. C# > 5.0       
-            // Execute command and fetch pwd field into lookupPassword string.
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                CompanyDestroy.Add(reader["company_name"].ToString());
-
-            }
-
-            // unit test
-
-            cmd.Dispose();
-            conn.Close();
-
-
-
-        }
+    
 
 
 
@@ -779,7 +755,7 @@ namespace Dash
                     else
                     {
 
-                        string finalQueryPermsions = String.Format($"insert into permisions(id_permisions) VALUES ({next});");
+                        string finalQueryPermsions = String.Format($"insert into Permissions(id_permisions) VALUES ({next});");
                         SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
 
                         try

@@ -103,7 +103,7 @@ namespace Dash.DataExtract
 
                 
                 // Create SqlCommand to select pwd field from users table given supplied userName.
-                var command = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", connection); /// Intepolation or the F string. C# > 5.0       
+                var command = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", connection); /// Intepolation or the F string. C# > 5.0       
                 // Execute command and fetch pwd field into lookupPassword string.
                 SqlDataReader reader = command.ExecuteReader();
 

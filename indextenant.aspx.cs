@@ -45,7 +45,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     var finalID = System.Convert.ToInt32(result);
                     return finalID;
@@ -191,7 +191,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{uname}';", conn);
                     try
                     {
                         SqlDataReader reader = cmd.ExecuteReader();
@@ -245,13 +245,13 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select Caption from Dashboards where ID = {id};", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards WHERE ID = {id};", conn);     
                     // Execute command and fetch pwd field into lookupPassword string.
                     string ok = (string) cmd.ExecuteScalar();
                     if(ok!=string.Empty)
                     {
                         int id_user = getIdPermision();
-                        var allowed = new SqlCommand($"select {ok} from permisions_user where id_permisions_user = {id_user};", conn);
+                        var allowed = new SqlCommand($"SELECT {ok} FROM PermissionsUsers WHERE id_permisions_user = {id_user};", conn);
                         int isOk = (int) allowed.ExecuteScalar();
                         var stop = true;
                         if(isOk==1)
@@ -474,7 +474,7 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
 
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select databaseName from companies where id_company={companyID}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT databaseName FROM Companies WHERE id_company={companyID}", conn);
 
             try
             {
@@ -507,7 +507,7 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
 
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select ID from companies where id_company={id}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT ID FROM Companies WHERE id_company={id}", conn);
 
             try
             {
@@ -534,7 +534,7 @@ namespace Dash
 
             conn = new SqlConnection(ConnectionString);
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"select string from company_string where ID={id}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT string from CompanyStrings where ID={id}", conn);
 
             try
             {

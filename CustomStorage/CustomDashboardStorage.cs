@@ -81,7 +81,7 @@ namespace WebDesigner_CustomDashboardStorage
             conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -101,7 +101,7 @@ namespace WebDesigner_CustomDashboardStorage
             conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 

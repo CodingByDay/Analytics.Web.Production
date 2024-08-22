@@ -97,10 +97,10 @@ namespace Dash.DatabaseStorage
                 {
                     conn.Open();
                     var idCurrent = getIdPermision();
-                    SqlCommand cmd = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {idCurrent}", conn);
+                    SqlCommand cmd = new SqlCommand($"UPDATE PermissionsUsers SET {name} = 1 WHERE id_permisions_user = {idCurrent}", conn);
                     cmd.ExecuteNonQuery();
                     cmd.Dispose();
-                    SqlCommand cmdSecond = new SqlCommand($"update permisions_user set {name} = 1 where id_permisions_user = {admin}", conn);
+                    SqlCommand cmdSecond = new SqlCommand($"UPDATE PermissionsUsers SET {name} = 1 WHERE id_permisions_user = {admin}", conn);
                     cmdSecond.ExecuteNonQuery();
                     cmd.Dispose();
                 }
@@ -145,7 +145,7 @@ namespace Dash.DatabaseStorage
                     string uname = HttpContext.Current.User.Identity.Name;
                     var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT admin_id FROM companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -174,7 +174,7 @@ namespace Dash.DatabaseStorage
 
                     string uname = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn); /// Intepolation or the F string. C# > 5.0       
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader reader = cmd.ExecuteReader();
 
@@ -200,7 +200,7 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
+                    SqlCommand cmd = new SqlCommand($"ALTER TABLE PermissionsUsers ADD {dashboardName} int not null default(0);", conn);
                     cmd.ExecuteNonQuery();
                     cmd.Dispose();
 
@@ -387,7 +387,7 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     var finalID = System.Convert.ToInt32(result);
                     return finalID;
@@ -432,7 +432,7 @@ namespace Dash.DatabaseStorage
                     List<String> captions = getCaptions();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     List<String> permisions = new List<string>();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{UserNameForChecking}'", conn);
                     var result = cmd.ExecuteScalar();
                     permisionID = System.Convert.ToInt32(result);
                     int idUser = permisionID;
@@ -441,8 +441,8 @@ namespace Dash.DatabaseStorage
                     {
                         string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
                         string stripped = whiteless.Replace("-", "");
-                        SqlCommand graphResult = new SqlCommand($"select {stripped} from permisions_user where id_permisions_user={idUser}", conn);
-                        string deb = $"select {stripped} from permisions_user where id_permisions_user={idUser}";
+                        SqlCommand graphResult = new SqlCommand($"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}", conn);
+                        string deb = $"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}";
                         var resultID = graphResult.ExecuteScalar();
                         int permision = (int)resultID;
                         graphResult.Dispose();
