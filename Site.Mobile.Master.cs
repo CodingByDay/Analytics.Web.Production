@@ -55,7 +55,7 @@ namespace Dash
             else
             {
 
-                Response.Redirect("logon.aspx", true); // config for securing data.
+                Response.Redirect("Logon.aspx", true); // config for securing data.
             }
         }
 
@@ -110,7 +110,7 @@ namespace Dash
             else
             {
 
-                Response.Redirect("logon.aspx", true); // config for securing data.
+                Response.Redirect("Logon.aspx", true); // config for securing data.
             }
         }
 

@@ -582,6 +582,9 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Company.cs" />
+    <Compile Include="Models\Dashboard.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

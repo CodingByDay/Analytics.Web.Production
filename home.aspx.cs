@@ -12,7 +12,7 @@ namespace Dash
         private void Login_Click(object sender, EventArgs e)
         {
             var version = ConfigurationManager.AppSettings["version"];
-            Response.Redirect($"logon.aspx?version={version}", true);
+            Response.Redirect($"Logon.aspx?version={version}", true);
         }
     }
 }

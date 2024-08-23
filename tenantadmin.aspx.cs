@@ -239,7 +239,7 @@ namespace Dash
                     }
                     else
                     {
-                        Response.Redirect("logon.aspx", true);
+                        Response.Redirect("Logon.aspx", true);
                     }
                 }
                 catch (Exception ex)
