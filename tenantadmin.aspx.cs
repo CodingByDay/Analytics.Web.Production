@@ -392,7 +392,7 @@ namespace Dash
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT * FROM Users WHERE id_company={id}", conn);
 
-                    /// Intepolation or the F string. C# > 5.0
+                    
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -422,7 +422,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT * FROM Companies", conn); /// Intepolation or the F string. C# > 5.0
+                    cmd = new SqlCommand("SELECT * FROM Companies", conn); 
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())

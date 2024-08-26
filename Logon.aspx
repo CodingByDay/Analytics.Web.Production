@@ -94,7 +94,7 @@
                         </asp:HyperLink>
 
 
-                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="Login_Click" />
 
                         <center>
 

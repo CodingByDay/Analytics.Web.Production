@@ -20,20 +20,22 @@
        <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
 
          <script type="text/c#" runat="server">
+
              [System.Web.Services.WebMethod(EnableSession = true)]
              public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
              {
-
-                 var result = Dash.Administration.HelpfullMethods.testSQL(InitialCatalog, DataSource, UserID, Password);
+                 var result = Dash.HelperClasses.CheckConnection.TestConnection(InitialCatalog, DataSource, UserID, Password);
                  if(result)
-                    {
+                 {
                      return true;
-                    }
+                 }
+
                  else
-                     {
+                 {
                      return false;
-                     }
+                 }
              }
+
     </script>
     <style>
       #TxtPassword, #TxtRePassword {
@@ -74,7 +76,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '<%= ResolveUrl("~/admin.aspx/test") %>',
+                url: '<%= ResolveUrl("~/Admin.aspx/test") %>',
                  data: JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password   }),
                  contentType: 'application/json; charset=utf-8',
                  dataType: 'json',
@@ -247,7 +249,7 @@
     </asp:SqlDataSource>
         <div class="inner-item">
             <div class="control_obj">
-          <dx:BootstrapGridView ID="usersGridView"  Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView"  Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -262,16 +264,16 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
+              <dx:BootstrapGridViewTextColumn FieldName="Uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="userRole" Visible="false" Name="UserRole" VisibleIndex="3" Caption="UserRole">
+              <dx:BootstrapGridViewTextColumn FieldName="UserRole" Visible="false" Name="UserRole" VisibleIndex="3" Caption="UserRole">
               </dx:BootstrapGridViewTextColumn>
 			   <dx:BootstrapGridViewTextColumn FieldName="ViewState" Visible="false" Name="ViewState" VisibleIndex="3" Caption="ViewState">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="Email" VisibleIndex="3" Caption="Email">
+			   <dx:BootstrapGridViewTextColumn FieldName="Email" Visible="false" Name="Email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />

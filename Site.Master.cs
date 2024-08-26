@@ -31,18 +31,18 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
             // Execute command and fetch pwd field into lookupPassword string.
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
 
         }
 
-        protected void cmdsignOut_Click(object sender, EventArgs e)
+        protected void SignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
             Session["current"] = string.Empty;
-            Response.Redirect("home.aspx", true);
+            Response.Redirect("Home.aspx", true);
 
 
         }
@@ -63,16 +63,16 @@ namespace Dash
 
 
 
-        protected void administration_Click(object sender, EventArgs e)
+        protected void Administration_Click(object sender, EventArgs e)
         {
             // Data
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("admin.aspx", true);
+                Response.Redirect("Admin.aspx", true);
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("tenantadmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", true);
 
             }
             else
@@ -82,7 +82,7 @@ namespace Dash
             }
         }
 
-        protected void back_Click(object sender, EventArgs e)
+        protected void Back_Click(object sender, EventArgs e)
         {
             if (userRole == "SuperAdmin")
             {
@@ -96,27 +96,12 @@ namespace Dash
 
         }
 
-        protected void desktop_button_Click(object sender, EventArgs e)
+
+        protected void Filters_Click(object sender, EventArgs e)
         {
-            var test = userRole;
-
-
-            if (userRole == "SuperAdmin")
-            {
-                Response.Redirect("index", true);
-
-            }
-            else
-            {
-
-                Response.Redirect("indextenant", true);
-
-            }
+            throw new Exception();
         }
 
-        protected void mobile_button_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Emulator", true);
-        }
+
     }
 }

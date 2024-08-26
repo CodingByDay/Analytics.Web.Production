@@ -144,17 +144,22 @@
           <div runat="server" class="outer" style="position:absolute;float:right; right:5px">
 
 
-                     <div class="inner"><a runat="server" id="adminButtonAnchor" onserverclick="administration_Click"  title="Administration">
-                     <i class="fa fa-wrench"></i> Nastavitve
-                    </a></div>
+                <div class="inner"><a runat="server" id="adminButtonAnchor" onserverclick="Administration_Click"  title="Administration">
+                <i class="fa fa-wrench"></i> Nastavitve
+                </a></div>
+               
+                <div class="inner"><a runat="server" id="filtersButton" onserverclick="Filters_Click"  title="Administration">
+                <i class="fa fa-filter"></i> Šifranti
+                </a></div>
+
+                <div class="inner">   <a runat="server" id="backButtonA" onserverclick="Back_Click"  title="Back">
+                <i class="fa fa-reply"></i> Nazaj
+                </a></div>
 
 
-                           <div class="inner">   <a runat="server" id="backButtonA" onserverclick="back_Click"  title="Back">
-                     <i class="fa fa-reply"></i> Nazaj
-                    </a></div>
-                     <div class="inner"> <a runat="server" id="signOutAnchor" onserverclick="cmdsignOut_Click"  title="Logout">
-                     <i class="fa fa-chevron-right"></i> Odjava
-                    </a></div>
+                <div class="inner"> <a runat="server" id="signOutAnchor" onserverclick="SignOut_Click"  title="Logout">
+                <i class="fa fa-chevron-right"></i> Odjava
+                </a></div>
 
 
 

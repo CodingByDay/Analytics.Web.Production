@@ -188,6 +188,7 @@
     <Content Include="css\bootstrap.css" />
     <Content Include="css\logon.css" />
     <Content Include="css\main.css" />
+    <Content Include="css\website.css" />
     <Content Include="Emulator.aspx" />
     <Content Include="images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="images\favicon.ico" />
@@ -382,7 +383,7 @@
     <Content Include="fonts\font-awesome-4.3.0\fonts\FontAwesome.otf" />
     <Content Include="Extension.Master" />
     <Content Include="libman.json" />
-    <Content Include="Administracija.pdf">
+    <Content Include="App_Data\Administracija.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />

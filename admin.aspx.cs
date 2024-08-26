@@ -326,7 +326,7 @@ namespace Dash
                     string UserNameForChecking
                         = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT uname FROM Users", conn); /// Intepolation or the F string. C# > 5.0       
+                    cmd = new SqlCommand("SELECT uname FROM Users", conn);        
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -367,7 +367,7 @@ namespace Dash
                     {
 
 
-                        var namePlural = usersGridView.GetSelectedFieldValues("uname");
+                        var namePlural = usersGridView.GetSelectedFieldValues("Uname");
 
                         if (namePlural.Count == 0)
                         {
@@ -450,7 +450,7 @@ namespace Dash
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
-                    /// Intepolation or the F string. C# > 5.0       
+                           
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -560,15 +560,15 @@ namespace Dash
                 {
                     conn.Open();
                     isEditUser = true;
-                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
+                    if (usersGridView.GetSelectedFieldValues("Uname").Count > 1)
                     {
-                        userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                        userRightNow = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
                     }
                     else
                     {
                         try
                         {
-                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
+                            userRightNow = usersGridView.GetRowValues(0, "Uname").ToString();
                         } catch
                         {
 
@@ -1055,11 +1055,11 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    string username = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                    string username = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
                     SqlCommand cmd = new SqlCommand($"DELETE FROM Users WHERE uname='{username}'", conn);
-                    deletedID = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
+                    deletedID = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
                     getIdPermision();
-                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
+                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("Uname")[0].ToString());
                     var spacelessCompany = company.Replace(" ", string.Empty);
                     idFromString = getIdCompany(spacelessCompany);
                     cmd.ExecuteNonQuery();
@@ -1195,7 +1195,7 @@ namespace Dash
                     {
                         var tempGraphString = values.ElementAt(i);
 
-                        var name = usersGridView.GetSelectedFieldValues("uname");
+                        var name = usersGridView.GetSelectedFieldValues("Uname");
                         var singular = name[0].ToString();
                         findId = String.Format($"SELECT id_permision_user FROM Users where uname='{singular}'");
                         // execute query
@@ -1470,8 +1470,7 @@ namespace Dash
 
         private string GetResultFromDBTest(string connectionString)
         {
-            CheckConnection TestConnection = new CheckConnection();
-            var _result = TestConnection.CheckDatabaseConnection(connectionString);
+            var _result = CheckConnection.CheckDatabaseConnection(connectionString);
             string _textResult;
 
             if (_result == false)

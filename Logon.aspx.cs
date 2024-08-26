@@ -82,24 +82,29 @@ namespace Dash
             {
                 try
                 {
+
                     conn.Open();
                     cmd = new SqlCommand($"SELECT id_company FROM users WHERE uname='{name}';", conn);
                     var result = cmd.ExecuteScalar();
                     int FinalCurrentID = (int)result;
-
                     var checkingDesigner = new SqlCommand($"SELECT Designer FROM Companies WHERE id_company={FinalCurrentID};", conn);
-
                     var flag = checkingDesigner.ExecuteScalar();
 
-                    var flagINT = (int)flag;
-                    cmd.Dispose();
-                    checkingDesigner.Dispose();
-                    conn.Close();
-                    if (flagINT == 1)
+                    if (flag != null)
                     {
-                        return true;
-                    }
-                    else
+                        var flagInteger = (int)flag;
+                        cmd.Dispose();
+                        checkingDesigner.Dispose();
+                        conn.Close();
+                        if (flagInteger == 1)
+                        {
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
+                    } else
                     {
                         return false;
                     }
@@ -109,8 +114,6 @@ namespace Dash
                     return false;
                 }
             }
-
-
         }
 
         private bool ValidateUser(string userName, string passWord)
@@ -196,7 +199,7 @@ namespace Dash
 
                 var IsDesignerCompany = CompanyDesigner(txtUserName.Value);
                 var IsUserAllowed = IsIndividualAllowed(txtUserName.Value);
-                if (IsDesignerCompany)
+                if (IsDesignerCompany || txtUserName.Value == "Admin")
                 {
                     Session["DesignerPayed"] = "true";
                     if (IsUserAllowed)
@@ -237,7 +240,7 @@ namespace Dash
                 }
                 else
                 {
-                    strRedirect = "Indextenant.aspx";
+                    strRedirect = "IndexTenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }
 

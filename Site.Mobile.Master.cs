@@ -23,7 +23,7 @@ namespace Dash
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
             // Execute command and fetch pwd field into lookupPassword string.
 
         }
@@ -31,7 +31,7 @@ namespace Dash
         protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("home.aspx", true);
+            Response.Redirect("Home.aspx", true);
         }
 
 
@@ -45,11 +45,11 @@ namespace Dash
             // Data
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("admin.aspx", true);
+                Response.Redirect("Admin.aspx", true);
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("tenantadmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", true);
 
             }
             else
@@ -100,11 +100,11 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("admin.aspx", true);
+                Response.Redirect("Admin.aspx", true);
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("tenantadmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", true);
 
             }
             else
@@ -130,7 +130,7 @@ namespace Dash
         protected void signOutAnchor_ServerClick(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("home.aspx", true);
+            Response.Redirect("Home.aspx", true);
         }
     }
 }

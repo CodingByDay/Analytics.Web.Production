@@ -159,7 +159,6 @@ namespace Dash
                 else
                 {
                     DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-
                 }
             }
             else

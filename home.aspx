@@ -165,7 +165,6 @@
 							<li class="active visible-sm visible-xs"><a href="#">Home</a></li>
 							<li><a href="#" style="color:#236fc4!important">Overview</a></li>
 							<li><a href="#cta" style="color:#236fc4!important">About Analytics</a></li>
-							<%--<li><a href="<%= Page.ResolveUrl("/registration.aspx") %>">Registration</a></li>--%>
 							<li><a href="#" onclick="window.open('Administracija.pdf', '_blank', 'fullscreen=yes'); return false;" style="color:#236fc4!important">Support</a></li>
 						</ul>
 					

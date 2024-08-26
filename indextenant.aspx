@@ -47,7 +47,7 @@
 
             function NewTab(dash) {
                 window.open(
-                    `https://dash.in-sist.si/indextenant.aspx?p=${dash}`, "_blank");
+                    `https://dash.in-sist.si/IndexTenant.aspx?p=${dash}`, "_blank");
             }
 
             function askPopup() {
@@ -58,7 +58,7 @@
                 setCookie("temp", dashboardid, 365);
                 $.ajax({
                     type: "POST",
-                    url: 'indextenant.aspx/DeleteItem',
+                    url: 'IndexTenant.aspx/DeleteItem',
                     data: `{id: ${dashboardid}}`,
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
