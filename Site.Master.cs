@@ -86,12 +86,12 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("index", true);
+                Response.Redirect("Index", true);
             }
             else
             {
 
-                Response.Redirect("indextenant", true);
+                Response.Redirect("IndexTenant", true);
             }
 
         }
@@ -99,7 +99,7 @@ namespace Dash
 
         protected void Filters_Click(object sender, EventArgs e)
         {
-            throw new Exception();
+            Response.Redirect("Filters", true);
         }
 
 

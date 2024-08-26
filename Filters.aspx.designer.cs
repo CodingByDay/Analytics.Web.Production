@@ -11,7 +11,7 @@ namespace Dash
 {
 
 
-    public partial class admin
+    public partial class Filters
     {
     }
 }

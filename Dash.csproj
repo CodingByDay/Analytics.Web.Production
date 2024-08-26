@@ -190,6 +190,7 @@
     <Content Include="css\main.css" />
     <Content Include="css\website.css" />
     <Content Include="Emulator.aspx" />
+    <Content Include="Filters.aspx" />
     <Content Include="images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="images\favicon.ico" />
     <Content Include="favicons\android-chrome-144x144.png" />
@@ -531,6 +532,13 @@
     </Compile>
     <Compile Include="Extension.Master.designer.cs">
       <DependentUpon>Extension.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Filters.aspx.cs">
+      <DependentUpon>Filters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Filters.aspx.designer.cs">
+      <DependentUpon>Filters.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
