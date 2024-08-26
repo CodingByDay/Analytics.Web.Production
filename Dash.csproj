@@ -242,6 +242,7 @@
     <Content Include="images\img-decor-02.jpg" />
     <Content Include="images\img-decor-03.jpg" />
     <Content Include="images\img-social-placeholder-01.png" />
+    <Content Include="images\language.png" />
     <Content Include="images\logo-cb.png" />
     <Content Include="images\logo-codrops.png" />
     <Content Include="images\logo-pixel.png" />
@@ -250,7 +251,9 @@
     <Content Include="images\logo-w.png" />
     <Content Include="images\logo.png" />
     <Content Include="images\logo.svg" />
+    <Content Include="images\organization.png" />
     <Content Include="images\pass.png" />
+    <Content Include="images\type.png" />
     <Content Include="images\user-01.jpg" />
     <Content Include="images\user-02.jpg" />
     <Content Include="images\user-03.jpg" />

@@ -90,7 +90,7 @@ namespace Dash
             else
             {
 
-                Response.Redirect("Logon.aspx", true); // config for securing data.
+                Response.Redirect("Logon.aspx", true);
             }
         }
 
@@ -98,12 +98,12 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Index", true);
+                Response.Redirect("Index.aspx", true);
             }
             else
             {
 
-                Response.Redirect("IndexTenant", true);
+                Response.Redirect("IndexTenant.aspx", true);
             }
 
         }
@@ -111,7 +111,7 @@ namespace Dash
 
         protected void Filters_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Filters", true);
+            Response.Redirect("Filters.aspx", true);
         }
 
 
