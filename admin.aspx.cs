@@ -159,7 +159,7 @@ namespace Dash
 
             labl.Visible = true;
             listAdmin.Visible = true;
-            Response.Cookies["EDIT"].Value = "yes";
+            Response.Cookies["Edit"].Value = "yes";
             isEditHappening = true;
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
@@ -876,7 +876,7 @@ namespace Dash
      
         protected void companyButton_Click(object sender, EventArgs e)
         {
-            var ed = Request.Cookies["EDIT"].Value.ToString();
+            var ed = Request.Cookies["Edit"].Value.ToString();
 
             if (!isEditHappening && ed == "no")
             {                           

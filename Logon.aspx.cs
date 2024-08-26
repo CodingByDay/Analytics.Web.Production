@@ -31,7 +31,7 @@ namespace Dash
             
         }
 
-        private string getRole(string username, string password)
+        private string GetRole(string username, string password)
 
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -76,20 +76,16 @@ namespace Dash
             }
         }
 
-        private bool getCurrentID(string name)
+        private bool CompanyDesigner(string name)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT id_company FROM users WHERE uname='{name}';", conn);
                     var result = cmd.ExecuteScalar();
                     int FinalCurrentID = (int)result;
-
-
 
                     var checkingDesigner = new SqlCommand($"SELECT Designer FROM Companies WHERE id_company={FinalCurrentID};", conn);
 
@@ -116,10 +112,6 @@ namespace Dash
 
 
         }
-
-
-
-
 
         private bool ValidateUser(string userName, string passWord)
         {
@@ -190,37 +182,30 @@ namespace Dash
 
         }
 
-        protected void cmdLogin_Click(object sender, EventArgs e)
+        protected void Login_Click(object sender, EventArgs e)
         {
-            var role = getRole(txtUserName.Value, txtUserPass.Value);
             Session["conn"] = "";
-
-            validate();
-
-
-
+            ValidateUser();
         }
 
-        private void validate()
+        private void ValidateUser()
         {
-            Response.Cookies["EDIT"].Value = "no";
-            Session["change"] = "no";
+            Response.Cookies["Edit"].Value = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
 
-                var isDesigner = getCurrentID(txtUserName.Value);
-                var isUserAllowed = isIndividualAllowed(txtUserName.Value);
-                if (isDesigner)
+                var IsDesignerCompany = CompanyDesigner(txtUserName.Value);
+                var IsUserAllowed = IsIndividualAllowed(txtUserName.Value);
+                if (IsDesignerCompany)
                 {
                     Session["DesignerPayed"] = "true";
-                    if (isUserAllowed)
+                    if (IsUserAllowed)
                     {
                         Session["UserAllowed"] = "true";
                     }
                     else
                     {
                         Session["UserAllowed"] = "false";
-
                     }
                 }
                 else
@@ -242,34 +227,19 @@ namespace Dash
 
                 Session["current"] = "";
                 string strRedirect;
-                role = getRole(txtUserName.Value, txtUserPass.Value);
+                role = GetRole(txtUserName.Value, txtUserPass.Value);
 
                 if (role == "SuperAdmin")
                 {
-                    strRedirect = "index.aspx";
+                    strRedirect = "Index.aspx";
                     Session["mode"] = "ViewerOnly";
-                    Session["flag"] = "false";
-                    Session["id"] = "2";
-                    Session["InitialPassed"] = "false";
-                    Session["FirstLoad"] = "true";
-                    // For some reason this doesn't fire.
-                    Session["value"] = "Skaza";
-
                     Response.Redirect(strRedirect, true);
                 }
                 else
                 {
-                    Session["value"] = "Skaza";
-                    Session["flag"] = "false";
-                    Session["id"] = "2";
-                    Session["InitialPassed"] = "false";
-                    Session["FirstLoad"] = "true";
-
-                    strRedirect = "indextenant.aspx";
+                    strRedirect = "Indextenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }
-
-
 
                 conn.Close();
                 conn.Dispose();
@@ -280,18 +250,15 @@ namespace Dash
             }
         }
 
-        private bool isIndividualAllowed(string value)
+        private bool IsIndividualAllowed(string value)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
                     var checkingDesigner = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='{value}';", conn);
-
                     var flag = checkingDesigner.ExecuteScalar();
-
                     string result = flag.ToString();
                     cmd.Dispose();
                     checkingDesigner.Dispose();
@@ -310,25 +277,8 @@ namespace Dash
                     return false;
                 }
             }
-
-
         }
 
-        protected void reset_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("ResetPassword.aspx");
-
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("membership.aspx", true);
-        }
-
-        protected void membership_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("membership.aspx", true);
-        }
     }
 }
 

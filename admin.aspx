@@ -588,7 +588,7 @@
             document.getElementById("dbPassword").value = "";
             document.getElementById("dbNameInstance").value = "";
             document.getElementById("connName").value = "";
-            setCookie("EDIT", "no", 365);
+            setCookie("Edit", "no", 365);
             $("#companyForm").css('display', 'flex');
             var x = document.getElementsByTagName("BODY")[0]
             var elem = document.getElementById("companyForm");
