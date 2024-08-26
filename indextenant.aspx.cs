@@ -1,7 +1,7 @@
 ﻿using Dash.DatabaseStorage;
 using Dash.DataExtract;
 using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
@@ -71,7 +71,7 @@ namespace Dash
                         string name = getCompanyQuery(uname);
                         int id = getIdCompany(name);
 
-                        Graph graph = new Graph(id);
+                    Models.Dashboard graph = new Models.Dashboard(id);
 
                         var dataX = graph.GetGraphs(id);
 
@@ -86,7 +86,7 @@ namespace Dash
                             string uname = HttpContext.Current.User.Identity.Name;
                             string name = getCompanyQuery(uname);
                             int id = getIdCompany(name);
-                            Graph graph = new Graph(id);
+                    Models.Dashboard graph = new Models.Dashboard(id);
                             var dataX = graph.getSingularNameOriginal(id, p);
                             ASPxDashboard3.InitialDashboardId = dataX;
                     } else {

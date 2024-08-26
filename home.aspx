@@ -63,7 +63,7 @@
 
 		var isMobile = isMobileDevice();
 		if (isMobile) {
-              window.location.href = 'logon.aspx';
+              window.location.href = 'Logon.aspx';
 			}
     });
 </script>
@@ -189,7 +189,7 @@
 	<section class="main">
 		<div class="container">
 			<div id="cta">
-				<a href="<%= Page.ResolveUrl("/logon.aspx") %>" class="btn btn-primary rounded">Start your discovery!</a>
+				<a href="<%= Page.ResolveUrl("/Logon.aspx") %>" class="btn btn-primary rounded">Start your discovery!</a>
 			</div>
 			<div class="row">
 				<div class="text-box col-md-offset-1 col-md-10">

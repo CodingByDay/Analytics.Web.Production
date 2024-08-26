@@ -1,6 +1,6 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -371,7 +371,7 @@ namespace Dash
 
                         if (namePlural.Count == 0)
                         {
-                            string nameUser = usersList.ElementAt(0).uname;
+                            string nameUser = usersList.ElementAt(0).Uname;
                             findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{nameUser}'");
                         }
                         else
@@ -495,7 +495,7 @@ namespace Dash
                     {
 
                         User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                        var test = user.uname;
+                        var test = user.Uname;
                         usersList.Add(user);
                         byUserList.Add(sdr["uname"].ToString());
 
@@ -839,7 +839,7 @@ namespace Dash
                     Int32 next = System.Convert.ToInt32(result) + 1;
                     cmd = new SqlCommand($"INSERT INTO Companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
                     cmd.ExecuteNonQuery();
-                    Graph graph = new Graph(next);
+                    Dashboard graph = new Dashboard(next);
                     graph.SetGraphs(next);
                 }
                 catch (Exception ex)
@@ -1330,7 +1330,7 @@ namespace Dash
                     {
                         var current = Session["current"].ToString();
                         var id = getIdCompany(current);
-                        Graph graph = new Graph(id);
+                        Dashboard graph = new Dashboard(id);
                         graph.Delete(id);
 
                         deleteMemberships(id);
@@ -1471,7 +1471,7 @@ namespace Dash
         private string GetResultFromDBTest(string connectionString)
         {
             CheckConnection TestConnection = new CheckConnection();
-            var _result = TestConnection.check_connection(connectionString);
+            var _result = TestConnection.CheckDatabaseConnection(connectionString);
             string _textResult;
 
             if (_result == false)

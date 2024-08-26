@@ -1,5 +1,5 @@
 ﻿using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
 using DevExpress.Web.Data;
 using System;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ namespace Dash
                 string uname = HttpContext.Current.User.Identity.Name;
                 string name = getCompanyQuery(uname);
                 int id = getIdCompany(name);
-                Graph graph = new Graph(id);
+                Dashboard graph = new Dashboard(id);
                 var payload = graph.GetNames(id);
                 var s = e.OldValues;
                 var names = graph.getNamesCurrent(id);
@@ -398,7 +398,7 @@ namespace Dash
                     while (sdr.Read())
                     {
                         User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                        var test = user.uname;
+                        var test = user.Uname;
                         userObjectList.Add(user);
                     }
 
@@ -487,7 +487,7 @@ namespace Dash
             string name = getCompanyQuery(uname);
             int id = getIdCompany(name);
 
-            Graph graph = new Graph(id);
+            Dashboard graph = new Dashboard(id);
 
             var payload = graph.AllGraphs;
 

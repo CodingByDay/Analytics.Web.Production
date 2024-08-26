@@ -183,15 +183,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="Content\Site.js" />
     <Content Include="css\admin.css" />
-    <Content Include="css\admincss.css" />
     <Content Include="css\adminpanel.css" />
     <Content Include="css\all.css" />
     <Content Include="css\bootstrap.css" />
-    <Content Include="css\custom.css" />
-    <Content Include="css\graphs.css" />
-    <Content Include="css\logo.png" />
-    <Content Include="css\success.css" />
-    <Content Include="css\website.css" />
+    <Content Include="css\logon.css" />
+    <Content Include="css\main.css" />
     <Content Include="Emulator.aspx" />
     <Content Include="images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="images\favicon.ico" />
@@ -264,9 +260,6 @@
     <Content Include="js\jquery-1.11.2.min.js" />
     <Content Include="js\jquery.main.js" />
     <Content Include="js\SaveAsExtension.js" />
-    <Content Include="Log\log.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="MobileDashboard.aspx" />
     <Content Include="Navigation.ascx" />
     <Content Include="Navigation.xml" />
@@ -509,8 +502,6 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Administration\Connection.cs" />
-    <Compile Include="Administration\HelpfullMethods.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="ChangePassword.aspx.cs">
@@ -526,7 +517,6 @@
     </Compile>
     <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorage.cs" />
     <Compile Include="DatabaseStorage\DataBaseEditableDashboardStorageCustom.cs" />
-    <Compile Include="DataExtract\DataExtractClass.cs" />
     <Compile Include="Emulator.aspx.cs">
       <DependentUpon>Emulator.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -545,7 +535,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\CheckConnection.cs" />
-    <Compile Include="HelperClasses\NewPayedUserCompany.cs" />
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -582,9 +571,6 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\Dashboard.cs" />
-    <Compile Include="Models\User.cs" />
     <Compile Include="Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -592,9 +578,9 @@
     <Compile Include="Navigation.ascx.designer.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ORM\Graph.cs" />
-    <Compile Include="ORM\Parameter.cs" />
-    <Compile Include="ORM\User.cs" />
+    <Compile Include="Models\Dashboard.cs" />
+    <Compile Include="Models\Parameter.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResetPassword.aspx.cs">
       <DependentUpon>ResetPassword.aspx</DependentUpon>
@@ -610,7 +596,6 @@
     <Compile Include="Search.ascx.designer.cs">
       <DependentUpon>Search.ascx</DependentUpon>
     </Compile>
-    <Compile Include="Session\CustomerSessionClass.cs" />
     <Compile Include="SidebarNavigation.Master.cs">
       <DependentUpon>SidebarNavigation.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -649,7 +634,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Lib\" />
-    <Folder Include="UserControl\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

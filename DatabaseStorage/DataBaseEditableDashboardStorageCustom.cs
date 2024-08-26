@@ -1,5 +1,5 @@
 ﻿using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using System;
@@ -34,7 +34,7 @@ namespace Dash.DatabaseStorage
 
         public string AddDashboard(XDocument document, string dashboardName)
         {
-            Dashboard d = new Dashboard();
+            DevExpress.DashboardCommon.Dashboard d = new DevExpress.DashboardCommon.Dashboard();
             //
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
@@ -227,7 +227,7 @@ namespace Dash.DatabaseStorage
                     reader.Read();
                     byte[] data = reader.GetValue(0) as byte[];
                     MemoryStream stream = new MemoryStream(data);
-                    Dashboard dashboard = new Dashboard();
+                DevExpress.DashboardCommon.Dashboard dashboard = new DevExpress.DashboardCommon.Dashboard();
                     dashboard.LoadFromXDocument(XDocument.Load(stream));
                     dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource =>
                     {
@@ -352,7 +352,7 @@ namespace Dash.DatabaseStorage
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                 int id = getIdCompany(getcompanyForUser());
-                Graph graph = new Graph(id);
+                Models.Dashboard graph = new Models.Dashboard(id);
                 var payload = graph.GetNames(id);
                 while (reader.Read())
                 {
@@ -369,10 +369,10 @@ namespace Dash.DatabaseStorage
                     }
                 }         
                     var graphs = graph.GetGraphs(id);
-                    List <Graph.Names> data = new List<Graph.Names>();
+                List<Models.Dashboard.Names> data = new List<Models.Dashboard.Names>();
                     foreach(var obj in graphs)
                     {
-                        data.Add(new Graph.Names { original = obj.Name, custom = obj.CustomName });
+                        data.Add(new Models.Dashboard.Names { original = obj.Name, custom = obj.CustomName });
                     }
                     graph.UpdateGraphs(data, id);
                

@@ -25,7 +25,7 @@
 	<link rel="shortcut icon" href="images/logo.png">
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="images/logo.png">
-    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/logon.css" rel="stylesheet" type="text/css" />
 
     <title></title>
 </head>

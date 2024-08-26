@@ -81,7 +81,7 @@ namespace WebDesigner_CustomDashboardStorage
             conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn); /// Intepolation or the F string. C# > 5.0       
+            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn);     
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 
