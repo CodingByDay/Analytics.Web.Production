@@ -16,7 +16,7 @@ using System.Web.UI;
 
 namespace Dash
 {
-    public partial class admin : System.Web.UI.Page
+    public partial class Admin : System.Web.UI.Page
     {
 
 
@@ -208,7 +208,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -244,7 +244,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -305,7 +305,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -338,7 +338,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -426,7 +426,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -460,7 +460,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -505,7 +505,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -542,7 +542,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -599,7 +599,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -622,7 +622,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return String.Empty;
                 }
             }
@@ -660,7 +660,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -802,7 +802,7 @@ namespace Dash
                 catch (Exception ex)
                 {
 
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -845,7 +845,7 @@ namespace Dash
                 catch (Exception ex)
                 {
 
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -867,7 +867,7 @@ namespace Dash
                 catch (Exception ex)
                 {
 
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -937,7 +937,7 @@ namespace Dash
                 config.Save(ConfigurationSaveMode.Modified, true);
             } catch(Exception ex)
             {
-                Logger.LogError(typeof(admin), ex.InnerException.Message);
+                Logger.LogError(typeof(Admin), ex.InnerException.Message);
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
 
             }
@@ -1004,7 +1004,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
                 }
@@ -1040,7 +1040,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1072,7 +1072,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1098,7 +1098,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return String.Empty;
                 }
             }
@@ -1147,7 +1147,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return values;
                 }
             }
@@ -1176,7 +1176,7 @@ namespace Dash
                 catch (Exception ex)
                 {
 
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return string.Empty;
                 }
             }
@@ -1208,7 +1208,7 @@ namespace Dash
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogError(typeof(admin), ex.InnerException.Message);
+                            Logger.LogError(typeof(Admin), ex.InnerException.Message);
 
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
                             // error handling
@@ -1239,7 +1239,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
 
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
 
@@ -1279,7 +1279,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1304,7 +1304,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
@@ -1347,7 +1347,7 @@ namespace Dash
                         }
                         catch (Exception ex)
                         {
-                            Logger.LogError(typeof(admin), ex.InnerException.Message);
+                            Logger.LogError(typeof(Admin), ex.InnerException.Message);
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                         }
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
@@ -1387,7 +1387,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return;
                 }
             }
@@ -1431,7 +1431,7 @@ namespace Dash
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }

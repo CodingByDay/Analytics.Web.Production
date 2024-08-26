@@ -44,7 +44,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                 }
             }
         }
@@ -62,7 +62,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                 }
             }
         }
@@ -91,7 +91,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                 }
             }
         }
@@ -132,7 +132,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return lc;
                 }
             }
@@ -222,7 +222,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                     return AllGraphs;
                 }
             }
@@ -240,7 +240,7 @@ namespace Dash.Models
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
                 }
             }
         }

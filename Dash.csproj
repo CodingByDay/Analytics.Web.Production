@@ -186,6 +186,7 @@
     <Content Include="css\adminpanel.css" />
     <Content Include="css\all.css" />
     <Content Include="css\bootstrap.css" />
+    <Content Include="css\filters.css" />
     <Content Include="css\logon.css" />
     <Content Include="css\main.css" />
     <Content Include="css\website.css" />

@@ -35,7 +35,19 @@ namespace Dash
             // Execute command and fetch pwd field into lookupPassword string.
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
+            CheckWhetherToShowTheSwitcherAtAll();
+        }
 
+        private void CheckWhetherToShowTheSwitcherAtAll()
+        {
+            // Get the current URL
+            string currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+
+            // Check if the URL contains "Index" or "IndexTenant"
+            if (!currentUrl.Contains("Index") && !currentUrl.Contains("IndexTenant"))
+            {
+                toggle.Visible = false;
+            }
         }
 
         protected void SignOut_Click(object sender, EventArgs e)

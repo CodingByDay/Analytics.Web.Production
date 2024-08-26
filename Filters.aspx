@@ -5,6 +5,8 @@
 <asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
+	<link rel="stylesheet" href="css/filters.css" />
+
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
