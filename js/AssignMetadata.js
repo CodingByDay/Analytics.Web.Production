@@ -10,18 +10,19 @@
 		disabled: ko.computed(function () { return !this._dashboarControl.dashboard(); }, this),
 		index: 113,
 		hasSeparator: true,
-		data: this
+		data: this,
 	};
 }
 
 AssignMetadataExtension.prototype.assignMetadata = function () {
 	if (this._toolbox) {
-		if (confirm("Testing the addon")) {
+			// Will maybe be usefull later 09.04.2024 Janko Jovičić  - DevExpress.ui.notify("Hello");
 			var dashboardid = this._dashboarControl.getDashboardId();
 			var param = JSON.stringify({ DashboardID: dashboardid, ExtensionName: this.name });
-			alert("Success!")
-			//PerformDelete(dashboardid);
-		}
+			AssignMetadata(dashboardid);
+			this._toolbox.menuVisible(false);
+
+			
 	}
 }
 

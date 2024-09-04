@@ -174,11 +174,9 @@ namespace Dash
             return stringFinal;
         }
 
+        protected void closePopupButton_Click(object sender, EventArgs e)
+        {
 
-
-
-
-
-
+        }
     }
 }

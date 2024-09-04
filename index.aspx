@@ -10,22 +10,51 @@
 	<link rel="stylesheet" href="css/all.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
-             <webopt:bundlereference runat="server" path="~/css/main.css" />
+    <webopt:bundlereference runat="server" path="~/css/main.css" />
     <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
-           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-         <link rel="stylesheet" href="css/bootstrap.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/bootstrap.css" />
 	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="css/all.css" />
+    <!-- Bootstrap 5.2 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
-             <webopt:bundlereference runat="server" path="~/css/main.css" />
-   <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
-        <script src="js/application/admin.js"></script>
-        <script src="js/DeleteExtension.js"></script>
-            <script src="js/AssignMetadata.js" type="text/javascript"></script>
+    <webopt:bundlereference runat="server" path="~/css/main.css" />
+    <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
+    <script src="js/application/admin.js"></script>
+    <script src="js/DeleteExtension.js"></script>
+    <script src="js/AssignMetadata.js" type="text/javascript"></script>
 
         
 <style>
+
+
+.popup-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: fixed; /* Ensure it covers the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+    z-index: 999; /* Ensure it's on top */
+}
+
+
+.assign-metadata {
+    background: white; /* Background color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for better visibility */
+    width: 80%; /* Adjust width as needed */
+    max-width: 600px; /* Maximum width */
+    max-height: 80%; /* Maximum height */
+    overflow: auto; /* Add scroll if content overflows */
+}
+
 #MainContent_ASPxDashboard3 {
 
 height: 100% !important;
@@ -33,8 +62,11 @@ height: 100% !important;
 }</style>
 
         <script async>
-        
-              
+
+
+            function AssignMetadata(dashboardid) {
+                showMetadataPopup();
+            }              
    
             function PerformDelete(dashboardid) {
                 setCookie("temp", dashboardid, 365);
@@ -260,6 +292,13 @@ height: 100% !important;
                     initialState = s.GetDashboardState();
                 }
             }
+            function showMetadataPopup() {
+                $('#assignMetadataModal').modal('show');
+            }
+
+            function hideMetadataPopup() {
+                $('#assignMetadataModal').modal('hide');
+            }
 
         </script>
     
@@ -289,7 +328,54 @@ height: 100% !important;
     </dx:ASPxDashboard>
 </div>
 
-   
+
+<div class="modal fade" id="assignMetadataModal" tabindex="-1" role="dialog" aria-labelledby="assignMetadataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignMetadataModalLabel">Select Metadata</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <h4>Companies</h4>
+                    <dx:ASPxListBox ID="companiesListBox" runat="server" SelectionMode="Multiple">
+                        <Items>
+                            <dx:ListEditItem Text="Company 1" Value="company1" />
+                            <dx:ListEditItem Text="Company 2" Value="company2" />
+                            <dx:ListEditItem Text="Company 3" Value="company3" />
+                        </Items>
+                    </dx:ASPxListBox>
+                </div>
+                <div>
+                    <h4>Languages</h4>
+                    <dx:ASPxListBox ID="languagesListBox" runat="server" SelectionMode="Multiple">
+                        <Items>
+                            <dx:ListEditItem Text="Language 1" Value="language1" />
+                            <dx:ListEditItem Text="Language 2" Value="language2" />
+                            <dx:ListEditItem Text="Language 3" Value="language3" />
+                        </Items>
+                    </dx:ASPxListBox>
+                </div>
+                <div>
+                    <h4>Field</h4>
+                    <dx:ASPxListBox ID="fieldListBox" runat="server" SelectionMode="Multiple">
+                        <Items>
+                            <dx:ListEditItem Text="Field 1" Value="field1" />
+                            <dx:ListEditItem Text="Field 2" Value="field2" />
+                            <dx:ListEditItem Text="Field 3" Value="field3" />
+                        </Items>
+                    </dx:ASPxListBox>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <dx:ASPxButton ID="closePopupButton" runat="server" Text="Close" AutoPostBack="false" ClientInstanceName="closePopupButton" OnClick="closePopupButton_Click" />
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </asp:Content>
