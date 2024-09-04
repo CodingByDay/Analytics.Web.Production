@@ -261,6 +261,7 @@
     <Content Include="IndexTenant.aspx" />
     <Content Include="js\app.js" />
     <Content Include="js\application\admin.js" />
+    <Content Include="js\AssignMetadata.js" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\DeleteExtension.js" />
     <Content Include="js\jquery-1.11.2.min.js" />

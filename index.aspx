@@ -22,6 +22,7 @@
    <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
         <script src="js/application/admin.js"></script>
         <script src="js/DeleteExtension.js"></script>
+            <script src="js/AssignMetadata.js" type="text/javascript"></script>
 
         
 <style>
@@ -96,6 +97,7 @@ height: 100% !important;
                 dashboardControl.surfaceLeft(extension.panelWidth);
                 dashboardControl.registerExtension(extension);
                 dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
+                dashboardControl.registerExtension(new AssignMetadataExtension(sender));
 
 
             }
