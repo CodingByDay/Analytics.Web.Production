@@ -21,11 +21,10 @@
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
-	<link rel="manifest" href="favicons/manifest.json">
 	<link rel="shortcut icon" href="images/logo.png">
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="images/logo.png">
-    <link href="~/css/logon.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Css/Logon.css" rel="stylesheet" type="text/css" />
 
     <title></title>
 </head>

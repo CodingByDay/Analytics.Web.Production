@@ -1,4 +1,4 @@
-.navbar {
+﻿.navbar {
     border-radius: 0;
     min-height: 40px;
 }
@@ -22,14 +22,7 @@
     border-radius: 0 !important;
 }
 
-.switch {
-    right: 230px;
-    top: 3px;
-}
 
-    .switch:after {
-        top: 1px;
-    }
 
 .mobile-button, .desktop-button {
     font-weight: 400 !important;
@@ -224,9 +217,7 @@
     opacity: 0;
 }
 
-#toggle {
-    margin-right: 200px !important;
-}
+
 
 @keyframes switch {
     0% {

@@ -44,22 +44,23 @@ namespace Dash
             switch (currentPage)
             {
                 case "~/Admin.aspx":
-                    AddCssLink("~/Content/AboutStyles.css");
+                    //AddCssLink("~/Content/AboutStyles.css");
                     break;
                 case "~/TenantAdmin.aspx":
-                    AddCssLink("~/Content/ContactStyles.css");
+                    //AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Emulator.aspx":
-                    AddCssLink("~/Content/ContactStyles.css");
+                    //AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Filters.aspx":
-                    AddCssLink("~/Content/ContactStyles.css");
+                    //AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Index.aspx":
-                    AddCssLink("~/Content/ContactStyles.css");
+                    AddCssLink("~/Content/Css/Graphs.css");
+                    AddCssLink("~/Content/Css/Website.css");
                     break;
                 case "~/IndexTenant.aspx":
-                    AddCssLink("~/Content/ContactStyles.css");
+                    //AddCssLink("~/Content/ContactStyles.css");
                     break;
             }
         }
