@@ -5,23 +5,11 @@
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
     <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="css/all.css" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
-    <webopt:bundlereference runat="server" path="~/css/main.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript" defer></script>
-    <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="css/all.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <div class="row">
-    <webopt:bundlereference runat="server" path="~/css/main.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js" integrity="sha512-3j3VU6WC5rPQB4Ld1jnLV7Kd5xr+cq9avvhwqzbH/taCRNURoeEpoPBK9pDyeukwSxwRPJ8fDgvYXd6SkaZ2TA==" crossorigin="anonymous" referrerpolicy="no-referrer" async></script>
-    <script src="js/SaveAsExtension.js" type="text/javascript"></script>
-    <script src="js/DeleteExtension.js" type="text/javascript"></script>
-
-    <script src="js/application/admin.js"></script>
+ 
       <div class="overlay" id="overlay" hidden>
     
 

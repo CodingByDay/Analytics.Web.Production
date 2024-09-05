@@ -5,28 +5,11 @@
 <%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-     <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <div class="row">
-    <webopt:bundlereference runat="server" path="~/css/main.css" />
-    <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
-    <!-- Bootstrap 5.2 JS Bundle (includes Popper) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <div class="row">
-    <webopt:bundlereference runat="server" path="~/css/main.css" />
-    <link href= "~/css/main.css" rel="stylesheet" runat="server" type="text/css" />
-    <script src="js/application/admin.js"></script>
-    <script src="js/DeleteExtension.js"></script>
-    <script src="js/AssignMetadata.js" type="text/javascript"></script>
 
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <div class="row">
+      
 <style>
 
 

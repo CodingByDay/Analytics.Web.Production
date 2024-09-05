@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 
 namespace Dash
 {
@@ -33,6 +34,44 @@ namespace Dash
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
             CheckWhetherToShowTheSwitcherAtAll();
+            ConditionalyAddStylesBasedOnTheUrl();
+        }
+
+        private void ConditionalyAddStylesBasedOnTheUrl()
+        {
+            string currentPage = Page.AppRelativeVirtualPath;
+
+            switch (currentPage)
+            {
+                case "~/Admin.aspx":
+                    AddCssLink("~/Content/AboutStyles.css");
+                    break;
+                case "~/TenantAdmin.aspx":
+                    AddCssLink("~/Content/ContactStyles.css");
+                    break;
+                case "~/Emulator.aspx":
+                    AddCssLink("~/Content/ContactStyles.css");
+                    break;
+                case "~/Filters.aspx":
+                    AddCssLink("~/Content/ContactStyles.css");
+                    break;
+                case "~/Index.aspx":
+                    AddCssLink("~/Content/ContactStyles.css");
+                    break;
+                case "~/IndexTenant.aspx":
+                    AddCssLink("~/Content/ContactStyles.css");
+                    break;
+            }
+        }
+
+
+        private void AddCssLink(string cssPath)
+        {
+            HtmlLink cssLink = new HtmlLink();
+            cssLink.Href = cssPath;
+            cssLink.Attributes.Add("rel", "stylesheet");
+            cssLink.Attributes.Add("type", "text/css");
+            Page.Header.Controls.Add(cssLink);
         }
 
         private void CheckWhetherToShowTheSwitcherAtAll()

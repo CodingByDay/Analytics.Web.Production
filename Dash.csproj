@@ -387,7 +387,6 @@
     <Content Include="fonts\font-awesome-4.3.0\fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\font-awesome-4.3.0\fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\font-awesome-4.3.0\fonts\FontAwesome.otf" />
-    <Content Include="Extension.Master" />
     <Content Include="libman.json" />
     <Content Include="App_Data\Administracija.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -530,13 +529,6 @@
     </Compile>
     <Compile Include="Emulator.aspx.designer.cs">
       <DependentUpon>Emulator.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Extension.Master.cs">
-      <DependentUpon>Extension.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Extension.Master.designer.cs">
-      <DependentUpon>Extension.Master</DependentUpon>
     </Compile>
     <Compile Include="Filters.aspx.cs">
       <DependentUpon>Filters.aspx</DependentUpon>
