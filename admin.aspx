@@ -23,33 +23,7 @@
              }
 
     </script>
-    <style>
-      #TxtPassword, #TxtRePassword {
-            -webkit-text-security: circle!important;
-        }
-        .inner-item {
-        }
 
-        .control {
-            padding-bottom: 2vh !important;
-        }
-
-        .content-flex {
-            display: flex;
-            justify-content: center;
-            gap: 5vh;
-            align-items: center;
-            min-height: 150%;
-        }
-
-        .grid {
-            padding-bottom: 2vh;
-        }
-
-        #companyButton {
-            display: none;
-        }
-    </style>
     <script>
 
         function testConnection() {
@@ -141,60 +115,42 @@
             }, 100);
 
         }
+        function OnInitSpecific(s, e, grid) {
+            alert(grid)
+            AdjustSize();
+            document.getElementById("gridContainer").style.visibility = "";
+
+        }
+        function OnEndCallback(s, e) {
+            AdjustSize();
+        }
+        function AdjustSize() {
+            var height = Math.max(0, document.documentElement.clientHeight);
+            grid.SetHeight(height);
+        }
     </script>
-    <style>
-        .delete {
-            float: right !important;
-        }
 
-        #overlay {
-            width: 100% !important;
-            height: 100% !important;
-            z-index: 0 !important;
-        }
 
-        .first_button_row {
-            display: flex;
-            justify-content: space-between;
-        }
+	
 
-        .radio input[type="radio"] {
-            margin-left: 3px;
-            margin-right: 3px;
-        }
 
-        .control_obj {
-            min-width: 50vh;
-            width: 50vh;
-        }
-
-        .inner-item {
-            min-height: 60vh;
-            max-height: 60vh;
-        }
-    </style>
-
-	<div id="boot">
-		</div>
-
-	<header>
-
-		<div id="overlay">
-		</div>
-	</header>
     <div class="content-flex">
         <div class="inner-item">
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [Companies]"></asp:SqlDataSource>
             <div class="control_obj">
-        <dx:BootstrapGridView ID="companiesGridView"  Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+             <div class="grid-container full-height">
+                 <div id="gridContainer" style="visibility: hidden">
+
+            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="grid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'myAdditionalParam'); }"  EndCallback="OnEndCallback" />
 
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
             <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
-<SettingsEditing Mode="PopupEditForm"></SettingsEditing>
+                <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
@@ -214,6 +170,8 @@
                   <SettingsSearchPanel Visible="True" />
             <CssClasses Control="control" />
             </dx:BootstrapGridView>
+                     </div>
+	</div>
 	</div>
             <div class="first_button_row">
  <button type="button" class="btn btn-primary" id="company">Dodaj</button>
@@ -282,7 +240,7 @@
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
 
-          <Settings VerticalScrollBarMode="Visible" />
+    <Settings VerticalScrollBarMode="Visible" VerticalScrollableHeight="0" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
@@ -319,6 +277,10 @@
     <SettingsBootstrap RenderOption="Primary" />
            </div>
         </div>
+
+
+
+
 
 	<section class="columns">
 
@@ -503,8 +465,7 @@
                     <br />
 	</div>
 </section>
-     </div>
-     </div>
+  
 
 <script>
 

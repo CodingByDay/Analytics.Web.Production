@@ -1,6 +1,51 @@
-﻿.form-row {
-    min-width: 150% !important;
+﻿.full-height {
+    height: 100vh; /* Makes the container fill the entire viewport height */
+    display: flex;
+    flex-direction: column; /* Align children vertically */
 }
+
+.grid-container {
+    flex: 1; /* Allow the grid to stretch to fill the remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+    .grid-container .grid {
+        flex: 1; /* Make the BootstrapGridView take up the full height */
+        overflow: hidden; /* Ensure the grid doesn't overflow the container */
+    }
+/* Flex container to manage the layout of inner items */
+.content-flex {
+    display: flex;
+    justify-content: space-around;
+    align-items: stretch;
+    height: 100%;
+    padding: 20px;
+}
+
+/* Ensures each grid takes up 33% of the screen width and full height */
+.inner-item {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+    background-color: #f9f9f9; /* Optional background color */
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional box shadow */
+}
+
+/* Ensures the grid inside takes full height */
+.control_obj {
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Style the BootstrapGridView to take up the full space available */
+    .control_obj .dxbs-gridview {
+        flex: 1;
+    }
 
 #companyForm {
     border-bottom-left-radius: 4px;

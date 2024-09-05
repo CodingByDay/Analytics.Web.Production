@@ -167,8 +167,8 @@
     <Content Include="App_Data\Navigation.xml" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="ChangePassword.aspx" />
-    <Content Include="Content\Css\admin.css" />
-    <Content Include="Content\Css\adminpanel.css" />
+    <Content Include="Content\Css\Admin.css" />
+    <Content Include="Content\Css\AdminTenant.css" />
     <Content Include="Content\Css\All.css" />
     <Content Include="Content\Css\Filters.css" />
     <Content Include="Content\Css\Graphs.css" />
