@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Extension.Master" AutoEventWireup="true" CodeBehind="MobileDashboard.aspx.cs" Inherits="Dash.MobileDashboard"  %>
-<%@ Register Assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.DashboardWeb" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Dashboard.v23.2.Web.WebForms, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.DashboardWeb" TagPrefix="dx" %>
 <asp:Content ContentPlaceHolderID="LayoutContentPlaceHolder" runat="server">
      <script>
         function getDashboardControl() {

@@ -1,35 +1,26 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="tenantadmin.aspx.cs" Inherits="Dash.tenantadmin" %>
-<%@ Register assembly="DevExpress.Web.Bootstrap.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
-<%@ Register assembly="DevExpress.Web.v21.1, Version=21.1.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TenantAdmin.aspx.cs" Inherits="Dash.tenantadmin" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
 
-    <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
-    <link rel="stylesheet" href="css/all.css" />
-    <link rel="stylesheet" href="css/admin.css" />
-	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700|Source+Sans+Pro:400,700,400italic,700italic' rel='stylesheet' type='text/css' />
-    <webopt:bundlereference runat="server" path="~/css/shared.css" />
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link href= "~/css/shared.css" rel="stylesheet" runat="server" type="text/css" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
 
-    <link href= "~/css/admin.css" rel="stylesheet" runat="server" type="text/css" />
-
-
-    
-   
-
-       <webopt:bundlereference runat="server" path="~/css/adminpanel.css" />
-<link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
     <style>
 
+         .outer_p {
+         display: flex;
+         gap: 3vh;
+         justify-content: center;
+         align-items: center;
+         }
+
+        .box {
+            min-height:485px;
+        }
 
         .radio input[type="radio"] {
         margin-left: 3px;
@@ -82,6 +73,9 @@
        
             display: inline-block;
             
+        }
+        .grid_w {
+         margin-bottom: 35px;
         }
         .item {
             padding-left: 15px!important;
@@ -151,10 +145,13 @@
                 )
             }
         }
-      
 
+        function refresh() {
+        }
 
-    
+        function click() {
+            document.getElementById("<%= hidden.ClientID %>").click();
+        }
 
 
         function showDialogSync() {
@@ -173,69 +170,51 @@
         }
 
 
-        
+
         function showOrHideDivUser() {
             var v = document.getElementById("userForm");
-         
+
             if (v.style.display === "none") {
 
-                    v.style.display = "block";
+                v.style.display = "block";
             } else {
                 v.style.display = "none"
-                }
-           
+            }
+
 
         }
         function showOrHideDivByUser() {
 
             var v = document.getElementById("by");
             var button = document.getElementById("byUser");
-            
+
             if (v.style.display === "none") {
-               
+
 
                 v.style.display = "block";
                 button.innerHTML = "Skrij";
 
-                } else {
+            } else {
                 //pass
                 v.style.display = "none";
                 button.innerHTML = "Po uporabniku";
 
-                }
-            } 
+            }
+        }
 
-        
-       
+
+        function OnEndCallback() {
+            document.getElementById('<%= hidden.ClientID %>').click();
+        }
 
     </script>
 
 
-	<div id="boot">
 
-		</div>
-	
-<div class="wrapper">
+	<div class="outer_p"> 
+	        <div class="inner_p">
 
-	<header>
-		<h1></h1>
-	</header>
-		
-<section class="columns">
-	
-	<div class="column">
-		<h2></h2>
-		<p></h1>
-			
-	</header>
-
-<section class="columns">
-	
-
-	
-	
-	<div class="column">
-		          <dx:BootstrapGridView ID="usersGridView" runat="server" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+		          <dx:BootstrapGridView ID="usersGridView" runat="server" Width="400"  Settings-VerticalScrollableHeight="400"  Settings-VerticalScrollBarMode="Visible" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -269,20 +248,30 @@
 
 
 
-
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 		<br />
 		<button type="button"  runat="server" onserverclick="new_user_ServerClick" id="new_user" class="btn btn-success">Registracija</button>
            <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" CssClasses-Control="delete" OnClick="deleteUser_Click" AutoPostBack="true">
     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
-	</div>
-  
-  <div class="column">
+
+   <dx:BootstrapButton runat="server" Visible="false" OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
+                                            <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
 
 
-	<dx:BootstrapListBox ID="graphsListBox"  runat="server" AllowCustomValues="true" EnableSelectAll="true"  ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
-                <CssClasses Control="control"  CheckBox="item"  />
+                </div>
+
+
+
+
+
+
+
+
+        <div class="inner_p">
+
+	<dx:BootstrapListBox ID="graphsListBox" Width="400" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
+                <CssClasses Control="box"  CheckBox="item"  />
 
        <FilteringSettings  ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
@@ -295,22 +284,50 @@
     <SettingsBootstrap RenderOption="Primary" />
 
           </dx:BootstrapButton>
-      <dx:BootstrapButton runat="server" ID ="byUser" CssClasses-Control="user"  OnClick="byUser_Click" Text="Po uporabniku">
-    <SettingsBootstrap RenderOption="Info" />
-</dx:BootstrapButton>
-	</div>
-	 <div class="column" id="by" runat="server">
-	 <div class="reverse">
-     	<dx:BootstrapListBox ID="byUserListBox" runat="server" OnSelectedIndexChanged="byUserListBox_SelectedIndexChanged" AllowCustomValues="true" FilteringSettings-EditorNullText="Poiščite uporabnika"  SelectionMode="Multiple"  FilteringSettings-UseCompactView="true" CssClasses-Control="control"  ViewStateMode="Enabled" ClientEnabled="true" AutoPostBack="true" Rows="5">
-        <CssClasses Control="control"  />
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-</dx:BootstrapListBox>
-         <br />
-      <center><dx:BootstrapButton runat="server" ID ="saveByUser" OnClick="saveByuser_Click" Text="Shrani">
-    <SettingsBootstrap RenderOption="Primary" />
-</dx:BootstrapButton></center>
-	</div>
-	</div>
+    
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+        <div class="inner_p">
+
+	   <dx:BootstrapGridView ID="namesGridView" runat="server" Width="400"   Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"    CssClasses-Control="graph">
+<CssClasses Control="grid_w"></CssClasses>
+
+<CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+
+          <Settings VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
+          </SettingsPager>
+
+<SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+
+          <SettingsDataSecurity AllowEdit="True" />
+          <Columns>
+              <dx:BootstrapGridViewCommandColumn VisibleIndex="0" ShowEditButton="True">
+              </dx:BootstrapGridViewCommandColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="ID" Name="ID" Caption="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
+                  <SettingsEditForm Visible="False" />
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="Name" Name="Name" VisibleIndex="2" Caption="Naziv">
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="CustomName" Name="CustomName" VisibleIndex="3" Caption="Analiza">
+              </dx:BootstrapGridViewTextColumn>
+          </Columns>
+          <SettingsSearchPanel Visible="True" />
+      </dx:BootstrapGridView>
+          
+            </div>
+
+</div>
 </section>	
 
 	
@@ -421,169 +438,46 @@
 </section>
             <script>
 
-    $("#newUser").click(function (e) {
+                $("#newUser").click(function (e) {
 
-        e.preventDefault();
+                    e.preventDefault();
 
-    })
-
-
-    function user() {
-
-        var userForm = $("#userForm");
-        userForm.show();
-    }
-
-  
-
-    $(document).ready(function () {
-        $("#user").click(function () {
-            $("#userForm").css('display', 'flex');
-
-        });
-    });
+                })
 
 
-   
+                function user() {
+
+                    var userForm = $("#userForm");
+                    userForm.show();
+                }
 
 
-    $(document).ready(function () {
-        $("#closeCompany").click(function () {
-            $("#companyForm").css('display', 'none');
-        });
-    });
 
-    $(document).ready(function () {
-        $("#closeUser").click(function () {
-            $("#userForm").css('display', 'none');
-        });
-    });
+                $(document).ready(function () {
+                    $("#user").click(function () {
+                        $("#userForm").css('display', 'flex');
+
+                    });
+                });
+
+
+
+
+
+                $(document).ready(function () {
+                    $("#closeCompany").click(function () {
+                        $("#companyForm").css('display', 'none');
+                    });
+                });
+
+                $(document).ready(function () {
+                    $("#closeUser").click(function () {
+                        $("#userForm").css('display', 'none');
+                    });
+                });
 
             </script>
-     </div>
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-     </div>
-  
-   
-  
-    </div>
-  
-   
-  
-    </div>
-  
-   
+ 
   
 </asp:Content>
 
