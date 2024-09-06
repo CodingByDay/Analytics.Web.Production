@@ -115,18 +115,35 @@
             }, 100);
 
         }
-        function OnInitSpecific(s, e, grid) {
-            alert(grid)
-            AdjustSize();
-            document.getElementById("gridContainer").style.visibility = "";
+
+        function OnInitSpecific(s, e, gridName) {
+            alert("test");
+            AdjustSize(gridName);
+
+            if (gridName == "company") {
+                document.getElementById("gridContainerCompanies").style.visibility = "";
+            } else if (gridName == "user") {
+                document.getElementById("gridContainerUser").style.visibility = "";
+            } else if (gridName == "dashboard") {
+                document.getElementById("gridContainerDashboard").style.visibility = "";
+            }
 
         }
-        function OnEndCallback(s, e) {
-            AdjustSize();
+
+
+        function OnEndCallback(s, e, gridName) {
+            AdjustSize(gridName);
         }
-        function AdjustSize() {
+        function AdjustSize(gridName) {
             var height = Math.max(0, document.documentElement.clientHeight);
-            grid.SetHeight(height);
+            if (gridName == "company") {
+                companyGrid.SetHeight(height);
+            } else if (gridName == "user") {
+                userGrid.SetHeight(height);
+            } else if (gridName == "dashboard") {
+                dashboardGrid.SetHeight(height);
+
+            }
         }
     </script>
 
@@ -139,11 +156,11 @@
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [Companies]"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
-                 <div id="gridContainer" style="visibility: hidden">
+                 <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="grid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'myAdditionalParam'); }"  EndCallback="OnEndCallback" />
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
@@ -189,12 +206,15 @@
     </asp:SqlDataSource>
         <div class="inner-item">
             <div class="control_obj">
-          <dx:BootstrapGridView ID="usersGridView"  Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <div id="gridContainerUser" style="visibility: hidden">
+
+          <dx:BootstrapGridView ID="usersGridView"  ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
-          <Settings VerticalScrollBarMode="Visible" />
+              <Settings VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
@@ -219,6 +239,7 @@
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
                 </div>
+                </div>
 
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
@@ -235,12 +256,15 @@
 
 	   <div class="inner-item">
            <div class="control_obj">
-      <dx:BootstrapGridView ID="graphsGridView" runat="server"  Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
+                                <div id="gridContainerDashboard" style="visibility: hidden">
+
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
-    <Settings VerticalScrollBarMode="Visible" VerticalScrollableHeight="0" />
+              <Settings VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
@@ -260,6 +284,7 @@
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
+       </div>
        </div>
 
       <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT ID, Caption, belongsTo FROM Dashboards;" UpdateCommand="UPDATE Dashboards SET belongsTo=@belongsTo WHERE ID=@ID">
