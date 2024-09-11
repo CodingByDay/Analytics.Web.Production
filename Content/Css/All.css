@@ -114,7 +114,6 @@ p {
 .btn-link {
     display: inline-block;
     vertical-align: top;
-    background: #f4f4f4;
     border-radius: 3px;
     font-weight: bold;
     font-size: 1.4rem;
@@ -122,9 +121,7 @@ p {
     padding: 7px 24px;
 }
 
-    .btn-link:hover {
-        background: #e0e0e0;
-    }
+  
 
 #wrapper {
     width: 100%;

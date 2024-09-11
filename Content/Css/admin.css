@@ -3,7 +3,16 @@
     display: flex;
     flex-direction: column; /* Align children vertically */
 }
+.actionButton {
+    width: 10em;
 
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 .grid-container {
     flex: 1; /* Allow the grid to stretch to fill the remaining space */
     display: flex;
@@ -22,7 +31,10 @@
     height: 100%;
     padding: 20px;
 }
-
+.action-buttons {
+    position: relative;
+    top: 2em;
+}
 /* Ensures each grid takes up 33% of the screen width and full height */
 .inner-item {
     width: 33%;
@@ -36,7 +48,7 @@
 
 /* Ensures the grid inside takes full height */
 .control_obj {
-    flex: 1;
+
     overflow: hidden;
     display: flex;
     flex-direction: column;

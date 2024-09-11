@@ -116,8 +116,9 @@
 
         }
 
+
         function OnInitSpecific(s, e, gridName) {
-            alert("test");
+
             AdjustSize(gridName);
 
             if (gridName == "company") {
@@ -130,21 +131,24 @@
 
         }
 
-
         function OnEndCallback(s, e, gridName) {
             AdjustSize(gridName);
         }
+
         function AdjustSize(gridName) {
-            var height = Math.max(0, document.documentElement.clientHeight);
+
+            var height = Math.max(0, document.documentElement.clientHeight - (0.2 * document.documentElement.clientHeight)); // 10vh bottom margin 06.09.2024 Janko Jovičić
+
             if (gridName == "company") {
                 companyGrid.SetHeight(height);
             } else if (gridName == "user") {
                 userGrid.SetHeight(height);
             } else if (gridName == "dashboard") {
                 dashboardGrid.SetHeight(height);
-
             }
+
         }
+
     </script>
 
 
@@ -173,6 +177,7 @@
                 <Columns>
 
                     <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
+      
                     </dx:BootstrapGridViewCommandColumn>
 
                     <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="False" ReadOnly="True" VisibleIndex="1">
@@ -184,18 +189,26 @@
                       <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
                     </dx:BootstrapGridViewTextColumn>
                 </Columns>
-                  <SettingsSearchPanel Visible="True" />
-            <CssClasses Control="control" />
-            </dx:BootstrapGridView>
+                    <SettingsSearchPanel Visible="True" />
+                    <CssClasses Control="control" />
+                    </dx:BootstrapGridView>
                      </div>
-	</div>
-	</div>
-            <div class="first_button_row">
- <button type="button" class="btn btn-primary" id="company">Dodaj</button>
-        <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False"  OnClick="deleteCompany_Click" Text="Briši">
-    <SettingsBootstrap RenderOption="Danger" />
-</dx:BootstrapButton>
-                </div>
+	            </div>
+	        </div>
+
+
+
+
+            <div class="action-buttons">
+                <button type="button" class="btn btn-primary actionButton" id="company">Dodaj</button>
+                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="deleteCompany_Click" Text="Briši">
+                  <SettingsBootstrap RenderOption="Danger" />
+                 </dx:BootstrapButton>
+            </div>
+
+
+
+
            </div>
 
 	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT Dashboards.Caption, Dashboards.belongsTo, Dashboards.ID FROM Dashboards " UpdateCommand="UPDATE Dashboards SET belongsTo = @belongsTo WHERE (ID = @ID)">
@@ -225,7 +238,7 @@
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
-                  <SettingsEditForm Visible="False" />
+              <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
               </dx:BootstrapGridViewTextColumn>
@@ -243,14 +256,14 @@
 
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
-		<button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"   class="btn btn-primary">Registracija</button>
-
-        <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="delete">
-
-        <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
-
-                                <dx:BootstrapButton runat="server" Visible="false"  OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
-                                            <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+                <div class="action-buttons">
+                    <button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"   class="btn btn-primary actionButton">Registracija</button>
+                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="actionButton">
+                    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+                    <dx:BootstrapButton runat="server" Visible="false"  OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
+                    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+                </div>
+		                        
 
    </div>
 
@@ -294,9 +307,15 @@
           </UpdateParameters>
       </asp:SqlDataSource>
 
-      <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
-    <SettingsBootstrap RenderOption="Primary" />
-          </dx:BootstrapButton>
+
+
+
+           <div class="action-buttons">
+                 <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="true">
+                    <SettingsBootstrap RenderOption="Primary" />
+                  </dx:BootstrapButton>
+           </div>
+
 
          <br />
     <SettingsBootstrap RenderOption="Primary" />

@@ -81,7 +81,7 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
+                SqlCommand GetCommand = new SqlCommand("SELECT Dashboard FROM Dashboards WHERE ID=@ID");
                 GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
@@ -90,11 +90,6 @@ namespace Dash.DatabaseStorage
                 MemoryStream stream = new MemoryStream(data);
                 connection.Close();
                 var doc = XDocument.Load(stream);
-
-
-
-
-
                 return doc;
             }
         }
