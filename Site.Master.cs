@@ -51,13 +51,13 @@ namespace Dash
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
                 case "~/TenantAdmin.aspx":
-                    //AddCssLink("~/Content/ContactStyles.css");
+                    // AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Emulator.aspx":
-                    //AddCssLink("~/Content/ContactStyles.css");
+                    // AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Filters.aspx":
-                    //AddCssLink("~/Content/ContactStyles.css");
+                    // AddCssLink("~/Content/ContactStyles.css");
                     break;
                 case "~/Index.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
@@ -67,7 +67,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Website.css");
                     break;
                 case "~/IndexTenant.aspx":
-                    //AddCssLink("~/Content/ContactStyles.css");
+                    // AddCssLink("~/Content/ContactStyles.css");
                     break;
             }
         }

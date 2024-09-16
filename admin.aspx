@@ -102,19 +102,11 @@
             }, 100);
 
         }
-        function showDialogSyncCompany() {
 
-            $("#companyForm").css('display', 'flex');
-
-            var elem = document.getElementById("companyForm");
-
-            setTimeout(function () {
-                elem.style.opacity = 1;
-               // document.getElementById('overlay').style.backgroundColor = "gray";
-
-            }, 100);
-
-        }
+     
+          
+    
+     
 
 
         function OnInitSpecific(s, e, gridName) {
@@ -397,7 +389,6 @@
         <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="companyButton_Click" />
         <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
         <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
-        <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeCompany">X</button>
       </div>
     </div>
   </div>
