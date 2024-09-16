@@ -97,7 +97,7 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                document.getElementById('overlay').style.backgroundColor = "gray";
+               // document.getElementById('overlay').style.backgroundColor = "gray";
 
             }, 100);
 
@@ -110,7 +110,7 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                document.getElementById('overlay').style.backgroundColor = "gray";
+               // document.getElementById('overlay').style.backgroundColor = "gray";
 
             }, 100);
 
@@ -200,7 +200,7 @@
 
 
             <div class="action-buttons">
-                <button type="button" class="btn btn-primary actionButton" id="company">Dodaj</button>
+                <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
                  <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="deleteCompany_Click" Text="Briši">
                   <SettingsBootstrap RenderOption="Danger" />
                  </dx:BootstrapButton>
@@ -327,95 +327,83 @@
 
 
 	<section class="columns">
-
-<!-- Company form -->
-
-	<div class="column" id="companyForm" tabindex="0">
-
-        <div class="companyPart">
-             <hr style="color: black;" />
-
-                   <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Naziv podjetja</label>
-           <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-
-           <br />
-
-                 <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Kontaktna številka</label>
-            <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-
-                <br />
-
-                 <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Spletna stran</label>
-           <asp:TextBox ID="website" runat="server" placeholder="Spletna stran:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-
-                <br />
-                <div class="form-row">
-             <label class="col-sm-2 col-form-label" runat="server" id="labl" visible="false" for="name">Admin</label>
-
-            <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false">
-               <%--AppendDataBoundItems="true">--%>
-              </asp:DropDownList>
-                       </div>
-
-                <br />
+<!-- Bootstrap Modal Structure -->
+<div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModalLabel">Podjetje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form starts here -->
+        <form id="companyForm">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <!-- Company Part -->
+                <div class="companyPart">
+                  <div class="form-group">
+                    <label for="companyName">Naziv podjetja</label>
+                    <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="companyNumber">Kontaktna številka</label>
+                    <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="website">Spletna stran</label>
+                    <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group" style="display: none;">
+                    <label for="listAdmin" id="labl">Admin</label>
+                    <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"></asp:DropDownList>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <!-- Connection Part -->
+                <div class="connectionPart">
+                  <div class="form-group">
+                    <label for="dbDataSource">Data source</label>
+                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbUser">Uporabnik</label>
+                    <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbPassword">Geslo</label>
+                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbNameInstance">Naziv baze</label>
+                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="connName">Naziv povezave</label>
+                    <asp:TextBox ID="connName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                </div>
+              </div>
             </div>
-      <div class="connectionPart">
-          <br />
+          </div>
+        </form>
+        <!-- End of form -->
+      </div>
+      <div class="modal-footer">
+        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="companyButton_Click" />
+        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
+        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal" id="closeCompany">X</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-           <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Data source</label>
-           <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-                          <br />
 
-                 <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Uporabnik</label>
-           <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-          <br />
-          <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-           <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo:" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-          <br />
-
-            <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ime baze</label>
-                <asp:TextBox ID="dbNameInstance" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-
-          <br />
-
-            <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ime povezave</label>
-                <asp:TextBox ID="connName" runat="server" Enabled="true" placeholder="Ime" Width="500" CssClass="conn" ClientIDMode="Static"></asp:TextBox>
-                       </div>
-          <br />
-
-        <br />
-
-        <br />
-
-                       <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="companyButton_Click" />
-
-                       <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test" style="padding: 3px;">Testiraj</button>
-
-                       <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing" style="padding: 3px;">Potrdi</button>
-
-                      <div id="btnsCompany" style="position:absolute;float:right; right:0px;top:0px;">
-
-          <button type="button" class="btn btn-danger"  id="closeCompany" style="padding: 3px;">X</button>
-                          </div>
-        <br />
-        <br />
-	</div>
-                    </div>
 
 <!-- User form -->
 
@@ -540,7 +528,7 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                document.getElementById('overlay').style.backgroundColor = "gray";
+                //document.getElementById('overlay').style.backgroundColor = "gray";
 
             }, 100);
 
@@ -584,7 +572,7 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                document.getElementById('overlay').style.backgroundColor = "gray";
+                //document.getElementById('overlay').style.backgroundColor = "gray";
             }, 100);
         });
     });

@@ -89,17 +89,7 @@
     animation-duration: 0.8s
 }
 
-.companyPart {
-    margin: 70px !important;
-    flex: 1 !important;
-    width: 50px !important
-}
 
-.connectionPart {
-    margin: 70px !important;
-    flex: 1 !important;
-    width: 50px !important;
-}
 
 .other {
     flex: 1;

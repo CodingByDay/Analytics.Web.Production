@@ -157,7 +157,6 @@ namespace Dash
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
 
-            labl.Visible = true;
             listAdmin.Visible = true;
             Response.Cookies["Edit"].Value = "yes";
             isEditHappening = true;

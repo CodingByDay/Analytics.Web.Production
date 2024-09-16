@@ -61,7 +61,7 @@ namespace Dash
                     break;
                 case "~/Index.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
-                    AddCssLink("https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css");
+                    AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
                     AddCssLink("~/Content/Css/All.css");
                     AddCssLink("~/Content/Css/Graphs.css");
                     AddCssLink("~/Content/Css/Website.css");
