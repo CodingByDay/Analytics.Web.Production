@@ -104,7 +104,10 @@
         }
 
      
-          
+        function showDialogSyncCompany() {
+            $('#companyModal').modal('show');
+
+        }
     
      
 

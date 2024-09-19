@@ -163,7 +163,7 @@ namespace Dash
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
             updateFormCompany(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
             e.Cancel = true;
         }
 
