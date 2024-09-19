@@ -89,9 +89,10 @@ namespace Dash
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            usersGridView.EnableCallBacks = false;
-          
+            usersGridView.EnableCallBacks = false;         
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+
+
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
@@ -252,12 +253,11 @@ namespace Dash
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
             // Call js. function here if the test passes.
             updateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
             e.Cancel = true;
         }
 
@@ -1450,7 +1450,7 @@ namespace Dash
 
         }
 
-        protected void newUser_Click(object sender, EventArgs e)
+        protected void NewUser_Click(object sender, EventArgs e)
         {
             usersGridView.Selection.SetSelection(-1, true);
             TxtUserName.Enabled = true;
@@ -1461,6 +1461,8 @@ namespace Dash
             TxtPassword.Text = "";
             TxtRePassword.Text = "";
             isEditUser = false;
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
+
         }
 
 
@@ -1490,7 +1492,7 @@ namespace Dash
 
         }
 
-        protected void new_user_ServerClick2(object sender, EventArgs e)
+        protected void NewUserClick(object sender, EventArgs e)
         {
             isEditUser = false;
             TxtUserName.Enabled = true;

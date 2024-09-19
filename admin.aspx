@@ -108,6 +108,13 @@
             $('#companyModal').modal('show');
 
         }
+
+
+
+        function showDialogSyncUser() {
+            $('#userFormModal').modal('show');
+
+        }
     
      
 
@@ -252,7 +259,7 @@
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
                 <div class="action-buttons">
-                    <button type="button"  runat="server" onserverclick="new_user_ServerClick2" id="new_user"   class="btn btn-primary actionButton">Registracija</button>
+                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
                     <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                     <dx:BootstrapButton runat="server" Visible="false"  OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
@@ -399,97 +406,78 @@
 
 
 
-<!-- User form -->
-
-	<div class="column" id="userForm" style="display: none" tabindex="0">
-
-                    <br />
-                   <div class ="auth">
-
-                                                <br />
-
-                       <hr />
-    <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
-                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" Enabled="true" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>
-                          <br />
-
-     <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Email</label>
-                 <asp:TextBox ID="email" runat="server" placeholder="Email" Enabled="true" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>
-
-                      <br />
-<div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
-                        <asp:TextBox ID="TxtUserName" runat="server" Enabled="true" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>
-
-          </div>
-                       <br />
-<div class="form-row">
-             <label class="col-sm-2 col-form-label" for="referer">Komercialist</label>
-                        <asp:TextBox ID="referer" runat="server" Enabled="true" placeholder="Komercialist" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>
-                      <br />
-                       <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-<asp:TextBox ID="TxtPassword" runat="server"   Enabled="true" style="-webkit-text-security: circle" placeholder="Geslo"  CssClass="form-control form-control-lg"></asp:TextBox>
-                       </div>
-
-                      <br />
-                        <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
-                        <asp:TextBox ID="TxtRePassword" style="-webkit-text-security: circle" runat="server" Enabled="true"  placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>
-                       </div>
-
-                         <br />
-            </div>
-        <div class="other">
-
-                            <br />
-                            <br />
-
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-
-           <h3 >Vloga uporabnika</h3>
-                            <br />
-
-                       <asp:RadioButtonList ID="userRole" runat="server" Enabled="true" RepeatDirection="Horizontal" CellSpacing="8"  CssClass="radio">
-                            <asp:ListItem>Admin</asp:ListItem>
-                            <asp:ListItem>User</asp:ListItem>
-                        </asp:RadioButtonList>
-                <br />
-
-<h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>
-                    <br />
-
-        <asp:DropDownList ID="userTypeList" runat="server">
-        <asp:ListItem>Viewer</asp:ListItem>
-        <asp:ListItem>Viewer&amp;Designer</asp:ListItem>
-        </asp:DropDownList>
-
-        <br />
-        <br />
-
-                    <h4 style="text-decoration: solid"Podjetje:</h4>
-                        <asp:DropDownList ID="companiesList" Enabled="true" runat="server"
-                                          AppendDataBoundItems="true">
-                        </asp:DropDownList>
-                    <br />
-                    <br />
-                 <asp:Button CssClass="btn btn-primary" Enabled="true" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
-
-                        <div id="btns" style="position:absolute;float:right; right:0px;top:0px;">
-
-                      <button type="button"  class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
+<div class="modal fade" id="userFormModal" tabindex="-1" role="dialog" aria-labelledby="userFormModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userFormModalLabel">Uporabniški obrazec</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="TxtName">Ime in Priimek</label>
+                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtUserName">Uporabniško ime</label>
+                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="referer">Komercialist</label>
+                  <asp:TextBox ID="referer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtPassword">Geslo</label>
+                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtRePassword">Ponovite geslo</label>
+                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control"></asp:TextBox>
                 </div>
               </div>
-                    <br />
-	</div>
+              <div class="col-md-6">
+                <!-- User Role and Rights -->
+                <h3>Vloga uporabnika</h3>
+                <div class="form-group">
+                  <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
+                    <asp:ListItem>Admin</asp:ListItem>
+                    <asp:ListItem>User</asp:ListItem>
+                  </asp:RadioButtonList>
+                </div>
+                <h3>Pravice uporabnika</h3>
+                <div class="form-group">
+                  <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
+                    <asp:ListItem>Viewer</asp:ListItem>
+                    <asp:ListItem>Viewer & Designer</asp:ListItem>
+                  </asp:DropDownList>
+                </div>
+                <h4>Podjetje</h4>
+                <div class="form-group">
+                  <asp:DropDownList ID="companiesList" runat="server" AppendDataBoundItems="true" CssClass="form-control"></asp:DropDownList>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <!-- End of form -->
+      </div>
+      <div class="modal-footer">
+        <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="registrationButton_Click" />
+        <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal">Zapri</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </section>
   
 

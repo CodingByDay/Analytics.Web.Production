@@ -113,6 +113,7 @@ height: 100% !important;
                 dashboardControl.registerExtension(extension);
                 dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
                 dashboardControl.registerExtension(new AssignMetadataExtension(sender));
+                dashboardControl.unregisterExtension("designerToolbar");
 
 
             }
