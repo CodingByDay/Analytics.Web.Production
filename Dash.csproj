@@ -167,6 +167,7 @@
     <Content Include="Admin.aspx" />
     <Content Include="App_Data\Navigation.xml" />
     <Content Include="App_Readme\Elmah.txt" />
+    <Content Include="App_Start\Sql.txt" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="Content\Css\Admin.css" />
     <Content Include="Content\Css\AdminTenant.css" />

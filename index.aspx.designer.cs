@@ -30,7 +30,7 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxListBox companiesListBox;
+        protected global::DevExpress.Web.Bootstrap.BootstrapListBox companiesListBox;
 
         /// <summary>
         /// languagesListBox control.
@@ -39,7 +39,7 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxListBox languagesListBox;
+        protected global::DevExpress.Web.Bootstrap.BootstrapListBox languagesListBox;
 
         /// <summary>
         /// fieldListBox control.
@@ -48,15 +48,15 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxListBox fieldListBox;
+        protected global::DevExpress.Web.Bootstrap.BootstrapListBox fieldListBox;
 
         /// <summary>
-        /// closePopupButton control.
+        /// saveMetadata control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.ASPxButton closePopupButton;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton saveMetadata;
     }
 }

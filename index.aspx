@@ -1,8 +1,12 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="Dash.index" %>
-
 <%@ Register assembly="DevExpress.Dashboard.v23.2.Web.WebForms, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
-
 <%@ Register assembly="DevExpress.Web.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
+
+
+
+
+
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
@@ -42,7 +46,13 @@
 
 height: 100% !important;
 
-}</style>
+}
+
+
+
+
+
+</style>
 
         <script async>
 
@@ -311,55 +321,65 @@ height: 100% !important;
                           />
     </dx:ASPxDashboard>
 </div>
-
-
 <div class="modal fade" id="assignMetadataModal" tabindex="-1" role="dialog" aria-labelledby="assignMetadataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="assignMetadataModalLabel">Select Metadata</h5>
+                <h5 class="modal-title" id="assignMetadataModalLabel">Izberite metapodatke</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div>
-                    <h4>Companies</h4>
-                    <dx:ASPxListBox ID="companiesListBox" runat="server" SelectionMode="Multiple">
-                        <Items>
-                            <dx:ListEditItem Text="Company 1" Value="company1" />
-                            <dx:ListEditItem Text="Company 2" Value="company2" />
-                            <dx:ListEditItem Text="Company 3" Value="company3" />
-                        </Items>
-                    </dx:ASPxListBox>
-                </div>
-                <div>
-                    <h4>Languages</h4>
-                    <dx:ASPxListBox ID="languagesListBox" runat="server" SelectionMode="Multiple">
-                        <Items>
-                            <dx:ListEditItem Text="Language 1" Value="language1" />
-                            <dx:ListEditItem Text="Language 2" Value="language2" />
-                            <dx:ListEditItem Text="Language 3" Value="language3" />
-                        </Items>
-                    </dx:ASPxListBox>
-                </div>
-                <div>
-                    <h4>Field</h4>
-                    <dx:ASPxListBox ID="fieldListBox" runat="server" SelectionMode="Multiple">
-                        <Items>
-                            <dx:ListEditItem Text="Field 1" Value="field1" />
-                            <dx:ListEditItem Text="Field 2" Value="field2" />
-                            <dx:ListEditItem Text="Field 3" Value="field3" />
-                        </Items>
-                    </dx:ASPxListBox>
+                <div class="container-fluid">
+                    <div class="row mb-3">
+                        <!-- Companies List -->
+                        <div class="col-md-4">
+                            <h5>Companies</h5>
+                            <dx:BootstrapListBox ID="companiesListBox" runat="server" SelectionMode="Multiple">
+                                <Items>
+                                    <dx:BootstrapListEditItem Text="Company 1" Value="company1" />
+                                    <dx:BootstrapListEditItem Text="Company 2" Value="company2" />
+                                    <dx:BootstrapListEditItem Text="Company 3" Value="company3" />
+                                </Items>
+                            </dx:BootstrapListBox>
+                        </div>
+                        <!-- Languages List -->
+                        <div class="col-md-4">
+                            <h5>Languages</h5>
+                            <dx:BootstrapListBox ID="languagesListBox" runat="server" SelectionMode="Multiple">
+                                <Items>
+                                    <dx:BootstrapListEditItem Text="Language 1" Value="language1" />
+                                    <dx:BootstrapListEditItem Text="Language 2" Value="language2" />
+                                    <dx:BootstrapListEditItem Text="Language 3" Value="language3" />
+                                </Items>
+                            </dx:BootstrapListBox>
+                        </div>
+                        <!-- Field List -->
+                        <div class="col-md-4">
+                            <h5>Field</h5>
+                            <dx:BootstrapListBox ID="fieldListBox" runat="server" SelectionMode="Multiple">
+                                <Items>
+                                    <dx:BootstrapListEditItem Text="Field 1" Value="field1" />
+                                    <dx:BootstrapListEditItem Text="Field 2" Value="field2" />
+                                    <dx:BootstrapListEditItem Text="Field 3" Value="field3" />
+                                </Items>
+                            </dx:BootstrapListBox>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <dx:ASPxButton ID="closePopupButton" runat="server" Text="Close" AutoPostBack="false" ClientInstanceName="closePopupButton" OnClick="closePopupButton_Click" />
+                <dx:BootstrapButton runat="server" Text="Shrani" ID="saveMetadata" OnClick="saveMetadata_Click" CssClasses-Control="actionButton" AutoPostBack="true">
+                   <SettingsBootstrap RenderOption="Primary" />
+                 </dx:BootstrapButton>
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 
 </asp:Content>

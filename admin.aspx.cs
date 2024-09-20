@@ -1531,5 +1531,10 @@ namespace Dash
         {
 
         }
+
+        protected void saveMetadata_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
