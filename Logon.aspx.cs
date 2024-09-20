@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dash.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -28,7 +29,9 @@ namespace Dash
                 FetchDataFillList();
                 Session["passport"] = "false";
             }
-            
+
+
+            DashboardPermissions permissions = new DashboardPermissions();     
         }
 
         private string GetRole(string username, string password)

@@ -23,9 +23,9 @@ namespace Dash.Models
 
         public List<DashboardInternal> AllGraphs { get; set; } = new List<DashboardInternal>();
 
-        public Dashboard(int id_company)
+        public Dashboard(int Id)
         {
-            this.AllGraphs = GetGraphs(id_company);
+            this.AllGraphs = GetGraphs(Id);
             // SetGraphs(id_company);
         }
 

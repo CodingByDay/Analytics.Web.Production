@@ -35,12 +35,10 @@ namespace Dash.DatabaseStorage
         public string AddDashboard(XDocument document, string dashboardName)
         {
             DevExpress.DashboardCommon.Dashboard d = new DevExpress.DashboardCommon.Dashboard();
-            //
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
             
-            // 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();

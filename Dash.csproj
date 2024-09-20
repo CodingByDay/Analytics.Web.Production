@@ -474,6 +474,7 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardPermissions.cs" />
     <Compile Include="Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

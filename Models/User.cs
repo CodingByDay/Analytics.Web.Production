@@ -29,7 +29,7 @@ namespace Dash.Models
 
         public string Uname { get; set; }
 
-        public string Pwd { get; set; }
+        public string Password { get; set; }
 
 
         public string UserRole { get; set; }
@@ -46,7 +46,7 @@ namespace Dash.Models
         public User(string uname, string Pwd, string userRole, string ViewState, string email)
         {
             this.Uname = uname;
-            this.Pwd = Pwd;
+            this.Password = Pwd;
             this.UserRole = userRole;
             this.ViewState = ViewState;
             this.Email = email;
@@ -55,7 +55,7 @@ namespace Dash.Models
         public User(string uname, string Pwd, string userRole, string ViewState, string email, string graphs)
         {
             this.Uname = uname;
-            this.Pwd = Pwd;
+            this.Password = Pwd;
             this.UserRole = userRole;
             this.ViewState = ViewState;
             this.Email = email;
