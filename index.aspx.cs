@@ -35,7 +35,7 @@ namespace Dash
             }
 
 
-            authenticate();
+            Authenticate();
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             // Hide the back button.  
@@ -105,27 +105,19 @@ namespace Dash
             Session["current"] = e.DashboardId.ToString();
         }
 
-        private void authenticate()
-
+        private void Authenticate()
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
             conn = new SqlConnection(ConnectionString);
-
-
             conn.Open();
             var username = HttpContext.Current.User.Identity.Name;
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
+            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                role = (reader["userRole"].ToString());
+                role = (reader["user_role"].ToString());
             }
-
-
-
-
             if (role == "SuperAdmin")
             {
 

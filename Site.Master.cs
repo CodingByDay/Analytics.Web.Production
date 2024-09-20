@@ -29,7 +29,7 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
+            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
             // Execute command and fetch pwd field into lookupPassword string.
             userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);

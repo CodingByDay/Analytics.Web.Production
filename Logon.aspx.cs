@@ -43,11 +43,11 @@ namespace Dash
                     var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}' AND Pwd='{hashed}';", conn);
+                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}' AND password='{hashed}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        role = (reader["userRole"].ToString());
+                        role = (reader["user_role"].ToString());
                     }
                     return role;
                 }
@@ -148,7 +148,7 @@ namespace Dash
                         // Consult with your SQL Server administrator for an appropriate connection
                         // string to use to connect to your local SQL Server.
                         // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand("SELECT pwd FROM users WHERE uname=@userName", conn);
+                        cmd = new SqlCommand("SELECT password FROM users WHERE uname=@userName", conn);
                         cmd.Parameters.Add("@userName", SqlDbType.VarChar, 25);
                         cmd.Parameters["@userName"].Value = userName;
 
@@ -260,7 +260,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    var checkingDesigner = new SqlCommand($"SELECT ViewState FROM Users WHERE uname='{value}';", conn);
+                    var checkingDesigner = new SqlCommand($"SELECT view_allowed FROM users WHERE uname='{value}';", conn);
                     var flag = checkingDesigner.ExecuteScalar();
                     string result = flag.ToString();
                     cmd.Dispose();
