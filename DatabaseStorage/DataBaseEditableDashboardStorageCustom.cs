@@ -55,64 +55,15 @@ namespace Dash.DatabaseStorage
                 InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
-                connection.Close();
-                InsertPermision(stripped);
-                var company = getcompanyForUser();
-                var admin = GetAdminFromCompanyName(company);
-                int idAdmin = GetPermisionUserID(admin);
-                InsertPermisionAdminAndUser(idAdmin, stripped);
                 return ID;
             }
         }
-        private int getIdPermision()
+
+
+
+
+        public string GetCompanyForUser()
         {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name;
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{UserNameForChecking}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-                    cmd.Dispose();
-                    return permisionID;
-                }
-                catch (Exception)
-                {
-                    return -1;
-                }
-            }
-
-
-
-        }
-        private void InsertPermisionAdminAndUser(int admin, string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var idCurrent = getIdPermision();
-                    SqlCommand cmd = new SqlCommand($"UPDATE PermissionsUsers SET {name} = 1 WHERE id_permisions_user = {idCurrent}", conn);
-                    cmd.ExecuteNonQuery();
-                    cmd.Dispose();
-                    SqlCommand cmdSecond = new SqlCommand($"UPDATE PermissionsUsers SET {name} = 1 WHERE id_permisions_user = {admin}", conn);
-                    cmdSecond.ExecuteNonQuery();
-                    cmd.Dispose();
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-
-
-        }
-        public int GetPermisionUserID(string user)
-        {
-
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
@@ -120,96 +71,39 @@ namespace Dash.DatabaseStorage
                     conn.Open();
 
                     string uname = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select id_permision_user from Users where uname='{user}';", conn);
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    int adminID = (int)cmd.ExecuteScalar();
-                    cmd.Dispose();
-                    return adminID;
-                }
-                catch (Exception)
-                {
-                    return -1;
-                }
-            }
-        }
-        public string GetAdminFromCompanyName(string company)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn);        
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    string company = string.Empty;
+
+                    // Use a parameterized query to prevent SQL injection
+                    string query = @"SELECT company_name 
+                             FROM Users 
+                             INNER JOIN Companies ON Users.id_company = Companies.id_company 
+                             WHERE uname = @uname";
+
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        adminName = (reader["admin_id"].ToString());
+                        // Add the parameter for uname
+                        cmd.Parameters.AddWithValue("@uname", uname);
+
+                        // Execute the query and read the result
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read()) // If there's a matching record
+                            {
+                                company = reader["company_name"].ToString();
+                            }
+                        }
                     }
 
-                    cmd.Dispose();
-                    return adminName;
+                    return company; // Return the company name or empty if not found
                 }
                 catch (Exception)
                 {
-                    return string.Empty;
+                    return string.Empty; // Return empty string on error
                 }
             }
-
         }
 
-        public string getcompanyForUser()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
 
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn);        
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
-                    {
-                        company = (reader["company_name"].ToString());
-                    }
-
-                    cmd.Dispose();
-                    return company;
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
-            }
-
-        }
-        private void InsertPermision(string dashboardName)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"ALTER TABLE PermissionsUsers ADD {dashboardName} int not null default(0);", conn);
-                    cmd.ExecuteNonQuery();
-                    cmd.Dispose();
-
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-
-        }
 
         public XDocument LoadDashboard(string dashboardID)
         {
@@ -225,7 +119,7 @@ namespace Dash.DatabaseStorage
                     reader.Read();
                     byte[] data = reader.GetValue(0) as byte[];
                     MemoryStream stream = new MemoryStream(data);
-                DevExpress.DashboardCommon.Dashboard dashboard = new DevExpress.DashboardCommon.Dashboard();
+                    DevExpress.DashboardCommon.Dashboard dashboard = new DevExpress.DashboardCommon.Dashboard();
                     dashboard.LoadFromXDocument(XDocument.Load(stream));
                     dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource =>
                     {
@@ -255,8 +149,7 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand($"select referer from Users where uname='{name}'", connection);
-
+                SqlCommand cmd = new SqlCommand($"SELECT referrer FROM users WHERE uname='{name}';", connection);
                 try
                 {
                     string result = (string)cmd.ExecuteScalar();
@@ -303,7 +196,7 @@ namespace Dash.DatabaseStorage
             return doc;
         }
 
-        private List<String> getCaptions()
+        private List<String> GetCaptions()
         {
             List<String> list = new List<String>();
             using (SqlConnection connection = new SqlConnection(this.connection))
@@ -314,7 +207,6 @@ namespace Dash.DatabaseStorage
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 while (reader.Read())
                 {
-
                     string Caption = reader.GetString(0);
                     list.Add(Caption);
                 }
@@ -327,29 +219,17 @@ namespace Dash.DatabaseStorage
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
-            List<String> available = getIdPermisionCurrentUser();
-            string FinalString = "(";
-            // Getting the final string
-            for (int i = 0; i < available.Count; i++)
-            {
-                if (i != available.Count - 1)
-                {
-                    FinalString += "'" + available[i] + "'" + ",";
-                }
-                else
-                {
-                    FinalString += "'" + available[i] + "'" + ")";
-                }
-            }
+   
+            DashboardPermissions permissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
             List<DashboardInfo> list = new List<DashboardInfo>();
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {FinalString}");
+                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {"FinalString"}");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                int id = getIdCompany(getcompanyForUser());
+                int id = GetIdCompany(GetCompanyForUser());
                 Models.Dashboard graph = new Models.Dashboard(id);
                 var payload = graph.GetNames(id);
                 while (reader.Read())
@@ -378,7 +258,7 @@ namespace Dash.DatabaseStorage
             return list;
         }
 
-        private int getIdCompany(string current)
+        private int GetIdCompany(string current)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -387,8 +267,8 @@ namespace Dash.DatabaseStorage
                     conn.Open();
                     SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
-                    var finalID = System.Convert.ToInt32(result);
-                    return finalID;
+                    var id = System.Convert.ToInt32(result);
+                    return id;
 
                 }
                 catch (Exception ex)
@@ -420,50 +300,5 @@ namespace Dash.DatabaseStorage
             }
         }
 
-        private List<String> getIdPermisionCurrentUser()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    List<String> captions = getCaptions();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    List<String> permisions = new List<string>();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{UserNameForChecking}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-                    int idUser = permisionID;
-                    cmd.Dispose();
-                    foreach (String graph in captions)
-                    {
-                        string whiteless = String.Concat(graph.Where(c => !Char.IsWhiteSpace(c)));
-                        string stripped = whiteless.Replace("-", "");
-                        SqlCommand graphResult = new SqlCommand($"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}", conn);
-                        string deb = $"SELECT {stripped} FROM PermissionsUsers WHERE id_permisions_user={idUser}";
-                        var resultID = graphResult.ExecuteScalar();
-                        int permision = (int)resultID;
-                        graphResult.Dispose();
-                        if (permision == 1)
-                        {
-                            permisions.Add(graph);
-                        }
-                        else
-                        {
-                            continue;
-                        }
-                    }
-
-                    return permisions;
-                }
-                catch (Exception)
-                {
-                    List<string> data = new List<string>();
-                    return data;
-                }
-            }
-
-
-        }
     }
 }

@@ -50,32 +50,12 @@ namespace Dash.DatabaseStorage
                 InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
-                connection.Close();
-                InsertPermision(stripped);
                 return ID;
             }
         }
 
 
 
-        private void InsertPermision(string dashboardName)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"ALTER TABLE PermissionsUsers ADD {dashboardName} int not null default(0);", conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-
-        }
         public XDocument LoadDashboard(string dashboardID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -88,7 +68,6 @@ namespace Dash.DatabaseStorage
                 reader.Read();
                 byte[] data = reader.GetValue(0) as byte[];
                 MemoryStream stream = new MemoryStream(data);
-                connection.Close();
                 var doc = XDocument.Load(stream);
                 return doc;
             }
@@ -111,7 +90,6 @@ namespace Dash.DatabaseStorage
                     string Caption = reader.GetString(1);
                     list.Add(new DashboardInfo() { ID = ID, Name = Caption });
                 }
-                connection.Close();
             }
             return list;
         }
@@ -132,8 +110,6 @@ namespace Dash.DatabaseStorage
                 InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 InsertCommand.ExecuteNonQuery();
-
-                connection.Close();
             }
         }
 

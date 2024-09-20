@@ -7,7 +7,9 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace Dash.Models
 {
@@ -68,7 +70,10 @@ namespace Dash.Models
 
         public DashboardPermissions ConvertJsonToPermissions(string json)
         {
-            return JsonConvert.DeserializeObject<DashboardPermissions>(json);
+            string unescapedJson = Regex.Unescape(json);
+            // Now, you can deserialize it
+            var permissions = JsonConvert.DeserializeObject<DashboardPermissions>(unescapedJson);
+            return permissions;
         }
     }
 
