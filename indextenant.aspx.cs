@@ -58,10 +58,7 @@ namespace Dash
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            string p = Request.QueryString["p"];
-           
-          
+                string p = Request.QueryString["p"];                    
                 try
                 {
                     if (Request.Cookies["tab"].Value.ToString() != null)
@@ -69,11 +66,8 @@ namespace Dash
                         string uname = HttpContext.Current.User.Identity.Name;
                         string name = getCompanyQuery(uname);
                         int id = getIdCompany(name);
-
-                    Models.Dashboard graph = new Models.Dashboard(id);
-
+                        Models.Dashboard graph = new Models.Dashboard(id);
                         var dataX = graph.GetGraphs(id);
-
                     }
                 }
                 catch { }
@@ -82,12 +76,12 @@ namespace Dash
                 {
                     if (!String.IsNullOrEmpty(p))
                     {
-                            string uname = HttpContext.Current.User.Identity.Name;
-                            string name = getCompanyQuery(uname);
-                            int id = getIdCompany(name);
-                    Models.Dashboard graph = new Models.Dashboard(id);
-                            var dataX = graph.getSingularNameOriginal(id, p);
-                            ASPxDashboard3.InitialDashboardId = dataX;
+                        string uname = HttpContext.Current.User.Identity.Name;
+                        string name = getCompanyQuery(uname);
+                        int id = getIdCompany(name);
+                        Models.Dashboard graph = new Models.Dashboard(id);
+                        var dataX = graph.getSingularNameOriginal(id, p);
+                        ASPxDashboard3.InitialDashboardId = dataX;
                     } else {
                         bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
                         if (isAllowed)

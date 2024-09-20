@@ -220,12 +220,11 @@ namespace Dash.DatabaseStorage
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
    
-            DashboardPermissions permissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
             List<DashboardInfo> list = new List<DashboardInfo>();
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {"FinalString"}");
+                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {"(0)"}");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
