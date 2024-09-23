@@ -140,7 +140,6 @@ namespace Dash.DatabaseStorage
                     }
             }
         }
-
         private string GetRefererName(string name)
         {
 #nullable enable
@@ -149,22 +148,26 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand cmd = new SqlCommand($"SELECT referrer FROM users WHERE uname='{name}';", connection);
+                SqlCommand cmd = new SqlCommand($"SELECT referrer FROM users WHERE uname=@uname;", connection);
+                cmd.Parameters.AddWithValue("@uname", name);  
+
                 try
                 {
-                    string result = (string)cmd.ExecuteScalar();
-                    if(!String.IsNullOrEmpty(result))
+                    object result = cmd.ExecuteScalar();
+                    if (result != null && result != DBNull.Value)
                     {
-                        return result;
-                    } else
+                        return result.ToString()!;
+                    }
+                    else
                     {
                         return string.Empty;
                     }
-                } catch
+                }
+                catch
                 {
                     return string.Empty;
                 }
-            }          
+            }
         }
 
         private XDocument ManipulateDocument(XDocument doc, string referer)
@@ -219,12 +222,14 @@ namespace Dash.DatabaseStorage
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
-   
+
             List<DashboardInfo> list = new List<DashboardInfo>();
+
+            
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE Caption IN {"(0)"}");
+                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards;");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */

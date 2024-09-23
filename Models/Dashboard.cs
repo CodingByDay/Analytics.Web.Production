@@ -57,7 +57,7 @@ namespace Dash.Models
                 {
                     conn.Open();
                     var json = JsonConvert.SerializeObject(payload);
-                    var insert = new SqlCommand($"update CustomNames set names='{json}' where company_id={companyID};", conn);
+                    var insert = new SqlCommand($"UPDATE custom_names SET names='{json}' WHERE company_id={companyID};", conn);
                     insert.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -113,7 +113,7 @@ namespace Dash.Models
 
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"select d.ID, d.Caption, cn.company_id, cn.names from Dashboards d, CustomNames cn where cn.company_id={id};", conn);
+                    var cmd = new SqlCommand($"SELECT d.id, d.caption, cn.company_id, cn.names FROM dashboards d, custom_names cn WHERE cn.company_id={id};", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -189,7 +189,7 @@ namespace Dash.Models
 
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"select d.ID, d.Caption, cn.company_id, cn.names from Dashboards d, CustomNames cn where cn.company_id={id};", conn);
+                    var cmd = new SqlCommand($"SELECT d.id, d.caption, cn.company_id, cn.names FROM dashboards d, custom_names cn WHERE cn.company_id={id};", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {

@@ -18,9 +18,10 @@
    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 
-   <script src="js/application/admin.js"></script>
-   <script src="js/DeleteExtension.js"></script>
-   <script src="js/AssignMetadata.js" type="text/javascript"></script>
+   <script src="Js/application/admin.js"></script>
+   <script src="Js/DeleteExtension.js"></script>
+   <script src="Js/SaveAsExtension.js"></script>
+   <script src="Js/AssignMetadata.js" type="text/javascript"></script>
 
 
 
@@ -140,10 +141,14 @@
 
       
 
-       <div id ="desktop_div">
-                       <a id="desktop-button" href="<%= Page.ResolveUrl("/IndexTenant.aspx") %>" class="dx-state-selected"><i class="fa fa-desktop" aria-hidden="true"></i>  Desktop</a>
-                       <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href)"><i class="fa fa-mobile" aria-hidden="true"></i>  Mobile</a>
-                        </div>
+      <div id="desktop_div">
+           <a id="desktop-button" href="<%= Page.ResolveUrl("/IndexTenant.aspx") %>" class="dx-state-selected">
+              <i class="fa fa-desktop" aria-hidden="true"></i> Desktop
+           </a>
+           <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href); return false;">
+              <i class="fa fa-mobile" aria-hidden="true"></i> Mobile
+           </a>
+        </div>
      
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         

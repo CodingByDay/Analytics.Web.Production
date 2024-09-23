@@ -39,7 +39,6 @@
             }
 
             function askPopup() {
-                console.log("ask");
             }
 
             function PerformDelete(dashboardid) {
@@ -127,7 +126,8 @@
         <div style="position: absolute; left: 0; right: 0; top:35px; bottom:0;">
 
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
-        <ClientSideEvents BeforeRender="onBeforeRender"
+        <ClientSideEvents 
+            BeforeRender="onBeforeRender"
             DashboardInitializing ="ask"
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"

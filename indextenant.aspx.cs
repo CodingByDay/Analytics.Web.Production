@@ -83,11 +83,9 @@ namespace Dash
                         var dataX = graph.getSingularNameOriginal(id, p);
                         ASPxDashboard3.InitialDashboardId = dataX;
                     } else {
-                        bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
-                        if (isAllowed)
-                        {
-                            ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                        } 
+                        // Add a check here 23.09.2024
+                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                         
                     }
                 }
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
@@ -206,65 +204,6 @@ namespace Dash
             return companyInfo;
         }
 
-
-
-        private int getIdPermision()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{HttpContext.Current.User.Identity.Name}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-                    return permisionID;
-                }
-                catch (Exception ex)
-                {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                    return -1;
-                }
-            }
-
-
-        }
-        private bool isUserOk(string id)
-        {
-            string ID = id;
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards WHERE ID = {id};", conn);     
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    string ok = (string) cmd.ExecuteScalar();
-                    if(ok!=string.Empty)
-                    {
-                        int id_user = getIdPermision();
-                        var allowed = new SqlCommand($"SELECT {ok} FROM PermissionsUsers WHERE id_permisions_user = {id_user};", conn);
-                        int isOk = (int) allowed.ExecuteScalar();
-                        var stop = true;
-                        if(isOk==1)
-                        {
-                            return true;
-                        } else
-                        {
-                            return false;
-                        }
-                    } else
-                    {
-                        return false;
-                    }                    
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
-            }
-        }
 
 
         /// <summary>
@@ -425,7 +364,7 @@ namespace Dash
                 cmd.Dispose();
                 conn.Close();
             }
-            var a = get_connectionStringName(companyID);
+            var a = GetConnectionStringName(companyID);
             return a;
         }
 
@@ -454,12 +393,12 @@ namespace Dash
                 conn.Close();
             }
 
-            var a = get_connectionStringName(companyID);
+            var a = GetConnectionStringName(companyID);
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
             return stringFinal;
         }
 
-        private string get_connectionStringName(int companyID)
+        private string GetConnectionStringName(int companyID)
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -467,7 +406,7 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
 
             conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT databaseName FROM Companies WHERE id_company={companyID}", conn);
+            SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE id_company={companyID}", conn);
 
             try
             {

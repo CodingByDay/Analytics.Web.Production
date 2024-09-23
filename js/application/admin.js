@@ -63,7 +63,6 @@ function customizeWidgets(sender, args) {
 
         var grid = args.GetWidget();
         var columns = grid.option("columns");
-        console.log(columns);
         for (var i = 0; i < columns.length; i++) {
             
 
@@ -126,7 +125,6 @@ function customizeWidgets(sender, args) {
                                     text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                                 }
                                 window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                                console.log(window.item_caption);
 
                             }
                         })
@@ -172,7 +170,6 @@ function customizeWidgets(sender, args) {
                                 text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                             }
                             window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                            console.log(window.item_caption);
                            
                         }
                     })
@@ -293,7 +290,6 @@ function updatecustomizeWidgets(sender, args) {
                                 text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                             }
                             window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                            console.log(window.item_caption);
 
                         }
                     })
@@ -333,16 +329,13 @@ var extension;
  */
 
 function onBeforeRender(sender) {
-
     var dashboardControl = sender.GetDashboardControl();
     extension = new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl);
     dashboardControl.surfaceLeft(extension.panelWidth);
     dashboardControl.registerExtension(extension);
     dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
     dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
-
-
-
+    dashboardControl.unregisterExtension("designerToolbar");
 }
 
 function setCookie(cname, cvalue, exdays) {
