@@ -27,46 +27,46 @@ namespace Dash.Models
     {
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-        public string Uname { get; set; }
+        public string uname { get; set; }
 
-        public string Password { get; set; }
-
-
-        public string UserRole { get; set; }
+        public string password { get; set; }
 
 
-        public string ViewState { get; set; }
+        public string user_role { get; set; }
 
 
-        public string Email { get; set; }
+        public string view_allowed { get; set; }
 
 
-        public string Dashboards { get; set; }
+        public string email { get; set; }
+
+
+        public string dashboards { get; set; }
 
         public User(string uname, string Pwd, string userRole, string ViewState, string email)
         {
-            this.Uname = uname;
-            this.Password = Pwd;
-            this.UserRole = userRole;
-            this.ViewState = ViewState;
-            this.Email = email;
+            this.uname = uname;
+            this.password = Pwd;
+            this.user_role = userRole;
+            this.view_allowed = ViewState;
+            this.email = email;
         }
 
         public User(string uname, string Pwd, string userRole, string ViewState, string email, string graphs)
         {
-            this.Uname = uname;
-            this.Password = Pwd;
-            this.UserRole = userRole;
-            this.ViewState = ViewState;
-            this.Email = email;
-            this.Dashboards = graphs;
+            this.uname = uname;
+            this.password = Pwd;
+            this.user_role = userRole;
+            this.view_allowed = ViewState;
+            this.email = email;
+            this.dashboards = graphs;
         }
 
 
         public List<GraphName> GetGraphNames()
         {
             List<GraphName> data = new List<GraphName>();
-            var splitted = this.Dashboards.Split(',');
+            var splitted = this.dashboards.Split(',');
             foreach(string split in splitted)
             {
                 data.Add(new GraphName {  name= split});
@@ -88,7 +88,7 @@ namespace Dash.Models
                 {
                     returnValue += $"{x.name},"; 
                 }
-                this.Dashboards = returnValue;
+                this.dashboards = returnValue;
             } catch
             {
             }
@@ -131,7 +131,7 @@ namespace Dash.Models
                 {
                     returnValue += $"{x.name},";
                 }
-                this.Dashboards = returnValue;
+                this.dashboards = returnValue;
             }
             catch
             {
@@ -151,10 +151,10 @@ namespace Dash.Models
                         SqlDataReader sdr = cmd.ExecuteReader();
                         while (sdr.Read())
                         {                          
-                            this.Uname = sdr["uname"].ToString();
-                            this.UserRole = sdr["userRole"].ToString();
-                            this.ViewState = sdr["ViewState"].ToString();
-                            this.Dashboards = sdr["graphs"].ToString();
+                            this.uname = sdr["uname"].ToString();
+                            this.user_role = sdr["userRole"].ToString();
+                            this.view_allowed = sdr["ViewState"].ToString();
+                            this.dashboards = sdr["graphs"].ToString();
                         }
                     }
                     catch (Exception ex)

@@ -158,8 +158,8 @@
 
 
     <div class="content-flex">
-        <div class="inner-item">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [databaseName], [admin_id] FROM [Companies]"></asp:SqlDataSource>
+        <div class="inner-item companies">
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [database_name], [admin_id] FROM [Companies]"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
@@ -186,7 +186,7 @@
                     </dx:BootstrapGridViewTextColumn>
                     <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="databaseName" Caption="Naziv konekcije" VisibleIndex="3">
+                    <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
                     </dx:BootstrapGridViewTextColumn>
                       <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
                     </dx:BootstrapGridViewTextColumn>
@@ -213,17 +213,17 @@
 
            </div>
 
-	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT Dashboards.Caption, Dashboards.belongsTo, Dashboards.ID FROM Dashboards " UpdateCommand="UPDATE Dashboards SET belongsTo = @belongsTo WHERE (ID = @ID)">
+	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
         <UpdateParameters>
-            <asp:Parameter Name="belongsTo" />
-            <asp:Parameter Name="ID" />
+            <asp:Parameter Name="belongs" />
+            <asp:Parameter Name="id" />
         </UpdateParameters>
     </asp:SqlDataSource>
-        <div class="inner-item">
+        <div class="inner-item user">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-          <dx:BootstrapGridView ID="usersGridView"  ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView"  ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -239,16 +239,16 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
+              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
+              <dx:BootstrapGridViewTextColumn FieldName="password"  Visible="false" Name="password" VisibleIndex="2" Caption="Password">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="UserRole" Visible="false" Name="UserRole" VisibleIndex="3" Caption="UserRole">
+              <dx:BootstrapGridViewTextColumn FieldName="user_role" Visible="false" Name="user_role" VisibleIndex="3" Caption="UserRole">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="ViewState" Visible="false" Name="ViewState" VisibleIndex="3" Caption="ViewState">
+			   <dx:BootstrapGridViewTextColumn FieldName="view_allowed" Visible="false" Name="view_allowed" VisibleIndex="3" Caption="ViewState">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="Email" Visible="false" Name="Email" VisibleIndex="3" Caption="Email">
+			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
@@ -262,14 +262,12 @@
                     <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
                     <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
-                    <dx:BootstrapButton runat="server" Visible="false"  OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
-                    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
 
    </div>
 
-	   <div class="inner-item">
+	   <div class="inner-item graphs">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 
@@ -289,12 +287,12 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongsTo" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
+              <dx:BootstrapGridViewTextColumn FieldName="belongs" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
@@ -302,10 +300,10 @@
        </div>
        </div>
 
-      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT ID, Caption, belongsTo FROM Dashboards;" UpdateCommand="UPDATE Dashboards SET belongsTo=@belongsTo WHERE ID=@ID">
+      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, belongs FROM dashboards;" UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
           <UpdateParameters>
-              <asp:Parameter Name="belongsTo" />
-              <asp:Parameter Name="ID" />
+              <asp:Parameter Name="belongs" />
+              <asp:Parameter Name="id" />
           </UpdateParameters>
       </asp:SqlDataSource>
 
@@ -433,7 +431,7 @@
                 </div>
                 <div class="form-group">
                   <label for="referer">Komercialist</label>
-                  <asp:TextBox ID="referer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
+                  <asp:TextBox ID="referrer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
                   <label for="TxtPassword">Geslo</label>

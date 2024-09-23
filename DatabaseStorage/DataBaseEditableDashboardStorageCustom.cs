@@ -19,6 +19,7 @@ namespace Dash.DatabaseStorage
     public class DataBaseEditableDashboardStorageCustom : IEditableDashboardStorage
     {
         private string connectionString;
+        public DashboardPermissions permissions;
         private SqlConnection conn;
         private int permisionID;
         private SqlCommand cmd;
@@ -30,6 +31,7 @@ namespace Dash.DatabaseStorage
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
             this.connectionString = connectionString;
+            permissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
         }
 
         public string AddDashboard(XDocument document, string dashboardName)
@@ -107,10 +109,12 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
-
-            using (SqlConnection connection = new SqlConnection(this.connection))
+            if(!permissions.DashboardWithIdAllowed(dashboardID))
             {
-
+                return null;
+            }
+            using (SqlConnection connection = new SqlConnection(this.connection))
+            {                  
                     connection.Open();
                     SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
                     GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
@@ -222,17 +226,35 @@ namespace Dash.DatabaseStorage
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
+            string FinalString = "(";
+            var available = permissions.Permissions;
+            // Getting the final string
+            for (int i = 0; i < available.Count; i++)
+            {
+                if (i != available.Count - 1)
+                {
+                    FinalString += "'" + available[i].id + "'" + ",";
+                }
+                else
+                {
+                    FinalString += "'" + available[i].id + "'" + ")";
+                }
+            }
+
+            if(available.Count == 0)
+            {
+                return new List<DashboardInfo>();
+            }
 
             List<DashboardInfo> list = new List<DashboardInfo>();
-
-            
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards;");
+                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE id in @ConcatString;");
+                GetCommand.Parameters.AddWithValue("@ConcatString", FinalString);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
-                string name = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                string name = HttpContext.Current.User.Identity.Name; 
                 int id = GetIdCompany(GetCompanyForUser());
                 Models.Dashboard graph = new Models.Dashboard(id);
                 var payload = graph.GetNames(id);

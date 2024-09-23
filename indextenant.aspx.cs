@@ -36,6 +36,7 @@ namespace Dash
         HttpRequest httpRequest;
         private string companyInfo;
         private object result;
+        private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
 
         private int getIdCompany(string current)
         {
@@ -58,6 +59,7 @@ namespace Dash
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+                dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
                 string p = Request.QueryString["p"];                    
                 try
                 {
@@ -83,9 +85,11 @@ namespace Dash
                         var dataX = graph.getSingularNameOriginal(id, p);
                         ASPxDashboard3.InitialDashboardId = dataX;
                     } else {
-                        // Add a check here 23.09.2024
-                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                         
+                        // New OOP structure 23.09.2024
+                        if (dataBaseDashboardStorage.permissions.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
+                        {
+                            ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                        } 
                     }
                 }
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
@@ -93,7 +97,6 @@ namespace Dash
                 ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
                 ASPxDashboard3.AllowCreateNewDashboard = true;

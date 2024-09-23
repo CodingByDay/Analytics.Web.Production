@@ -75,6 +75,18 @@ namespace Dash.Models
             var permissions = JsonConvert.DeserializeObject<DashboardPermissions>(unescapedJson);
             return permissions;
         }
+
+        public bool DashboardWithIdAllowed(string dashboardID)
+        {
+            foreach (var permission in this.Permissions)
+            {
+                if(permission.id.ToString() == dashboardID)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 
 

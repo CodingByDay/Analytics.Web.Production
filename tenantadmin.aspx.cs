@@ -398,7 +398,7 @@ namespace Dash
                     while (sdr.Read())
                     {
                         User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                        var test = user.Uname;
+                        var test = user.uname;
                         userObjectList.Add(user);
                     }
 

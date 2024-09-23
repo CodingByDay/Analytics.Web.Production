@@ -72,8 +72,6 @@ namespace Dash
         protected void Page_Load(object sender, EventArgs e)
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            //  HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
-            //  adminButton.Visible = false;
             companiesGridView.SettingsBehavior.AllowFocusedRow = true;
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -82,8 +80,7 @@ namespace Dash
             companiesGridView.EnableCallBacks = false;
             companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-            companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
-            // All of this config is neccessary.           
+            companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;     
             usersGridView.SettingsBehavior.AllowFocusedRow = true;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -97,21 +94,16 @@ namespace Dash
             {
                 graphsGridView.Enabled = true;
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
-                authenticate();
-                // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                // admin.Visible = true;
+                Authenticate();
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 companiesGridView.FocusedRowIndex = 0;
                 var beginingID = 1;
                 companiesList.Enabled = false;
                 FillUsers(beginingID);
-                //fillCompanies();
-                // FillUsers();
                 FillListGraphs();
-                fillCompaniesRegistration();
+                FillCompaniesRegistration();
                 FillListAdmin();
-                // User Types
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -119,23 +111,20 @@ namespace Dash
             else
             {
                 graphsGridView.Enabled = true;
-                // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                // admin.Visible = true;
                 FillListGraphs();
                 if (companiesGridView.Selection.Count != 0)
                 {
                     var plurals = companiesGridView.GetSelectedFieldValues("company_name");
                     var value = plurals[0].ToString();
-                    FillUsers(getIdCompany(value));
+                    FillUsers(GetIdCompany(value));
                 }
                 else
                 {
                     companiesGridView.FocusedRowIndex = 0;
                     companiesGridView.Selection.SelectRow(0);
                     var current = companiesGridView.GetSelectedFieldValues("company_name");
-                    FillUsers(getIdCompany(current[0].ToString()));
+                    FillUsers(GetIdCompany(current[0].ToString()));
                 }
-
             }
         }
 
@@ -179,7 +168,7 @@ namespace Dash
 
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT * FROM Companies WHERE id_company={v};", conn);
+                    cmd = new SqlCommand($"SELECT * FROM companies WHERE id_company={v};", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -187,7 +176,7 @@ namespace Dash
                         company_number = (reader["company_number"].ToString());
                         websiteCompany = (reader["website"].ToString());
                         admin_id = (reader["admin_id"].ToString());
-                        databaseName = (reader["databaseName"].ToString());
+                        databaseName = (reader["database_name"].ToString());
                     }
 
                     companyName.Text = company_name;
@@ -233,7 +222,7 @@ namespace Dash
                         TxtUserName.Enabled = false;
                         email.Enabled = false;
                         current = plurals[0].ToString();
-                        var id = getIdCompany(plurals[0].ToString());
+                        var id = GetIdCompany(plurals[0].ToString());
                         FillUsers(id);
                         var without = plurals[0].ToString();
                         companiesList.SelectedValue = without;
@@ -268,8 +257,8 @@ namespace Dash
             graphsGridView.Enabled = true;
             FillListGraphs();
             List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
+            ShowConfig(values);
+            UpdateForm();
         }
 
         private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
@@ -277,7 +266,7 @@ namespace Dash
 
         }
 
-        private void authenticate()
+        private void Authenticate()
         {
 
             using (SqlConnection conn = new SqlConnection(connection))
@@ -287,11 +276,11 @@ namespace Dash
                     conn.Open();
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
+                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        role = (reader["userRole"].ToString());
+                        role = (reader["user_role"].ToString());
                     }
                     cmd.Dispose();
                     if (role == "SuperAdmin")
@@ -325,7 +314,7 @@ namespace Dash
                     string UserNameForChecking
                         = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT uname FROM Users", conn);        
+                    cmd = new SqlCommand("SELECT uname FROM users", conn);        
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -345,83 +334,13 @@ namespace Dash
 
         }
 
-        private void showConfig(List<String> obj)
+        private void ShowConfig(List<String> obj)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
-                    conn.Open();
-
-                    valuesBool.Clear();
-                    columnNames.Clear();
-                    config.Clear();
-
-                    // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-                    // SET @ColList = ''
-                    // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-                    // EXEC(@SQLStatment
-                    if (usersGridView.FocusedRowIndex >= 0)
-                    {
-
-
-                        var namePlural = usersGridView.GetSelectedFieldValues("Uname");
-
-                        if (namePlural.Count == 0)
-                        {
-                            string nameUser = usersList.ElementAt(0).Uname;
-                            findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{nameUser}'");
-                        }
-                        else
-                        {
-                            string name = namePlural[0].ToString();
-                            findIdString = String.Format($"SELECT id_permision_user FROM Users WHERE uname='{name}'");
-                        }
-
-                        // Documentation. This query is for getting all the permision table data from the user
-                        cmd = new SqlCommand(findIdString, conn);
-                        idNumber = cmd.ExecuteScalar();
-                        Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-                        permisionQuery = $"SELECT * FROM PermissionsUsers WHERE id_permisions_user={Total_Key}";
-                        cmd = new SqlCommand(permisionQuery, conn);
-
-
-                        using (SqlConnection connection = new SqlConnection(
-                          this.connection))
-                        {
-                            SqlCommand command = new SqlCommand(permisionQuery, connection);
-                            connection.Open();
-                            SqlDataReader reader =
-                            command.ExecuteReader(CommandBehavior.CloseConnection);
-                            while (reader.Read())
-                            {
-                                for (int i = 0; i < obj.Count; i++)
-                                {
-                                    int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                                    if (bitValueTemp == 1)
-                                    {
-
-
-                                        graphsGridView.Selection.SetSelection(i, true);
-                                        valuesBool.Add(true);
-                                    }
-                                    else
-                                    {
-                                        graphsGridView.Selection.SetSelection(i, false);
-                                        valuesBool.Add(false);
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                    else
-                    {
-
-
-                    }
+                
                 }
                 catch (Exception ex)
                 {
@@ -448,13 +367,13 @@ namespace Dash
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
+                    cmd = new SqlCommand($"SELECT caption FROM dashboards;", conn);
                            
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-                        graphList.Add(sdr["Caption"].ToString());
+                        graphList.Add(sdr["caption"].ToString());
                     }
                 }
                 catch (Exception ex)
@@ -479,25 +398,18 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     byUserList.Clear();
                     usersList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT * FROM Users WHERE id_company={companyID}", conn);
-
-                    // Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
+                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; 
+                    cmd = new SqlCommand($"SELECT * FROM users WHERE id_company={companyID}", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
 
                     while (sdr.Read())
                     {
-
-                        User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                        var test = user.Uname;
+                        User user = new User(sdr["uname"].ToString(), sdr["password"].ToString(), sdr["user_role"].ToString(), sdr["view_allowed"].ToString(), sdr["email"].ToString());
+                        var test = user.uname;
                         usersList.Add(user);
                         byUserList.Add(sdr["uname"].ToString());
-
                     }
                     usersGridView.DataSource = usersList;
                     usersGridView.DataBind();
@@ -518,7 +430,7 @@ namespace Dash
 
 
 
-        private void fillCompaniesRegistration()
+        private void FillCompaniesRegistration()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -527,14 +439,12 @@ namespace Dash
                     conn.Open();
 
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT * FROM Companies", conn); 
+                    cmd = new SqlCommand("SELECT * FROM companies", conn); 
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
                         companies.Add(sdr["company_name"].ToString());
-                        var debug = sdr["company_name"].ToString();
-
                     }
                     companiesList.DataSource = companies;
                     companiesList.DataBind();
@@ -551,7 +461,7 @@ namespace Dash
 
 
 
-        private void updateForm()
+        private void UpdateForm()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -559,35 +469,35 @@ namespace Dash
                 {
                     conn.Open();
                     isEditUser = true;
-                    if (usersGridView.GetSelectedFieldValues("Uname").Count > 1)
+                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
                     {
-                        userRightNow = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
+                        userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
                     }
                     else
                     {
                         try
                         {
-                            userRightNow = usersGridView.GetRowValues(0, "Uname").ToString();
+                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
                         } catch
                         {
 
                         }
                     }
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{userRightNow}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-                        TxtName.Text = sdr["FullName"].ToString();
+                        TxtName.Text = sdr["full_name"].ToString();
                         TxtUserName.Text = sdr["uname"].ToString();
                         TxtUserName.Enabled = false;
-                        referer.Text = sdr["referer"].ToString();
+                        referrer.Text = sdr["referrer"].ToString();
                         int number = (int)sdr["id_company"];
                         string dare = GetCompanyName(number);
                         companiesList.SelectedValue = dare;
                         companiesList.Enabled = false;
                         email.Enabled = false;
-                        string role = sdr["userRole"].ToString();
-                        string type = sdr["ViewState"].ToString();
+                        string role = sdr["user_role"].ToString();
+                        string type = sdr["view_allowed"].ToString();
                         email.Text = sdr["email"].ToString();
                         userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
@@ -612,10 +522,8 @@ namespace Dash
                 {
                     conn.Open();
                     string uname = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT company_name FROM Companies WHERE id_company={company}", conn); 
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    var admin = (string)cmd.ExecuteScalar();
+                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); 
+                    var admin = (string) cmd.ExecuteScalar();
                     cmd.Dispose();
                     return admin;
                 }
@@ -635,21 +543,21 @@ namespace Dash
                 {
                     isEditUser = true;
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{name}'", conn);
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-                        TxtName.Text = sdr["FullName"].ToString();
+                        TxtName.Text = sdr["full_name"].ToString();
                         TxtUserName.Text = sdr["uname"].ToString();
                         TxtUserName.Enabled = false;
-                        referer.Text = sdr["referer"].ToString();
+                        referrer.Text = sdr["referrer"].ToString();
                         var number = (int)sdr["id_company"];
                         var data = GetCompanyName(number);
                         companiesList.SelectedValue = data;
                         companiesList.Enabled = false;
                         email.Enabled = false;
-                        string role = sdr["userRole"].ToString();
-                        string type = sdr["ViewState"].ToString();
+                        string role = sdr["user_role"].ToString();
+                        string type = sdr["view_allowed"].ToString();
                         email.Text = sdr["email"].ToString();
                         userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
                         userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
@@ -676,11 +584,7 @@ namespace Dash
                     conn.Open();
                     if (TxtUserName.Enabled == true)
                     {
-                        SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
-                        var result = cmd.ExecuteScalar();
-                        Int32 Total_ID = System.Convert.ToInt32(result);
-                        cmd.Dispose();
-                        int next = Total_ID + 1;
+
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
 
@@ -700,26 +604,16 @@ namespace Dash
                             }
                             else
                             {
-                                string finalQueryPermsions = String.Format($"INSERT INTO PermissionsUsers(id_permisions_user) VALUES ({next});");
-                                SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-                                try
-                                {
-                                    createUserPermisions.ExecuteNonQuery();
-                                }
-                                catch (Exception error)
-                                {
-                                    var log = error;
-                                }
-                                createUserPermisions.Dispose();
+                              
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                                string companyINSERT = companiesList.SelectedItem.Value;
-                                int idCOMPANY = getIdCompany(companyINSERT);
-                                string finalQueryRegistration = String.Format($"INSERT INTO Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user, referer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next}, '{referer.Text}')");
-                                SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
+                                string CompanyInsert = companiesList.SelectedItem.Value;
+                                int IdCompany = GetIdCompany(CompanyInsert);
+                                string QueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{IdCompany}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{referrer.Text}')");
+                                SqlCommand createUser = new SqlCommand(QueryRegistration, conn);
                                 var username = TxtUserName.Text;
                                 try
                                 {
-                                    var id = getIdCompany(companiesList.SelectedValue);
+                                    var id = GetIdCompany(companiesList.SelectedValue);
                                     createUser.ExecuteNonQuery();
                                     createUser.Dispose();
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
@@ -752,11 +646,11 @@ namespace Dash
                         if (!String.IsNullOrEmpty(TxtRePassword.Text))
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users SET Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users SET Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referrer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         else
                         {
-                            cmdEdit = new SqlCommand($"UPDATE Users SET userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referer.Text}', FullName='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE Users SET userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referrer.Text}', FullName='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
@@ -833,10 +727,10 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_company) FROM Companies", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_company) FROM companies", conn);
                     var result = cmd.ExecuteScalar();
                     Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO Companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
+                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
                     cmd.ExecuteNonQuery();
                     Dashboard graph = new Dashboard(next);
                     graph.SetGraphs(next);
@@ -860,7 +754,7 @@ namespace Dash
                 {
                     conn.Open();
 
-                    cmd = new SqlCommand($"UPDATE Companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
+                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
                     cmd.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -880,7 +774,7 @@ namespace Dash
             if (!isEditHappening && ed == "no")
             {                           
                     insertCompany();
-                    fillCompaniesRegistration();
+                    FillCompaniesRegistration();
                     var names = companyName.Text.Split(' ');
                     Random random = new Random();
                     string adminname = $"{names[0]}{random.Next(1, 1000)}";
@@ -997,7 +891,7 @@ namespace Dash
                     var admin = listAdmin.SelectedValue;
                     var websiteString = website.Text;
                     var companyNum = companyNumber.Text;
-                    SqlCommand cmd = new SqlCommand($"UPDATE Companies SET admin_id='{admin}', website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
+                    SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}', website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
                     cmd.ExecuteNonQuery();
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
                 }
@@ -1018,21 +912,13 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM PermissionsUsers;", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 Total_ID = System.Convert.ToInt32(result);
-                    cmd.Dispose();
-                    int next = Total_ID + 1;
-                    string finalQueryPermsions = String.Format($"INSERT INTO PermissionsUsers(id_permisions_user) VALUES ({next});");
-                    SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-                    createUserPermisions.ExecuteNonQuery();
+
                     string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
-                    string companyINSERT = cName;
-                    int idCOMPANY = getIdCompany(companyINSERT);
-                    string finalQueryRegistration = String.Format($"INSERT INTO Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
-                    SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-                    var username = TxtUserName.Text;
-                    var id = getIdCompany(cName.Trim());
+                    string Company = cName;
+                    int IdCompany = GetIdCompany(Company);
+                    string FinalQueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{IdCompany}','Viewer&Designer','{name}', '{name}@{name}.com')");
+                    SqlCommand createUser = new SqlCommand(FinalQueryRegistration, conn);
+                    var id = GetIdCompany(cName.Trim());
                     createUser.ExecuteNonQuery();
                     FillListAdmin();
                     FillUsers(id);
@@ -1055,17 +941,15 @@ namespace Dash
                 {
                     conn.Open();
                     string username = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM Users WHERE uname='{username}'", conn);
+                    SqlCommand cmd = new SqlCommand($"DELETE FROM users WHERE uname='{username}'", conn);
                     deletedID = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    getIdPermision();
-                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("Uname")[0].ToString());
+                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
                     var spacelessCompany = company.Replace(" ", string.Empty);
-                    idFromString = getIdCompany(spacelessCompany);
+                    idFromString = GetIdCompany(spacelessCompany);
                     cmd.ExecuteNonQuery();
                     FillListGraphs();
                     List<String> values = FillListGraphsNames();
-                    showConfig(values);
-                    deletePermisionEntry();
+                    ShowConfig(values);
                     FillUsers(idFromString);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
                 }
@@ -1087,10 +971,9 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    //var s = name.Replace(" ", string.Empty);
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"SELECT databaseName FROM Companies WHERE company_name='{name}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE company_name='{name}'", conn);
                     string result = cmd.ExecuteScalar().ToString();
                     returnString = result;
                     return returnString;
@@ -1112,8 +995,8 @@ namespace Dash
             graphsGridView.Enabled = true;
             FillListGraphs();
             List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
+            ShowConfig(values);
+            UpdateForm();
         }
 
         public List<String> FillListGraphsNames()
@@ -1128,15 +1011,13 @@ namespace Dash
                     graphList.Clear();
                     string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption FROM Dashboards;", conn);
-
-
+                    cmd = new SqlCommand($"SELECT caption FROM dashboards;", conn);
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
                     {
-                        graphList.Add(sdr["Caption"].ToString());
-                        string trimmed = sdr["Caption"].ToString();
+                        graphList.Add(sdr["caption"].ToString());
+                        string trimmed = sdr["caption"].ToString();
                         string stripped = String.Concat(trimmed.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
 
                         values.Add(stripped);
@@ -1163,7 +1044,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{uname}';", conn);
+                    cmd = new SqlCommand($"SELECT uname, company_name FROM users INNER JOIN companies ON users.id_company = companies.id_company WHERE uname='{uname}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
@@ -1182,71 +1063,7 @@ namespace Dash
         }
 
 
-        private void makeSQLquery(int numberOfRows)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    for (int i = 0; i < numberOfRows; i++)
-                    {
-                        var tempGraphString = values.ElementAt(i);
-
-                        var name = usersGridView.GetSelectedFieldValues("Uname");
-                        var singular = name[0].ToString();
-                        findId = String.Format($"SELECT id_permision_user FROM Users where uname='{singular}'");
-                        // execute query
-                        // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand(findId, conn);
-                        try
-                        {
-                            id = cmd.ExecuteScalar();
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(typeof(Admin), ex.InnerException.Message);
-
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
-                            // error handling
-                        }
-                        Int32 Total_ID = System.Convert.ToInt32(id);
-                        if (graphsGridView.Selection.IsRowSelected(i) == true)
-                        {
-                            flag = 1;
-                        }
-                        else
-                        {
-                            flag = 0;
-                        }
-                        finalQuerys = String.Format($"UPDATE PermissionsUsers SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                        cmd = new SqlCommand(finalQuerys, conn);
-                        try
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-
-                    }
-                    cmd.Dispose();
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-        }
-
+     
 
 
         protected void saveGraphs_Click(object sender, EventArgs e)
@@ -1258,61 +1075,12 @@ namespace Dash
             else
             {
                 List<String> values = FillListGraphsNames();
-                makeSQLquery(values.Count);
-                showConfig(values);
+                ShowConfig(values);
             }
         }
 
 
-        private void getIdPermision()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_permision_user FROM Users WHERE uname='{deletedID}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-
-        }
-
-
-
-        private void deletePermisionEntry()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd1 = new SqlCommand($"DELETE FROM PermissionsUsers WHERE id_permisions_user={permisionID}", conn);
-                    var final = $"DELETE FROM PermissionsUsers WHERE id_permisions_user={permisionID}";
-                    var result = cmd1.ExecuteScalar();
-                    Int32 Total_ID = System.Convert.ToInt32(result);
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-
-
-        private string getCurrentCompany()
+        private string GetCurrentCompany()
         {
             var company = companiesGridView.GetSelectedFieldValues("company_name");
             return company[0].ToString();
@@ -1328,21 +1096,17 @@ namespace Dash
                     if (companiesGridView.FocusedRowIndex != -1)
                     {
                         var current = Session["current"].ToString();
-                        var id = getIdCompany(current);
+                        var id = GetIdCompany(current);
                         Dashboard graph = new Dashboard(id);
                         graph.Delete(id);
-
-                        deleteMemberships(id);
-                        SqlCommand user = new SqlCommand($"DELETE FROM Users WHERE id_company={id}", conn);
-                        var deb = $"DELETE FROM Users WHERE id_company={id}";
+                        SqlCommand user = new SqlCommand($"DELETE FROM users WHERE id_company={id}", conn);
                         RemoveConnectionString(current);
-                        SqlCommand cmd = new SqlCommand($"DELETE FROM Companies WHERE company_name='{current}'", conn);
-                        string dev = $"DELETE FROM Companies WHERE company_name='{current}'";
+                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
+                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
                         cmd.ExecuteNonQuery();
                         try
                         {
                             user.ExecuteNonQuery();
-
                         }
                         catch (Exception ex)
                         {
@@ -1357,9 +1121,8 @@ namespace Dash
                         FillListAdmin();
                         cmd.Dispose();
                         string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
-                        int companyID = getIdCompany(companyName);
-                        FillUsers(companyID);
-                        
+                        int companyID = GetIdCompany(companyName);
+                        FillUsers(companyID);                       
                     }
                 }
                 catch (Exception ex)
@@ -1378,7 +1141,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT databaseName FROM Companies WHERE company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
                     config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
@@ -1392,7 +1155,7 @@ namespace Dash
             }
         }
 
-        private int getIdCompany(string current)
+        private int GetIdCompany(string current)
         {
             string spaceless = current.Trim();
             using (SqlConnection conn = new SqlConnection(connection))
@@ -1400,11 +1163,10 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{spaceless}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
                     result = cmd.ExecuteScalar();
                     int finalID = System.Convert.ToInt32(result);
                     return finalID;
-
                 }
                 catch (Exception)
                 {
@@ -1413,27 +1175,6 @@ namespace Dash
             }
 
 
-        }
-
-        private void deleteMemberships(int number)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var final = getCurrentCompany();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM Memberships WHERE id_company={number}", conn);
-                    string dev = $"DELETE FROM Companies WHERE company_name='{number}'";
-                    cmd.ExecuteNonQuery();
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
         }
 
 
@@ -1514,27 +1255,10 @@ namespace Dash
             graphsGridView.Enabled = true;
             FillListGraphs();
             List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
+            ShowConfig(values);
+            UpdateForm();
         }
 
-        protected void test_Click(object sender, EventArgs e)
-        {
-        }
-
-        protected void test_Click1(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void hidden_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void saveMetadata_Click(object sender, EventArgs e)
-        {
-
-        }
+      
     }
 }
