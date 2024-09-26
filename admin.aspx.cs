@@ -1,6 +1,7 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -1276,6 +1277,18 @@ namespace Dash
                 }
 
                 graphsGridView.DataBind();
+            }
+        }
+
+        public void btnFilter_Click(object sender, EventArgs e)
+        {
+            string Ids = string.Empty;
+            DataView dvGraphs = (DataView)query.Select(DataSourceSelectArguments.Empty);
+            foreach (DataRowView row in dvGraphs)
+            {
+                int id = (int)row["id"];
+                var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
+                var debug = true;
             }
         }
     }

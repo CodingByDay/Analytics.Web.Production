@@ -330,7 +330,8 @@
        </div>
        </div>
 
-      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, belongs FROM dashboards;" UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, belongs, meta_data FROM dashboards;" UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+
           <UpdateParameters>
               <asp:Parameter Name="belongs" />
               <asp:Parameter Name="id" />
@@ -510,7 +511,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="checkboxModalLabel">Izberite možnosti</h5>
+                <h5 class="modal-title" id="checkboxModalLabel">Izberite ustrezne filtre</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -546,7 +547,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
-                <button type="button" class="btn btn-primary">Shrani spremembe</button>
+                <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="btnFilter_Click" />
             </div>
         </div>
     </div>

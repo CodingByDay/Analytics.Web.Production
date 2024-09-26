@@ -475,6 +475,7 @@
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\DashboardPermissions.cs" />
+    <Compile Include="Models\MetaData.cs" />
     <Compile Include="Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
