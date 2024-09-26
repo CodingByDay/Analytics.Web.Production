@@ -5,6 +5,7 @@ using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
 using DevExpress.Pdf.Native.BouncyCastle.Asn1.Cms;
 using DevExpress.Web;
+using DevExpress.Web.Bootstrap;
 using DevExpress.XtraRichEdit.Model;
 using Elmah.ContentSyndication;
 using Newtonsoft.Json;
@@ -16,6 +17,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using MetaData = Dash.Models.MetaData;
@@ -34,6 +36,7 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
+        private MetaData metaData = new MetaData();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -60,6 +63,7 @@ namespace Dash
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
             if (!IsPostBack)
             {
                 ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
@@ -83,54 +87,38 @@ namespace Dash
                     }
                 }
 
-                BindCheckboxGroups(); // Testing the new features. 26.09.2024 Janko Jovičić
 
             }
         }
 
 
-        private void BindCheckboxGroups()
+        private void LoadMetaDataAndApplySelections(int dashboardId)
         {
-            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            string query = "SELECT meta_data FROM dashboards WHERE id = @dashboardId";
+            var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            using (SqlConnection conn = new SqlConnection(connection))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                conn.Open();
+                connection.Open();
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = dashboardId;
 
-                // Fetch data for CheckBoxGroup1
-                string query1 = "SELECT id, value, description FROM meta_options WHERE option_type = 'type'";
-                SqlCommand cmd1 = new SqlCommand(query1, conn);
-                SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
-                DataTable dt1 = new DataTable();
-                da1.Fill(dt1);
-                TypeGroup.DataSource = dt1;
-                TypeGroup.DataTextField = "description";
-                TypeGroup.DataValueField = "value";
-                TypeGroup.DataBind();
-
-                // Fetch data for CheckBoxGroup2
-                string query2 = "SELECT id, value, description FROM meta_options WHERE option_type = 'company'";
-                SqlCommand cmd2 = new SqlCommand(query2, conn);
-                SqlDataAdapter da2 = new SqlDataAdapter(cmd2);
-                DataTable dt2 = new DataTable();
-                da2.Fill(dt2);
-                CompanyGroup.DataSource = dt2;
-                CompanyGroup.DataTextField = "description";
-                CompanyGroup.DataValueField = "value";
-                CompanyGroup.DataBind();
-
-                // Fetch data for CheckBoxGroup3
-                string query3 = "SELECT id, value, description FROM meta_options WHERE option_type = 'language'";
-                SqlCommand cmd3 = new SqlCommand(query3, conn);
-                SqlDataAdapter da3 = new SqlDataAdapter(cmd3);
-                DataTable dt3 = new DataTable();
-                da3.Fill(dt3);
-                LanguageGroup.DataSource = dt3;
-                LanguageGroup.DataTextField = "description";
-                LanguageGroup.DataValueField = "value";
-                LanguageGroup.DataBind();
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            string jsonMetaData = reader["meta_data"].ToString();
+                            metaData = JsonConvert.DeserializeObject<MetaData>(jsonMetaData);
+         
+                        }
+                    }
+                }
             }
         }
+
+
+     
 
 
         [WebMethod]
@@ -161,62 +149,19 @@ namespace Dash
         {
             Session["current"] = e.DashboardId.ToString();
 
-            string query = "SELECT meta_data FROM dashboards WHERE id = @dashboardId";
-
-            var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            var currentDashboardId = Session["current"];
+            long parsed;
+            if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string) currentDashboardId, out parsed))
             {
-                connection.Open();
+                 LoadMetaDataAndApplySelections((int)parsed);
 
-                // Prepare the SQL command
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    // Add parameter for dashboard ID
-                    command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = e.DashboardId;
-
-                    // Execute the command and read the result
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            // Assuming the meta_data is in the first column
-                            string jsonMetaData = reader["meta_data"].ToString();
-                            // Deserialize the JSON to MetaData object
-                            MetaData metaData = JsonConvert.DeserializeObject<MetaData>(jsonMetaData);
-
-                            CheckMetaDataSelections(metaData);
-
-                        }
-                    }
-                }
             }
+
         }
 
 
 
-        private void CheckMetaDataSelections(MetaData metaData)
-        {
-          /*  TypeGroup.SelectedValue = "PRO";
-            // Check/uncheck the TypeGroup items
-            foreach (ListItem item in TypeGroup.Items)
-            {
-                bool isChecked = metaData.Types.Contains(item.Value);            
-                item.Selected = true;               
-            }
-            // Check/uncheck the CompanyGroup items
-            foreach (ListItem item in CompanyGroup.Items)
-            {
-                bool isChecked = metaData.Companies.Contains(item.Value);
-                item.Selected = true;
-            }
-            // Check/uncheck the LanguageGroup items
-            foreach (ListItem item in LanguageGroup.Items)
-            {
-                bool isChecked = metaData.Languages.Contains(item.Value);
-                item.Selected = true;
-            } */
-        }
+   
         private void Authenticate()
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -277,8 +222,23 @@ namespace Dash
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
             return stringFinal;
         }
+        private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
+        {
+            var selectedValues = new List<string>();
 
+            foreach (string row in gridView.GetSelectedFieldValues("ID"))
+            {
+                // Assuming you have a way to get the data based on selected IDs
+                // You need to find the corresponding row in the grid view to get its value for the specified column
+                var dataRow = gridView.GetRowValues(row, columnName);
+                if (dataRow != null)
+                {
+                    selectedValues.Add(dataRow.ToString());
+                }
+            }
 
+            return selectedValues;
+        }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
@@ -347,22 +307,8 @@ namespace Dash
             }
         }
 
-        protected void TypeGroup_PreRender(object sender, EventArgs e)
-        {
-            foreach (ListItem item in TypeGroup.Items)
-            {
-                item.Selected = true;
-            }
-        }
 
-        protected void CompanyGroup_PreRender(object sender, EventArgs e)
-        {
-            var debug = true;
-        }
 
-        protected void LanguageGroup_PreRender(object sender, EventArgs e)
-        {
-            var debug = true;
-        }
+
     }
 }           

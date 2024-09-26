@@ -342,7 +342,22 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Področje</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList OnPreRender="TypeGroup_PreRender" EnableViewState="true" ID="TypeGroup"  runat="server" CssClass="form-check"></asp:CheckBoxList>
+                            <dx:BootstrapGridView ID="TypeGroup"  ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+
+                              <SettingsDataSecurity AllowEdit="False" />
+                          <Columns>
+                              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" >
+                              </dx:BootstrapGridViewCommandColumn>
+
+                              <dx:BootstrapGridViewTextColumn FieldName="value" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost">
+                             </dx:BootstrapGridViewTextColumn>
+
+                          </Columns>
+                          <SettingsSearchPanel Visible="False" />
+                      </dx:BootstrapGridView>
+
+                      <asp:SqlDataSource ID="queryTypeGroup" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'type';" >
+                            </asp:SqlDataSource>
                  </div>
              </div>
 
@@ -350,7 +365,22 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Podjetje</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList OnPreRender="CompanyGroup_PreRender" EnableViewState="true" ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                         <dx:BootstrapGridView ID="CompanyGroup"  ClientInstanceName="CompanyGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+
+                            <SettingsDataSecurity AllowEdit="False" />
+                        <Columns>
+                            <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" >
+                            </dx:BootstrapGridViewCommandColumn>
+
+                            <dx:BootstrapGridViewTextColumn FieldName="value" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost">
+                           </dx:BootstrapGridViewTextColumn>
+
+                        </Columns>
+                        <SettingsSearchPanel Visible="False" />
+                    </dx:BootstrapGridView>
+
+                    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'company';" >
+                          </asp:SqlDataSource>
                  </div>
              </div>
 
@@ -358,7 +388,22 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Jezik</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList EnableViewState="true" OnPreRender="LanguageGroup_PreRender" ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                     <dx:BootstrapGridView ID="LanguageGroup"  ClientInstanceName="LanguageGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+
+                        <SettingsDataSecurity AllowEdit="False" />
+                    <Columns>
+                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" >
+                        </dx:BootstrapGridViewCommandColumn>
+
+                        <dx:BootstrapGridViewTextColumn FieldName="value" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost">
+                       </dx:BootstrapGridViewTextColumn>
+
+                    </Columns>
+                    <SettingsSearchPanel Visible="False" />
+                </dx:BootstrapGridView>
+
+                <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'language';" >
+                      </asp:SqlDataSource>
                  </div>
              </div>
          </div>
