@@ -109,7 +109,7 @@ namespace Dash
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
 
-                // BindCheckboxGroups();
+                BindCheckboxGroups(); // Testing the new features. 26.09.2024 Janko Jovičić
 
             }
             else
@@ -132,7 +132,48 @@ namespace Dash
             }
         }
 
+        private void BindCheckboxGroups()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString;
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Fetch data for CheckBoxGroup1
+                string query1 = "SELECT id, value FROM meta_options WHERE option_type = 'type'";
+                SqlCommand cmd1 = new SqlCommand(query1, connection);
+                SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
+                DataTable dt1 = new DataTable();
+                da1.Fill(dt1);
+                TypeGroup.DataSource = dt1;
+                TypeGroup.DataTextField = "Name";
+                TypeGroup.DataValueField = "Id";
+                TypeGroup.DataBind();
+
+                // Fetch data for CheckBoxGroup2
+                string query2 = "SELECT id, value FROM meta_options WHERE option_type = 'company'";
+                SqlCommand cmd2 = new SqlCommand(query2, connection);
+                SqlDataAdapter da2 = new SqlDataAdapter(cmd2);
+                DataTable dt2 = new DataTable();
+                da2.Fill(dt2);
+                CompanyGroup.DataSource = dt2;
+                CompanyGroup.DataTextField = "Name";
+                CompanyGroup.DataValueField = "Id";
+                CompanyGroup.DataBind();
+
+                // Fetch data for CheckBoxGroup3
+                string query3 = "SELECT id, value FROM meta_options WHERE option_type = 'language'";
+                SqlCommand cmd3 = new SqlCommand(query3, connection);
+                SqlDataAdapter da3 = new SqlDataAdapter(cmd3);
+                DataTable dt3 = new DataTable();
+                da3.Fill(dt3);
+                LanguageGroup.DataSource = dt3;
+                LanguageGroup.DataTextField = "Name";
+                LanguageGroup.DataValueField = "Id";
+                LanguageGroup.DataBind();
+            }
+        }
 
         private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
         {
