@@ -107,6 +107,9 @@ namespace Dash
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
+
+                // BindCheckboxGroups();
+
             }
             else
             {
@@ -227,7 +230,6 @@ namespace Dash
                         var without = plurals[0].ToString();
                         companiesList.SelectedValue = without;
                         companiesList.Enabled = false;
-
                         usersGridView.Selection.SetSelection(0, true);
                     }
                 }
@@ -261,10 +263,7 @@ namespace Dash
             UpdateForm();
         }
 
-        private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
-        {
 
-        }
 
         private void Authenticate()
         {
@@ -1259,6 +1258,25 @@ namespace Dash
             UpdateForm();
         }
 
-      
+        protected void graphsGridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (e.Parameters.StartsWith("filter|"))
+            {
+                string category = e.Parameters.Split('|')[1];
+
+                if (category == "all")
+                {
+                    // Remove the filter and show all data
+                    graphsGridView.FilterExpression = string.Empty;
+                }
+                else
+                {
+                    // Apply the filter for the selected category
+                    graphsGridView.FilterExpression = $"[Category] = '{category}'";
+                }
+
+                graphsGridView.DataBind();
+            }
+        }
     }
 }

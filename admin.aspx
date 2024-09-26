@@ -151,6 +151,21 @@
 
         }
 
+
+        function filterGrid(category) {
+
+            if (category === 'all') {
+
+                dashboardGrid.PerformCallback(""); 
+            } else {
+
+                dashboardGrid.PerformCallback("filter|" + category); 
+            }
+
+        }
+
+
+
     </script>
 
 
@@ -178,7 +193,7 @@
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0">
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Actions">
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -223,7 +238,7 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-          <dx:BootstrapGridView ID="usersGridView"  ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="Uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+          <dx:BootstrapGridView ID="usersGridView"  ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="true" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" OnSelectionChanged="usersGridView_SelectionChanged"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -237,7 +252,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Actions">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
@@ -271,13 +286,28 @@
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="ID" CssClasses-Control="graph">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" OnCustomCallback="graphsGridView_CustomCallback" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
-              <Settings VerticalScrollBarMode="Visible" />
+              <Settings VerticalScrollBarMode="Visible" ShowFilterRow="true"/>
+   <Toolbars>
+        <dx:BootstrapGridViewToolbar>
+            <Items>
+                <dx:BootstrapGridViewToolbarItem  Text="Filter">
+                     <Template>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#checkboxModal">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>      
+                        </div>
+                    </Template>
+                </dx:BootstrapGridViewToolbarItem>
+            </Items>
+        </dx:BootstrapGridViewToolbar>
+    </Toolbars>
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
@@ -285,7 +315,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="True" Caption="Action">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
@@ -475,6 +505,55 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="checkboxModal" tabindex="-1" role="dialog" aria-labelledby="checkboxModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="checkboxModalLabel">Izberite možnosti</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <!-- Checkbox Group 1 -->
+                        <div class="col-md-4">
+                            <h4>Skupina 1</h4>
+                            <div class="form-group">
+                                <asp:CheckBoxList ID="TypeGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox Group 2 -->
+                        <div class="col-md-4">
+                            <h4>Skupina 2</h4>
+                            <div class="form-group">
+                                <asp:CheckBoxList ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                            </div>
+                        </div>
+
+                        <!-- Checkbox Group 3 -->
+                        <div class="col-md-4">
+                            <h4>Skupina 3</h4>
+                            <div class="form-group">
+                                <asp:CheckBoxList ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
+                <button type="button" class="btn btn-primary">Shrani spremembe</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 </section>
   

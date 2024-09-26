@@ -4,7 +4,7 @@
     flex-direction: column; /* Align children vertically */
 }
 .actionButton {
-    width: 10em;
+    width: 7em;
 
 }
 
@@ -39,7 +39,6 @@
 }
 /* Ensures each grid takes up 33% of the screen width and full height */
 .inner-item {
-    width: 33%;
     display: flex;
     flex-direction: column;
     background-color: #f9f9f9; /* Optional background color */
