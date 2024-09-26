@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -134,43 +135,42 @@ namespace Dash
 
         private void BindCheckboxGroups()
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString;
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connection))
             {
-                connection.Open();
+                conn.Open();
 
                 // Fetch data for CheckBoxGroup1
-                string query1 = "SELECT id, value FROM meta_options WHERE option_type = 'type'";
-                SqlCommand cmd1 = new SqlCommand(query1, connection);
+                string query1 = "SELECT id, value, description FROM meta_options WHERE option_type = 'type'";
+                SqlCommand cmd1 = new SqlCommand(query1, conn);
                 SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
                 DataTable dt1 = new DataTable();
                 da1.Fill(dt1);
                 TypeGroup.DataSource = dt1;
-                TypeGroup.DataTextField = "Name";
-                TypeGroup.DataValueField = "Id";
+                TypeGroup.DataTextField = "description";
+                TypeGroup.DataValueField = "value";
                 TypeGroup.DataBind();
 
                 // Fetch data for CheckBoxGroup2
-                string query2 = "SELECT id, value FROM meta_options WHERE option_type = 'company'";
-                SqlCommand cmd2 = new SqlCommand(query2, connection);
+                string query2 = "SELECT id, value, description FROM meta_options WHERE option_type = 'company'";
+                SqlCommand cmd2 = new SqlCommand(query2, conn);
                 SqlDataAdapter da2 = new SqlDataAdapter(cmd2);
                 DataTable dt2 = new DataTable();
                 da2.Fill(dt2);
                 CompanyGroup.DataSource = dt2;
-                CompanyGroup.DataTextField = "Name";
-                CompanyGroup.DataValueField = "Id";
+                CompanyGroup.DataTextField = "description";
+                CompanyGroup.DataValueField = "value";
                 CompanyGroup.DataBind();
 
                 // Fetch data for CheckBoxGroup3
-                string query3 = "SELECT id, value FROM meta_options WHERE option_type = 'language'";
-                SqlCommand cmd3 = new SqlCommand(query3, connection);
+                string query3 = "SELECT id, value, description FROM meta_options WHERE option_type = 'language'";
+                SqlCommand cmd3 = new SqlCommand(query3, conn);
                 SqlDataAdapter da3 = new SqlDataAdapter(cmd3);
                 DataTable dt3 = new DataTable();
                 da3.Fill(dt3);
                 LanguageGroup.DataSource = dt3;
-                LanguageGroup.DataTextField = "Name";
-                LanguageGroup.DataValueField = "Id";
+                LanguageGroup.DataTextField = "description";
+                LanguageGroup.DataValueField = "value";
                 LanguageGroup.DataBind();
             }
         }
@@ -1323,14 +1323,97 @@ namespace Dash
 
         public void btnFilter_Click(object sender, EventArgs e)
         {
-            string Ids = string.Empty;
-            DataView dvGraphs = (DataView)query.Select(DataSourceSelectArguments.Empty);
-            foreach (DataRowView row in dvGraphs)
+            try
             {
-                int id = (int)row["id"];
-                var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
-                var debug = true;
+                var selectedTypes = TypeGroup.Items.Cast<ListItem>()
+                   .Where(item => item.Selected)
+                   .Select(item => item.Value).ToList();
+
+                var selectedCompanies = CompanyGroup.Items.Cast<ListItem>()
+                    .Where(item => item.Selected)
+                    .Select(item => item.Value).ToList();
+
+                var selectedLanguages = LanguageGroup.Items.Cast<ListItem>()
+                    .Where(item => item.Selected)
+                    .Select(item => item.Value).ToList();
+
+                List<int> Ids = new List<int>();
+
+                DataView dvGraphs = (DataView)query.Select(DataSourceSelectArguments.Empty);
+                foreach (DataRowView row in dvGraphs)
+                {
+                    int id = (int)row["id"];
+                    var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
+                    if (FilterDashboardComply(selectedTypes, selectedCompanies, selectedLanguages, metadata))
+                    {
+                        Ids.Add(id);
+                    }
+                }
+
+                if (Ids.Count == 0)
+                {
+                    graphsGridView.FilterExpression = string.Empty;
+                    return;
+                }
+
+
+                string FilterIds = string.Empty;
+                for (int i = 0; i < Ids.Count; i++)
+                {
+                    if (i != Ids.Count - 1)
+                    {
+                        FilterIds += Ids.ElementAt(i) + ",";
+                    }
+                    else
+                    {
+                        FilterIds += Ids.ElementAt(i);
+                    }
+                }
+
+                graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                return;
+            }
+
+        }
+
+
+
+        public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
+        {
+            try
+            {
+
+                foreach (string item in selectedTypes)
+                {
+                    if (!dashboardMetaData.Types.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                foreach (string item in selectedCompanies)
+                {
+                    if (!dashboardMetaData.Companies.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                foreach (string item in selectedLanguages)
+                {
+                    if (!dashboardMetaData.Languages.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            } catch
+            {
+                return false;
             }
         }
+
     }
 }

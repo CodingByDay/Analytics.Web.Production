@@ -18,6 +18,11 @@
     }
 }
 
+.form-check input {
+    margin: 0.3em !important;
+}
+
+
 .navbar {
     border-radius: 0 !important;
 }

@@ -521,7 +521,7 @@
                     <div class="row">
                         <!-- Checkbox Group 1 -->
                         <div class="col-md-4">
-                            <h4>Skupina 1</h4>
+                            <h4>Področje</h4>
                             <div class="form-group">
                                 <asp:CheckBoxList ID="TypeGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
                             </div>
@@ -529,7 +529,7 @@
 
                         <!-- Checkbox Group 2 -->
                         <div class="col-md-4">
-                            <h4>Skupina 2</h4>
+                            <h4>Podjetje</h4>
                             <div class="form-group">
                                 <asp:CheckBoxList ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
                             </div>
@@ -537,7 +537,7 @@
 
                         <!-- Checkbox Group 3 -->
                         <div class="col-md-4">
-                            <h4>Skupina 3</h4>
+                            <h4>Jezik</h4>
                             <div class="form-group">
                                 <asp:CheckBoxList ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
                             </div>

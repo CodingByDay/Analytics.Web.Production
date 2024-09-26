@@ -24,39 +24,39 @@ namespace Dash
         protected global::DevExpress.DashboardWeb.ASPxDashboard ASPxDashboard3;
 
         /// <summary>
-        /// companiesListBox control.
+        /// TypeGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox companiesListBox;
+        protected global::System.Web.UI.WebControls.CheckBoxList TypeGroup;
 
         /// <summary>
-        /// languagesListBox control.
+        /// CompanyGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox languagesListBox;
+        protected global::System.Web.UI.WebControls.CheckBoxList CompanyGroup;
 
         /// <summary>
-        /// fieldListBox control.
+        /// LanguageGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox fieldListBox;
+        protected global::System.Web.UI.WebControls.CheckBoxList LanguageGroup;
 
         /// <summary>
-        /// saveMetadata control.
+        /// btnSave control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton saveMetadata;
+        protected global::System.Web.UI.WebControls.Button btnSave;
     }
 }

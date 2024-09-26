@@ -1,14 +1,20 @@
 ﻿using Dash.DatabaseStorage;
+using Dash.Models;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
+using DevExpress.XtraRichEdit.Model;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -72,9 +78,53 @@ namespace Dash
                             break;
                     }
                 }
+
+                BindCheckboxGroups(); // Testing the new features. 26.09.2024 Janko Jovičić
+
             }
         }
+        private void BindCheckboxGroups()
+        {
+            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                conn.Open();
+
+                // Fetch data for CheckBoxGroup1
+                string query1 = "SELECT id, value, description FROM meta_options WHERE option_type = 'type'";
+                SqlCommand cmd1 = new SqlCommand(query1, conn);
+                SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
+                DataTable dt1 = new DataTable();
+                da1.Fill(dt1);
+                TypeGroup.DataSource = dt1;
+                TypeGroup.DataTextField = "description";
+                TypeGroup.DataValueField = "value";
+                TypeGroup.DataBind();
+
+                // Fetch data for CheckBoxGroup2
+                string query2 = "SELECT id, value, description FROM meta_options WHERE option_type = 'company'";
+                SqlCommand cmd2 = new SqlCommand(query2, conn);
+                SqlDataAdapter da2 = new SqlDataAdapter(cmd2);
+                DataTable dt2 = new DataTable();
+                da2.Fill(dt2);
+                CompanyGroup.DataSource = dt2;
+                CompanyGroup.DataTextField = "description";
+                CompanyGroup.DataValueField = "value";
+                CompanyGroup.DataBind();
+
+                // Fetch data for CheckBoxGroup3
+                string query3 = "SELECT id, value, description FROM meta_options WHERE option_type = 'language'";
+                SqlCommand cmd3 = new SqlCommand(query3, conn);
+                SqlDataAdapter da3 = new SqlDataAdapter(cmd3);
+                DataTable dt3 = new DataTable();
+                da3.Fill(dt3);
+                LanguageGroup.DataSource = dt3;
+                LanguageGroup.DataTextField = "description";
+                LanguageGroup.DataValueField = "value";
+                LanguageGroup.DataBind();
+            }
+        }
 
 
         [WebMethod]
@@ -92,9 +142,10 @@ namespace Dash
                 }
                 catch
                 {
-                } finally
+                }
+                finally
                 {
-                    
+
                 }
             }
 
@@ -166,19 +217,73 @@ namespace Dash
             return stringFinal;
         }
 
-        protected void closePopupButton_Click(object sender, EventArgs e)
+
+
+        protected void btnSave_Click(object sender, EventArgs e)
         {
+            try
+            {
+                var selectedTypes = TypeGroup.Items.Cast<ListItem>()
+                     .Where(item => item.Selected)
+                     .Select(item => item.Value).ToList();
 
-        }
+                var selectedCompanies = CompanyGroup.Items.Cast<ListItem>()
+                    .Where(item => item.Selected)
+                    .Select(item => item.Value).ToList();
 
-        protected void saveMetadataButton_Click(object sender, EventArgs e)
-        {
+                var selectedLanguages = LanguageGroup.Items.Cast<ListItem>()
+                    .Where(item => item.Selected)
+                    .Select(item => item.Value).ToList();
 
-        }
 
-        protected void saveMetadata_Click(object sender, EventArgs e)
-        {
+                // Create MetaData object and assign selected values
+                MetaData metaData = new MetaData
+                {
+                    Types = selectedTypes,
+                    Languages = selectedLanguages,
+                    Companies = selectedCompanies
+                };
 
+                // Serialize MetaData to JSON
+                string jsonMetaData = JsonConvert.SerializeObject(metaData);
+
+                var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    // Prepare the SQL command to update the meta_data column
+                    if (Session["current"] != null && int.TryParse(Session["current"].ToString(), out int dashboardId))
+                    {
+                        // Prepare the SQL command to update the meta_data column
+                        string updateQuery = "UPDATE dashboards SET meta_data = @metaData WHERE id = @dashboardId";
+
+                        using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                        {
+                            // Add parameters to the command
+                            command.Parameters.Add("@metaData", SqlDbType.NVarChar).Value = jsonMetaData;
+                            command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = dashboardId;
+
+                            // Execute the update command
+                            int rowsAffected = command.ExecuteNonQuery();
+                            if (rowsAffected > 0)
+                            {
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Uspešno dodani meta podatki'); };", true);
+
+                            }
+                            else
+                            {
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Napaka pri dodajanju meta podatkov'); };", true);
+                            }
+                        }
+
+                    }
+                }
+            }
+            catch(Exception ex) 
+            {
+                return;
+            }
         }
     }
-}
+}           

@@ -8,7 +8,9 @@
 
 }
 
-
+.form-check input {
+    margin: 0.3em !important;
+}
 
 .action-buttons {
     display: flex;

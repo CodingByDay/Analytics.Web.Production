@@ -293,6 +293,11 @@ height: 100% !important;
                 $('#assignMetadataModal').modal('hide');
             }
 
+
+            function showNotificationDevexpress(message) {
+                DevExpress.ui.notify(message);
+            }
+
         </script>
     
         <div class="col-sm-12">
@@ -329,50 +334,39 @@ height: 100% !important;
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row mb-3">
-                        <!-- Companies List -->
-                        <div class="col-md-4">
-                            <h5>Companies</h5>
-                            <dx:BootstrapListBox ID="companiesListBox" runat="server" SelectionMode="Multiple">
-                                <Items>
-                                    <dx:BootstrapListEditItem Text="Company 1" Value="company1" />
-                                    <dx:BootstrapListEditItem Text="Company 2" Value="company2" />
-                                    <dx:BootstrapListEditItem Text="Company 3" Value="company3" />
-                                </Items>
-                            </dx:BootstrapListBox>
-                        </div>
-                        <!-- Languages List -->
-                        <div class="col-md-4">
-                            <h5>Languages</h5>
-                            <dx:BootstrapListBox ID="languagesListBox" runat="server" SelectionMode="Multiple">
-                                <Items>
-                                    <dx:BootstrapListEditItem Text="Language 1" Value="language1" />
-                                    <dx:BootstrapListEditItem Text="Language 2" Value="language2" />
-                                    <dx:BootstrapListEditItem Text="Language 3" Value="language3" />
-                                </Items>
-                            </dx:BootstrapListBox>
-                        </div>
-                        <!-- Field List -->
-                        <div class="col-md-4">
-                            <h5>Field</h5>
-                            <dx:BootstrapListBox ID="fieldListBox" runat="server" SelectionMode="Multiple">
-                                <Items>
-                                    <dx:BootstrapListEditItem Text="Field 1" Value="field1" />
-                                    <dx:BootstrapListEditItem Text="Field 2" Value="field2" />
-                                    <dx:BootstrapListEditItem Text="Field 3" Value="field3" />
-                                </Items>
-                            </dx:BootstrapListBox>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <dx:BootstrapButton runat="server" Text="Shrani" ID="saveMetadata" OnClick="saveMetadata_Click" CssClasses-Control="actionButton" AutoPostBack="true">
-                   <SettingsBootstrap RenderOption="Primary" />
-                 </dx:BootstrapButton>
-            </div>
+             <div class="modal-body">
+     <div class="container">
+         <div class="row">
+             <!-- Checkbox Group 1 -->
+             <div class="col-md-4">
+                 <h4>Področje</h4>
+                 <div class="form-group">
+                     <asp:CheckBoxList ID="TypeGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                 </div>
+             </div>
+
+             <!-- Checkbox Group 2 -->
+             <div class="col-md-4">
+                 <h4>Podjetje</h4>
+                 <div class="form-group">
+                     <asp:CheckBoxList ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                 </div>
+             </div>
+
+             <!-- Checkbox Group 3 -->
+             <div class="col-md-4">
+                 <h4>Jezik</h4>
+                 <div class="form-group">
+                     <asp:CheckBoxList ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                 </div>
+             </div>
+         </div>
+     </div>
+ </div>
+ <div class="modal-footer">
+     <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
+     <asp:Button ID="btnSave" runat="server" CssClass="btn btn-primary" Text="Shrani" OnClick="btnSave_Click" />
+ </div>
         </div>
     </div>
 </div>
