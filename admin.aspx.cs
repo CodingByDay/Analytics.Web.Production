@@ -1300,26 +1300,7 @@ namespace Dash
             UpdateForm();
         }
 
-        protected void graphsGridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
-        {
-            if (e.Parameters.StartsWith("filter|"))
-            {
-                string category = e.Parameters.Split('|')[1];
 
-                if (category == "all")
-                {
-                    // Remove the filter and show all data
-                    graphsGridView.FilterExpression = string.Empty;
-                }
-                else
-                {
-                    // Apply the filter for the selected category
-                    graphsGridView.FilterExpression = $"[Category] = '{category}'";
-                }
-
-                graphsGridView.DataBind();
-            }
-        }
 
         public void btnFilter_Click(object sender, EventArgs e)
         {

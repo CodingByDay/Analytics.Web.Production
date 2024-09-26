@@ -296,6 +296,7 @@ height: 100% !important;
 
             function showNotificationDevexpress(message) {
                 DevExpress.ui.notify(message);
+                
             }
 
         </script>
@@ -341,7 +342,7 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Področje</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList ID="TypeGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                     <asp:CheckBoxList OnPreRender="TypeGroup_PreRender" EnableViewState="true" ID="TypeGroup"  runat="server" CssClass="form-check"></asp:CheckBoxList>
                  </div>
              </div>
 
@@ -349,7 +350,7 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Podjetje</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                     <asp:CheckBoxList OnPreRender="CompanyGroup_PreRender" EnableViewState="true" ID="CompanyGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
                  </div>
              </div>
 
@@ -357,7 +358,7 @@ height: 100% !important;
              <div class="col-md-4">
                  <h4>Jezik</h4>
                  <div class="form-group">
-                     <asp:CheckBoxList ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
+                     <asp:CheckBoxList EnableViewState="true" OnPreRender="LanguageGroup_PreRender" ID="LanguageGroup" runat="server" CssClass="form-check"></asp:CheckBoxList>
                  </div>
              </div>
          </div>

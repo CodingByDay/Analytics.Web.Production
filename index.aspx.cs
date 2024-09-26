@@ -3,7 +3,10 @@ using Dash.Models;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
+using DevExpress.Pdf.Native.BouncyCastle.Asn1.Cms;
+using DevExpress.Web;
 using DevExpress.XtraRichEdit.Model;
+using Elmah.ContentSyndication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,6 +18,7 @@ using System.Web;
 using System.Web.Services;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using MetaData = Dash.Models.MetaData;
 
 namespace Dash
 {
@@ -83,6 +87,8 @@ namespace Dash
 
             }
         }
+
+
         private void BindCheckboxGroups()
         {
             var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -154,8 +160,63 @@ namespace Dash
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
         {
             Session["current"] = e.DashboardId.ToString();
+
+            string query = "SELECT meta_data FROM dashboards WHERE id = @dashboardId";
+
+            var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Prepare the SQL command
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    // Add parameter for dashboard ID
+                    command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = e.DashboardId;
+
+                    // Execute the command and read the result
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            // Assuming the meta_data is in the first column
+                            string jsonMetaData = reader["meta_data"].ToString();
+                            // Deserialize the JSON to MetaData object
+                            MetaData metaData = JsonConvert.DeserializeObject<MetaData>(jsonMetaData);
+
+                            CheckMetaDataSelections(metaData);
+
+                        }
+                    }
+                }
+            }
         }
 
+
+
+        private void CheckMetaDataSelections(MetaData metaData)
+        {
+          /*  TypeGroup.SelectedValue = "PRO";
+            // Check/uncheck the TypeGroup items
+            foreach (ListItem item in TypeGroup.Items)
+            {
+                bool isChecked = metaData.Types.Contains(item.Value);            
+                item.Selected = true;               
+            }
+            // Check/uncheck the CompanyGroup items
+            foreach (ListItem item in CompanyGroup.Items)
+            {
+                bool isChecked = metaData.Companies.Contains(item.Value);
+                item.Selected = true;
+            }
+            // Check/uncheck the LanguageGroup items
+            foreach (ListItem item in LanguageGroup.Items)
+            {
+                bool isChecked = metaData.Languages.Contains(item.Value);
+                item.Selected = true;
+            } */
+        }
         private void Authenticate()
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -284,6 +345,24 @@ namespace Dash
             {
                 return;
             }
+        }
+
+        protected void TypeGroup_PreRender(object sender, EventArgs e)
+        {
+            foreach (ListItem item in TypeGroup.Items)
+            {
+                item.Selected = true;
+            }
+        }
+
+        protected void CompanyGroup_PreRender(object sender, EventArgs e)
+        {
+            var debug = true;
+        }
+
+        protected void LanguageGroup_PreRender(object sender, EventArgs e)
+        {
+            var debug = true;
         }
     }
 }           
