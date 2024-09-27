@@ -235,11 +235,17 @@ height: 100% !important;
             }
 
             function correctTheLoadingState() {
+
                 var control = dashboard.GetDashboardControl();
                 design = control.isDesignMode();
                 if (design == false) {
                     onCollapse();
                 }
+
+                // To be able to achieve selection. 27.09.2024 Janko Jovičić
+                TypeGroup.PerformCallback();
+                CompanyGroup.PerformCallback();
+                LanguageGroup.PerformCallback();
             }
 
 
@@ -322,7 +328,8 @@ height: 100% !important;
                           DashboardEndUpdate="onDashboardEndUpdate"
                           ItemWidgetUpdated="updatecustomizeWidgets"        
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
-                          DashboardInitialized="correctTheLoadingState"                      
+                          DashboardInitialized="correctTheLoadingState" 
+                         
                           />
     </dx:ASPxDashboard>
 </div>
@@ -343,10 +350,12 @@ height: 100% !important;
                         <div class="col-md-4">
                             <h4>Področje</h4>
                             <div class="form-group type">
-                                <dx:BootstrapGridView ID="TypeGroup" ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeGroup" KeyFieldName="id">
+                                <dx:BootstrapGridView ID="TypeGroup"  OnCustomCallback="TypeGroup_CustomCallback" ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeGroup" KeyFieldName="id">
+                      
+
                                     <SettingsDataSecurity AllowEdit="False" />
                                     <Columns>
-                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" />
+                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
                                         <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                         <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                     </Columns>
@@ -360,10 +369,10 @@ height: 100% !important;
                         <div class="col-md-4">
                             <h4>Podjetje</h4>
                             <div class="form-group company">
-                                <dx:BootstrapGridView ID="CompanyGroup" ClientInstanceName="CompanyGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryCompanyGroup" KeyFieldName="id">
+                                <dx:BootstrapGridView ID="CompanyGroup" OnCustomCallback="CompanyGroup_CustomCallback" ClientInstanceName="CompanyGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryCompanyGroup" KeyFieldName="id">
                                     <SettingsDataSecurity AllowEdit="False" />
                                     <Columns>
-                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" />
+                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
                                         <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                         <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                     </Columns>
@@ -377,10 +386,10 @@ height: 100% !important;
                         <div class="col-md-4">
                             <h4>Jezik</h4>
                             <div class="form-group language">
-                                <dx:BootstrapGridView ID="LanguageGroup" ClientInstanceName="LanguageGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeLanguage" KeyFieldName="id">
+                                <dx:BootstrapGridView ID="LanguageGroup" OnCustomCallback="LanguageGroup_CustomCallback" ClientInstanceName="LanguageGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeLanguage" KeyFieldName="id">
                                     <SettingsDataSecurity AllowEdit="False" />
                                     <Columns>
-                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" />
+                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
                                         <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                         <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
                                     </Columns>

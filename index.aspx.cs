@@ -36,7 +36,22 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
-        private MetaData metaData = new MetaData();
+        private MetaData metaData
+        {
+            get
+            {
+                if (Session["MetaData"] == null)
+                {
+                    // Create a new instance if the session is empty
+                    Session["MetaData"] = new MetaData();
+                }
+                return Session["MetaData"] as MetaData;
+            }
+            set
+            {
+                Session["MetaData"] = value;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -110,7 +125,6 @@ namespace Dash
                         {
                             string jsonMetaData = reader["meta_data"].ToString();
                             metaData = JsonConvert.DeserializeObject<MetaData>(jsonMetaData);
-         
                         }
                     }
                 }
@@ -118,8 +132,41 @@ namespace Dash
         }
 
 
-     
+       /* private void CheckMetaDataSelections(MetaData metaData)
+        {
+            // TypeGroup: Set selected rows based on metaData.Types
+            for(int i = 0; i < TypeGroup.VisibleRowCount;i++)
+            {
+                string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
+                if (metaData.Types.Contains(rowValue))
+                {
+                    TypeGroup.Selection.SetSelection(i, true);
+                }
+            }
 
+            // CompanyGroup: Set selected rows based on metaData.Companies
+            for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
+            {
+                string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
+                if (metaData.Companies.Contains(rowValue))
+                {
+                    CompanyGroup.Selection.SetSelection(i, true);
+                }
+            }
+
+            // LanguageGroup: Set selected rows based on metaData.Languages
+            for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
+            {
+                string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
+                if (metaData.Languages.Contains(rowValue))
+                {
+                    LanguageGroup.Selection.SetSelection(i, true);
+                }
+            }
+
+
+        }
+       */
 
         [WebMethod]
         public static void DeleteItem(string id)
@@ -277,7 +324,7 @@ namespace Dash
                             int rowsAffected = command.ExecuteNonQuery();
                             if (rowsAffected > 0)
                             {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Uspešno dodani meta podatki'); };", true);
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Uspešno spremenjeni meta podatki'); };", true);
 
                             }
                             else
@@ -295,6 +342,62 @@ namespace Dash
             }
         }
 
+        protected void TypeGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (metaData.Types != null)
+            {
+                for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
+                {
+                    string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
+                    if (metaData.Types.Contains(rowValue))
+                    {
+                        TypeGroup.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        TypeGroup.Selection.SetSelection(i, false);
+                    }
+                }
+            }
+        }
+
+        protected void LanguageGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (metaData.Languages != null)
+            {
+                for (int i = 0; i < LanguageGroup.VisibleRowCount; i++)
+                {
+                    string rowValue = LanguageGroup.GetRowValues(i, "value").ToString();
+                    if (metaData.Languages.Contains(rowValue))
+                    {
+                        LanguageGroup.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        LanguageGroup.Selection.SetSelection(i, false);
+                    }
+                }
+            }
+        }
+
+        protected void CompanyGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (metaData.Companies != null)
+            {
+                for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
+                {
+                    string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
+                    if (metaData.Companies.Contains(rowValue))
+                    {
+                        CompanyGroup.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        CompanyGroup.Selection.SetSelection(i, false);
+                    }
+                }
+            }
+        }
 
 
 
