@@ -225,18 +225,12 @@ namespace Dash
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {
             var selectedValues = new List<string>();
-
-            foreach (string row in gridView.GetSelectedFieldValues("ID"))
+            foreach (string row in gridView.GetSelectedFieldValues(columnName))
             {
-                // Assuming you have a way to get the data based on selected IDs
-                // You need to find the corresponding row in the grid view to get its value for the specified column
-                var dataRow = gridView.GetRowValues(row, columnName);
-                if (dataRow != null)
-                {
-                    selectedValues.Add(dataRow.ToString());
-                }
-            }
 
+                selectedValues.Add(row);
+
+            }
             return selectedValues;
         }
 
@@ -244,17 +238,11 @@ namespace Dash
         {
             try
             {
-                var selectedTypes = TypeGroup.Items.Cast<ListItem>()
-                     .Where(item => item.Selected)
-                     .Select(item => item.Value).ToList();
+                var selectedTypes = GetSelectedValues(TypeGroup, "value");
 
-                var selectedCompanies = CompanyGroup.Items.Cast<ListItem>()
-                    .Where(item => item.Selected)
-                    .Select(item => item.Value).ToList();
+                var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
 
-                var selectedLanguages = LanguageGroup.Items.Cast<ListItem>()
-                    .Where(item => item.Selected)
-                    .Select(item => item.Value).ToList();
+                var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
 
 
                 // Create MetaData object and assign selected values

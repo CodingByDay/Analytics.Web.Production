@@ -51,13 +51,13 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView CompanyGroup;
 
         /// <summary>
-        /// SqlDataSource1 control.
+        /// queryCompanyGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource1;
+        protected global::System.Web.UI.WebControls.SqlDataSource queryCompanyGroup;
 
         /// <summary>
         /// LanguageGroup control.
@@ -69,13 +69,13 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView LanguageGroup;
 
         /// <summary>
-        /// SqlDataSource2 control.
+        /// queryTypeLanguage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource2;
+        protected global::System.Web.UI.WebControls.SqlDataSource queryTypeLanguage;
 
         /// <summary>
         /// btnSave control.
