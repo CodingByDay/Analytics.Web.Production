@@ -11,7 +11,7 @@ namespace Dash
 {
 
 
-    public partial class indextenant
+    public partial class IndexTenant
     {
 
         /// <summary>

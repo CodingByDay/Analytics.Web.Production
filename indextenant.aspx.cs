@@ -19,7 +19,7 @@ using System.Web.UI.HtmlControls;
 
 namespace Dash
 {
-    public partial class indextenant : System.Web.UI.Page
+    public partial class IndexTenant : System.Web.UI.Page
     {
         private string connection;
         public static string ConnectionString;
@@ -38,7 +38,7 @@ namespace Dash
         private object result;
         private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
 
-        private int getIdCompany(string current)
+        private int GetIdCompany(string current)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -67,7 +67,7 @@ namespace Dash
                     {
                         string uname = HttpContext.Current.User.Identity.Name;
                         string name = getCompanyQuery(uname);
-                        int id = getIdCompany(name);
+                        int id = GetIdCompany(name);
                         Models.Dashboard graph = new Models.Dashboard(id);
                         var dataX = graph.GetGraphs(id);
                     }
@@ -80,7 +80,7 @@ namespace Dash
                     {
                         string uname = HttpContext.Current.User.Identity.Name;
                         string name = getCompanyQuery(uname);
-                        int id = getIdCompany(name);
+                        int id = GetIdCompany(name);
                         Models.Dashboard graph = new Models.Dashboard(id);
                         var dataX = graph.getSingularNameOriginal(id, p);
                         ASPxDashboard3.InitialDashboardId = dataX;
@@ -168,11 +168,9 @@ namespace Dash
                 }
                 catch
                 {
+                    return;
                 }
-                finally
-                {
 
-                }
             }
         }
 
@@ -268,7 +266,7 @@ namespace Dash
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
-            string group = getCurrentUserID();
+            string group = GetCurrentUserID();
             e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
         }
 
@@ -346,7 +344,7 @@ namespace Dash
             
         }
 
-        private string getCurrentUserID()
+        private string GetCurrentUserID()
         {
             string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -429,64 +427,8 @@ namespace Dash
             return returnString;
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public int get_id_string(int id)
-        {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+      
 
-            conn = new SqlConnection(ConnectionString);
-
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT ID FROM Companies WHERE id_company={id}", conn);
-
-            try
-            {
-                var result = cmd.ExecuteScalar();
-                stringID = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return stringID;
-        }
-
-        public string get_conn_name(int id)
-        {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT string FROM CompanyStrings WHERE ID={id}", conn);
-
-            try
-            {
-                var result = cmd.ExecuteScalar();
-                stringConnection = result.ToString().Replace(" ", string.Empty);
-            }
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return stringConnection;
-        }
+    
     }
 }
