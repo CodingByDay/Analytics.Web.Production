@@ -291,7 +291,16 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList TypeGroup;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView TypeGroup;
+
+        /// <summary>
+        /// queryTypeGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource queryTypeGroup;
 
         /// <summary>
         /// CompanyGroup control.
@@ -300,7 +309,16 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList CompanyGroup;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView CompanyGroup;
+
+        /// <summary>
+        /// queryCompanyGroup control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource queryCompanyGroup;
 
         /// <summary>
         /// LanguageGroup control.
@@ -309,7 +327,16 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBoxList LanguageGroup;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView LanguageGroup;
+
+        /// <summary>
+        /// queryTypeLanguage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource queryTypeLanguage;
 
         /// <summary>
         /// btnFilter control.

@@ -1,6 +1,7 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
+using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -110,8 +111,6 @@ namespace Dash
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
 
-                BindCheckboxGroups(); // Testing the new features. 26.09.2024 Janko Jovičić
-
             }
             else
             {
@@ -133,47 +132,7 @@ namespace Dash
             }
         }
 
-        private void BindCheckboxGroups()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                conn.Open();
-
-                // Fetch data for CheckBoxGroup1
-                string query1 = "SELECT id, value, description FROM meta_options WHERE option_type = 'type'";
-                SqlCommand cmd1 = new SqlCommand(query1, conn);
-                SqlDataAdapter da1 = new SqlDataAdapter(cmd1);
-                DataTable dt1 = new DataTable();
-                da1.Fill(dt1);
-                TypeGroup.DataSource = dt1;
-                TypeGroup.DataTextField = "description";
-                TypeGroup.DataValueField = "value";
-                TypeGroup.DataBind();
-
-                // Fetch data for CheckBoxGroup2
-                string query2 = "SELECT id, value, description FROM meta_options WHERE option_type = 'company'";
-                SqlCommand cmd2 = new SqlCommand(query2, conn);
-                SqlDataAdapter da2 = new SqlDataAdapter(cmd2);
-                DataTable dt2 = new DataTable();
-                da2.Fill(dt2);
-                CompanyGroup.DataSource = dt2;
-                CompanyGroup.DataTextField = "description";
-                CompanyGroup.DataValueField = "value";
-                CompanyGroup.DataBind();
-
-                // Fetch data for CheckBoxGroup3
-                string query3 = "SELECT id, value, description FROM meta_options WHERE option_type = 'language'";
-                SqlCommand cmd3 = new SqlCommand(query3, conn);
-                SqlDataAdapter da3 = new SqlDataAdapter(cmd3);
-                DataTable dt3 = new DataTable();
-                da3.Fill(dt3);
-                LanguageGroup.DataSource = dt3;
-                LanguageGroup.DataTextField = "description";
-                LanguageGroup.DataValueField = "value";
-                LanguageGroup.DataBind();
-            }
-        }
+   
 
         private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
         {
@@ -1300,23 +1259,30 @@ namespace Dash
             UpdateForm();
         }
 
+        private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
+        {
+            var selectedValues = new List<string>();
+            foreach (string row in gridView.GetSelectedFieldValues(columnName))
+            {
+
+                selectedValues.Add(row);
+
+            }
+            return selectedValues;
+        }
+
 
 
         public void btnFilter_Click(object sender, EventArgs e)
         {
             try
             {
-                var selectedTypes = TypeGroup.Items.Cast<ListItem>()
-                   .Where(item => item.Selected)
-                   .Select(item => item.Value).ToList();
 
-                var selectedCompanies = CompanyGroup.Items.Cast<ListItem>()
-                    .Where(item => item.Selected)
-                    .Select(item => item.Value).ToList();
+                var selectedTypes = GetSelectedValues(TypeGroup, "value");
 
-                var selectedLanguages = LanguageGroup.Items.Cast<ListItem>()
-                    .Where(item => item.Selected)
-                    .Select(item => item.Value).ToList();
+                var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
+
+                var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
 
                 List<int> Ids = new List<int>();
 
@@ -1352,6 +1318,8 @@ namespace Dash
                 }
 
                 graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
+                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+                button.Visible = true;
             }
             catch (Exception ex)
             {
@@ -1396,5 +1364,13 @@ namespace Dash
             }
         }
 
+
+
+        protected void ClearFilterButton_Click(object sender, EventArgs e)
+        {
+            graphsGridView.FilterExpression = string.Empty;
+            BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+            button.Visible = false;
+        }
     }
 }
