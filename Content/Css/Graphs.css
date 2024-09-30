@@ -50,13 +50,11 @@ header {
 &:last-child {
     margin-right: 0;
 }
-
 }
 
 footer {
     padding: 0 15px;
 }
-
 
 @media screen and (max-width: 980px) {
     .columns .column {
@@ -72,7 +70,6 @@ footer {
     flex-basis: 100%;
     margin: 0;
 }
-
 }
 }
 
@@ -88,29 +85,24 @@ footer {
     margin: 0 auto;
 }
 
-
 #primary {
     float: left;
     width: 240px;
 }
-
 
 #content {
     float: left;
     width: 480px;
 }
 
-
 #secondary {
     float: left;
     width: 240px;
 }
 
-
 #footer {
     clear: both;
 }
-
 
 .Initial {
     display: block;

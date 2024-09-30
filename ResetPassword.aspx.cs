@@ -13,14 +13,12 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
         protected void reset_Click(object sender, EventArgs e)
         {
             SendActivationRequest();
         }
-
 
         /// <summary>
         /// Stored procedure checking if the user exists and fetching the uuid and an emal.
@@ -49,26 +47,19 @@ namespace Dash
                     {
                         SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
                         Response.Write($"<script type=\"text/javascript\">alert('Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.'  );</script>");
-
                     }
                     else
                     {
                         Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake. Uporabniško ime ne obstaja.'  );</script>");
-
                     }
                 }
             }
-
         }
-
-
 
         protected void backButton_Click(object sender, EventArgs e)
         {
             Response.Redirect("Logon.aspx", true);
         }
-
-
 
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
@@ -97,14 +88,12 @@ namespace Dash
                 };
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailMessage);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 var s = ex;
                 var stop = true;
             }
         }
-
-
-
     }
 }

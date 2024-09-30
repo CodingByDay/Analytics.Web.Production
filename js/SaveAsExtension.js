@@ -21,8 +21,6 @@ SaveAsDashboardExtension.prototype.saveAs = function () {
 		stringified = stringified.replace(old_name, this.newName);
 		var jsonObject = JSON.parse(stringified);
 	   this._newDashboardExtension.performCreateDashboard(this.newName(), jsonObject);
-	
-
 	}
 };
 

@@ -2,20 +2,16 @@
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
 {
-
     public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
     {
-
         private string connectionString;
         private SqlConnection conn;
         private int permisionID;
@@ -32,7 +28,6 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -54,8 +49,6 @@ namespace Dash.DatabaseStorage
             }
         }
 
-
-
         public XDocument LoadDashboard(string dashboardID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -72,8 +65,6 @@ namespace Dash.DatabaseStorage
                 return doc;
             }
         }
-
-       
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
@@ -112,7 +103,5 @@ namespace Dash.DatabaseStorage
                 InsertCommand.ExecuteNonQuery();
             }
         }
-
-
     }
 }

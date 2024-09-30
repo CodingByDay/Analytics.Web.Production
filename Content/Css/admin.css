@@ -3,10 +3,11 @@
     display: flex;
     flex-direction: column; /* Align children vertically */
 }
+
 .actionButton {
     width: 7em;
-
 }
+
 .modal-xl {
     max-width: 90%; /* This controls how wide the modal should be */
 }
@@ -15,6 +16,7 @@
     width: 100%;
     max-height: 600px; /* You can also adjust the max height of grids */
 }
+
 .form-check input {
     margin: 0.3em !important;
 }
@@ -24,6 +26,7 @@
     flex-direction: row;
     justify-content: space-between;
 }
+
 .grid-container {
     flex: 1; /* Allow the grid to stretch to fill the remaining space */
     display: flex;
@@ -42,6 +45,7 @@
     height: 100%;
     padding: 20px;
 }
+
 .action-buttons {
     position: relative;
     top: 2em;
@@ -58,7 +62,6 @@
 
 /* Ensures the grid inside takes full height */
 .control_obj {
-
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -99,14 +102,10 @@
     animation-duration: 0.8s
 }
 
-
-
 .other {
     flex: 1;
     width: 50%;
 }
-
-
 
 #userForm {
     border-bottom-left-radius: 4px;
@@ -154,12 +153,10 @@
     max-height: 100px !important;
 }
 
-
-
 @keyframes animatetop {
-
     from {
-        top: -300px; opacity: 0;
+        top: -300px;
+        opacity: 0;
     }
 
     to {

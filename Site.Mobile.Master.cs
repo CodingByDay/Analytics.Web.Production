@@ -10,6 +10,7 @@ namespace Dash
     {
         //  Add a default company entry for the new user and center the buttons. Change the names of all of the so u can change the destination.
         private SqlCommand cmd;
+
         private string userRole;
         private SqlConnection conn;
 
@@ -21,7 +22,7 @@ namespace Dash
             string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
+            cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{UserNameForCheckingAdmin}';", conn);
             // Execute command and fetch pwd field into lookupPassword string.
         }
 
@@ -43,7 +44,7 @@ namespace Dash
             }
             else
             {
-                Response.Redirect("Logon.aspx", true); 
+                Response.Redirect("Logon.aspx", true);
             }
         }
 
@@ -55,27 +56,21 @@ namespace Dash
             }
             else
             {
-
                 Response.Redirect("IndexTenant", true);
             }
-
         }
 
         protected void desktop_button_Click(object sender, EventArgs e)
         {
             var test = userRole;
 
-
             if (userRole == "SuperAdmin")
             {
                 Response.Redirect("Index", true);
-
             }
             else
             {
-
                 Response.Redirect("IndexTenant", true);
-
             }
         }
 
@@ -93,11 +88,9 @@ namespace Dash
             else if (userRole == "Admin")
             {
                 Response.Redirect("TenantAdmin.aspx", true);
-
             }
             else
             {
-
                 Response.Redirect("Logon.aspx", true); // config for securing data.
             }
         }
@@ -110,7 +103,6 @@ namespace Dash
             }
             else
             {
-
                 Response.Redirect("IndexTenant", true);
             }
         }

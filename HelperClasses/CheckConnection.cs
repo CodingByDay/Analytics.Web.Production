@@ -15,7 +15,6 @@ namespace Dash.HelperClasses
         /// <returns></returns>
         public static bool TestConnection(string InitialCatalog, string DataSource, string UserID, string Password)
         {
-
             SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
             build.InitialCatalog = InitialCatalog;
             build.DataSource = DataSource;
@@ -33,7 +32,6 @@ namespace Dash.HelperClasses
                 return true;
             }
         }
-
 
         public static bool CheckDatabaseConnection(string conn)
         {

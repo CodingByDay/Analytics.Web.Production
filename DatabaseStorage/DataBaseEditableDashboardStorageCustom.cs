@@ -15,7 +15,6 @@ using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
 {
-
     public class DataBaseEditableDashboardStorageCustom : IEditableDashboardStorage
     {
         private string connectionString;
@@ -40,7 +39,7 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-            
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -61,9 +60,6 @@ namespace Dash.DatabaseStorage
             }
         }
 
-
-
-
         public string GetCompanyForUser()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -76,9 +72,9 @@ namespace Dash.DatabaseStorage
                     string company = string.Empty;
 
                     // Use a parameterized query to prevent SQL injection
-                    string query = @"SELECT company_name 
-                             FROM Users 
-                             INNER JOIN Companies ON Users.id_company = Companies.id_company 
+                    string query = @"SELECT company_name
+                             FROM Users
+                             INNER JOIN Companies ON Users.id_company = Companies.id_company
                              WHERE uname = @uname";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -105,45 +101,44 @@ namespace Dash.DatabaseStorage
             }
         }
 
-
-
         public XDocument LoadDashboard(string dashboardID)
         {
-            if(!permissions.DashboardWithIdAllowed(dashboardID))
+            if (!permissions.DashboardWithIdAllowed(dashboardID))
             {
                 return null;
             }
             using (SqlConnection connection = new SqlConnection(this.connection))
-            {                  
-                    connection.Open();
-                    SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
-                    GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
-                    GetCommand.Connection = connection;
-                    SqlDataReader reader = GetCommand.ExecuteReader();
-                    reader.Read();
-                    byte[] data = reader.GetValue(0) as byte[];
-                    MemoryStream stream = new MemoryStream(data);
-                    DevExpress.DashboardCommon.Dashboard dashboard = new DevExpress.DashboardCommon.Dashboard();
-                    dashboard.LoadFromXDocument(XDocument.Load(stream));
-                    dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource =>
-                    {
-                        dataSource.DataProcessingMode = DataProcessingMode.Client;
-                    });
-                    connection.Close();
+            {
+                connection.Open();
+                SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
+                GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                GetCommand.Connection = connection;
+                SqlDataReader reader = GetCommand.ExecuteReader();
+                reader.Read();
+                byte[] data = reader.GetValue(0) as byte[];
+                MemoryStream stream = new MemoryStream(data);
+                DevExpress.DashboardCommon.Dashboard dashboard = new DevExpress.DashboardCommon.Dashboard();
+                dashboard.LoadFromXDocument(XDocument.Load(stream));
+                dashboard.DataSources.OfType<DashboardSqlDataSource>().ToList().ForEach(dataSource =>
+                {
+                    dataSource.DataProcessingMode = DataProcessingMode.Client;
+                });
+                connection.Close();
 
-                    string referer = GetRefererName(HttpContext.Current.User.Identity.Name);
+                string referer = GetRefererName(HttpContext.Current.User.Identity.Name);
 
-                    if (!String.IsNullOrEmpty(referer))
-                    {
-                        var manipulated = ManipulateDocument(dashboard.SaveToXDocument(), referer);
-                        return manipulated;
-                    }
-                    else
-                    {
-                        return dashboard.SaveToXDocument();
-                    }
+                if (!String.IsNullOrEmpty(referer))
+                {
+                    var manipulated = ManipulateDocument(dashboard.SaveToXDocument(), referer);
+                    return manipulated;
+                }
+                else
+                {
+                    return dashboard.SaveToXDocument();
+                }
             }
         }
+
         private string GetRefererName(string name)
         {
 #nullable enable
@@ -153,7 +148,7 @@ namespace Dash.DatabaseStorage
             {
                 connection.Open();
                 SqlCommand cmd = new SqlCommand($"SELECT referrer FROM users WHERE uname=@uname;", connection);
-                cmd.Parameters.AddWithValue("@uname", name);  
+                cmd.Parameters.AddWithValue("@uname", name);
 
                 try
                 {
@@ -222,8 +217,6 @@ namespace Dash.DatabaseStorage
             return list;
         }
 
-
-
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
             string FinalString = "(";
@@ -241,7 +234,7 @@ namespace Dash.DatabaseStorage
                 }
             }
 
-            if(available.Count == 0)
+            if (available.Count == 0)
             {
                 return new List<DashboardInfo>();
             }
@@ -254,7 +247,7 @@ namespace Dash.DatabaseStorage
                 GetCommand.Parameters.AddWithValue("@ConcatString", FinalString);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
-                string name = HttpContext.Current.User.Identity.Name; 
+                string name = HttpContext.Current.User.Identity.Name;
                 int id = GetIdCompany(GetCompanyForUser());
                 Models.Dashboard graph = new Models.Dashboard(id);
                 var payload = graph.GetNames(id);
@@ -267,19 +260,19 @@ namespace Dash.DatabaseStorage
                         var custom = payload.FirstOrDefault(x => x.original == Caption).custom;
 
                         list.Add(new DashboardInfo() { ID = ID, Name = custom });
-                    } catch
+                    }
+                    catch
                     {
                         list.Add(new DashboardInfo() { ID = ID, Name = Caption });
                     }
-                }         
-                    var graphs = graph.GetGraphs(id);
+                }
+                var graphs = graph.GetGraphs(id);
                 List<Models.Dashboard.Names> data = new List<Models.Dashboard.Names>();
-                    foreach(var obj in graphs)
-                    {
-                        data.Add(new Models.Dashboard.Names { original = obj.Name, custom = obj.CustomName });
-                    }
-                    graph.UpdateGraphs(data, id);
-               
+                foreach (var obj in graphs)
+                {
+                    data.Add(new Models.Dashboard.Names { original = obj.Name, custom = obj.CustomName });
+                }
+                graph.UpdateGraphs(data, id);
             }
             return list;
         }
@@ -295,7 +288,6 @@ namespace Dash.DatabaseStorage
                     result = cmd.ExecuteScalar();
                     var id = System.Convert.ToInt32(result);
                     return id;
-
                 }
                 catch (Exception ex)
                 {
@@ -303,8 +295,8 @@ namespace Dash.DatabaseStorage
                     return -1;
                 }
             }
-
         }
+
         public void SaveDashboard(string dashboardID, XDocument document)
         {
             using (SqlConnection connection = new SqlConnection(this.connection))
@@ -325,6 +317,5 @@ namespace Dash.DatabaseStorage
                 connection.Close();
             }
         }
-
     }
 }

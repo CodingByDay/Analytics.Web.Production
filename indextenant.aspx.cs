@@ -11,10 +11,8 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
-using System.Web.SessionState;
 using System.Web.UI.HtmlControls;
 
 namespace Dash
@@ -33,7 +31,7 @@ namespace Dash
         private string returnString;
         private SqlCommand cmd;
         private int permisionID;
-        HttpRequest httpRequest;
+        private HttpRequest httpRequest;
         private string companyInfo;
         private object result;
         private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
@@ -57,101 +55,101 @@ namespace Dash
                 }
             }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-                dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-                string p = Request.QueryString["p"];                    
-                try
+            dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
+            string p = Request.QueryString["p"];
+            try
+            {
+                if (Request.Cookies["tab"].Value.ToString() != null)
                 {
-                    if (Request.Cookies["tab"].Value.ToString() != null)
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    string name = getCompanyQuery(uname);
+                    int id = GetIdCompany(name);
+                    Models.Dashboard graph = new Models.Dashboard(id);
+                    var dataX = graph.GetGraphs(id);
+                }
+            }
+            catch { }
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            if (Request.Cookies["dashboard"] != null | !String.IsNullOrEmpty(p))
+            {
+                if (!String.IsNullOrEmpty(p))
+                {
+                    string uname = HttpContext.Current.User.Identity.Name;
+                    string name = getCompanyQuery(uname);
+                    int id = GetIdCompany(name);
+                    Models.Dashboard graph = new Models.Dashboard(id);
+                    var dataX = graph.getSingularNameOriginal(id, p);
+                    ASPxDashboard3.InitialDashboardId = dataX;
+                }
+                else
+                {
+                    // New OOP structure 23.09.2024
+                    if (dataBaseDashboardStorage.permissions.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
                     {
-                        string uname = HttpContext.Current.User.Identity.Name;
-                        string name = getCompanyQuery(uname);
-                        int id = GetIdCompany(name);
-                        Models.Dashboard graph = new Models.Dashboard(id);
-                        var dataX = graph.GetGraphs(id);
+                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
                     }
                 }
-                catch { }
-                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                if (Request.Cookies["dashboard"] != null | !String.IsNullOrEmpty(p))
+            }
+            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
+            admin.Visible = false;
+            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+            ASPxDashboard3.AllowCreateNewDashboard = true;
+            ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
+            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+
+            string TARGET_URL = "https://dash.in-sist.si";
+            if (Session != null)
+            {
+                if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
                 {
-                    if (!String.IsNullOrEmpty(p))
+                    if (Session["UserAllowed"].ToString() == "true")
                     {
-                        string uname = HttpContext.Current.User.Identity.Name;
-                        string name = getCompanyQuery(uname);
-                        int id = GetIdCompany(name);
-                        Models.Dashboard graph = new Models.Dashboard(id);
-                        var dataX = graph.getSingularNameOriginal(id, p);
-                        ASPxDashboard3.InitialDashboardId = dataX;
-                    } else {
-                        // New OOP structure 23.09.2024
-                        if (dataBaseDashboardStorage.permissions.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
-                        {
-                            ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                        } 
-                    }
-                }
-                HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-                admin.Visible = false;
-                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
-                ASPxDashboard3.AllowCreateNewDashboard = true;
-                ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
-                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
-
-                ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
-
-                string TARGET_URL = "https://dash.in-sist.si";
-                if (Session != null)
-                {
-                    if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
-                    {
-                        if (Session["UserAllowed"].ToString() == "true")
-                        {
-                            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                        }
-                        else
-                        {
-                            ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-                        }
+                        ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                     }
                     else
                     {
-                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
                     }
                 }
                 else
                 {
                     DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                 }
-                if (Request.Cookies.Get("state") is null)
+            }
+            else
+            {
+                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+            }
+            if (Request.Cookies.Get("state") is null)
+            {
+                Response.Cookies["state"].Value = "light";
+            }
+            else
+            {
+                state = Request.Cookies.Get("state").Value;
+                switch (state)
                 {
-                    Response.Cookies["state"].Value = "light";
-                }
-                else
-                {
-                    state = Request.Cookies.Get("state").Value;
-                    switch (state)
-                    {
-                        case "light":
-                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
-                            break;
+                    case "light":
+                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                        break;
 
-                        case "dark":
-                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
-                            break;
-                    }
+                    case "dark":
+                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                        break;
                 }
-                ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-            
+            }
+            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
-
 
         [WebMethod]
         public static void DeleteItem(string id)
@@ -170,10 +168,8 @@ namespace Dash
                 {
                     return;
                 }
-
             }
         }
-
 
         private string getCompanyQuery(string uname)
         {
@@ -204,8 +200,6 @@ namespace Dash
             }
             return companyInfo;
         }
-
-
 
         /// <summary>
         /// Custom export event.
@@ -272,11 +266,9 @@ namespace Dash
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            
             Response.Cookies["dashboard"].Value = e.DashboardId;
             Session["current"] = e.DashboardId;
             return;
-           
         }
 
         private bool checkDB(string ID)
@@ -317,31 +309,29 @@ namespace Dash
             var ed = e.ConnectionParameters;
             string type_string = e.ConnectionParameters.GetType().Name;
             // MsSqlConnectionParameters
-          
-                if (type_string == "MsSqlConnectionParameters") {
 
-                        ConnectionStringSettings conn = GetConnectionString();
-                        MsSqlConnectionParameters parameters =
-                              (MsSqlConnectionParameters) e.ConnectionParameters;
-                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                        
-                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
-                        msSqlConnection.ServerName = builder.DataSource;
-                        msSqlConnection.DatabaseName = builder.InitialCatalog;
-                        msSqlConnection.UserName = builder.UserID;
-                        msSqlConnection.Password = builder.Password;
-                        e.ConnectionParameters = msSqlConnection;
-                
-                                    
-               } else
-               {
-                        ConnectionStringSettings conn = GetConnectionString();
-                        CustomStringConnectionParameters parameters =
-                                (CustomStringConnectionParameters)e.ConnectionParameters;
-                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                        parameters.ConnectionString = conn.ConnectionString;
-               }
-            
+            if (type_string == "MsSqlConnectionParameters")
+            {
+                ConnectionStringSettings conn = GetConnectionString();
+                MsSqlConnectionParameters parameters =
+                      (MsSqlConnectionParameters)e.ConnectionParameters;
+                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+
+                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
+                msSqlConnection.ServerName = builder.DataSource;
+                msSqlConnection.DatabaseName = builder.InitialCatalog;
+                msSqlConnection.UserName = builder.UserID;
+                msSqlConnection.Password = builder.Password;
+                e.ConnectionParameters = msSqlConnection;
+            }
+            else
+            {
+                ConnectionStringSettings conn = GetConnectionString();
+                CustomStringConnectionParameters parameters =
+                        (CustomStringConnectionParameters)e.ConnectionParameters;
+                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                parameters.ConnectionString = conn.ConnectionString;
+            }
         }
 
         private string GetCurrentUserID()
@@ -379,7 +369,6 @@ namespace Dash
 
             try
             {
-              
                 var result = cmd.ExecuteScalar();
                 companyID = System.Convert.ToInt32(result);
             }
@@ -426,9 +415,5 @@ namespace Dash
             }
             return returnString;
         }
-
-      
-
-    
     }
 }

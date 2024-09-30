@@ -11,10 +11,12 @@
 .fa.fa-desktop, .fa.fa-mobile {
     padding-right: 7px;
 }
+
 .logo {
     width: 170px;
     height: auto;
 }
+
 @media (min-width: 992px) {
     .container {
         max-width: 1530px;
@@ -40,8 +42,6 @@
     font-size: 14px;
 }
 
-
-
 .container.body-content {
     min-width: 100% !important;
 }
@@ -49,7 +49,6 @@
 .conn, .plus {
     display: inline-block;
 }
-
 
 html {
     background-color: white !important;
@@ -106,7 +105,6 @@ html {
     display: inline-block;
 }
 
-
 #user, #deleteUser {
     display: inline-block;
 }
@@ -118,7 +116,6 @@ html {
 #byUser {
     float: right !important;
 }
-
 
 #user, #company, #byUser {
     float: right !important;
@@ -141,8 +138,3 @@ html {
 #ConnectionStringDiv {
     display: none;
 }
-
-
-
-
-

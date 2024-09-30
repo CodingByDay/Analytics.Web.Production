@@ -29,9 +29,9 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);        
+            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);
             // Execute command and fetch pwd field into lookupPassword string.
-            userRole = (string) cmd.ExecuteScalar();
+            userRole = (string)cmd.ExecuteScalar();
             CheckIsAdminShowAdminButtonOrNot(userRole);
             CheckWhetherToShowTheSwitcherAtAll();
             ConditionalyAddStylesBasedOnTheUrl();
@@ -50,6 +50,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Website.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
+
                 case "~/TenantAdmin.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
@@ -57,6 +58,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Website.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
+
                 case "~/Emulator.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
@@ -64,6 +66,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Website.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
+
                 case "~/Filters.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
@@ -71,6 +74,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Website.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
+
                 case "~/Index.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
@@ -78,6 +82,7 @@ namespace Dash
                     AddCssLink("~/Content/Css/Graphs.css");
                     AddCssLink("~/Content/Css/Website.css");
                     break;
+
                 case "~/IndexTenant.aspx":
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
@@ -87,7 +92,6 @@ namespace Dash
                     break;
             }
         }
-
 
         private void AddCssLink(string cssPath)
         {
@@ -115,8 +119,6 @@ namespace Dash
             FormsAuthentication.SignOut();
             Session["current"] = string.Empty;
             Response.Redirect("Home.aspx", true);
-
-
         }
 
         private void CheckIsAdminShowAdminButtonOrNot(string userRole)
@@ -131,10 +133,6 @@ namespace Dash
             }
         }
 
-
-
-
-
         protected void Administration_Click(object sender, EventArgs e)
         {
             // Data
@@ -145,11 +143,9 @@ namespace Dash
             else if (userRole == "Admin")
             {
                 Response.Redirect("TenantAdmin.aspx", true);
-
             }
             else
             {
-
                 Response.Redirect("Logon.aspx", true);
             }
         }
@@ -162,18 +158,13 @@ namespace Dash
             }
             else
             {
-
                 Response.Redirect("IndexTenant.aspx", true);
             }
-
         }
-
 
         protected void Filters_Click(object sender, EventArgs e)
         {
             Response.Redirect("Filters.aspx", true);
         }
-
-
     }
 }

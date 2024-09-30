@@ -35,12 +35,10 @@ namespace Dash
         protected void NavigationTreeView_Load(object sender, EventArgs e)
         {
             Page.ClientScript.RegisterStartupScript(GetType(), "Initalize the view bag.", "load()", true);
-
         }
 
         protected void NavigationTreeView_Init(object sender, EventArgs e)
         {
-
         }
 
         protected void NavigationTreeView_NodeClick(object source, TreeViewNodeEventArgs e)

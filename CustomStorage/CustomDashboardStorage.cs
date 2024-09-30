@@ -11,14 +11,14 @@ namespace WebDesigner_CustomDashboardStorage
 {
     public class CustomDashboardStorage : IEditableDashboardStorage
     {
-        DashboardStorageDataSet dashboards = new DashboardStorageDataSet();
+        private DashboardStorageDataSet dashboards = new DashboardStorageDataSet();
         private SqlConnection conn;
         private SqlCommand cmd;
         private string company;
         private string admin;
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-        // Adds a dashboard with the specified ID and name to a DataSet. 
+        // Adds a dashboard with the specified ID and name to a DataSet.
         // Note that the 'DashboardID' column is an auto-increment column that is used to store unique dashboard IDs.
         public string AddDashboard(XDocument dashboard, string dashboardName)
         {
@@ -62,7 +62,6 @@ namespace WebDesigner_CustomDashboardStorage
 
             var folder = HttpContext.Current.User.Identity.Name;
 
-
             var path = HttpContext.Current.Server.MapPath($"~/App_Data/{company}/{folder}".Replace(" ", string.Empty) + dashboardID + ".xml");
 
             File.WriteAllText(path, dashboard.ToString());
@@ -72,16 +71,13 @@ namespace WebDesigner_CustomDashboardStorage
             File.WriteAllText(path, dashboard.ToString());
         }
 
-
-
-
         public string GetAdminFromCompanyName(string company)
         {
             string uname = HttpContext.Current.User.Identity.Name;
             conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn);     
+            cmd = new SqlCommand($"SELECT admin_id FROM Companies WHERE company_name='{company}'", conn);
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -101,7 +97,7 @@ namespace WebDesigner_CustomDashboardStorage
             conn = new SqlConnection(connection);
             conn.Open();
             // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn);        
+            cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{HttpContext.Current.User.Identity.Name}';", conn);
             // Execute command and fetch pwd field into lookupPassword string.
             SqlDataReader reader = cmd.ExecuteReader();
 
@@ -114,6 +110,5 @@ namespace WebDesigner_CustomDashboardStorage
             conn.Close();
             return company;
         }
-
     }
 }

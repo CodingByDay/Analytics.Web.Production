@@ -6,14 +6,11 @@ using System.Data.SqlClient;
 
 namespace Dash.Models
 {
-
     public static class UserHelper
     {
-        public static List<User> getAll ()
+        public static List<User> getAll()
         {
             List<User> payload = new List<User>();
-
-
 
             return payload;
         }
@@ -23,6 +20,7 @@ namespace Dash.Models
     {
         public string name { get; set; }
     }
+
     public class User
     {
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -31,15 +29,11 @@ namespace Dash.Models
 
         public string password { get; set; }
 
-
         public string user_role { get; set; }
-
 
         public string view_allowed { get; set; }
 
-
         public string email { get; set; }
-
 
         public string dashboards { get; set; }
 
@@ -62,18 +56,16 @@ namespace Dash.Models
             this.dashboards = graphs;
         }
 
-
         public List<GraphName> GetGraphNames()
         {
             List<GraphName> data = new List<GraphName>();
             var splitted = this.dashboards.Split(',');
-            foreach(string split in splitted)
+            foreach (string split in splitted)
             {
-                data.Add(new GraphName {  name= split});
+                data.Add(new GraphName { name = split });
             }
             return data;
         }
-
 
         public void RemoveGraph(string name)
         {
@@ -82,49 +74,6 @@ namespace Dash.Models
                 var graphs = GetGraphNames();
                 var toRemove = graphs.Find(x => x.name == name);
                 graphs.RemoveAt(graphs.IndexOf(toRemove));
-
-                string returnValue = string.Empty;
-                foreach(var x in graphs)
-                {
-                    returnValue += $"{x.name},"; 
-                }
-                this.dashboards = returnValue;
-            } catch
-            {
-            }
-        }
-
-        public bool IsPermited(string name)
-        {
-            bool isOk = false;
-
-            try
-            {
-                var graphs = GetGraphNames();
-                foreach(var graph in graphs)
-                {
-                    if(graph.name == name)
-                    {
-                        isOk = true;
-                    }
-                }
-
-                return isOk;
-            }   
-            catch
-            {
-                isOk = false;
-                return isOk;
-            }
-        }
-
-
-        public void AddGraph(string name)
-        {
-            try
-            {
-                var graphs = GetGraphNames();
-                graphs.Add(new GraphName {  name = name});
 
                 string returnValue = string.Empty;
                 foreach (var x in graphs)
@@ -138,9 +87,52 @@ namespace Dash.Models
             }
         }
 
-        public User(string uname, bool isSQL) 
+        public bool IsPermited(string name)
         {
-            if(isSQL)
+            bool isOk = false;
+
+            try
+            {
+                var graphs = GetGraphNames();
+                foreach (var graph in graphs)
+                {
+                    if (graph.name == name)
+                    {
+                        isOk = true;
+                    }
+                }
+
+                return isOk;
+            }
+            catch
+            {
+                isOk = false;
+                return isOk;
+            }
+        }
+
+        public void AddGraph(string name)
+        {
+            try
+            {
+                var graphs = GetGraphNames();
+                graphs.Add(new GraphName { name = name });
+
+                string returnValue = string.Empty;
+                foreach (var x in graphs)
+                {
+                    returnValue += $"{x.name},";
+                }
+                this.dashboards = returnValue;
+            }
+            catch
+            {
+            }
+        }
+
+        public User(string uname, bool isSQL)
+        {
+            if (isSQL)
             {
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
@@ -150,7 +142,7 @@ namespace Dash.Models
                         SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{uname}'", conn);
                         SqlDataReader sdr = cmd.ExecuteReader();
                         while (sdr.Read())
-                        {                          
+                        {
                             this.uname = sdr["uname"].ToString();
                             this.user_role = sdr["userRole"].ToString();
                             this.view_allowed = sdr["ViewState"].ToString();

@@ -22,12 +22,9 @@
     margin: 0.3em !important;
 }
 
-
 .navbar {
     border-radius: 0 !important;
 }
-
-
 
 .mobile-button, .desktop-button {
     font-weight: 400 !important;
@@ -39,7 +36,6 @@
     font-size: 14px;
 }
 
-
 .toggle--checkbox {
     display: none;
 }
@@ -48,7 +44,6 @@
         /** This will all flip from sun to moon **/
         /** Change the label color **/
     }
-
 
 #signOutAnchor, #backButtonA, #adminButtonAnchor, #filtersButton {
     background-color: black;
@@ -62,15 +57,12 @@
     margin-left: 5px !important;
 }
 
-
-
 .navbar-nav ml-auto {
     float: right !important;
     position: absolute !important;
     right: 5px !important;
     top: 2px !important;
 }
-
 
 .buttonPanel {
     color: white !important;
@@ -222,8 +214,6 @@
     opacity: 0;
 }
 
-
-
 @keyframes switch {
     0% {
         left: 1px;
@@ -255,7 +245,6 @@
         left: 1px;
     }
 }
-
 
 .outer {
     text-align: center;

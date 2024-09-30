@@ -1,15 +1,10 @@
-﻿using DevExpress.XtraCharts.Native;
-using DevExpress.XtraRichEdit.Model;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Web;
-using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace Dash.Models
 {
@@ -32,7 +27,6 @@ namespace Dash.Models
 
         public DashboardPermissions()
         {
-            
         }
 
         public DashboardPermissions GetPermissionsForUser(string uname)
@@ -68,7 +62,6 @@ namespace Dash.Models
                 }
             }
         }
-
 
         public bool SetPermissionsForUser(string uname)
         {
@@ -110,10 +103,6 @@ namespace Dash.Models
             }
         }
 
-
-
-
-
         public DashboardPermissions ConvertJsonToPermissions(string json)
         {
             string unescapedJson = Regex.Unescape(json);
@@ -125,7 +114,7 @@ namespace Dash.Models
         {
             foreach (var permission in this.Permissions)
             {
-                if(permission.id.ToString() == dashboardID)
+                if (permission.id.ToString() == dashboardID)
                 {
                     return true;
                 }
@@ -134,12 +123,8 @@ namespace Dash.Models
         }
     }
 
-
-
-
     public class DashboardPermission
     {
         public int id { get; set; }
     }
-
 }

@@ -7,7 +7,6 @@ updatedPayload = [];
  */
 
 function onItemCaptionToolbarUpdated(s, e) {
-
     var list = dashboard.GetParameters().GetParameterList();
     setCookie("params", JSON.stringify(list), 365);
     if (list.length > 0) {
@@ -15,7 +14,6 @@ function onItemCaptionToolbarUpdated(s, e) {
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
             parameterized_values.forEach((singular) => {
-
                 const found = list.find(element => element.Name == singular)
                 indexOfElement = list.indexOf(found)
                 if (found != null && indexOfElement != -1) {
@@ -27,10 +25,9 @@ function onItemCaptionToolbarUpdated(s, e) {
                     }
                     window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
                     e.Options.staticItems[0].text = window.item_caption;
-                } 
+                }
             })
         }
-
     }
 }
 
@@ -41,7 +38,6 @@ function ask(e) {
     }
     firstUse = false;
 }
-
 
 function regex_return(text_to_search) {
     var re = /(?:^|\W)#(\w+)(?!\w)/g, match, matches = [];
@@ -55,7 +51,6 @@ function customizeWidgets(sender, args) {
     var parName = []
     var collection = dashboard.GetParameters().GetParameterList();
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
-      
         for (var j = 0; j < collection.length; j++) {
             initialPayload.push(dashboard.GetParameters().GetParameterList()[j].Value);
             parName.push(dashboard.GetParameters().GetParameterList()[j].Name);
@@ -64,21 +59,16 @@ function customizeWidgets(sender, args) {
         var grid = args.GetWidget();
         var columns = grid.option("columns");
         for (var i = 0; i < columns.length; i++) {
-            
-
             var textToCheck = columns[i].caption;
 
             window.textNew = textToCheck;
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
-  
                 parameterized_values.forEach((singular) => {
-
                    const found = parName.find(element => element == singular)
                    indexOfElement = parName.indexOf(found)
 
                        if (found != null && indexOfElement != -1) {
-                           
                            text_to_replace = "#" + found
                            try {
                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
@@ -87,20 +77,14 @@ function customizeWidgets(sender, args) {
                            }
                            window.textNew = window.textNew.replace(text_to_replace, text_replace);
                            columns[i].caption = window.textNew;
-                    } 
+                    }
                 })
-            } 
-
+            }
         }
         grid.option("columns", columns);
     }
 
-
-
     if (args.ItemName.startsWith("chart")) {
-
-
-
         var chart = args.GetWidget();
         let tip = chart.tooltip =
         {
@@ -110,11 +94,9 @@ function customizeWidgets(sender, args) {
                 window.item_caption = rWork;
                 var list = dashboard.GetParameters().GetParameterList();
                 if (list.length > 0) {
-
                     var parameterized_values = regex_return(arg.seriesName);
                     if (parameterized_values.length != 0) {
                         parameterized_values.forEach((singular) => {
-
                             const found = list.find(element => element.Name == singular)
                             indexOfElement = list.indexOf(found)
                             if (found != null && indexOfElement != -1) {
@@ -125,41 +107,29 @@ function customizeWidgets(sender, args) {
                                     text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                                 }
                                 window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-
                             }
                         })
                     }
-
                 }
                 var splited = window.item_caption.split(" ");
                 splited_removed = removeItemOnce(splited)
                 let replaced = splited_removed.join(" ");
 
-
-
                 return {
                     text: `${replaced}: ${arg.valueText}`,
                 };
             }
-     
         };
         chart.option("tooltip", tip);
-
-
-
-
-
 
         var legend = chart.option("legend");
         legend.customizeText = function (arg) {
             window.item_caption = arg.seriesName;
             var list = dashboard.GetParameters().GetParameterList();
             if (list.length > 0) {
-
                 var parameterized_values = regex_return(arg.seriesName);
                 if (parameterized_values.length != 0) {
                     parameterized_values.forEach((singular) => {
-
                         const found = list.find(element => element.Name == singular)
                         indexOfElement = list.indexOf(found)
                         if (found != null && indexOfElement != -1) {
@@ -170,22 +140,18 @@ function customizeWidgets(sender, args) {
                                 text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                             }
                             window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                           
                         }
                     })
                 }
-
             }
             var splited = window.item_caption.split(" ");
             splited_removed = removeItemOnce(splited)
             return splited_removed.join(" ");
         }
         chart.option("legend", legend);
-        
     }
 }
 function removeItemOnce(arr) {
-
         arr.splice(0, 1);
 
     return arr;
@@ -198,7 +164,6 @@ function updatecustomizeWidgets(sender, args) {
     var collection = dashboard.GetParameters().GetParameterList();
 
     setCookie('new', JSON.stringify(collection))
-
 
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
         initialPayload = [];
@@ -213,13 +178,10 @@ function updatecustomizeWidgets(sender, args) {
             window.textNew = textToCheck;
             var parameterized_values = regex_return(textToCheck);
             if (parameterized_values.length != 0) {
-                
                 parameterized_values.forEach((singular) => {
-
                     const found = parName.find(element => element == singular)
                     indexOfElement = parName.indexOf(found)
                     if (found != null && indexOfElement != -1) {
-
                         text_to_replace = "#" + found
                         try {
                             text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
@@ -228,9 +190,9 @@ function updatecustomizeWidgets(sender, args) {
                         }
                         window.textNew = window.textNew.replace(text_to_replace, text_replace);
                         columns[i].caption = window.textNew;
-                    } 
+                    }
                 })
-            } 
+            }
         }
         grid.option("columns", columns);
     }
@@ -263,10 +225,8 @@ function updatecustomizeWidgets(sender, args) {
                     iCurrent.name(nName);
                 }
             }
-          
          }
     }
-
 
     if (args.ItemName.startsWith("chart")) {
         var chart = args.GetWidget();
@@ -275,11 +235,9 @@ function updatecustomizeWidgets(sender, args) {
             window.item_caption = arg.seriesName;
             var list = dashboard.GetParameters().GetParameterList();
             if (list.length > 0) {
-
                 var parameterized_values = regex_return(arg.seriesName);
                 if (parameterized_values.length != 0) {
                     parameterized_values.forEach((singular) => {
-
                         const found = list.find(element => element.Name == singular)
                         indexOfElement = list.indexOf(found)
                         if (found != null && indexOfElement != -1) {
@@ -290,18 +248,15 @@ function updatecustomizeWidgets(sender, args) {
                                 text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
                             }
                             window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-
                         }
                     })
                 }
-
             }
             var splited = window.item_caption.split(" ");
             splited_removed = removeItemOnce(splited)
             return splited_removed.join(" ");
         }
         chart.option("legend", legend);
-
     }
     if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 2) {
         d_old = JSON.parse(getCookie('old'));
@@ -316,15 +271,12 @@ function updatecustomizeWidgets(sender, args) {
     }
 }
 
-
-
-
 payload = [];
 
 var extension;
 
 /**
- *  
+ *
  * @param sender
  */
 
@@ -366,29 +318,21 @@ function getCookie(cname) {
     return "";
 }
 
-
-
 $(document).keypress(function (e) { if (e.keyCode === 13) { e.preventDefault(); return false; } });
 
 $(function () {
-
-    $(':text').bind('keydown', function (e) { // on keydown for all textboxes  
-
-        if (e.keyCode == 13) // if this is enter key  
+    $(':text').bind('keydown', function (e) { // on keydown for all textboxes
+        if (e.keyCode == 13) // if this is enter key
 
             e.preventDefault();
-
     });
-
 });
 
 /**
  * Change the visibility of the collapsable hamburger menu. */
 function toggleVisibilityHide(toHide) {
-
     var picture = document.getElementById("pic")
     if (toHide == true) {
-
         picture.style.visibility = "hidden"
     } else {
         picture.style.visibility = "visible"
@@ -398,7 +342,6 @@ function toggleVisibilityHide(toHide) {
 /* Jquery function to handle hamburger clicked */
 $(document).ready(function () {
     $("#pic").mouseover(function () {
-
         var expand = getCookie("expand");
         if (expand == "true") {
             onExpand();
@@ -410,10 +353,7 @@ $(document).ready(function () {
                 onCollapse();
             }
         }
-
-
     });
-
 });
 
 function show() {
@@ -421,41 +361,29 @@ function show() {
     console.log("Show");
     $(".dx-dashboard-surface").attr('style', 'left: 250px !important');
     changePicStateHideIt(true);
-
 }
 
-
 function hide() {
-
     $('.dx-overlay-content').hide();
     console.log("hide");
     $(".dx-dashboard-surface").attr('style', 'left: 10px !important');
     changePicStateHideIt(false);
-
 }
 
 function onExpand() {
-
     var control = dashboard.GetDashboardControl();
     extension.showPanelAsync({}).done(function (e) {
-
         control.surfaceLeft(e.surfaceLeft);
         setCookie("expand", "false", 365);
-
     });
 }
 
-
-
-
 function onCollapse() {
-
     var control = dashboard.GetDashboardControl();
     extension.hidePanelAsync({}).done(function (e) {
         control.surfaceLeft(e.surfaceLeft);
         toggleVisibilityHide(false);
         setCookie("expand", "true", 365);
-
     });
 }
 
@@ -477,14 +405,12 @@ function correctTheLoadingState(s, e) {
     tabItems = []
     window.counter = 0;
 
-
     for (var i = 0; i < items.length; i++) {
         var iCurrent = items[i];
         item_caption = iCurrent.name();
         var parameterized_values = regex_return(item_caption);
         if (parameterized_values.length != 0) {
               parameterized_values.forEach((singular) => {
-
                 const found = list.find(element => element.Name == singular)
                 indexOfElement = list.indexOf(found)
 
@@ -502,8 +428,5 @@ function correctTheLoadingState(s, e) {
                 }
             })
         }
-
     }
-
-
 }

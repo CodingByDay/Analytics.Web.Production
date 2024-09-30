@@ -48,7 +48,7 @@ namespace Dash.Models
                 }
             }
         }
-        
+
         public void UpdateGraphs(List<Names> payload, int companyID)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -137,37 +137,34 @@ namespace Dash.Models
                 }
             }
         }
+
         public string getSingularNameOriginal(int id, string customInner)
         {
             string original = string.Empty;
             var names = getNamesCurrent(id);
-            
+
             try
             {
                 original = names.FirstOrDefault(x => x.custom == customInner).original;
-                using(SqlConnection conn = new SqlConnection(Connection))
+                using (SqlConnection conn = new SqlConnection(Connection))
                 {
                     conn.Open();
 
-
                     var cmd = new SqlCommand($"select d.ID from Dashboards d where d.Caption = '{original}'", conn);
 
-                    int result = (int) cmd.ExecuteScalar();
+                    int result = (int)cmd.ExecuteScalar();
 
                     original = result.ToString();
-
                 }
-            } catch(Exception e) {
-
-
-
-                return original; 
-            
-            
+            }
+            catch (Exception e)
+            {
+                return original;
             }
 
             return original;
         }
+
         public List<Names> getNamesCurrent(int id)
         {
             var graphs = GetGraphs(id);
@@ -234,7 +231,7 @@ namespace Dash.Models
             {
                 try
                 {
-                    conn.Open();                 
+                    conn.Open();
                     var insert = new SqlCommand($"DELETE FROM CustomNames WHERE company_id={companyID};", conn);
                     insert.ExecuteNonQuery();
                 }

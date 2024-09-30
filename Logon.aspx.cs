@@ -1,5 +1,4 @@
-﻿using Dash.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -29,8 +28,6 @@ namespace Dash
                 FetchDataFillList();
                 Session["passport"] = "false";
             }
-
-
         }
 
         private string GetRole(string username, string password)
@@ -58,7 +55,6 @@ namespace Dash
                     return string.Empty;
                 }
             }
-
         }
 
         private void FetchDataFillList()
@@ -84,7 +80,6 @@ namespace Dash
             {
                 try
                 {
-
                     conn.Open();
                     cmd = new SqlCommand($"SELECT id_company FROM users WHERE uname='{name}';", conn);
                     var result = cmd.ExecuteScalar();
@@ -106,7 +101,8 @@ namespace Dash
                         {
                             return false;
                         }
-                    } else
+                    }
+                    else
                     {
                         return false;
                     }
@@ -184,7 +180,6 @@ namespace Dash
                     return false;
                 }
             }
-
         }
 
         protected void Login_Click(object sender, EventArgs e)
@@ -198,7 +193,6 @@ namespace Dash
             Response.Cookies["Edit"].Value = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
-
                 var IsDesignerCompany = CompanyDesigner(txtUserName.Value);
                 var IsUserAllowed = IsIndividualAllowed(txtUserName.Value);
                 if (IsDesignerCompany || txtUserName.Value == "Admin")
@@ -283,8 +277,5 @@ namespace Dash
                 }
             }
         }
-
     }
 }
-
-

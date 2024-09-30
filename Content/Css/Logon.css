@@ -1,5 +1,6 @@
 ﻿body {
 }
+
 @import url('https://fonts.googleapis.com/css?family=Poppins');
 
 /* BASIC */
@@ -30,8 +31,6 @@ h2 {
     color: #cccccc;
 }
 
-
-
 /* STRUCTURE */
 
 .wrapper {
@@ -45,20 +44,18 @@ h2 {
 }
 
 .formTitle {
-text-transform:uppercase; 
-font-size: 25px; 
-font-weight:600;
-text-align: center; 
-padding-bottom: 20px; 
+    text-transform: uppercase;
+    font-size: 25px;
+    font-weight: 600;
+    text-align: center;
+    padding-bottom: 20px;
 }
 
 .formSubTitle {
     font-size: 13px;
-    color: #808080; 
+    color: #808080;
     text-transform: none;
-  
 }
-
 
 #formContent {
     -webkit-border-radius: 10px 10px 10px 10px;
@@ -83,8 +80,6 @@ padding-bottom: 20px;
     border-radius: 0 0 10px 10px;
 }
 
-
-
 /* TABS */
 
 h2.inactive {
@@ -97,8 +92,8 @@ h2.active {
 }
 
 .center {
-margin: 0 auto;
-text-align: center; 
+    margin: 0 auto;
+    text-align: center;
 }
 
 /* FORM TYPOGRAPHY*/
@@ -166,8 +161,6 @@ input[type=text], input[type=password] {
     input[type=text]:placeholder {
         color: #cccccc;
     }
-
-
 
 /* ANIMATIONS */
 
@@ -297,8 +290,6 @@ input[type=text], input[type=password] {
         width: 100%;
     }
 
-
-
 /* OTHERS */
 
 *:focus {
@@ -313,9 +304,7 @@ input[type=text], input[type=password] {
     box-sizing: border-box;
 }
 
-
-
-#MainContent_ASPxDashboard1{
-   min-height: 27.5vw !important;}
+#MainContent_ASPxDashboard1 {
+    min-height: 27.5vw !important;
 }
-
+}

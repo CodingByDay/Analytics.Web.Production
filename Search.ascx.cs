@@ -26,7 +26,7 @@ namespace Dash
             }
         }
 
-        void BindSearchResultsNavBar(IList<SearchResultItem> data)
+        private void BindSearchResultsNavBar(IList<SearchResultItem> data)
         {
             var group = new NavBarGroup();
             SearchResultsNavBar.Groups.Add(group);
@@ -42,12 +42,12 @@ namespace Dash
             }
         }
 
-        string GetFromattedTags(string tags)
+        private string GetFromattedTags(string tags)
         {
             return string.Concat(tags.Split(',').Select(i => string.Format("<span class='tag'>{0}</span>", i.Trim())));
         }
 
-        IList<SearchResultItem> DoSearch(string text)
+        private IList<SearchResultItem> DoSearch(string text)
         {
             var pagesNodes = XmlDataSource1.GetXmlDocument().GetElementsByTagName("page").OfType<XmlNode>();
             return pagesNodes
@@ -61,7 +61,7 @@ namespace Dash
                 }).ToList();
         }
 
-        class SearchResultItem
+        private class SearchResultItem
         {
             public string Title { get; set; }
             public string Tags { get; set; }

@@ -9,6 +9,7 @@ namespace Dash
     public partial class ChangePassword : System.Web.UI.Page
     {
         private SqlConnection conn;
+
         // Comment
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,7 +18,6 @@ namespace Dash
                 if (!IsPasswordResetLinkValid())
                 {
                     Response.Write($"<script type=\"text/javascript\">alert('Čas za resetiranje gesla je potekal ali link ni več vredo.'  );</script>");
-
                 }
             }
         }
@@ -34,22 +34,17 @@ namespace Dash
                 if (ChangeUserPassword())
                 {
                     Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjeno.'  );</script>");
-
                 }
                 else
                 {
                     Response.Write($"<script type=\"text/javascript\">alert('Link za spremembo gesla je potekal ali ni vejaven.'  );</script>");
-
                 }
             }
             else
             {
                 Response.Write($"<script type=\"text/javascript\">alert('Gesla niso ista.'  );</script>");
-
             }
         }
-
-
 
         private bool IsPasswordResetLinkValid()
         {
@@ -64,6 +59,7 @@ namespace Dash
 
             return ExecuteSP("spIsPasswordResetLinkValid", paramList);
         }
+
         private bool ChangeUserPassword()
         {
             List<SqlParameter> paramList = new List<SqlParameter>()
@@ -83,15 +79,11 @@ namespace Dash
             return ExecuteSP("spChangePassword", paramList);
         }
 
-
-
-
         private bool checkEquality()
         {
             if (pwd.Text == REpwd.Text)
             {
                 return true;
-
             }
             else
             {
@@ -107,7 +99,6 @@ namespace Dash
 
             using (conn)
             {
-
                 SqlCommand cmd = new SqlCommand(SPName, conn);
 
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -117,26 +108,9 @@ namespace Dash
                     cmd.Parameters.Add(parameter);
                 }
 
-
                 conn.Open();
                 return Convert.ToBoolean(cmd.ExecuteScalar());
-
-
-
-
-
-
-
             }
-
-
-
-
-
-
-
-
-
         }
     }
 }

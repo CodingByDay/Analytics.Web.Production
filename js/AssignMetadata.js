@@ -21,8 +21,6 @@ AssignMetadataExtension.prototype.assignMetadata = function () {
 			var param = JSON.stringify({ DashboardID: dashboardid, ExtensionName: this.name });
 			AssignMetadata(dashboardid);
 			this._toolbox.menuVisible(false);
-
-			
 	}
 }
 

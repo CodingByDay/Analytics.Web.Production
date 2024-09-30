@@ -155,7 +155,7 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    cmd = new SqlCommand($"SELECT company_name FROM Companies WHERE id_company={company}", conn); 
+                    cmd = new SqlCommand($"SELECT company_name FROM Companies WHERE id_company={company}", conn);
                     try
                     {
                         admin = (string)cmd.ExecuteScalar();
@@ -263,13 +263,13 @@ namespace Dash
                     if (usersGridView.FocusedRowIndex >= 0)
                     {
                         var plural = usersGridView.GetSelectedFieldValues("uname");
-                        if (plural.Count==0)
+                        if (plural.Count == 0)
                         {
                             usersGridView.Selection.SelectRow(0);
                             var plural_new = usersGridView.GetSelectedFieldValues("uname");
                             singular = plural_new[0].ToString();
-
-                        } else
+                        }
+                        else
                         {
                             var plural_new = usersGridView.GetSelectedFieldValues("uname");
                             singular = plural_new[0].ToString();
@@ -326,7 +326,7 @@ namespace Dash
                         if (bitValueTemp == 1)
                         {
                             graphsListBox.Items.ElementAt(i).Selected = true;
-                            
+
                             valuesBool.Add(true);
                         }
                         else
@@ -370,7 +370,7 @@ namespace Dash
                     Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                 }
-            } 
+            }
         }
 
         public void FillUsers()
@@ -392,7 +392,6 @@ namespace Dash
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT * FROM Users WHERE id_company={id}", conn);
 
-                    
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -422,7 +421,7 @@ namespace Dash
                 {
                     conn.Open();
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT * FROM Companies", conn); 
+                    cmd = new SqlCommand("SELECT * FROM Companies", conn);
                     // Execute command and fetch pwd field into lookupPassword string.
                     SqlDataReader sdr = cmd.ExecuteReader();
                     while (sdr.Read())
@@ -749,8 +748,6 @@ namespace Dash
                             continue;
                         }
                         Int32 Total_ID = System.Convert.ToInt32(id);
-
-
 
                         var item = graphsListBox.Items.ElementAt(i);
 

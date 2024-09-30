@@ -1,33 +1,25 @@
 ﻿using Dash.DatabaseStorage;
-using Dash.Models;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using DevExpress.Pdf.Native.BouncyCastle.Asn1.Cms;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
-using DevExpress.XtraRichEdit.Model;
-using Elmah.ContentSyndication;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using System.Web.UI.WebControls;
 using MetaData = Dash.Models.MetaData;
 
 namespace Dash
 {
     public partial class index : System.Web.UI.Page
     {
-
-
         public static string ConnectionString;
 
         private List<String> strings = new List<string>();
@@ -36,6 +28,7 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
+
         private MetaData metaData
         {
             get
@@ -55,18 +48,15 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
-
             if (!string.IsNullOrEmpty(Session["current"] as string))
             {
                 ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
             }
 
-
             Authenticate();
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            // Hide the back button.  
+            // Hide the back button.
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             admin.Visible = false;
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
@@ -96,16 +86,14 @@ namespace Dash
                         case "light":
                             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
                             break;
+
                         case "dark":
                             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
                             break;
                     }
                 }
-
-
             }
         }
-
 
         private void LoadMetaDataAndApplySelections(int dashboardId)
         {
@@ -131,42 +119,39 @@ namespace Dash
             }
         }
 
+        /* private void CheckMetaDataSelections(MetaData metaData)
+         {
+             // TypeGroup: Set selected rows based on metaData.Types
+             for(int i = 0; i < TypeGroup.VisibleRowCount;i++)
+             {
+                 string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
+                 if (metaData.Types.Contains(rowValue))
+                 {
+                     TypeGroup.Selection.SetSelection(i, true);
+                 }
+             }
 
-       /* private void CheckMetaDataSelections(MetaData metaData)
-        {
-            // TypeGroup: Set selected rows based on metaData.Types
-            for(int i = 0; i < TypeGroup.VisibleRowCount;i++)
-            {
-                string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
-                if (metaData.Types.Contains(rowValue))
-                {
-                    TypeGroup.Selection.SetSelection(i, true);
-                }
-            }
+             // CompanyGroup: Set selected rows based on metaData.Companies
+             for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
+             {
+                 string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
+                 if (metaData.Companies.Contains(rowValue))
+                 {
+                     CompanyGroup.Selection.SetSelection(i, true);
+                 }
+             }
 
-            // CompanyGroup: Set selected rows based on metaData.Companies
-            for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
-            {
-                string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
-                if (metaData.Companies.Contains(rowValue))
-                {
-                    CompanyGroup.Selection.SetSelection(i, true);
-                }
-            }
-
-            // LanguageGroup: Set selected rows based on metaData.Languages
-            for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
-            {
-                string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
-                if (metaData.Languages.Contains(rowValue))
-                {
-                    LanguageGroup.Selection.SetSelection(i, true);
-                }
-            }
-
-
-        }
-       */
+             // LanguageGroup: Set selected rows based on metaData.Languages
+             for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
+             {
+                 string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
+                 if (metaData.Languages.Contains(rowValue))
+                 {
+                     LanguageGroup.Selection.SetSelection(i, true);
+                 }
+             }
+         }
+        */
 
         [WebMethod]
         public static void DeleteItem(string id)
@@ -186,10 +171,8 @@ namespace Dash
                 }
                 finally
                 {
-
                 }
             }
-
         }
 
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
@@ -198,17 +181,12 @@ namespace Dash
 
             var currentDashboardId = Session["current"];
             long parsed;
-            if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string) currentDashboardId, out parsed))
+            if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string)currentDashboardId, out parsed))
             {
-                 LoadMetaDataAndApplySelections((int)parsed);
-
+                LoadMetaDataAndApplySelections((int)parsed);
             }
-
         }
 
-
-
-   
         private void Authenticate()
         {
             var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -224,16 +202,12 @@ namespace Dash
             }
             if (role == "SuperAdmin")
             {
-
             }
             else
             {
                 Response.Redirect("Logon.aspx", true);
             }
         }
-
-
-
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
@@ -269,14 +243,13 @@ namespace Dash
             ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
             return stringFinal;
         }
+
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {
             var selectedValues = new List<string>();
             foreach (string row in gridView.GetSelectedFieldValues(columnName))
             {
-
                 selectedValues.Add(row);
-
             }
             return selectedValues;
         }
@@ -290,7 +263,6 @@ namespace Dash
                 var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
 
                 var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
-
 
                 // Create MetaData object and assign selected values
                 MetaData metaData = new MetaData
@@ -325,18 +297,16 @@ namespace Dash
                             if (rowsAffected > 0)
                             {
                                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Uspešno spremenjeni meta podatki'); };", true);
-
                             }
                             else
                             {
                                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Napaka pri dodajanju meta podatkov'); };", true);
                             }
                         }
-
                     }
                 }
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 return;
             }
@@ -398,8 +368,5 @@ namespace Dash
                 }
             }
         }
-
-
-
     }
-}           
+}

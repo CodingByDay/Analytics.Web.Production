@@ -2,7 +2,6 @@
     font: 14px "Helvetica Neue", Helvetica, "Droid Sans", Tahoma, Geneva, sans-serif;
 }
 
-
 .header-panel {
     padding: 0 !important;
     border-width: 0 !important;
@@ -39,7 +38,6 @@ main {
         padding: 16px 32px;
     }
 }
-
 
 .navigation-panel {
     box-sizing: border-box;
