@@ -174,12 +174,12 @@
 
     <div class="content-flex">
         <div class="inner-item companies">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT [id_company], [company_name], [database_name], [admin_id] FROM [Companies]"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name, admin_id FROM companies"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible"   DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -500,10 +500,7 @@
                     <asp:ListItem>Viewer & Designer</asp:ListItem>
                   </asp:DropDownList>
                 </div>
-                <h4>Podjetje</h4>
-                <div class="form-group">
-                  <asp:DropDownList ID="companiesList" runat="server" AppendDataBoundItems="true" CssClass="form-control"></asp:DropDownList>
-                </div>
+               
               </div>
             </div>
           </div>

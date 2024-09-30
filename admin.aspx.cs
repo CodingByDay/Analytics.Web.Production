@@ -41,7 +41,6 @@ namespace Dash
         private int flag;
         private string companyInfo;
         private List<String> companies = new List<string>();
-        private List<String> typesOfViews = new List<string>();
         private List<String> strings = new List<string>();
         private List<String> admins = new List<string>();
         private int permisionID;
@@ -83,6 +82,25 @@ namespace Dash
             }
         }
 
+
+
+        private string CurrentCompany
+        {
+            get
+            {
+                if (Session["CurrentCompany"] == null)
+                {
+                    // Create a new instance if the session is empty
+                    Session["CurrentCompany"] = string.Empty;
+                }
+                return (string) Session["CurrentCompany"];
+            }
+            set
+            {
+                Session["CurrentCompany"] = value;
+            }
+        }
+
         private bool IsFilterActive
         {
             get
@@ -102,6 +120,7 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
 
             BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
@@ -109,7 +128,6 @@ namespace Dash
 
             if (!IsPostBack)
             {
-                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
                 companiesGridView.SettingsBehavior.AllowFocusedRow = true;
                 companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -119,7 +137,6 @@ namespace Dash
                 companiesGridView.EnableCallBacks = false;
                 companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
                 companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-                companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
 
                 usersGridView.SettingsBehavior.AllowFocusedRow = true;
                 usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -130,49 +147,22 @@ namespace Dash
                 usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
                 usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
 
+                companiesGridView.Selection.SelectRow(0);
+
                 Authenticate();
 
-                FillListGraphsNames();
-                companiesList.SelectedIndex = 0;
-                companiesGridView.FocusedRowIndex = 0;
-                companiesList.Enabled = false;
 
-                FillListGraphs();
-                FillCompaniesRegistration();
-                FillListAdmin();
 
-                typesOfViews.Add("Viewer");
-                typesOfViews.Add("Designer");
-                typesOfViews.Add("Viewer&Designer");
             }
             else
             {
-                graphsGridView.Enabled = true;
-                FillListGraphs();
-                if (companiesGridView.Selection.Count != 0)
-                {
-                    var plurals = companiesGridView.GetSelectedFieldValues("company_name");
-                    var value = plurals[0].ToString();
-                }
-                else
-                {
-                    companiesGridView.FocusedRowIndex = 0;
-                    companiesGridView.Selection.SelectRow(0);
-                    var current = companiesGridView.GetSelectedFieldValues("company_name");
-                }
+              
+             
+                
             }
         }
 
-        private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
-        {
-            var index = companiesGridView.FocusedRowIndex;
-            if (index != -1)
-            {
-                string[] names = { "company_name" };
-                var values = companiesGridView.GetRowValues(index, "company_name");
-                Session["current"] = values.ToString();
-            }
-        }
+
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
@@ -237,19 +227,15 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    var plurals = companiesGridView.GetSelectedFieldValues("company_name");
+                    var plurals = companiesGridView.GetSelectedFieldValues("id_company");
                     if (plurals.Count != 0)
                     {
-                        var connectionStringName = GetConnectionStringName(plurals[0].ToString());
-                        Session["conn"] = connectionStringName;
-                        TxtUserName.Enabled = false;
-                        email.Enabled = false;
-                        current = plurals[0].ToString();
-                        var id = GetIdCompany(plurals[0].ToString());
-                        var without = plurals[0].ToString();
-                        companiesList.SelectedValue = without;
-                        companiesList.Enabled = false;
-                        usersGridView.Selection.SetSelection(0, true);
+                        var id = (int) plurals[0];
+                        CurrentCompany = GetCompanyName(id);
+
+                        // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
+                        usersGridView.FilterExpression = $"[id_company] = {id}";
+                        usersGridView.DataBind();  // Refresh the userGridView with the applied filter
                     }
                 }
                 catch (Exception ex)
@@ -284,7 +270,6 @@ namespace Dash
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;
-            FillListGraphs();
             ShowConfigForUser();
             UpdateForm();
         }
@@ -338,106 +323,11 @@ namespace Dash
             }
         }
 
-        public void FillListAdmin()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    admins.Clear();
-                    strings.Clear();
+      
 
-                    string UserNameForChecking
-                        = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT uname FROM users", conn);
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        admins.Add(sdr["uname"].ToString());
-                    }
-                    listAdmin.DataSource = admins;
-                    listAdmin.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
 
-        private void ShowConfig(List<String> obj)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
 
-        public void FillListGraphs()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    graphList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT caption FROM dashboards;", conn);
-
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        graphList.Add(sdr["caption"].ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
-
-        private void FillCompaniesRegistration()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("SELECT * FROM companies", conn);
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        companies.Add(sdr["company_name"].ToString());
-                    }
-                    companiesList.DataSource = companies;
-                    companiesList.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+     
 
         private void UpdateForm()
         {
@@ -471,8 +361,7 @@ namespace Dash
                         referrer.Text = sdr["referrer"].ToString();
                         int number = (int)sdr["id_company"];
                         string dare = GetCompanyName(number);
-                        companiesList.SelectedValue = dare;
-                        companiesList.Enabled = false;
+
                         email.Enabled = false;
                         string role = sdr["user_role"].ToString();
                         string type = sdr["view_allowed"].ToString();
@@ -530,8 +419,6 @@ namespace Dash
                         referrer.Text = sdr["referrer"].ToString();
                         var number = (int)sdr["id_company"];
                         var data = GetCompanyName(number);
-                        companiesList.SelectedValue = data;
-                        companiesList.Enabled = false;
                         email.Enabled = false;
                         string role = sdr["user_role"].ToString();
                         string type = sdr["view_allowed"].ToString();
@@ -578,14 +465,14 @@ namespace Dash
                             else
                             {
                                 string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                                string CompanyInsert = companiesList.SelectedItem.Value;
+                                string CompanyInsert = CurrentCompany;
                                 int IdCompany = GetIdCompany(CompanyInsert);
                                 string QueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{IdCompany}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{referrer.Text}')");
                                 SqlCommand createUser = new SqlCommand(QueryRegistration, conn);
                                 var username = TxtUserName.Text;
                                 try
                                 {
-                                    var id = GetIdCompany(companiesList.SelectedValue);
+                                    var id = GetIdCompany(CurrentCompany);
                                     createUser.ExecuteNonQuery();
                                     createUser.Dispose();
                                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
@@ -594,8 +481,7 @@ namespace Dash
                                     TxtRePassword.Text = "";
                                     TxtUserName.Text = "";
                                     email.Text = "";
-                                    FillListAdmin();
-                                    var company = companiesList.SelectedValue;
+                                    var company = CurrentCompany;
                                     var spacelessCompany = company.Replace(" ", string.Empty);
                                 }
                                 catch (Exception ex)
@@ -644,7 +530,7 @@ namespace Dash
                                 TxtRePassword.Text = "";
                                 TxtUserName.Text = "";
                                 email.Text = "";
-                                var company = companiesList.SelectedValue.Replace(" ", string.Empty);
+                                var company = CurrentCompany;
                             }
                             catch (Exception ex)
                             {
@@ -717,16 +603,13 @@ namespace Dash
             if (!isEditHappening && ed == "no")
             {
                 InsertCompany();
-                FillCompaniesRegistration();
                 var names = companyName.Text.Split(' ');
                 Random random = new Random();
                 string adminname = $"{names[0]}{random.Next(1, 1000)}";
                 CreateAdminForTheCompany(adminname, companyName.Text);
                 UpdateAdminCompany(adminname, companyName.Text);
                 var checkDB = CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                var sourceID = companiesGridView.DataSource;
-                companiesGridView.DataSource = null;
-                companiesGridView.DataSource = sourceID;
+   
                 companyNumber.Text = "";
                 companyName.Text = "";
                 website.Text = "";
@@ -811,7 +694,6 @@ namespace Dash
                     SqlCommand createUser = new SqlCommand(FinalQueryRegistration, conn);
                     var id = GetIdCompany(cName.Trim());
                     createUser.ExecuteNonQuery();
-                    FillListAdmin();
                 }
                 catch (Exception ex)
                 {
@@ -835,9 +717,6 @@ namespace Dash
                     var spacelessCompany = company.Replace(" ", string.Empty);
                     idFromString = GetIdCompany(spacelessCompany);
                     cmd.ExecuteNonQuery();
-                    FillListGraphs();
-                    List<String> values = FillListGraphsNames();
-                    ShowConfig(values);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
                 }
                 catch (Exception ex)
@@ -870,37 +749,7 @@ namespace Dash
             }
         }
 
-        public List<String> FillListGraphsNames()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    graphList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT caption FROM dashboards;", conn);
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        graphList.Add(sdr["caption"].ToString());
-                        string trimmed = sdr["caption"].ToString();
-                        string stripped = String.Concat(trimmed.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                        values.Add(stripped);
-                    }
-
-                    return values;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return values;
-                }
-            }
-        }
+   
 
         private string GetCompanyQuery(string uname)
         {
@@ -995,11 +844,7 @@ namespace Dash
                             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
                         }
                         Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-                        var source = companiesGridView.DataSource;
-                        companiesGridView.DataSource = null;
-                        companiesGridView.DataSource = source;
-                        FillListGraphs();
-                        FillListAdmin();
+                      
                         cmd.Dispose();
                         string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
                         int companyID = GetIdCompany(companyName);

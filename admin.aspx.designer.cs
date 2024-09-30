@@ -276,15 +276,6 @@ namespace Dash
         protected global::System.Web.UI.WebControls.DropDownList userTypeList;
 
         /// <summary>
-        /// companiesList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList companiesList;
-
-        /// <summary>
         /// registrationButton control.
         /// </summary>
         /// <remarks>
