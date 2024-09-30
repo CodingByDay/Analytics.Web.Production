@@ -31,7 +31,6 @@ namespace Dash
             }
 
 
-            DashboardPermissions permissions = new DashboardPermissions();     
         }
 
         private string GetRole(string username, string password)

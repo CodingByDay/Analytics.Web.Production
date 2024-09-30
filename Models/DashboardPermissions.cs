@@ -15,6 +15,7 @@ namespace Dash.Models
 {
     public class DashboardPermissions
     {
+        [JsonIgnore]
         public string Connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
         public List<DashboardPermission> Permissions { get; set; } = new List<DashboardPermission>();
@@ -34,7 +35,7 @@ namespace Dash.Models
             
         }
 
-        private DashboardPermissions GetPermissionsForUser(string uname)
+        public DashboardPermissions GetPermissionsForUser(string uname)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
@@ -68,10 +69,54 @@ namespace Dash.Models
             }
         }
 
+
+        public bool SetPermissionsForUser(string uname)
+        {
+            using (SqlConnection conn = new SqlConnection(Connection))
+            {
+                try
+                {
+                    // Convert permissions to JSON
+                    string jsonValue = this.ConvertPermissionsToJson(this);
+                    conn.Open();
+
+                    // Use parameterized query to avoid SQL injection
+                    string query = "UPDATE Users SET dashboard_permissions = @permissions WHERE uname = @uname";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        // Set parameter for JSON permissions (NVarChar(MAX))
+                        cmd.Parameters.Add("@permissions", SqlDbType.NVarChar).Value = jsonValue;
+
+                        // Set parameter for username
+                        cmd.Parameters.Add("@uname", SqlDbType.VarChar, 25).Value = uname;
+
+                        // Execute the query (ExecuteNonQuery is more appropriate since you are doing an UPDATE)
+                        int rowsAffected = cmd.ExecuteNonQuery();
+
+                        // Check if any rows were updated
+                        if (rowsAffected > 0)
+                        {
+                            return true;  // Permissions updated successfully
+                        }
+                        return false; // No rows affected, return false
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log the error (optional)
+                    // Handle the exception properly or return false in case of failure
+                    return false;
+                }
+            }
+        }
+
+
+
+
+
         public DashboardPermissions ConvertJsonToPermissions(string json)
         {
             string unescapedJson = Regex.Unescape(json);
-            // Now, you can deserialize it
             var permissions = JsonConvert.DeserializeObject<DashboardPermissions>(unescapedJson);
             return permissions;
         }

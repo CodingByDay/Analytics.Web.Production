@@ -21,10 +21,7 @@ namespace Dash
 {
     public partial class Admin : System.Web.UI.Page
     {
-
-
         private string connection;
-        // DB.
         private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -72,6 +69,23 @@ namespace Dash
         private bool isEditUser;
         private string userRightNow;
 
+        private string CurrentUsername
+        {
+            get
+            {
+                if (Session["MetaData"] == null)
+                {
+                    // Create a new instance if the session is empty
+                    Session["MetaData"] = string.Empty;
+                }
+                return Session["MetaData"] as string;
+            }
+            set
+            {
+                Session["MetaData"] = value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
@@ -91,12 +105,12 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;         
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+            usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
 
 
             if (!IsPostBack)
             {
                 graphsGridView.Enabled = true;
-                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
                 Authenticate();
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
@@ -221,7 +235,7 @@ namespace Dash
                     var plurals = companiesGridView.GetSelectedFieldValues("company_name");
                     if (plurals.Count != 0)
                     {
-                        var connectionStringName = get_connectionStringName(plurals[0].ToString());
+                        var connectionStringName = GetConnectionStringName(plurals[0].ToString());
                         Session["conn"] = connectionStringName;
                         TxtUserName.Enabled = false;
                         email.Enabled = false;
@@ -248,23 +262,41 @@ namespace Dash
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
             // Call js. function here if the test passes.
-            updateFormName(name.ToString());
+            UpdateFormName(name.ToString());
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
             e.Cancel = true;
         }
 
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
+            var NamePlural = usersGridView.GetSelectedFieldValues("uname");
+            if (NamePlural.Count == 0)
+            {
+                return;
+            }
+            else
+            {
+                CurrentUsername = NamePlural[0].ToString();
+            }
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;
             FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            ShowConfig(values);
+            ShowConfigForUser();
             UpdateForm();
         }
 
+        private void ShowConfigForUser()
+        {
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+            for (int i = 0; i < graphsGridView.VisibleRowCount; i++) {
+               int idRow = (int) graphsGridView.GetRowValues(i, "id");
+               if(dashboardPermissions.Permissions.Any(x=>x.id == idRow)) {
+                    graphsGridView.Selection.SetSelection(i, true);
+               }
+            }
 
+        }
 
         private void Authenticate()
         {
@@ -535,7 +567,7 @@ namespace Dash
             }
         }
 
-        private void updateFormName(string name)
+        private void UpdateFormName(string name)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -703,23 +735,11 @@ namespace Dash
         }
 
 
-        private bool checkIfNumber(string parametar)
-        {
-            var regex = new Regex(@"^-?[0-9][0-9,\.]+$");
-
-            var numeric = regex.IsMatch(parametar);
-
-            if (numeric)
-                return true;
-            else
-                return false;
-
-
-        }
 
 
 
-        private void insertCompany()
+
+        private void InsertCompany()
         {
 
             using (SqlConnection conn = new SqlConnection(connection))
@@ -745,7 +765,7 @@ namespace Dash
             }
         }
 
-        private void updateAdminCompany(string admin_value, string cName)
+        private void UpdateAdminCompany(string admin_value, string cName)
         {
 
             using (SqlConnection conn = new SqlConnection(connection))
@@ -773,14 +793,14 @@ namespace Dash
 
             if (!isEditHappening && ed == "no")
             {                           
-                    insertCompany();
+                    InsertCompany();
                     FillCompaniesRegistration();
                     var names = companyName.Text.Split(' ');
                     Random random = new Random();
                     string adminname = $"{names[0]}{random.Next(1, 1000)}";
-                    createAdminForTheCompany(adminname, companyName.Text);
-                    updateAdminCompany(adminname, companyName.Text);
-                    var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    CreateAdminForTheCompany(adminname, companyName.Text);
+                    UpdateAdminCompany(adminname, companyName.Text);
+                    var checkDB = CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
                     var sourceID = companiesGridView.DataSource;
                     companiesGridView.DataSource = null;
                     companiesGridView.DataSource = sourceID;
@@ -798,24 +818,11 @@ namespace Dash
                     build.UserID = dbUser.Text;
                     build.Password = dbPassword.Text;
                     //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    updateCompanyData();
+                    UpdateCompanyData();
             }
         }
 
 
-
-        private bool isConnectionOk(string connection)
-        {
-            var _stringDB = GetResultFromDBTest(connection);
-            if (connName.Text == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
 
         private void AddConnectionString(string stringConnection)
         {
@@ -838,7 +845,7 @@ namespace Dash
 
 
 
-        private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        private string CreateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
             build.InitialCatalog = dbNameInstance;
@@ -851,37 +858,8 @@ namespace Dash
 
 
 
-        private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
-        {
-            try
-            {
-                var ConnectionString = ConfigurationManager.ConnectionStrings[connName].ConnectionString;
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder(ConnectionString);
-                build.InitialCatalog = dbNameInstance;
-                build.DataSource = dbSource;
-                build.UserID = dbUser;
-                build.Password = dbPassword;
-                ConnectionStringSettings stringSettings = new ConnectionStringSettings();
-                stringSettings.ConnectionString = build.ConnectionString;
-                var settings = ConfigurationManager.ConnectionStrings[connName];
-                var fi = typeof(ConfigurationElement).GetField(
-                              "_bReadOnly",
-                              BindingFlags.Instance | BindingFlags.NonPublic);
-                fi.SetValue(settings, false);
-                settings.ConnectionString = build.ConnectionString;
-                ConfigurationManager.RefreshSection("connectionStrings");
-                ConfigurationManager.RefreshSection("connectionStrings");
-            }
-            catch
-            {
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Ne morete menjati ime konekcije!')", true);
 
-            }
-
-
-        }
-
-        private void updateCompanyData()
+        private void UpdateCompanyData()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -905,7 +883,7 @@ namespace Dash
 
         }
 
-        private void createAdminForTheCompany(string name, string cName)
+        private void CreateAdminForTheCompany(string name, string cName)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -943,7 +921,7 @@ namespace Dash
                     string username = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
                     SqlCommand cmd = new SqlCommand($"DELETE FROM users WHERE uname='{username}'", conn);
                     deletedID = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
+                    var company = GetCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
                     var spacelessCompany = company.Replace(" ", string.Empty);
                     idFromString = GetIdCompany(spacelessCompany);
                     cmd.ExecuteNonQuery();
@@ -964,7 +942,7 @@ namespace Dash
 
 
         }
-        private string get_connectionStringName(string name)
+        private string GetConnectionStringName(string name)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -987,18 +965,7 @@ namespace Dash
         }
 
 
-        protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
-            FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            ShowConfig(values);
-            UpdateForm();
-        }
-
+ 
         public List<String> FillListGraphsNames()
         {
 
@@ -1019,10 +986,9 @@ namespace Dash
                         graphList.Add(sdr["caption"].ToString());
                         string trimmed = sdr["caption"].ToString();
                         string stripped = String.Concat(trimmed.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-
                         values.Add(stripped);
-
                     }
+
                     return values;
                 }
                 catch (Exception ex)
@@ -1036,7 +1002,7 @@ namespace Dash
         }
 
 
-        private string getCompanyQuery(string uname)
+        private string GetCompanyQuery(string uname)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -1063,9 +1029,6 @@ namespace Dash
         }
 
 
-     
-
-
         protected void saveGraphs_Click(object sender, EventArgs e)
         {
             if (usersGridView.GetSelectedFieldValues() == null)
@@ -1074,18 +1037,37 @@ namespace Dash
             }
             else
             {
-                List<String> values = FillListGraphsNames();
-                ShowConfig(values);
+                SaveUserPermissions();
             }
         }
 
-
-        private string GetCurrentCompany()
+        private void SaveUserPermissions()
         {
-            var company = companiesGridView.GetSelectedFieldValues("company_name");
-            return company[0].ToString();
+            try
+            {
+                DashboardPermissions permissions = new DashboardPermissions();
+                var selectedIds = graphsGridView.GetSelectedFieldValues("id");
+                if (selectedIds != null && selectedIds.Count > 0)
+                {
+                    for (int i = 0; i < selectedIds.Count; i++)
+                    {
+                        string currentSelectedId = selectedIds[i].ToString();
+                        long parsed;
+                        if (Int64.TryParse(currentSelectedId, out parsed))
+                        {
+                            permissions.Permissions.Add(new DashboardPermission { id = (int)parsed });
+                        }
+                    }
+
+                    permissions.SetPermissionsForUser(CurrentUsername);
+                }
+            } catch (Exception ex) {
+                var d = ex;
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+            }
         }
 
+  
         protected void deleteCompany_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -1248,16 +1230,6 @@ namespace Dash
 
         }
 
-        protected void usersGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
-            FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            ShowConfig(values);
-            UpdateForm();
-        }
 
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {
