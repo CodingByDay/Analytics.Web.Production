@@ -73,16 +73,33 @@ namespace Dash
         {
             get
             {
-                if (Session["MetaData"] == null)
+                if (Session["CurrentUser"] == null)
                 {
                     // Create a new instance if the session is empty
-                    Session["MetaData"] = string.Empty;
+                    Session["CurrentUser"] = string.Empty;
                 }
-                return Session["MetaData"] as string;
+                return Session["CurrentUser"] as string;
             }
             set
             {
-                Session["MetaData"] = value;
+                Session["CurrentUser"] = value;
+            }
+        }
+
+        private bool IsFilterActive
+        {
+            get
+            {
+                if (Session["ActiveFilter"] == null)
+                {
+                    // Create a new instance if the session is empty
+                    Session["ActiveFilter"] = false;
+                }
+                return (bool)Session["ActiveFilter"];
+            }
+            set
+            {
+                Session["ActiveFilter"] = value;
             }
         }
 
@@ -107,6 +124,8 @@ namespace Dash
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
 
+            BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+            button.Visible = IsFilterActive;
 
             if (!IsPostBack)
             {
@@ -291,9 +310,12 @@ namespace Dash
             DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
             for (int i = 0; i < graphsGridView.VisibleRowCount; i++) {
                int idRow = (int) graphsGridView.GetRowValues(i, "id");
-               if(dashboardPermissions.Permissions.Any(x=>x.id == idRow)) {
-                    graphsGridView.Selection.SetSelection(i, true);
-               }
+                   if(dashboardPermissions.Permissions.Any(x=>x.id == idRow)) {
+                        graphsGridView.Selection.SetSelection(i, true);
+                   } else
+                    {
+                        graphsGridView.Selection.SetSelection(i, false);
+                    }
             }
 
         }
@@ -1292,6 +1314,7 @@ namespace Dash
                 graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
                 BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
                 button.Visible = true;
+                IsFilterActive = true;
             }
             catch (Exception ex)
             {
@@ -1336,13 +1359,25 @@ namespace Dash
             }
         }
 
-
-
         protected void ClearFilterButton_Click(object sender, EventArgs e)
         {
             graphsGridView.FilterExpression = string.Empty;
             BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
             button.Visible = false;
+            IsFilterActive = false;
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+            for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+            {
+                int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                {
+                    graphsGridView.Selection.SetSelection(i, true);
+                }
+                else
+                {
+                    graphsGridView.Selection.SetSelection(i, false);
+                }
+            }
         }
     }
 }

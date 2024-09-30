@@ -309,7 +309,7 @@
 
                 <dx:BootstrapGridViewToolbarItem Text="Remove Filters" Name="RemoveFilter">
                     <Template>
-                        <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-times" CssClasses-Control="btn btn-danger" Text="Remove Filters" ID="ClearFilterButton" OnClick="ClearFilterButton_Click" AutoPostBack="true" Visible="false">
+                        <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-times" CssClasses-Control="btn btn-danger" Text="Remove Filters" ID="ClearFilterButton" OnClick="ClearFilterButton_Click" AutoPostBack="true" Visible='<%# (Session["ActiveFilter"] != null && (bool)Session["ActiveFilter"]) %>'>
                     </dx:BootstrapButton>
                     </Template>
                  </dx:BootstrapGridViewToolbarItem>
