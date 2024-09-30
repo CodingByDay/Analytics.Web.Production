@@ -102,40 +102,45 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            companiesGridView.SettingsBehavior.AllowFocusedRow = true;
-            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            companiesGridView.EnableCallBacks = false;
-            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
-            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-            companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
-            usersGridView.SettingsBehavior.AllowFocusedRow = true;
-            usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            usersGridView.EnableCallBacks = false;
-            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-            usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
+
 
             BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
             button.Visible = IsFilterActive;
 
             if (!IsPostBack)
             {
-                graphsGridView.Enabled = true;
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+                companiesGridView.SettingsBehavior.AllowFocusedRow = true;
+                companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                companiesGridView.EnableCallBacks = false;
+                companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
+                companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
+                companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
+
+                usersGridView.SettingsBehavior.AllowFocusedRow = true;
+                usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                usersGridView.EnableCallBacks = false;
+                usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
+
                 Authenticate();
+
                 FillListGraphsNames();
                 companiesList.SelectedIndex = 0;
                 companiesGridView.FocusedRowIndex = 0;
-                var beginingID = 1;
                 companiesList.Enabled = false;
+
                 FillListGraphs();
                 FillCompaniesRegistration();
                 FillListAdmin();
+
                 typesOfViews.Add("Viewer");
                 typesOfViews.Add("Designer");
                 typesOfViews.Add("Viewer&Designer");
@@ -176,12 +181,12 @@ namespace Dash
             isEditHappening = true;
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
-            updateFormCompany(name.ToString());
+            UpdateFormCompany(name.ToString());
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
             e.Cancel = true;
         }
 
-        private void updateFormCompany(string v)
+        private void UpdateFormCompany(string v)
         {
             // Select * from companies where id_company={}
             using (SqlConnection conn = new SqlConnection(connection))
@@ -545,7 +550,7 @@ namespace Dash
             }
         }
 
-        protected void registrationButton_Click(object sender, EventArgs e)
+        protected void RegistrationButton_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -705,7 +710,7 @@ namespace Dash
             }
         }
 
-        protected void companyButton_Click(object sender, EventArgs e)
+        protected void CompanyButton_Click(object sender, EventArgs e)
         {
             var ed = Request.Cookies["Edit"].Value.ToString();
 
@@ -816,7 +821,7 @@ namespace Dash
             }
         }
 
-        protected void deleteUser_Click(object sender, EventArgs e)
+        protected void DeleteUser_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -922,7 +927,7 @@ namespace Dash
             }
         }
 
-        protected void saveGraphs_Click(object sender, EventArgs e)
+        protected void SaveGraphs_Click(object sender, EventArgs e)
         {
             if (usersGridView.GetSelectedFieldValues() == null)
             {
@@ -962,7 +967,7 @@ namespace Dash
             }
         }
 
-        protected void deleteCompany_Click(object sender, EventArgs e)
+        protected void DeleteCompany_Click(object sender, EventArgs e)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -1054,9 +1059,7 @@ namespace Dash
             return true;
         }
 
-        protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+  
 
         protected void NewUser_Click(object sender, EventArgs e)
         {
@@ -1072,23 +1075,7 @@ namespace Dash
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
         }
 
-        private string GetResultFromDBTest(string connectionString)
-        {
-            var _result = CheckConnection.CheckDatabaseConnection(connectionString);
-            string _textResult;
-
-            if (_result == false)
-
-            {
-                _textResult = " ::Napaka v konekciji";
-            }
-            else
-            {
-                _textResult = " ::Uspešna konekcija";
-            }
-
-            return _textResult;
-        }
+  
 
         protected void NewUserClick(object sender, EventArgs e)
         {
@@ -1114,7 +1101,7 @@ namespace Dash
             return selectedValues;
         }
 
-        public void btnFilter_Click(object sender, EventArgs e)
+        public void BtnFilter_Click(object sender, EventArgs e)
         {
             try
             {

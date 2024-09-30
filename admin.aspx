@@ -218,7 +218,7 @@
 
             <div class="action-buttons">
                 <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
-                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="deleteCompany_Click" Text="Briši">
+                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Briši">
                   <SettingsBootstrap RenderOption="Danger" />
                  </dx:BootstrapButton>
             </div>
@@ -276,7 +276,7 @@
 
                 <div class="action-buttons">
                     <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
-                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="deleteUser_Click" CssClasses-Control="actionButton">
+                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -353,7 +353,7 @@
 
 
            <div class="action-buttons">
-                 <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="true">
+                 <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="true">
                     <SettingsBootstrap RenderOption="Primary" />
                   </dx:BootstrapButton>
            </div>
@@ -436,7 +436,7 @@
         <!-- End of form -->
       </div>
       <div class="modal-footer">
-        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="companyButton_Click" />
+        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="CompanyButton_Click" />
         <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
         <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
       </div>
@@ -511,7 +511,7 @@
         <!-- End of form -->
       </div>
       <div class="modal-footer">
-        <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="registrationButton_Click" />
+        <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="RegistrationButton_Click" />
         <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal">Zapri</button>
       </div>
     </div>
@@ -587,7 +587,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
-            <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="btnFilter_Click" />
+            <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="BtnFilter_Click" />
         </div>
     </div>
 </div>
