@@ -16,25 +16,27 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
-            HttpContext.Current.Response.AddHeader("Expires", "0");
+     
+                HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
+                HttpContext.Current.Response.AddHeader("Expires", "0");
 
-            signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+                adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+                backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+                string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
+                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);
-            // Execute command and fetch pwd field into lookupPassword string.
-            userRole = (string)cmd.ExecuteScalar();
-            CheckIsAdminShowAdminButtonOrNot(userRole);
-            CheckWhetherToShowTheSwitcherAtAll();
-            ConditionalyAddStylesBasedOnTheUrl();
+                conn = new SqlConnection(ConnectionString);
+                conn.Open();
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);
+                // Execute command and fetch pwd field into lookupPassword string.
+                userRole = (string)cmd.ExecuteScalar();
+                CheckIsAdminShowAdminButtonOrNot(userRole);
+                CheckWhetherToShowTheSwitcherAtAll();
+                ConditionalyAddStylesBasedOnTheUrl();
+            
         }
 
         private void ConditionalyAddStylesBasedOnTheUrl()
@@ -135,6 +137,7 @@ namespace Dash
 
         protected void Administration_Click(object sender, EventArgs e)
         {
+
             // Data
             if (userRole == "SuperAdmin")
             {

@@ -19,6 +19,7 @@ namespace Dash
     public partial class Admin : System.Web.UI.Page
     {
         private string connection;
+        private BootstrapButton btnFilterBootstrap;
         private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -123,46 +124,86 @@ namespace Dash
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
 
-            BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-            button.Visible = IsFilterActive;
+            btnFilterBootstrap = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+            btnFilterBootstrap.Visible = IsFilterActive;
+
+
+            companiesGridView.SettingsBehavior.AllowFocusedRow = true;
+            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
+            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            companiesGridView.EnableCallBacks = false;
+            companiesGridView.EnableRowsCache = true;
+
+            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
+            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
+            companiesGridView.DataBound += CompaniesGridView_DataBound;
+           
+
+            usersGridView.SettingsBehavior.AllowFocusedRow = true;
+            usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+            usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
+            usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            usersGridView.EnableCallBacks = false;
+            usersGridView.EnableRowsCache = true;
+
+            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
+            usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
+            usersGridView.DataBound += UsersGridView_DataBound;
+
+            graphsGridView.EnableRowsCache = true;
+            graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            graphsGridView.DataBound += GraphsGridView_DataBound;
+
+
 
             if (!IsPostBack)
             {
 
-                companiesGridView.SettingsBehavior.AllowFocusedRow = true;
-                companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-                companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
-                companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-                companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-                companiesGridView.EnableCallBacks = false;
-                companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
-                companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-
-                usersGridView.SettingsBehavior.AllowFocusedRow = true;
-                usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-                usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
-                usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-                usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-                usersGridView.EnableCallBacks = false;
-                usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
-
-                companiesGridView.Selection.SelectRow(0);
-
-                Authenticate();
+            } 
 
 
+            Authenticate();
 
-            }
-            else
+        }
+
+        private void UsersGridView_DataBound(object sender, EventArgs e)
+        {
+            var currentFocus = usersGridView.FocusedRowIndex;
+            if (currentFocus == 0)
             {
-              
-             
-                
+                usersGridView.Selection.SetSelection(0, true);
+
             }
         }
 
+        private void GraphsGridView_DataBound(object sender, EventArgs e)
+        {
+            if (graphsGridView.VisibleRowCount > 0)
+            {
+                graphsGridView.Selection.BeginSelection();
+                ShowConfigForUser();
+                graphsGridView.Selection.EndSelection();
+            }
+        }
 
+       
+
+        private void CompaniesGridView_DataBound(object sender, EventArgs e)
+        {
+            var currentFocus = companiesGridView.FocusedRowIndex;
+            if(currentFocus == 0)
+            {
+                companiesGridView.Selection.SetSelection(0, true);
+       
+            }
+           
+
+
+
+        }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
@@ -232,10 +273,10 @@ namespace Dash
                     {
                         var id = (int) plurals[0];
                         CurrentCompany = GetCompanyName(id);
-
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter
+                        graphsGridView.DataBind();
                     }
                 }
                 catch (Exception ex)
@@ -245,6 +286,8 @@ namespace Dash
                 }
             }
         }
+
+      
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
@@ -258,6 +301,7 @@ namespace Dash
 
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
+            
             var NamePlural = usersGridView.GetSelectedFieldValues("uname");
             if (NamePlural.Count == 0)
             {
@@ -265,13 +309,24 @@ namespace Dash
             }
             else
             {
-                CurrentUsername = NamePlural[0].ToString();
+                var selectedName = NamePlural[0].ToString();
+                CurrentUsername = selectedName;
+                graphsGridView.DataBind();
             }
+
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;
-            ShowConfigForUser();
             UpdateForm();
+
+
+
+            if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
+            {
+                // Show the configuration for the user.
+                ShowConfigForUser();
+            }
+
         }
 
         private void ShowConfigForUser()
@@ -950,11 +1005,13 @@ namespace Dash
         {
             try
             {
+                
                 var selectedTypes = GetSelectedValues(TypeGroup, "value");
 
                 var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
 
                 var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
+
 
                 List<int> Ids = new List<int>();
 
