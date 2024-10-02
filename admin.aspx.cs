@@ -90,16 +90,34 @@ namespace Dash
         {
             get
             {
-                if (Session["CurrentCompany"] == null)
+                if (Session["CurrentCompany"] == null || (string) Session["CurrentCompany"] == string.Empty)
                 {
                     // Create a new instance if the session is empty
-                    Session["CurrentCompany"] = string.Empty;
+                    Session["CurrentCompany"] = GetFirstCompany();
                 }
                 return (string) Session["CurrentCompany"];
             }
             set
             {
                 Session["CurrentCompany"] = value;
+            }
+        }
+
+        private string GetFirstCompany()
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
+                    var company = (string)cmd.ExecuteScalar();
+                    return company;
+                }
+                catch (Exception)
+                {
+                    return string.Empty;
+                }
             }
         }
 
@@ -161,7 +179,6 @@ namespace Dash
 
             if (!IsPostBack)
             {
-                InitializeFilters();
             } 
 
 
@@ -170,12 +187,13 @@ namespace Dash
         
         }
 
-        private void InitializeFilters()
+        /*private void InitializeFilters()
         {
             // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
             // 2.10.2024 Janko Jovičić
             usersGridView.FilterExpression = $"[id_company] = -9999";
-        }
+            graphsGridView.FilterExpression = 
+        }*/
 
         private void UsersGridView_DataBound(object sender, EventArgs e)
         {
@@ -196,7 +214,7 @@ namespace Dash
 
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
-            usersGridView.Selection.SetSelectionByKey(CurrentCompany, true);
+            companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
         }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
@@ -332,9 +350,8 @@ namespace Dash
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;
+
             // UpdateForm();
-
-
 
             if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
             {
@@ -939,8 +956,8 @@ namespace Dash
                     conn.Open();
                     SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
                     result = cmd.ExecuteScalar();
-                    int finalID = System.Convert.ToInt32(result);
-                    return finalID;
+                    int id = System.Convert.ToInt32(result);
+                    return id;
                 }
                 catch (Exception)
                 {
@@ -1010,7 +1027,7 @@ namespace Dash
 
                 List<int> Ids = new List<int>();
 
-                DataView dvGraphs = (DataView)query.Select(DataSourceSelectArguments.Empty);
+                DataView dvGraphs = (DataView) query.Select(DataSourceSelectArguments.Empty);
                 foreach (DataRowView row in dvGraphs)
                 {
                     int id = (int)row["id"];
@@ -1021,12 +1038,7 @@ namespace Dash
                     }
                 }
 
-                if (Ids.Count == 0)
-                {
-                    graphsGridView.FilterExpression = string.Empty;
-                    return;
-                }
-
+              
                 string FilterIds = string.Empty;
                 for (int i = 0; i < Ids.Count; i++)
                 {
@@ -1039,8 +1051,15 @@ namespace Dash
                         FilterIds += Ids.ElementAt(i);
                     }
                 }
-
-                graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
+                if (Ids.Count == 0)
+                {
+                    // No items to display.
+                    graphsGridView.FilterExpression = $"[id] = -9999";
+                }
+                else
+                {
+                    graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
+                }
                 BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
                 button.Visible = true;
                 IsFilterActive = true;
