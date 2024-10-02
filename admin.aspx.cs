@@ -72,8 +72,9 @@ namespace Dash
             {
                 if (Session["CurrentUser"] == null)
                 {
-                    // Create a new instance if the session is empty
-                    Session["CurrentUser"] = string.Empty;
+
+                   Session["CurrentUser"] = string.Empty;
+                    
                 }
                 return Session["CurrentUser"] as string;
             }
@@ -128,7 +129,7 @@ namespace Dash
             btnFilterBootstrap.Visible = IsFilterActive;
 
 
-            companiesGridView.SettingsBehavior.AllowFocusedRow = true;
+            companiesGridView.SettingsBehavior.AllowFocusedRow = false;
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
             companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -140,8 +141,7 @@ namespace Dash
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
             companiesGridView.DataBound += CompaniesGridView_DataBound;
            
-
-            usersGridView.SettingsBehavior.AllowFocusedRow = true;
+            usersGridView.SettingsBehavior.AllowFocusedRow = false;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
             usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -161,22 +161,25 @@ namespace Dash
 
             if (!IsPostBack)
             {
-
+                InitializeFilters();
             } 
 
 
             Authenticate();
 
+        
+        }
+
+        private void InitializeFilters()
+        {
+            // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
+            // 2.10.2024 Janko Jovičić
+            usersGridView.FilterExpression = $"[id_company] = -9999";
         }
 
         private void UsersGridView_DataBound(object sender, EventArgs e)
         {
-            var currentFocus = usersGridView.FocusedRowIndex;
-            if (currentFocus == 0)
-            {
-                usersGridView.Selection.SetSelection(0, true);
-
-            }
+            usersGridView.Selection.SetSelectionByKey(CurrentUsername, true);
         }
 
         private void GraphsGridView_DataBound(object sender, EventArgs e)
@@ -193,16 +196,7 @@ namespace Dash
 
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
-            var currentFocus = companiesGridView.FocusedRowIndex;
-            if(currentFocus == 0)
-            {
-                companiesGridView.Selection.SetSelection(0, true);
-       
-            }
-           
-
-
-
+            usersGridView.Selection.SetSelectionByKey(CurrentCompany, true);
         }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
@@ -273,6 +267,7 @@ namespace Dash
                     {
                         var id = (int) plurals[0];
                         CurrentCompany = GetCompanyName(id);
+                        CurrentUsername = GetFirstUserForCompany(CurrentCompany);
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter
@@ -287,7 +282,27 @@ namespace Dash
             }
         }
 
-      
+        private string GetFirstUserForCompany(string company)
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    int id_company = GetIdCompany(company);
+
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) uname FROM Users WHERE id_company = @id;", conn);
+                    cmd.Parameters.AddWithValue("@id", id_company);
+                    var user = (string)cmd.ExecuteScalar();
+                    return user;
+                }
+                catch (Exception)
+                {
+                    return string.Empty;
+                }
+            }
+
+        }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
@@ -317,7 +332,7 @@ namespace Dash
             TxtUserName.Enabled = false;
             email.Enabled = false;
             graphsGridView.Enabled = true;
-            UpdateForm();
+            // UpdateForm();
 
 
 
@@ -782,27 +797,7 @@ namespace Dash
             }
         }
 
-        private string GetConnectionStringName(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE company_name='{name}'", conn);
-                    string result = cmd.ExecuteScalar().ToString();
-                    returnString = result;
-                    return returnString;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return String.Empty;
-                }
-            }
-        }
+     
 
    
 

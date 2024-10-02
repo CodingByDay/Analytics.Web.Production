@@ -275,6 +275,7 @@
     <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
 
                 <div class="action-buttons">
+                    <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
                     <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
