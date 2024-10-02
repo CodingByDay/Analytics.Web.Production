@@ -51,22 +51,22 @@ namespace Dash
         protected global::System.Web.UI.WebControls.SqlDataSource SqlDataSource1;
 
         /// <summary>
-        /// usersGrid control.
+        /// groupsGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SqlDataSource usersGrid;
+        protected global::System.Web.UI.WebControls.SqlDataSource groupsGrid;
 
         /// <summary>
-        /// usersGridView control.
+        /// groupsGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapGridView usersGridView;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView groupsGridView;
 
         /// <summary>
         /// IsInitialLoad control.
@@ -78,22 +78,22 @@ namespace Dash
         protected global::System.Web.UI.WebControls.HiddenField IsInitialLoad;
 
         /// <summary>
-        /// new_user control.
+        /// NewGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlButton new_user;
+        protected global::System.Web.UI.HtmlControls.HtmlButton NewGroup;
 
         /// <summary>
-        /// deleteUser control.
+        /// DeleteGroup control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteUser;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton DeleteGroup;
 
         /// <summary>
         /// graphsGridView control.
@@ -213,85 +213,58 @@ namespace Dash
         protected global::System.Web.UI.WebControls.Button companyButton;
 
         /// <summary>
-        /// TxtName control.
+        /// groupName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtName;
+        protected global::System.Web.UI.WebControls.TextBox groupName;
 
         /// <summary>
-        /// email control.
+        /// groupDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox email;
+        protected global::System.Web.UI.WebControls.TextBox groupDescription;
 
         /// <summary>
-        /// TxtUserName control.
+        /// usersInGroupGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtUserName;
+        protected global::System.Web.UI.WebControls.GridView usersInGroupGrid;
 
         /// <summary>
-        /// referrer control.
+        /// transferButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox referrer;
+        protected global::System.Web.UI.HtmlControls.HtmlButton transferButton;
 
         /// <summary>
-        /// TxtPassword control.
+        /// usersNotInGroupGrid control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtPassword;
+        protected global::System.Web.UI.WebControls.GridView usersNotInGroupGrid;
 
         /// <summary>
-        /// TxtRePassword control.
+        /// saveGroupButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TxtRePassword;
-
-        /// <summary>
-        /// userRole control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RadioButtonList userRole;
-
-        /// <summary>
-        /// userTypeList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList userTypeList;
-
-        /// <summary>
-        /// registrationButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button registrationButton;
+        protected global::System.Web.UI.WebControls.Button saveGroupButton;
 
         /// <summary>
         /// TypeGroup control.

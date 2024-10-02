@@ -65,21 +65,21 @@ namespace Dash
         private bool isEditUser;
         private string userRightNow;
 
-        private string CurrentUsername
+        private string CurrentGroup
         {
             get
             {
-                if (Session["CurrentUser"] == null)
+                if (Session["CurrentGroup"] == null)
                 {
 
-                    Session["CurrentUser"] = string.Empty;
+                    Session["CurrentGroup"] = string.Empty;
 
                 }
-                return Session["CurrentUser"] as string;
+                return Session["CurrentGroup"] as string;
             }
             set
             {
-                Session["CurrentUser"] = value;
+                Session["CurrentGroup"] = value;
             }
         }
 
@@ -158,17 +158,17 @@ namespace Dash
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
             companiesGridView.DataBound += CompaniesGridView_DataBound;
 
-            usersGridView.SettingsBehavior.AllowFocusedRow = false;
-            usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            usersGridView.EnableCallBacks = false;
-            usersGridView.EnableRowsCache = true;
+            groupsGridView.SettingsBehavior.AllowFocusedRow = false;
+            groupsGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+            groupsGridView.SettingsBehavior.AllowSelectByRowClick = true;
+            groupsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            groupsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            groupsGridView.EnableCallBacks = false;
+            groupsGridView.EnableRowsCache = true;
 
-            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-            usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
-            usersGridView.DataBound += UsersGridView_DataBound;
+            groupsGridView.StartRowEditing += groupsGridView_StartRowEditing;
+            groupsGridView.SelectionChanged += groupsGridView_SelectionChanged;
+            groupsGridView.DataBound += groupsGridView_DataBound;
 
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
@@ -190,13 +190,13 @@ namespace Dash
         {
             // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
             // 2.10.2024 Janko Jovičić
-            usersGridView.FilterExpression = $"[id_company] = -9999";
+            groupsGridView.FilterExpression = $"[id_company] = -9999";
             graphsGridView.FilterExpression = 
         }*/
 
-        private void UsersGridView_DataBound(object sender, EventArgs e)
+        private void groupsGridView_DataBound(object sender, EventArgs e)
         {
-            usersGridView.Selection.SetSelectionByKey(CurrentUsername, true);
+            groupsGridView.Selection.SetSelectionByKey(CurrentGroup, true);
         }
 
         private void GraphsGridView_DataBound(object sender, EventArgs e)
@@ -218,14 +218,7 @@ namespace Dash
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            listAdmin.Visible = true;
-            Response.Cookies["Edit"].Value = "yes";
-            isEditHappening = true;
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            UpdateFormCompany(name.ToString());
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
-            e.Cancel = true;
         }
 
         private void UpdateFormCompany(string v)
@@ -284,10 +277,10 @@ namespace Dash
                     {
                         var id = (int)plurals[0];
                         CurrentCompany = GetCompanyName(id);
-                        CurrentUsername = GetFirstUserForCompany(CurrentCompany);
+                        CurrentGroup = GetFirstUserForCompany(CurrentCompany);
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
-                        usersGridView.FilterExpression = $"[id_company] = {id}";
-                        usersGridView.DataBind();  // Refresh the userGridView with the applied filter
+                        groupsGridView.FilterExpression = $"[company_id] = {id}";
+                        groupsGridView.DataBind();  // Refresh the userGridView with the applied filter
                         graphsGridView.DataBind();
                     }
                 }
@@ -321,20 +314,17 @@ namespace Dash
 
         }
 
-        private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
+        private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            // Call js. function here if the test passes.
-            UpdateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
+
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
             e.Cancel = true;
         }
 
-        private void UsersGridView_SelectionChanged(object sender, EventArgs e)
+        private void groupsGridView_SelectionChanged(object sender, EventArgs e)
         {
 
-            var NamePlural = usersGridView.GetSelectedFieldValues("uname");
+            var NamePlural = groupsGridView.GetSelectedFieldValues("uname");
             if (NamePlural.Count == 0)
             {
                 return;
@@ -342,17 +332,13 @@ namespace Dash
             else
             {
                 var selectedName = NamePlural[0].ToString();
-                CurrentUsername = selectedName;
+                CurrentGroup = selectedName;
                 graphsGridView.DataBind();
             }
 
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
 
-            // UpdateForm();
 
-            if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
+            if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentGroup))
             {
                 // Show the configuration for the user.
                 ShowConfigForUser();
@@ -362,7 +348,7 @@ namespace Dash
 
         private void ShowConfigForUser()
         {
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentGroup);
             for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
             {
                 int idRow = (int)graphsGridView.GetRowValues(i, "id");
@@ -421,42 +407,7 @@ namespace Dash
             {
                 try
                 {
-                    conn.Open();
-                    isEditUser = true;
-                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
-                    {
-                        userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{userRightNow}'", conn);
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        TxtName.Text = sdr["full_name"].ToString();
-                        TxtUserName.Text = sdr["uname"].ToString();
-                        TxtUserName.Enabled = false;
-                        referrer.Text = sdr["referrer"].ToString();
-                        int number = (int)sdr["id_company"];
-                        string dare = GetCompanyName(number);
 
-                        email.Enabled = false;
-                        string role = sdr["user_role"].ToString();
-                        string type = sdr["view_allowed"].ToString();
-                        email.Text = sdr["email"].ToString();
-                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                    }
-                    sdr.Close();
-                    cmd.Dispose();
                 }
                 catch (Exception ex)
                 {
@@ -493,27 +444,7 @@ namespace Dash
             {
                 try
                 {
-                    isEditUser = true;
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{name}'", conn);
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        TxtName.Text = sdr["full_name"].ToString();
-                        TxtUserName.Text = sdr["uname"].ToString();
-                        TxtUserName.Enabled = false;
-                        referrer.Text = sdr["referrer"].ToString();
-                        var number = (int)sdr["id_company"];
-                        var data = GetCompanyName(number);
-                        email.Enabled = false;
-                        string role = sdr["user_role"].ToString();
-                        string type = sdr["view_allowed"].ToString();
-                        email.Text = sdr["email"].ToString();
-                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-                    }
-                    sdr.Close();
-                    cmd.Dispose();
+
                 }
                 catch (Exception ex)
                 {
@@ -529,108 +460,7 @@ namespace Dash
             {
                 try
                 {
-                    conn.Open();
-                    if (TxtUserName.Enabled == true)
-                    {
-                        if (TxtPassword.Text != TxtRePassword.Text)
-                        {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                        }
-                        else
-                        {
-                            SqlCommand check = new SqlCommand($"SELECT count(*) FROM Users WHERE uname='{TxtUserName.Text}'", conn);
-                            var resultCheck = check.ExecuteScalar();
-                            Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                            check.Dispose();
-                            if (resultUsername > 0)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-                            }
-                            else
-                            {
-                                string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                                string CompanyInsert = CurrentCompany;
-                                int IdCompany = GetIdCompany(CompanyInsert);
-                                string QueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{IdCompany}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{referrer.Text}')");
-                                SqlCommand createUser = new SqlCommand(QueryRegistration, conn);
-                                var username = TxtUserName.Text;
-                                try
-                                {
-                                    var id = GetIdCompany(CurrentCompany);
-                                    createUser.ExecuteNonQuery();
-                                    createUser.Dispose();
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                    var company = CurrentCompany;
-                                    var spacelessCompany = company.Replace(" ", string.Empty);
-                                }
-                                catch (Exception ex)
-                                {
-                                    var log = ex;
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                }
-                            }
-                            cmd.Dispose();
-                        }
-                    }
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(TxtRePassword.Text))
-                        {
-                            HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users SET Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referrer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
-                        }
-                        else
-                        {
-                            cmdEdit = new SqlCommand($"UPDATE Users SET userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referrer.Text}', FullName='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
-                        }
-                        if (TxtPassword.Text != TxtRePassword.Text)
-                        {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso enaka.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var username = TxtUserName.Text.Replace(" ", string.Empty); ;
-                                cmdEdit.ExecuteNonQuery();
 
-                                cmdEdit.Dispose();
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
-
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-                                var company = CurrentCompany;
-                            }
-                            catch (Exception ex)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                var debug = ex.Message;
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-                            }
-                            cmdEdit.Dispose();
-                        }
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -796,10 +626,10 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    string username = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
+                    string username = groupsGridView.GetSelectedFieldValues("Uname")[0].ToString();
                     SqlCommand cmd = new SqlCommand($"DELETE FROM users WHERE uname='{username}'", conn);
-                    deletedID = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    var company = GetCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
+                    deletedID = groupsGridView.GetSelectedFieldValues("Uname")[0].ToString();
+                    var company = GetCompanyQuery(groupsGridView.GetSelectedFieldValues("uname")[0].ToString());
                     var spacelessCompany = company.Replace(" ", string.Empty);
                     idFromString = GetIdCompany(spacelessCompany);
                     cmd.ExecuteNonQuery();
@@ -844,7 +674,7 @@ namespace Dash
 
         protected void SaveGraphs_Click(object sender, EventArgs e)
         {
-            if (usersGridView.GetSelectedFieldValues() == null)
+            if (groupsGridView.GetSelectedFieldValues() == null)
             {
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
             }
@@ -872,7 +702,7 @@ namespace Dash
                         }
                     }
 
-                    permissions.SetPermissionsForUser(CurrentUsername);
+                    permissions.SetPermissionsForUser(CurrentGroup);
                 }
             }
             catch (Exception ex)
@@ -974,15 +804,6 @@ namespace Dash
 
         protected void NewUser_Click(object sender, EventArgs e)
         {
-            usersGridView.Selection.SetSelection(-1, true);
-            TxtUserName.Enabled = true;
-            email.Enabled = true;
-            TxtUserName.Text = "";
-            TxtName.Text = "";
-            email.Text = "";
-            TxtPassword.Text = "";
-            TxtRePassword.Text = "";
-            isEditUser = false;
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
         }
 
@@ -990,15 +811,6 @@ namespace Dash
 
         protected void NewUserClick(object sender, EventArgs e)
         {
-            isEditUser = false;
-            TxtUserName.Enabled = true;
-            email.Enabled = true;
-            TxtUserName.Text = "";
-            TxtName.Text = "";
-            email.Text = "";
-            TxtPassword.Text = "";
-            TxtRePassword.Text = "";
-            // Call the client.
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
         }
 
@@ -1109,7 +921,7 @@ namespace Dash
             BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
             button.Visible = false;
             IsFilterActive = false;
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentGroup);
             for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
             {
                 int idRow = (int)graphsGridView.GetRowValues(i, "id");
@@ -1122,6 +934,26 @@ namespace Dash
                     graphsGridView.Selection.SetSelection(i, false);
                 }
             }
+        }
+
+        protected void new_group_ServerClick(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void NewGroup_ServerClick(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void DeleteGroup_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        protected void saveGroupButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

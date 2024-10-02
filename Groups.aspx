@@ -111,8 +111,8 @@
 
 
 
-        function showDialogSyncUser() {
-            $('#userFormModal').modal('show');
+        function showDialogSyncGroup() {
+            $('#groupFormModal').modal('show');
 
         }
     
@@ -144,7 +144,7 @@
             if (gridName == "company") {
                 companyGrid.SetHeight(height);
             } else if (gridName == "user") {
-                userGrid.SetHeight(height);
+                groupsGrid.SetHeight(height);
             } else if (gridName == "dashboard") {
                 dashboardGrid.SetHeight(height);
             }
@@ -238,8 +238,8 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <asp:SqlDataSource ID="groupsGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [groups]"></asp:SqlDataSource>
+            <dx:BootstrapGridView ID="groupsGridView"  DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -249,22 +249,20 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-<SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
+<SettingsText SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Actions">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
+              <dx:BootstrapGridViewTextColumn FieldName="group_id" Visible="false" Name="id" ReadOnly="false" VisibleIndex="1" Caption="Skupina">
               <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="password"  Visible="false" Name="password" VisibleIndex="2" Caption="Password">
+              <dx:BootstrapGridViewTextColumn FieldName="group_name"  Visible="true" Name="Name" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="user_role" Visible="false" Name="user_role" VisibleIndex="3" Caption="UserRole">
+              <dx:BootstrapGridViewTextColumn FieldName="group_description" Visible="false" Name="Description" VisibleIndex="3" Caption="Opis">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="view_allowed" Visible="false" Name="view_allowed" VisibleIndex="3" Caption="ViewState">
-              </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
+			   <dx:BootstrapGridViewTextColumn FieldName="company_id" Visible="false" Name="Company" VisibleIndex="3" Caption="Podjetje">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
@@ -276,8 +274,8 @@
 
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
-                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
-                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
+                    <button type="button"  runat="server" onserverclick="NewGroup_ServerClick" id="NewGroup" class="btn btn-primary actionButton">Kreiranje</button>
+                    <dx:BootstrapButton runat="server" ID="DeleteGroup" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -445,76 +443,63 @@
   </div>
 </div>
 
-
-
-<div class="modal fade" id="userFormModal" tabindex="-1" role="dialog" aria-labelledby="userFormModalLabel" aria-hidden="true">
+        <div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-labelledby="groupFormModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="userFormModalLabel">Uporabniški obrazec</h5>
+        <h5 class="modal-title" id="groupFormModalLabel">Skupina</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="TxtName">Ime in Priimek</label>
-                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email</label>
-                  <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control"></asp:TextBox>
-                </div>
-                <div class="form-group">
-                  <label for="TxtUserName">Uporabniško ime</label>
-                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
-                </div>
-                <div class="form-group">
-                  <label for="referer">Komercialist</label>
-                  <asp:TextBox ID="referrer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
-                </div>
-                <div class="form-group">
-                  <label for="TxtPassword">Geslo</label>
-                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>
-                </div>
-                <div class="form-group">
-                  <label for="TxtRePassword">Ponovite geslo</label>
-                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control"></asp:TextBox>
-                </div>
+        <div class="container">
+          <div class="row">
+            <!-- Group Name and Description -->
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="groupName">Ime Skupine</label>
+                <asp:TextBox ID="groupName" runat="server" placeholder="Vnesite ime skupine" CssClass="form-control"></asp:TextBox>
               </div>
-              <div class="col-md-6">
-                <!-- User Role and Rights -->
-                <h3>Vloga uporabnika</h3>
-                <div class="form-group">
-                  <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
-                    <asp:ListItem>Admin</asp:ListItem>
-                    <asp:ListItem>User</asp:ListItem>
-                  </asp:RadioButtonList>
-                </div>
-                <h3>Pravice uporabnika</h3>
-                <div class="form-group">
-                  <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
-                    <asp:ListItem>Viewer</asp:ListItem>
-                    <asp:ListItem>Viewer & Designer</asp:ListItem>
-                  </asp:DropDownList>
-                </div>
-               
+              <div class="form-group">
+                <label for="groupDescription">Opis Skupine</label>
+                <asp:TextBox ID="groupDescription" runat="server" TextMode="MultiLine" placeholder="Vnesite opis skupine" CssClass="form-control"></asp:TextBox>
               </div>
             </div>
           </div>
-
+          
+          <!-- Users in group and not in group Grids -->
+          <div class="row">
+            <div class="col-md-5">
+              <h5>Uporabniki v skupini</h5>
+              <asp:GridView ID="usersInGroupGrid" runat="server" CssClass="table table-bordered">
+              </asp:GridView>
+            </div>
+            
+            <!-- Button to transfer user -->
+            <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
+              <button type="button" class="btn btn-primary" id="transferButton" runat="server">
+                <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i>
+              </button>
+            </div>
+            
+            <div class="col-md-5">
+              <h5>Uporabniki brez skupine</h5>
+              <asp:GridView ID="usersNotInGroupGrid" runat="server" CssClass="table table-bordered">
+              </asp:GridView>
+            </div>
+          </div>
+        </div>
         <!-- End of form -->
       </div>
       <div class="modal-footer">
-        <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="RegistrationButton_Click" />
-        <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal">Zapri</button>
+        <asp:Button CssClass="btn btn-primary" ID="saveGroupButton" runat="server" Text="Shrani"  OnClick="saveGroupButton_Click"/>
+        <button type="button" class="btn btn-danger" id="closeGroupModal" data-dismiss="modal">Zapri</button>
       </div>
     </div>
   </div>
 </div>
+
 
 <div class="modal fade" id="checkboxModal" tabindex="-1" role="dialog" aria-labelledby="checkboxModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document"> <!-- Changed modal-lg to modal-xl -->
