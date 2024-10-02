@@ -161,6 +161,13 @@
                 <i class="fa fa-wrench"></i> Nastavitve
                 </a></div>
                
+
+               <div class="inner"><a runat="server" id="groupsButton" onserverclick="groupsButton_ServerClick"  title="Administration">
+                <i class="fa fa-users"></i> Skupine
+                </a></div>
+
+    
+
                 <div class="inner"><a runat="server" id="filtersButton" onserverclick="Filters_Click"  title="Administration">
                 <i class="fa fa-filter"></i> Šifranti
                 </a></div>

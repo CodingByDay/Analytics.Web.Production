@@ -188,6 +188,7 @@
     <Content Include="Content\Javascript\Site.js" />
     <Content Include="Emulator.aspx" />
     <Content Include="Filters.aspx" />
+    <Content Include="Groups.aspx" />
     <Content Include="Images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="Images\favicon.ico" />
     <Content Include="Favicons\android-chrome-144x144.png" />
@@ -436,6 +437,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Groups.aspx.cs">
+      <DependentUpon>Groups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Groups.aspx.designer.cs">
+      <DependentUpon>Groups.aspx</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\CheckConnection.cs" />
     <Compile Include="Home.aspx.cs">
