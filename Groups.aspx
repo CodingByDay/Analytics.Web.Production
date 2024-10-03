@@ -179,7 +179,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" SettingsResizing-ColumnResizeMode="Control" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server"  KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -193,7 +193,7 @@
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Actions">
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="False" VisibleIndex="0" Caption="Actions">
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -216,12 +216,7 @@
 
 
 
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
-                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Briši">
-                  <SettingsBootstrap RenderOption="Danger" />
-                 </dx:BootstrapButton>
-            </div>
+
 
 
 
@@ -239,7 +234,7 @@
             <div id="gridContainerUser" style="visibility: hidden">
 
             <asp:SqlDataSource ID="groupsGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [groups]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="groupsGridView" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="groupsGridView" SettingsResizing-ColumnResizeMode="Control" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
            <CssClasses Control="grid"></CssClasses>
 
           <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -286,7 +281,7 @@
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView ID="graphsGridView" runat="server" SettingsResizing-ColumnResizeMode="Control" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -468,13 +463,13 @@
             </div>
           </div>
           
-            <div class="row">
+            <div class="row" id="GroupsGrids" runat="server">
             <!-- Users in the group -->
             <div class="col-md-5">
                 <h5>Uporabniki v skupini</h5>
                 <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
                     <Columns>
-                        <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" SelectAllCheckboxMode="AllPages"  />
                         <dx:BootstrapGridViewTextColumn FieldName="uname" Caption="Uporabnik" />
                     </Columns>
                 </dx:BootstrapGridView>
@@ -508,7 +503,7 @@
                 <h5>Uporabniki izven skupine</h5>
                 <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
                     <Columns>
-                        <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" SelectAllCheckboxMode="AllPages" />
                         <dx:BootstrapGridViewTextColumn FieldName="uname" Caption="Uporabnik" />
                     </Columns>
                 </dx:BootstrapGridView>
@@ -526,7 +521,7 @@
         </div>
 
         <div class="modal-footer">
-             <asp:Button CssClass="btn btn-primary" ID="saveGroupButton" runat="server" Text="Shrani"  OnClick="saveGroupButton_Click"/>
+             <asp:Button CssClass="btn btn-primary" ID="saveGroupButton" runat="server" Text="Shrani"  OnClick="SaveGroupButton_Click"/>
         </div>
     </div>
   </div>

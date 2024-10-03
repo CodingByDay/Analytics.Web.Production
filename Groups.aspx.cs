@@ -66,6 +66,28 @@ namespace Dash
         private bool isEditUser;
         private string userRightNow;
 
+
+
+        private bool GroupEdit
+        {
+            get
+            {
+                if (Session["GroupEdit"] == null)
+                {
+
+                    Session["GroupEdit"] = false;
+
+                }
+                return (bool) Session["GroupEdit"];
+            }
+            set
+            {
+                Session["GroupEdit"] = value;
+            }
+        }
+
+
+
         private string CurrentGroup
         {
             get
@@ -315,6 +337,9 @@ namespace Dash
 
         private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            GroupEdit = true;
+            GroupsGrids.Visible = true;
+
             // In case of the programmatic call. 3.10.2024 Janko Jovičić
             if (e != null)
             {
@@ -362,7 +387,7 @@ namespace Dash
 
         private void ShowConfigForUser()
         {
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentGroup);
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
             for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
             {
                 int idRow = (int)graphsGridView.GetRowValues(i, "id");
@@ -718,15 +743,15 @@ namespace Dash
         {
             if (groupsGridView.GetSelectedFieldValues() == null)
             {
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati skupino.')", true);
             }
             else
             {
-                SaveUserPermissions();
+                SaveGroupPermissions();
             }
         }
 
-        private void SaveUserPermissions()
+        private void SaveGroupPermissions()
         {
             try
             {
@@ -744,7 +769,7 @@ namespace Dash
                         }
                     }
 
-                    permissions.SetPermissionsForUser(CurrentGroup);
+                    permissions.SetPermissionsForGroup(GetIdGroup(CurrentGroup));
                 }
             }
             catch (Exception ex)
@@ -754,47 +779,7 @@ namespace Dash
             }
         }
 
-        protected void DeleteCompany_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    if (companiesGridView.FocusedRowIndex != -1)
-                    {
-                        var current = Session["current"].ToString();
-                        var id = GetIdCompany(current);
-                        Dashboard graph = new Dashboard(id);
-                        graph.Delete(id);
-                        SqlCommand user = new SqlCommand($"DELETE FROM users WHERE id_company={id}", conn);
-                        RemoveConnectionString(current);
-                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-                        cmd.ExecuteNonQuery();
-                        try
-                        {
-                            user.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                        }
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
-                        cmd.Dispose();
-                        string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
-                        int companyID = GetIdCompany(companyName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var d = ex;
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
         private void RemoveConnectionString(string current)
         {
@@ -989,7 +974,7 @@ namespace Dash
             BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
             button.Visible = false;
             IsFilterActive = false;
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentGroup);
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
             for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
             {
                 int idRow = (int)graphsGridView.GetRowValues(i, "id");
@@ -1004,38 +989,81 @@ namespace Dash
             }
         }
 
-        protected void new_group_ServerClick(object sender, EventArgs e)
-        {
 
-        }
 
         protected void NewGroup_ServerClick(object sender, EventArgs e)
         {
-
+            GroupEdit = false;
+            GroupsGrids.Visible = false;
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
         }
 
         protected void DeleteGroup_Click(object sender, EventArgs e)
         {
-
+            int groupId = GetIdGroup(CurrentGroup);
+            if (groupId > 0)
+            {
+                // Create the connection string
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    // Open the connection
+                    conn.Open();
+                    // Prepare the delete command
+                    string deleteCommandText = "DELETE FROM groups WHERE group_id = @groupId";
+                    using (SqlCommand cmd = new SqlCommand(deleteCommandText, conn))
+                    {
+                        // Add the parameter
+                        cmd.Parameters.AddWithValue("@groupId", groupId);
+                        // Execute the command
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                    }
+                }
+            } 
+            groupsGridView.DataBind();          
         }
 
-        protected void saveGroupButton_Click(object sender, EventArgs e)
+        protected void SaveGroupButton_Click(object sender, EventArgs e)
         {
-            string groupNameValue = groupName.Text;
-            string groupDescriptionValue = groupDescription.Text;
-            int groupIdValue = GetIdGroup(CurrentGroup);
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (GroupEdit)
             {
-                string query = "UPDATE Groups SET group_name = @groupName, group_description = @groupDescription WHERE group_id = @groupId";
-                using (SqlCommand command = new SqlCommand(query, conn))
+                string groupNameValue = groupName.Text;
+                string groupDescriptionValue = groupDescription.Text;
+                int groupIdValue = GetIdGroup(CurrentGroup);
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    command.Parameters.AddWithValue("@groupName", groupNameValue);
-                    command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
-                    command.Parameters.AddWithValue("@groupId", groupIdValue);
-                    conn.Open();
-                    command.ExecuteNonQuery();
+                    string query = "UPDATE Groups SET group_name = @groupName, group_description = @groupDescription WHERE group_id = @groupId";
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@groupName", groupNameValue);
+                        command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
+                        command.Parameters.AddWithValue("@groupId", groupIdValue);
+                        conn.Open();
+                        command.ExecuteNonQuery();
+                    }
                 }
             }
+            else // Insert new group 3.10.2024 Janko Jovičić
+            {
+                string groupNameValue = groupName.Text;
+                string groupDescriptionValue = groupDescription.Text;
+                int companyId = GetIdCompany(CurrentCompany);
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    string insertQuery = "INSERT INTO Groups (group_name, group_description, company_id) VALUES (@groupName, @groupDescription, @companyId)";
+                    using (SqlCommand command = new SqlCommand(insertQuery, conn))
+                    {
+                        command.Parameters.AddWithValue("@groupName", groupNameValue);
+                        command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
+                        command.Parameters.AddWithValue("@companyId", companyId);
+                        conn.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+
+
+
+            groupsGridView.DataBind();
 
         }
 

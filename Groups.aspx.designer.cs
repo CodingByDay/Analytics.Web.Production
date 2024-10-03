@@ -33,15 +33,6 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView companiesGridView;
 
         /// <summary>
-        /// deleteCompany control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteCompany;
-
-        /// <summary>
         /// SqlDataSource1 control.
         /// </summary>
         /// <remarks>
@@ -229,6 +220,15 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox groupDescription;
+
+        /// <summary>
+        /// GroupsGrids control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl GroupsGrids;
 
         /// <summary>
         /// usersInGroupGrid control.
