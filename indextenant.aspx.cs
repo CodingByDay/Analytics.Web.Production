@@ -87,7 +87,7 @@ namespace Dash
                 else
                 {
                     // New OOP structure 23.09.2024
-                    if (dataBaseDashboardStorage.permissions.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
+                    if (dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
                     {
                         ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
                     }

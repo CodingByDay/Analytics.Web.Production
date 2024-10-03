@@ -28,6 +28,10 @@ namespace Dash.Models
 
         public DashboardPermissions(int group)
         {
+            if(group == -1)
+            {
+                this.Permissions = new List<DashboardPermission>();
+            }
             this.Permissions = GetPermissionsForGroup(group).Permissions;
         }
 

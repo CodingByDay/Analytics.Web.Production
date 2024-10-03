@@ -18,7 +18,8 @@ namespace Dash.DatabaseStorage
     public class DataBaseEditableDashboardStorageCustom : IEditableDashboardStorage
     {
         private string connectionString;
-        public DashboardPermissions permissions;
+        public DashboardPermissions permissionsUser;
+        public DashboardPermissions permissionsGroup;
         private SqlConnection conn;
         private int permisionID;
         private SqlCommand cmd;
@@ -30,7 +31,34 @@ namespace Dash.DatabaseStorage
         public DataBaseEditableDashboardStorageCustom(string connectionString)
         {
             this.connectionString = connectionString;
-            permissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+            permissionsUser = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+            permissionsGroup = new DashboardPermissions(GetIdGroupForUser(HttpContext.Current.User.Identity.Name));
+        }
+
+        private int GetIdGroupForUser(string name)
+        {
+            int groupId = -1; // Default value if group_id is not found
+
+            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT group_id FROM users WHERE uname = @userName";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@userName", name);
+                    conn.Open();
+
+                    // Execute the command and get the group_id
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value) // Check if result is not null
+                    {
+                        groupId = Convert.ToInt32(result); // Convert result to int
+                    }
+                }
+            }
+
+            return groupId; // Return the found group_id or -1
         }
 
         public string AddDashboard(XDocument document, string dashboardName)
@@ -103,7 +131,7 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
-            if (!permissions.DashboardWithIdAllowed(dashboardID))
+            if (!permissionsUser.DashboardWithIdAllowed(dashboardID)&&permissionsGroup.DashboardWithIdAllowed(dashboardID))
             {
                 return null;
             }
@@ -198,29 +226,12 @@ namespace Dash.DatabaseStorage
             return doc;
         }
 
-        private List<String> GetCaptions()
-        {
-            List<String> list = new List<String>();
-            using (SqlConnection connection = new SqlConnection(this.connection))
-            {
-                connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT Caption FROM Dashboards");
-                GetCommand.Connection = connection;
-                SqlDataReader reader = GetCommand.ExecuteReader();
-                while (reader.Read())
-                {
-                    string Caption = reader.GetString(0);
-                    list.Add(Caption);
-                }
-                connection.Close();
-            }
-            return list;
-        }
+     
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
             string FinalString = "(";
-            var available = permissions.Permissions;
+            var available = permissionsUser.Permissions;
             // Getting the final string
             for (int i = 0; i < available.Count; i++)
             {
