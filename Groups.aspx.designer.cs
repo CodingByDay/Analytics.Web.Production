@@ -237,7 +237,16 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView usersInGroupGrid;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView usersInGroupGrid;
+
+        /// <summary>
+        /// UsersInGroupDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UsersInGroupDataSource;
 
         /// <summary>
         /// transferButton control.
@@ -255,7 +264,16 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView usersNotInGroupGrid;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView usersNotInGroupGrid;
+
+        /// <summary>
+        /// UsersNotInGroupDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource UsersNotInGroupDataSource;
 
         /// <summary>
         /// saveGroupButton control.

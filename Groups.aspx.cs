@@ -5,6 +5,7 @@ using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -275,12 +276,11 @@ namespace Dash
                     var plurals = companiesGridView.GetSelectedFieldValues("id_company");
                     if (plurals.Count != 0)
                     {
-                        var id = (int)plurals[0];
+                        var id = (int) plurals[0];
                         CurrentCompany = GetCompanyName(id);
-                        CurrentGroup = GetFirstUserForCompany(CurrentCompany);
-                        // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
+                        CurrentGroup = GetFirstGroupForCompany(CurrentCompany);
                         groupsGridView.FilterExpression = $"[company_id] = {id}";
-                        groupsGridView.DataBind();  // Refresh the userGridView with the applied filter
+                        groupsGridView.DataBind();  
                         graphsGridView.DataBind();
                     }
                 }
@@ -292,19 +292,18 @@ namespace Dash
             }
         }
 
-        private string GetFirstUserForCompany(string company)
+        private string GetFirstGroupForCompany(string company)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     int id_company = GetIdCompany(company);
-
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) uname FROM Users WHERE id_company = @id;", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) group_name FROM groups WHERE company_id = @id;", conn);
                     cmd.Parameters.AddWithValue("@id", id_company);
-                    var user = (string)cmd.ExecuteScalar();
-                    return user;
+                    var group = (string)cmd.ExecuteScalar();
+                    return group;
                 }
                 catch (Exception)
                 {
@@ -316,9 +315,17 @@ namespace Dash
 
         private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            string companyParameter = GetIdCompany(CurrentCompany).ToString();
+            string groupParameter = GetIdGroup(CurrentGroup).ToString();
+
+            // Assign values to SqlDataSource parameters
+            UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
+            UsersInGroupDataSource.SelectParameters["id_group"].DefaultValue = groupParameter;
+
+            UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
+            UsersNotInGroupDataSource.SelectParameters["id_group"].DefaultValue = groupParameter;
 
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
-            e.Cancel = true;
         }
 
         private void groupsGridView_SelectionChanged(object sender, EventArgs e)
@@ -777,13 +784,13 @@ namespace Dash
 
         private int GetIdCompany(string current)
         {
-            string spaceless = current.Trim();
+            string clean = current.Trim();
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{clean}'", conn);
                     result = cmd.ExecuteScalar();
                     int id = System.Convert.ToInt32(result);
                     return id;
@@ -794,6 +801,32 @@ namespace Dash
                 }
             }
         }
+
+
+        private int GetIdGroup(string current)
+        {
+            string clean = current.Trim();
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand($"SELECT group_id FROM groups WHERE group_name='{clean}'", conn);
+                    result = cmd.ExecuteScalar();
+                    int id = System.Convert.ToInt32(result);
+                    return id;
+                }
+                catch (Exception)
+                {
+                    return -1;
+                }
+            }
+        }
+
+
+
+
+
 
         public static bool testConnection()
         {

@@ -468,28 +468,55 @@
             </div>
           </div>
           
-          <!-- Users in group and not in group Grids -->
-          <div class="row">
-            <div class="col-md-5">
-              <h5>Uporabniki v skupini</h5>
-              <asp:GridView ID="usersInGroupGrid" runat="server" CssClass="table table-bordered">
-              </asp:GridView>
-            </div>
-            
-            <!-- Button to transfer user -->
-            <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
-              <button type="button" class="btn btn-primary" id="transferButton" runat="server">
-                <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i>
-              </button>
-            </div>
-            
-            <div class="col-md-5">
-              <h5>Uporabniki brez skupine</h5>
-              <asp:GridView ID="usersNotInGroupGrid" runat="server" CssClass="table table-bordered">
-              </asp:GridView>
-            </div>
-          </div>
-        </div>
+        <div class="row">
+    <!-- Users in the group -->
+    <div class="col-md-5">
+        <h5>Uporabniki v skupini</h5>
+        <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" CssClass="table table-bordered" DataSourceID="UsersInGroupDataSource" KeyFieldName="UserID">
+            <Columns>
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
+                <dx:BootstrapGridViewTextColumn FieldName="UserName" Caption="User Name" />
+                <dx:BootstrapGridViewTextColumn FieldName="Email" Caption="Email" />
+                <!-- Add more columns as needed -->
+            </Columns>
+        </dx:BootstrapGridView>
+        <asp:SqlDataSource ID="UsersInGroupDataSource" runat="server"
+            ConnectionString="<%$ ConnectionStrings:YourConnectionString %>"
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group = @id_group">
+            <SelectParameters>
+                <asp:Parameter Name="id_company" Type="Int32" />
+                <asp:Parameter Name="id_group" Type="Int32" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+    </div>
+
+    <!-- Transfer Button -->
+    <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
+        <button type="button" class="btn btn-primary" id="transferButton" runat="server">
+            <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i>
+        </button>
+    </div>
+
+    <!-- Users not in the group -->
+    <div class="col-md-5">
+        <h5>Uporabniki brez skupine</h5>
+        <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" CssClass="table table-bordered" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="UserID">
+            <Columns>
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
+                <dx:BootstrapGridViewTextColumn Visible="true" FieldName="UserName" Caption="Uporabnik" />
+            </Columns>
+        </dx:BootstrapGridView>
+        <asp:SqlDataSource ID="UsersNotInGroupDataSource" runat="server"
+            ConnectionString="<%$ ConnectionStrings:YourConnectionString %>"
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group != @id_group">
+            <SelectParameters>
+                <asp:Parameter Name="id_company" Type="Int32" />
+                <asp:Parameter Name="id_group" Type="Int32" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+      </div>
+    </div>
+
         <!-- End of form -->
       </div>
       <div class="modal-footer">
