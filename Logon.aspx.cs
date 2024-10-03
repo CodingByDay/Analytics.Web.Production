@@ -74,37 +74,40 @@ namespace Dash
             }
         }
 
-        private bool CompanyDesigner(string name)
+        private bool IsCompanyDesigner(string name)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    cmd = new SqlCommand($"SELECT id_company FROM users WHERE uname='{name}';", conn);
-                    var result = cmd.ExecuteScalar();
-                    int FinalCurrentID = (int)result;
-                    var checkingDesigner = new SqlCommand($"SELECT Designer FROM Companies WHERE id_company={FinalCurrentID};", conn);
-                    var flag = checkingDesigner.ExecuteScalar();
+                    // Query to get the id_company from users
+                    using (SqlCommand cmd = new SqlCommand("SELECT id_company FROM users WHERE uname=@name;", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@name", name);
+                        var result = cmd.ExecuteScalar();
+                        // Check if the result is null
+                        if (result == null || result == DBNull.Value)
+                        {
+                            return false; // No matching user or company found
+                        }
+                        // Convert result to int safely
+                        int companyId = (int) result;
+                        // Query to check if the company has a designer
+                        using (SqlCommand checkingDesigner = new SqlCommand("SELECT designer FROM companies WHERE id_company=@companyId;", conn))
+                        {
+                            checkingDesigner.Parameters.AddWithValue("@companyId", companyId);
+                            var flag = checkingDesigner.ExecuteScalar();
 
-                    if (flag != null)
-                    {
-                        var flagInteger = (int)flag;
-                        cmd.Dispose();
-                        checkingDesigner.Dispose();
-                        conn.Close();
-                        if (flagInteger == 1)
-                        {
-                            return true;
+                            if (flag != null && flag != DBNull.Value)
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false; 
+                            }
                         }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        return false;
                     }
                 }
                 catch (Exception)
@@ -113,6 +116,10 @@ namespace Dash
                 }
             }
         }
+
+
+
+
 
         private bool ValidateUser(string userName, string passWord)
         {
@@ -193,8 +200,10 @@ namespace Dash
             Response.Cookies["Edit"].Value = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
-                var IsDesignerCompany = CompanyDesigner(txtUserName.Value);
-                var IsUserAllowed = IsIndividualAllowed(txtUserName.Value);
+
+                var IsDesignerCompany = IsCompanyDesigner(txtUserName.Value);
+                var IsUserAllowed = IsUserAllowedToViewAndDesign(txtUserName.Value);
+
                 if (IsDesignerCompany || txtUserName.Value == "Admin")
                 {
                     Session["DesignerPayed"] = "true";
@@ -212,6 +221,7 @@ namespace Dash
                     Session["UserAllowed"] = "false";
                     Session["DesignerPayed"] = "false";
                 }
+
                 FormsAuthenticationTicket tkt;
                 string cookiestr;
                 HttpCookie ck;
@@ -249,30 +259,38 @@ namespace Dash
             }
         }
 
-        private bool IsIndividualAllowed(string value)
+        private bool IsUserAllowedToViewAndDesign(string username)
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    var checkingDesigner = new SqlCommand($"SELECT view_allowed FROM users WHERE uname='{value}';", conn);
-                    var flag = checkingDesigner.ExecuteScalar();
-                    string result = flag.ToString();
-                    cmd.Dispose();
-                    checkingDesigner.Dispose();
-                    conn.Close();
-                    if (result == "Viewer&Designer")
+
+                    // Use a parameterized query to avoid SQL injection
+                    using (SqlCommand command = new SqlCommand("SELECT view_allowed FROM users WHERE uname=@username", conn))
                     {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        command.Parameters.AddWithValue("@username", username);
+
+                        // Execute the query and get the permission value
+                        var permissionResult = command.ExecuteScalar();
+
+                        // Check if the result is null
+                        if (permissionResult == null || permissionResult == DBNull.Value)
+                        {
+                            return false; // No matching user or no permission found
+                        }
+
+                        // Convert result to string and check permission
+                        string permission = permissionResult.ToString();
+
+                        // Return true only if the permission is "Viewer&Designer"
+                        return permission == "Viewer&Designer";
                     }
                 }
                 catch (Exception)
                 {
+                    // Log the exception if necessary
                     return false;
                 }
             }

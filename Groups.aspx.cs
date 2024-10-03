@@ -330,8 +330,7 @@ namespace Dash
 
         private void groupsGridView_SelectionChanged(object sender, EventArgs e)
         {
-
-            var NamePlural = groupsGridView.GetSelectedFieldValues("uname");
+            var NamePlural = groupsGridView.GetSelectedFieldValues("group_name");
             if (NamePlural.Count == 0)
             {
                 return;
@@ -342,15 +341,11 @@ namespace Dash
                 CurrentGroup = selectedName;
                 graphsGridView.DataBind();
             }
-
-
-
             if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentGroup))
             {
                 // Show the configuration for the user.
                 ShowConfigForUser();
             }
-
         }
 
         private void ShowConfigForUser()

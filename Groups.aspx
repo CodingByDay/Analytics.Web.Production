@@ -239,17 +239,17 @@
             <div id="gridContainerUser" style="visibility: hidden">
 
             <asp:SqlDataSource ID="groupsGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [groups]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="groupsGridView"  DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
-<CssClasses Control="grid"></CssClasses>
+            <dx:BootstrapGridView ID="groupsGridView" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+           <CssClasses Control="grid"></CssClasses>
 
-<CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
+          <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+          <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
               <Settings VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-<SettingsText SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
+        <SettingsText SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
@@ -367,7 +367,7 @@
 
 
 
-	<section class="columns">
+<section class="columns">
 <!-- Bootstrap Modal Structure -->
 <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -472,16 +472,17 @@
     <!-- Users in the group -->
     <div class="col-md-5">
         <h5>Uporabniki v skupini</h5>
-        <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="UserID">
+        <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
             <Columns>
                 <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
-                <dx:BootstrapGridViewTextColumn FieldName="UserName" Caption="User Name" />
-                <dx:BootstrapGridViewTextColumn FieldName="Email" Caption="Email" />
+                <dx:BootstrapGridViewTextColumn FieldName="uname" Caption="Uporabnik" />
             </Columns>
         </dx:BootstrapGridView>
-        <asp:SqlDataSource ID="UsersInGroupDataSource" runat="server"
+        <asp:SqlDataSource 
+            ID="UsersInGroupDataSource" 
+            runat="server"
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group = @group_id">
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND group_id = @group_id">
             <SelectParameters>
                 <asp:Parameter Name="id_company" Type="Int32" />
                 <asp:Parameter Name="group_id" Type="Int32" />
@@ -489,25 +490,25 @@
         </asp:SqlDataSource>
     </div>
 
-    <!-- Transfer Button -->
     <div class="col-md-2 text-center d-flex align-items-center justify-content-center">
         <button type="button" class="btn btn-primary" id="transferButton" runat="server">
             <i class="fa fa-arrow-left"></i> <i class="fa fa-arrow-right"></i>
         </button>
     </div>
 
-    <!-- Users not in the group -->
     <div class="col-md-5">
-        <h5>Uporabniki brez skupine</h5>
-        <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="UserID">
+        <h5>Uporabniki izven skupine</h5>
+        <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
             <Columns>
                 <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
-                <dx:BootstrapGridViewTextColumn Visible="true" FieldName="UserName" Caption="Uporabnik" />
+                <dx:BootstrapGridViewTextColumn Visible="true" FieldName="uname" Caption="Uporabnik" />
             </Columns>
         </dx:BootstrapGridView>
-        <asp:SqlDataSource ID="UsersNotInGroupDataSource" runat="server"
+        <asp:SqlDataSource 
+            ID="UsersNotInGroupDataSource" 
+            runat="server"
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND group_id != @group_id">
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND (group_id != @group_id OR group_id IS NULL);">
             <SelectParameters>
                 <asp:Parameter Name="id_company" Type="Int32" />
                 <asp:Parameter Name="group_id" Type="Int32" />
@@ -516,7 +517,6 @@
       </div>
     </div>
 
-        <!-- End of form -->
       </div>
       <div class="modal-footer">
         <asp:Button CssClass="btn btn-primary" ID="saveGroupButton" runat="server" Text="Shrani"  OnClick="saveGroupButton_Click"/>
