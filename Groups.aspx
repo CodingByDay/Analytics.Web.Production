@@ -472,20 +472,19 @@
     <!-- Users in the group -->
     <div class="col-md-5">
         <h5>Uporabniki v skupini</h5>
-        <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" CssClass="table table-bordered" DataSourceID="UsersInGroupDataSource" KeyFieldName="UserID">
+        <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="UserID">
             <Columns>
                 <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
                 <dx:BootstrapGridViewTextColumn FieldName="UserName" Caption="User Name" />
                 <dx:BootstrapGridViewTextColumn FieldName="Email" Caption="Email" />
-                <!-- Add more columns as needed -->
             </Columns>
         </dx:BootstrapGridView>
         <asp:SqlDataSource ID="UsersInGroupDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:YourConnectionString %>"
-            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group = @id_group">
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group = @group_id">
             <SelectParameters>
                 <asp:Parameter Name="id_company" Type="Int32" />
-                <asp:Parameter Name="id_group" Type="Int32" />
+                <asp:Parameter Name="group_id" Type="Int32" />
             </SelectParameters>
         </asp:SqlDataSource>
     </div>
@@ -500,18 +499,18 @@
     <!-- Users not in the group -->
     <div class="col-md-5">
         <h5>Uporabniki brez skupine</h5>
-        <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" CssClass="table table-bordered" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="UserID">
+        <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="UserID">
             <Columns>
                 <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" />
                 <dx:BootstrapGridViewTextColumn Visible="true" FieldName="UserName" Caption="Uporabnik" />
             </Columns>
         </dx:BootstrapGridView>
         <asp:SqlDataSource ID="UsersNotInGroupDataSource" runat="server"
-            ConnectionString="<%$ ConnectionStrings:YourConnectionString %>"
-            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND id_group != @id_group">
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+            SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND group_id != @group_id">
             <SelectParameters>
                 <asp:Parameter Name="id_company" Type="Int32" />
-                <asp:Parameter Name="id_group" Type="Int32" />
+                <asp:Parameter Name="group_id" Type="Int32" />
             </SelectParameters>
         </asp:SqlDataSource>
       </div>

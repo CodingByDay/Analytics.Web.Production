@@ -320,10 +320,10 @@ namespace Dash
 
             // Assign values to SqlDataSource parameters
             UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
-            UsersInGroupDataSource.SelectParameters["id_group"].DefaultValue = groupParameter;
+            UsersInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter;
 
             UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
-            UsersNotInGroupDataSource.SelectParameters["id_group"].DefaultValue = groupParameter;
+            UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter;
 
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
         }
