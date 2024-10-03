@@ -315,15 +315,27 @@ namespace Dash
 
         private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            string companyParameter = GetIdCompany(CurrentCompany).ToString();
-            string groupParameter = GetIdGroup(CurrentGroup).ToString();
+            // In case of the programmatic call. 3.10.2024 Janko Jovičić
+            if (e != null)
+            {
+                e.Cancel = true;
+            }
+
+            int companyParameter = GetIdCompany(CurrentCompany);
+            int groupParameter = GetIdGroup(CurrentGroup);
 
             // Assign values to SqlDataSource parameters
-            UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
-            UsersInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter;
+            UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
+            UsersInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString(); 
 
-            UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter;
-            UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter;
+            UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
+            UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString(); 
+
+
+            var result = GetDataForGroupById(groupParameter);
+
+            groupName.Text = result.groupName;
+            groupDescription.Text = result.groupDescription;
 
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
         }
@@ -403,21 +415,6 @@ namespace Dash
 
 
 
-        private void UpdateForm()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
 
         public string GetCompanyName(int company)
         {
@@ -513,7 +510,50 @@ namespace Dash
                 }
             }
         }
+        public (string groupName, string groupDescription) GetDataForGroupById(int groupId)
+        {
+      
 
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+
+                    // Create the SQL command with a parameterized query
+                    using (SqlCommand command = new SqlCommand("SELECT group_name, group_description FROM groups WHERE group_id = @group_id", conn))
+                    {
+                        // Add the parameter to avoid SQL injection
+                        command.Parameters.AddWithValue("@group_id", groupId);
+
+                        // Execute the query and read the result
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                // Get the group_name and group_description values
+                                string groupName = reader["group_name"].ToString();
+                                string groupDescription = reader["group_description"].ToString();
+
+                                // Return the values as a tuple
+                                return (groupName, groupDescription);
+                            }
+                            else
+                            {
+                                // If no rows are found, return null values
+                                return (null, null);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Log or handle the exception as needed
+                    Console.WriteLine($"Error: {ex.Message}");
+                    return (null, null);
+                }
+            }
+        }
         protected void CompanyButton_Click(object sender, EventArgs e)
         {
             var ed = Request.Cookies["Edit"].Value.ToString();
@@ -981,7 +1021,107 @@ namespace Dash
 
         protected void saveGroupButton_Click(object sender, EventArgs e)
         {
+            string groupNameValue = groupName.Text;
+            string groupDescriptionValue = groupDescription.Text;
+            int groupIdValue = GetIdGroup(CurrentGroup);
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                string query = "UPDATE Groups SET group_name = @groupName, group_description = @groupDescription WHERE group_id = @groupId";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@groupName", groupNameValue);
+                    command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
+                    command.Parameters.AddWithValue("@groupId", groupIdValue);
+                    conn.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
 
+        }
+
+        protected void moveToNotInGroupButton_Click(object sender, EventArgs e)
+        {
+            List<string> selectedUsernames = new List<string>();
+
+            foreach (var selectedRow in usersInGroupGrid.GetSelectedFieldValues("uname"))
+            {
+                selectedUsernames.Add(selectedRow.ToString());
+            }
+
+            if (selectedUsernames.Count > 0)
+            {
+                // Prepare the SQL update command
+                string query = "UPDATE users SET group_id = NULL WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
+
+                int groupId = GetIdGroup(CurrentGroup);
+
+                if (groupId < 0)
+                {
+                    return;
+                }
+
+                // Execute the SQL update
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+
+                // Optionally, rebind the grids to reflect the changes
+                usersNotInGroupGrid.DataBind();
+                usersInGroupGrid.DataBind();
+
+                groupsGridView_StartRowEditing(this, null);
+
+            }
+        }
+    
+
+        protected void moveToInGroupButton_Click(object sender, EventArgs e)
+        {
+            // Get the selected usernames from the 'usersNotInGroupGrid'
+            List<string> selectedUsernames = new List<string>();
+
+            foreach (var selectedRow in usersNotInGroupGrid.GetSelectedFieldValues("uname"))
+            {
+                selectedUsernames.Add(selectedRow.ToString());
+            }
+
+            if (selectedUsernames.Count > 0)
+            {
+                // Prepare the SQL update command
+                string query = "UPDATE users SET group_id = @group_id WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
+
+                int groupId = GetIdGroup(CurrentGroup);
+
+                if(groupId < 0) {
+                    return;
+                }
+
+                // Execute the SQL update
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@group_id", groupId);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+                        connection.Close();
+                    }
+                }
+
+                // Optionally, rebind the grids to reflect the changes
+                usersNotInGroupGrid.DataBind();
+                usersInGroupGrid.DataBind();
+
+                groupsGridView_StartRowEditing(this, null);
+
+            }
         }
     }
 }
