@@ -590,11 +590,11 @@ namespace Dash
                         if (!String.IsNullOrEmpty(TxtRePassword.Text))
                         {
                             HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users SET Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referrer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE users SET password='{HashedPasswordEdit}', user_role='{userRole.SelectedValue}', view_allowed='{userTypeList.SelectedValue}', full_name='{TxtName.Text}', referrer='{referrer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         else
                         {
-                            cmdEdit = new SqlCommand($"UPDATE Users SET userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referrer.Text}', FullName='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
+                            cmdEdit = new SqlCommand($"UPDATE users SET user_role='{userRole.SelectedValue}', view_allowed='{userTypeList.SelectedValue}', referrer='{referrer.Text}', full_name='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
                         }
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
