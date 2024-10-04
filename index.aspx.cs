@@ -169,9 +169,6 @@ namespace Dash
                 catch
                 {
                 }
-                finally
-                {
-                }
             }
         }
 
@@ -306,7 +303,7 @@ namespace Dash
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return;
             }
