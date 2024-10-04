@@ -289,8 +289,7 @@
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 <asp:ScriptManager runat="server" />
 
-<asp:UpdatePanel runat="server" UpdateMode="Conditional">
-    <ContentTemplate>
+
       <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
@@ -347,18 +346,39 @@
       </dx:BootstrapGridView>
 
 
-            </ContentTemplate>
-</asp:UpdatePanel>
        </div>
        </div>
 
-      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, belongs, meta_data FROM dashboards;" UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+    <asp:SqlDataSource 
+    ID="query" 
+    runat="server" 
+    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+    SelectCommand="
+        SELECT 
+            d.id, 
+            d.caption, 
+            d.belongs, 
+            d.meta_data, 
+            COALESCE(ds.sort_order, NULL) AS sort_order 
+        FROM 
+            dashboards d
+        LEFT JOIN 
+            dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+        ORDER BY 
+            ds.sort_order ASC, 
+            d.id ASC;" 
 
-          <UpdateParameters>
-              <asp:Parameter Name="belongs" />
-              <asp:Parameter Name="id" />
-          </UpdateParameters>
-      </asp:SqlDataSource>
+        UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id"
+        
+        >
+    <SelectParameters>
+        <asp:Parameter Name="uname" Type="String" />
+    </SelectParameters>
+    <UpdateParameters>
+        <asp:Parameter Name="belongs" Type="String" />
+        <asp:Parameter Name="id" Type="Int32" />
+    </UpdateParameters>
+</asp:SqlDataSource>
 
 
 

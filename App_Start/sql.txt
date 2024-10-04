@@ -1,6 +1,6 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [Analytics_IN_SIST_DEV]    Script Date: 9/20/2024 9:28:04 AM ******/
+/****** Object:  Database [Analytics_IN_SIST_DEV]    Script Date: 10/4/2024 2:50:46 PM ******/
 CREATE DATABASE [Analytics_IN_SIST_DEV]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -80,23 +80,23 @@ ALTER DATABASE [Analytics_IN_SIST_DEV] SET QUERY_STORE = OFF
 GO
 USE [Analytics_IN_SIST_DEV]
 GO
-/****** Object:  User [petpakn]    Script Date: 9/20/2024 9:28:05 AM ******/
+/****** Object:  User [petpakn]    Script Date: 10/4/2024 2:50:47 PM ******/
 CREATE USER [petpakn] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [petpak]    Script Date: 9/20/2024 9:28:05 AM ******/
+/****** Object:  User [petpak]    Script Date: 10/4/2024 2:50:47 PM ******/
 CREATE USER [petpak] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [jankoj]    Script Date: 9/20/2024 9:28:05 AM ******/
+/****** Object:  User [jankoj]    Script Date: 10/4/2024 2:50:47 PM ******/
 CREATE USER [jankoj] FOR LOGIN [jankoj] WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [dashboards]    Script Date: 9/20/2024 9:28:05 AM ******/
+/****** Object:  User [dashboards]    Script Date: 10/4/2024 2:50:47 PM ******/
 CREATE USER [dashboards] FOR LOGIN [dashboards] WITH DEFAULT_SCHEMA=[dbo]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [jankoj]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [dashboards]
 GO
-/****** Object:  Table [dbo].[companies]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[companies]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -108,7 +108,6 @@ CREATE TABLE [dbo].[companies](
 	[website] [char](200) NULL,
 	[admin_id] [varchar](15) NULL,
 	[database_name] [varchar](120) NULL,
-	[id] [int] NULL,
 	[designer] [int] NOT NULL,
 	[scripted] [int] NOT NULL,
  CONSTRAINT [PK_companies] PRIMARY KEY CLUSTERED 
@@ -117,7 +116,7 @@ CREATE TABLE [dbo].[companies](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[company_strings]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[company_strings]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -131,7 +130,7 @@ CREATE TABLE [dbo].[company_strings](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[custom_names]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[custom_names]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -146,7 +145,23 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[dashboards]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 10/4/2024 2:50:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboard_view_logs](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [varchar](15) NULL,
+	[dashboard_id] [int] NULL,
+	[view_time] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboards]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -157,13 +172,63 @@ CREATE TABLE [dbo].[dashboards](
 	[caption] [nvarchar](255) NULL,
 	[viewer_only] [int] NULL,
 	[belongs] [varchar](max) NULL,
+	[meta_data] [nvarchar](max) NULL,
  CONSTRAINT [PK_Dashboards] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 10/4/2024 2:50:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards_sorted_by_user](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[uname] [varchar](15) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[sort_order] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[groups]    Script Date: 10/4/2024 2:50:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[groups](
+	[group_id] [int] IDENTITY(1,1) NOT NULL,
+	[group_name] [nvarchar](255) NOT NULL,
+	[group_description] [nvarchar](1000) NULL,
+	[company_id] [int] NOT NULL,
+	[group_permissions] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[group_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[meta_options]    Script Date: 10/4/2024 2:50:48 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[meta_options](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[option_type] [nvarchar](50) NOT NULL,
+	[value] [nvarchar](255) NOT NULL,
+	[description] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -178,7 +243,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[users]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  Table [dbo].[users]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -188,36 +253,80 @@ CREATE TABLE [dbo].[users](
 	[password] [varchar](500) NULL,
 	[user_role] [varchar](25) NOT NULL,
 	[id_company] [int] NULL,
-	[view] [varchar](120) NULL,
+	[view_allowed] [varchar](120) NULL,
 	[full_name] [varchar](120) NULL,
 	[email] [varchar](150) NULL,
+	[dashboard_permissions] [nvarchar](max) NULL,
+	[referrer] [varchar](255) NULL,
+	[group_id] [int] NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY NONCLUSTERED 
 (
 	[uname] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_OptionType]    Script Date: 10/4/2024 2:50:48 PM ******/
+CREATE NONCLUSTERED INDEX [IX_OptionType] ON [dbo].[meta_options]
+(
+	[option_type] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 ALTER TABLE [dbo].[companies] ADD  DEFAULT ((1)) FOR [designer]
 GO
 ALTER TABLE [dbo].[companies] ADD  DEFAULT ((0)) FOR [scripted]
 GO
+ALTER TABLE [dbo].[dashboard_view_logs] ADD  DEFAULT (getdate()) FOR [view_time]
+GO
 ALTER TABLE [dbo].[dashboards] ADD  DEFAULT ('0') FOR [viewer_only]
+GO
+ALTER TABLE [dbo].[dashboards] ADD  CONSTRAINT [DF_meta_data]  DEFAULT ('{"Types": [], "Companies": [], "Languages": []}') FOR [meta_data]
+GO
+ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_permissions]  DEFAULT (N'{"Permissions":[]}') FOR [dashboard_permissions]
 GO
 ALTER TABLE [dbo].[companies]  WITH CHECK ADD FOREIGN KEY([admin_id])
 REFERENCES [dbo].[users] ([uname])
 GO
-ALTER TABLE [dbo].[companies]  WITH CHECK ADD  CONSTRAINT [String relationship] FOREIGN KEY([id])
-REFERENCES [dbo].[company_strings] ([id])
-GO
-ALTER TABLE [dbo].[companies] CHECK CONSTRAINT [String relationship]
-GO
 ALTER TABLE [dbo].[custom_names]  WITH CHECK ADD FOREIGN KEY([company_id])
 REFERENCES [dbo].[companies] ([id_company])
+GO
+ALTER TABLE [dbo].[dashboard_view_logs]  WITH CHECK ADD FOREIGN KEY([dashboard_id])
+REFERENCES [dbo].[dashboards] ([id])
+GO
+ALTER TABLE [dbo].[dashboard_view_logs]  WITH CHECK ADD FOREIGN KEY([user_id])
+REFERENCES [dbo].[users] ([uname])
+GO
+ALTER TABLE [dbo].[dashboards_sorted_by_user]  WITH CHECK ADD FOREIGN KEY([dashboard_id])
+REFERENCES [dbo].[dashboards] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboards_sorted_by_user]  WITH CHECK ADD FOREIGN KEY([uname])
+REFERENCES [dbo].[users] ([uname])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[groups]  WITH CHECK ADD  CONSTRAINT [fk_groups_companies] FOREIGN KEY([company_id])
+REFERENCES [dbo].[companies] ([id_company])
+GO
+ALTER TABLE [dbo].[groups] CHECK CONSTRAINT [fk_groups_companies]
 GO
 ALTER TABLE [dbo].[reset_password_requests]  WITH CHECK ADD FOREIGN KEY([username])
 REFERENCES [dbo].[users] ([uname])
 GO
-/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 9/20/2024 9:28:06 AM ******/
+ALTER TABLE [dbo].[users]  WITH CHECK ADD  CONSTRAINT [fk_users_companies] FOREIGN KEY([id_company])
+REFERENCES [dbo].[companies] ([id_company])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_companies]
+GO
+ALTER TABLE [dbo].[users]  WITH CHECK ADD  CONSTRAINT [fk_users_groups] FOREIGN KEY([group_id])
+REFERENCES [dbo].[groups] ([group_id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_groups]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1288,7 +1397,7 @@ AS BEGIN
   END CATCH
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[spChangePassword]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  StoredProcedure [dbo].[spChangePassword]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1324,7 +1433,7 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[spIsPasswordResetLinkValid]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  StoredProcedure [dbo].[spIsPasswordResetLinkValid]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1345,7 +1454,7 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[spResetPassword]    Script Date: 9/20/2024 9:28:06 AM ******/
+/****** Object:  StoredProcedure [dbo].[spResetPassword]    Script Date: 10/4/2024 2:50:48 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

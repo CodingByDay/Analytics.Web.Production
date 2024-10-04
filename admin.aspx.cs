@@ -69,6 +69,28 @@ namespace Dash
         private bool isEditUser;
         private string userRightNow;
 
+
+        private int CurrentFocusGraph
+        {
+            get
+            {
+                if (Session["CurrentFocusGraph"] == null)
+                {
+
+                    Session["CurrentFocusGraph"] = -1;
+
+                }
+                return (int) Session["CurrentFocusGraph"];
+            }
+            set
+            {
+                Session["CurrentFocusGraph"] = value;
+            }
+        }
+
+
+
+
         private string CurrentUsername
         {
             get
@@ -180,7 +202,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowFocusedRow = true;
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
-
+            graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
 
             if (!IsPostBack)
             {
@@ -191,6 +213,11 @@ namespace Dash
             Authenticate();
 
         
+        }
+
+        private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)
+        {
+            CurrentFocusGraph = graphsGridView.FocusedRowIndex;
         }
 
         /* private void InitializeFilters()
@@ -210,7 +237,8 @@ namespace Dash
         {
             if (CurrentUsername != string.Empty)
             {
-                graphsGridView.FilterExpression = string.Empty;
+
+                query.SelectParameters["uname"].DefaultValue = CurrentUsername;
 
                 if (graphsGridView.VisibleRowCount > 0)
                 {
@@ -218,10 +246,7 @@ namespace Dash
                     ShowConfigForUser();
                     graphsGridView.Selection.EndSelection();
                 }
-            } else
-            {
-                graphsGridView.FilterExpression = "id = -9999";
-            }
+            } 
         }
 
        
@@ -1090,29 +1115,41 @@ namespace Dash
 
         protected void MoveUpButton_Click(object sender, EventArgs e)
         {
-            // Clear any sorting on the grid to allow moving rows freely
-            graphsGridView.ClearSort();
-
-            // Get the index of the currently focused row
-            int focusedRowIndex = graphsGridView.FocusedRowIndex;
-
-            // If the focused row is the first row, it can't be moved up
-            if (focusedRowIndex <= 0)
+            try
             {
-                return;
-            }
+                // Get the index of the focused row
+                int focusedRowIndex = CurrentFocusGraph;
+                int beforeFocusedRowIndex = focusedRowIndex - 1;
+                // Get the DataRow for the focused row
+                DataRow focusedRowData = graphsGridView.GetDataRow(focusedRowIndex);
 
-            // Get the data object of the currently focused row
-            var focusedObj = graphsGridView.GetRow(focusedRowIndex);
+                // Retrieve the id from the DataRow
+                if (focusedRowData != null)
+                {
+                    for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                    {
+                        DataRow dr = graphsGridView.GetDataRow(i);
+                        int dashboardId = (int)dr["id"];
+                        if (i == beforeFocusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                        }
+                        else if (i == focusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                        }
+                        else
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i);
+                        }
+                    }
 
-            // Swap the focused row with the row above
-            if (focusedObj != null && focusedRowIndex > 0)
+                    graphsGridView.DataBind();
+                }
+            } catch(Exception ex) 
             {
-               graphsGridView.SortBy()
+                var debug = true;
             }
-
-            // Rebind the grid to reflect the changes
-            graphsGridView.DataBind();
         }
 
         protected void MoveDownButton_Click(object sender, EventArgs e)
@@ -1120,6 +1157,33 @@ namespace Dash
             graphsGridView.DataBind();
         }
 
+        private void UpdateSortOrder(string uname, int dashboardId, int sortOrder)
+        {
+            string query = @"
+                IF EXISTS (SELECT 1 FROM dashboards_sorted_by_user WHERE dashboard_id = @dashboard_id AND uname = @uname)
+                BEGIN
+                    UPDATE dashboards_sorted_by_user 
+                    SET sort_order = @sort_order 
+                    WHERE dashboard_id = @dashboard_id AND uname = @uname;
+                END
+                ELSE
+                BEGIN
+                    INSERT INTO dashboards_sorted_by_user (uname, dashboard_id, sort_order) 
+                    VALUES (@uname, @dashboard_id, @sort_order);
+                END";
 
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                using (SqlCommand cmd = new SqlCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@uname", uname);
+                    cmd.Parameters.AddWithValue("@dashboard_id", dashboardId);
+                    cmd.Parameters.AddWithValue("@sort_order", sortOrder);
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
