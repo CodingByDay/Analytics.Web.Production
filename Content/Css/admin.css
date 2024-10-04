@@ -3,6 +3,11 @@
     display: flex;
     flex-direction: column; /* Align children vertically */
 }
+.toolbar-custom {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
 
 .actionButton {
     width: 7em;

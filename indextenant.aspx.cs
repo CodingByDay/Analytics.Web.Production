@@ -45,17 +45,19 @@ namespace Dash
             if (Request.Cookies["dashboard"] != null)
             {
                 // New OOP structure 23.09.2024
-                if (dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
+                if (   // User or group have permissions.
+                       dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString())
+                    || dataBaseDashboardStorage.permissionsGroup.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()
+                    ))
                 {
                     ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
                 }               
             }
 
-            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            //ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
             ASPxDashboard3.AllowCreateNewDashboard = true;
             ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
@@ -220,59 +222,57 @@ namespace Dash
 
         private ConnectionStringSettings GetConnectionString()
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Users WHERE uname='{UserNameForChecking}'", conn);
-
+            string uname = HttpContext.Current.User.Identity.Name;
             try
             {
-                var result = cmd.ExecuteScalar();
-                companyID = System.Convert.ToInt32(result);
+                using (var conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @uname", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@uname", uname);
+                        var result = cmd.ExecuteScalar();
+                        companyID = Convert.ToInt32(result);
+                    }
+                }
             }
-            catch (Exception error)
+            catch (Exception)
             {
                 // Implement logging here
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            var a = GetConnectionStringName(companyID);
-            ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
-            return stringFinal;
+            string connectionName = GetConnectionStringName(companyID);
+            return ConfigurationManager.ConnectionStrings[connectionName];
         }
+
 
         private string GetConnectionStringName(int companyID)
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE id_company={companyID}", conn);
+            string result = string.Empty;
+            string uname = HttpContext.Current.User.Identity.Name; // For checking admin permission.
 
             try
             {
-                string result = cmd.ExecuteScalar().ToString();
-                returnString = result;
+                using (var conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyID", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@companyID", companyID);
+
+                        var queryResult = cmd.ExecuteScalar();
+                        if (queryResult != null)
+                        {
+                            result = queryResult.ToString();
+                        }
+                    }
+                }
             }
-            catch (Exception error)
+            catch (Exception)
             {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return returnString;
+
+            return result;
         }
     }
 }

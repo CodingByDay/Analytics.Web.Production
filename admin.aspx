@@ -287,8 +287,11 @@
 	   <div class="inner-item graphs">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
+<asp:ScriptManager runat="server" />
 
-      <dx:BootstrapGridView ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+<asp:UpdatePanel runat="server" UpdateMode="Conditional">
+    <ContentTemplate>
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -316,6 +319,9 @@
                     </Template>
                  </dx:BootstrapGridViewToolbarItem>
 
+   
+
+
             </Items>
         </dx:BootstrapGridViewToolbar>
 
@@ -339,6 +345,10 @@
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
+
+
+            </ContentTemplate>
+</asp:UpdatePanel>
        </div>
        </div>
 
@@ -357,6 +367,23 @@
                  <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
                   </dx:BootstrapButton>
+
+
+
+                <asp:UpdatePanel ID="UpdatePanelButtons" runat="server">
+                    <ContentTemplate>
+                        <div class="toolbar-custom">
+                            <asp:Button runat="server" CssClass="btn btn-primary" ID="MoveUpButton" Text="Move Up" OnClientClick="moveUp();" OnClick="MoveUpButton_Click" />
+                            <asp:Button runat="server" CssClass="btn btn-primary ml-2" ID="MoveDownButton" Text="Move Down" OnClientClick="moveDown();" OnClick="MoveDownButton_Click" />
+                        </div>
+                    </ContentTemplate>
+                    <Triggers>
+                        <asp:AsyncPostBackTrigger ControlID="MoveUpButton" EventName="Click" />
+                        <asp:AsyncPostBackTrigger ControlID="MoveDownButton" EventName="Click" />
+                    </Triggers>
+                </asp:UpdatePanel>
+
+
            </div>
 
 

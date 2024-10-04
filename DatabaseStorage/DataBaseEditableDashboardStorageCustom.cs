@@ -231,21 +231,17 @@ namespace Dash.DatabaseStorage
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
             string FinalString = "(";
-            var available = permissionsUser.Permissions;
-            // Getting the final string
-            for (int i = 0; i < available.Count; i++)
-            {
-                if (i != available.Count - 1)
-                {
-                    FinalString += "'" + available[i].id + "'" + ",";
-                }
-                else
-                {
-                    FinalString += "'" + available[i].id + "'" + ")";
-                }
-            }
 
-            if (available.Count == 0)
+            var availableUser = permissionsUser.Permissions.Select(p => p.id).ToList();
+            var availableGroup = permissionsGroup.Permissions.Select(p => p.id).ToList();
+
+            // Combine both lists and remove duplicates
+            var combinedIds = availableUser.Union(availableGroup).ToList();
+
+            // Build the IN clause dynamically
+            var inClause = string.Join(",", combinedIds);
+
+            if (combinedIds.Count == 0)
             {
                 return new List<DashboardInfo>();
             }
@@ -254,8 +250,7 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT ID, Caption FROM Dashboards WHERE id in @ConcatString;");
-                GetCommand.Parameters.AddWithValue("@ConcatString", FinalString);
+                SqlCommand GetCommand = new SqlCommand($"SELECT id, caption FROM dashboards WHERE id in ({inClause});");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name;

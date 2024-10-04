@@ -1,6 +1,8 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
+using DevExpress.Utils.Behaviors;
+using DevExpress.Utils.DragDrop;
 using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
@@ -13,6 +15,7 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -174,7 +177,9 @@ namespace Dash
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
-
+            graphsGridView.SettingsBehavior.AllowFocusedRow = false;
+            graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
+            graphsGridView.EnableCallBacks = false;
 
 
             if (!IsPostBack)
@@ -1081,5 +1086,17 @@ namespace Dash
                 }
             }
         }
+
+        protected void MoveUpButton_Click(object sender, EventArgs e)
+        {
+            var debug = true;
+        }
+
+        protected void MoveDownButton_Click(object sender, EventArgs e)
+        {
+            var debug = true;
+        }
+
+       
     }
 }
