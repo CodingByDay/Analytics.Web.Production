@@ -26,7 +26,6 @@ namespace Dash.Models
         public Dashboard(int Id)
         {
             this.AllGraphs = GetGraphs(Id);
-            // SetGraphs(id_company);
         }
 
         public void UpdateCompanyNames(List<DashboardInternal> data, int id)
@@ -110,7 +109,6 @@ namespace Dash.Models
                 try
                 {
                     conn.Open();
-
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     var cmd = new SqlCommand($"SELECT d.id, d.caption, cn.company_id, cn.names FROM dashboards d, custom_names cn WHERE cn.company_id={id};", conn);
@@ -138,26 +136,22 @@ namespace Dash.Models
             }
         }
 
-        public string getSingularNameOriginal(int id, string customInner)
+        public string GetSingularNameOriginal(int id, string customInner)
         {
             string original = string.Empty;
-            var names = getNamesCurrent(id);
-
+            var names = GetNamesCurrent(id);
             try
             {
                 original = names.FirstOrDefault(x => x.custom == customInner).original;
                 using (SqlConnection conn = new SqlConnection(Connection))
                 {
                     conn.Open();
-
-                    var cmd = new SqlCommand($"select d.ID from Dashboards d where d.Caption = '{original}'", conn);
-
+                    var cmd = new SqlCommand($"SELECT d.id FROM dashboards d WHERE d.caption = '{original}'", conn);
                     int result = (int)cmd.ExecuteScalar();
-
                     original = result.ToString();
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return original;
             }
@@ -165,7 +159,7 @@ namespace Dash.Models
             return original;
         }
 
-        public List<Names> getNamesCurrent(int id)
+        public List<Names> GetNamesCurrent(int id)
         {
             var graphs = GetGraphs(id);
             List<Dashboard.Names> data = new List<Dashboard.Names>();

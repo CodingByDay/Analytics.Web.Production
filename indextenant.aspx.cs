@@ -36,65 +36,22 @@ namespace Dash
         private object result;
         private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
 
-        private int GetIdCompany(string current)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
-                    result = cmd.ExecuteScalar();
-                    var finalID = System.Convert.ToInt32(result);
-                    return finalID;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-                    return -1;
-                }
-            }
-        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-            string p = Request.QueryString["p"];
-            try
-            {
-                if (Request.Cookies["tab"].Value.ToString() != null)
-                {
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    string name = getCompanyQuery(uname);
-                    int id = GetIdCompany(name);
-                    Models.Dashboard graph = new Models.Dashboard(id);
-                    var dataX = graph.GetGraphs(id);
-                }
-            }
-            catch { }
+
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            if (Request.Cookies["dashboard"] != null | !String.IsNullOrEmpty(p))
+            if (Request.Cookies["dashboard"] != null)
             {
-                if (!String.IsNullOrEmpty(p))
+                // New OOP structure 23.09.2024
+                if (dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
                 {
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    string name = getCompanyQuery(uname);
-                    int id = GetIdCompany(name);
-                    Models.Dashboard graph = new Models.Dashboard(id);
-                    var dataX = graph.getSingularNameOriginal(id, p);
-                    ASPxDashboard3.InitialDashboardId = dataX;
-                }
-                else
-                {
-                    // New OOP structure 23.09.2024
-                    if (dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()))
-                    {
-                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                    }
-                }
+                    ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                }               
             }
+
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-            admin.Visible = false;
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
@@ -104,32 +61,15 @@ namespace Dash
             ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
 
-            ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
+          
+            SetUpPage();
+        }
 
-            string TARGET_URL = "https://dash.in-sist.si";
-            if (Session != null)
-            {
-                if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
-                {
-                    if (Session["UserAllowed"].ToString() == "true")
-                    {
-                        ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                    }
-                    else
-                    {
-                        ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-                    }
-                }
-                else
-                {
-                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                }
-            }
-            else
-            {
-                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-            }
+        private void SetUpPage()
+        {
             if (Request.Cookies.Get("state") is null)
             {
                 Response.Cookies["state"].Value = "light";
@@ -148,7 +88,6 @@ namespace Dash
                         break;
                 }
             }
-            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
         }
 
         [WebMethod]
@@ -169,36 +108,6 @@ namespace Dash
                     return;
                 }
             }
-        }
-
-        private string getCompanyQuery(string uname)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN Companies ON Users.id_company = Companies.id_company WHERE uname='{uname}';", conn);
-                    try
-                    {
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            companyInfo = (reader["company_name"].ToString());
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-                }
-            }
-            return companyInfo;
         }
 
         /// <summary>
@@ -242,21 +151,7 @@ namespace Dash
             }
         }
 
-        private string GetProperName(string name)
-        {
-            try
-            {
-                var list = Request.Cookies["params"].Value;
-                var des = JsonConvert.DeserializeObject<List<Parameter>>(list);
-                var no = des;
-                return no.ToString();
-            }
-            catch (Exception ex)
-            {
-                var err = ex.InnerException;
-                return default(string);
-            }
-        }
+  
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
@@ -267,48 +162,13 @@ namespace Dash
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
             Response.Cookies["dashboard"].Value = e.DashboardId;
-            Session["current"] = e.DashboardId;
             return;
         }
 
-        private bool checkDB(string ID)
-        {
-            bool flag = false;
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name;
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT isViewerOnly FROM Dashboards WHERE ID={ID}", conn);
-            try
-            {
-                var result = cmd.ExecuteScalar();
-                value = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
-            {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            if (value == 1)
-            {
-                flag = true;
-            }
-            else
-            {
-                flag = false;
-            }
-            return flag;
-        }
-
+       
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
-            var ed = e.ConnectionParameters;
             string type_string = e.ConnectionParameters.GetType().Name;
-            // MsSqlConnectionParameters
 
             if (type_string == "MsSqlConnectionParameters")
             {

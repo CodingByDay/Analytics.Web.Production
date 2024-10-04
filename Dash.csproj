@@ -446,6 +446,7 @@
       <DependentUpon>Groups.aspx</DependentUpon>
     </Compile>
     <Compile Include="HelperClasses\CheckConnection.cs" />
+    <Compile Include="HelperClasses\GeneralHelper.cs" />
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

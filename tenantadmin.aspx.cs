@@ -112,7 +112,7 @@ namespace Dash
                 Dashboard graph = new Dashboard(id);
                 var payload = graph.GetNames(id);
                 var s = e.OldValues;
-                var names = graph.getNamesCurrent(id);
+                var names = graph.GetNamesCurrent(id);
                 names.FirstOrDefault(x => x.original == e.OldValues[0].ToString()).custom = e.NewValues[1].ToString();
                 graph.UpdateGraphs(names, id);
                 var data_payload = graph.GetGraphs(id);

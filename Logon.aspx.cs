@@ -26,21 +26,17 @@ namespace Dash
             if (!IsPostBack)
             {
                 FetchDataFillList();
-                Session["passport"] = "false";
             }
         }
 
         private string GetRole(string username, string password)
-
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-
                     var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
-
                     // Create SqlCommand to select pwd field from users table given supplied userName.
                     cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}' AND password='{hashed}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -74,53 +70,7 @@ namespace Dash
             }
         }
 
-        private bool IsCompanyDesigner(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Query to get the id_company from users
-                    using (SqlCommand cmd = new SqlCommand("SELECT id_company FROM users WHERE uname=@name;", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@name", name);
-                        var result = cmd.ExecuteScalar();
-                        // Check if the result is null
-                        if (result == null || result == DBNull.Value)
-                        {
-                            return false; // No matching user or company found
-                        }
-                        // Convert result to int safely
-                        int companyId = (int) result;
-                        // Query to check if the company has a designer
-                        using (SqlCommand checkingDesigner = new SqlCommand("SELECT designer FROM companies WHERE id_company=@companyId;", conn))
-                        {
-                            checkingDesigner.Parameters.AddWithValue("@companyId", companyId);
-                            var flag = checkingDesigner.ExecuteScalar();
-
-                            if (flag != null && flag != DBNull.Value)
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false; 
-                            }
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-        }
-
-
-
-
-
+     
         private bool ValidateUser(string userName, string passWord)
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -128,10 +78,8 @@ namespace Dash
                 try
                 {
                     conn.Open();
-
                     SqlCommand cmd;
                     string lookupPassword = null;
-
                     // Check for invalid userName.
                     // userName must not be null and must be between 1 and 15 characters.
                     if ((null == userName) || (0 == userName.Length) || (userName.Length > 15))
@@ -147,7 +95,6 @@ namespace Dash
                         System.Diagnostics.Trace.WriteLine("[ValidateUser] Input validation of passWord failed.");
                         return false;
                     }
-
                     try
                     {
                         // Consult with your SQL Server administrator for an appropriate connection
@@ -156,10 +103,8 @@ namespace Dash
                         cmd = new SqlCommand("SELECT password FROM users WHERE uname=@userName", conn);
                         cmd.Parameters.Add("@userName", SqlDbType.VarChar, 25);
                         cmd.Parameters["@userName"].Value = userName;
-
                         // Execute command and fetch pwd field into lookupPassword string.
                         lookupPassword = (string)cmd.ExecuteScalar();
-
                         // Cleanup command and connection objects.
                         cmd.Dispose();
                     }
@@ -177,7 +122,6 @@ namespace Dash
                         // You could write failed login attempts here to event log for additional security.
                         return false;
                     }
-
                     string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(passWord, "SHA1");
                     // Compare lookupPassword and input passWord, using a case-sensitive comparison.
                     return (0 == string.Compare(lookupPassword, HashedPassword, false));
@@ -191,37 +135,13 @@ namespace Dash
 
         protected void Login_Click(object sender, EventArgs e)
         {
-            Session["conn"] = "";
             ValidateUser();
         }
 
         private void ValidateUser()
         {
-            Response.Cookies["Edit"].Value = "no";
             if (ValidateUser(txtUserName.Value, txtUserPass.Value))
             {
-
-                var IsDesignerCompany = IsCompanyDesigner(txtUserName.Value);
-                var IsUserAllowed = IsUserAllowedToViewAndDesign(txtUserName.Value);
-
-                if (IsDesignerCompany || txtUserName.Value == "Admin")
-                {
-                    Session["DesignerPayed"] = "true";
-                    if (IsUserAllowed)
-                    {
-                        Session["UserAllowed"] = "true";
-                    }
-                    else
-                    {
-                        Session["UserAllowed"] = "false";
-                    }
-                }
-                else
-                {
-                    Session["UserAllowed"] = "false";
-                    Session["DesignerPayed"] = "false";
-                }
-
                 FormsAuthenticationTicket tkt;
                 string cookiestr;
                 HttpCookie ck;
@@ -233,15 +153,11 @@ namespace Dash
                     ck.Expires = tkt.Expiration;
                 ck.Path = FormsAuthentication.FormsCookiePath;
                 Response.Cookies.Add(ck);
-
-                Session["current"] = "";
                 string strRedirect;
                 role = GetRole(txtUserName.Value, txtUserPass.Value);
-
                 if (role == "SuperAdmin")
                 {
                     strRedirect = "Index.aspx";
-                    Session["mode"] = "ViewerOnly";
                     Response.Redirect(strRedirect, true);
                 }
                 else
@@ -249,7 +165,6 @@ namespace Dash
                     strRedirect = "IndexTenant.aspx";
                     Response.Redirect(strRedirect, true);
                 }
-
                 conn.Close();
                 conn.Dispose();
             }
@@ -259,41 +174,5 @@ namespace Dash
             }
         }
 
-        private bool IsUserAllowedToViewAndDesign(string username)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    // Use a parameterized query to avoid SQL injection
-                    using (SqlCommand command = new SqlCommand("SELECT view_allowed FROM users WHERE uname=@username", conn))
-                    {
-                        command.Parameters.AddWithValue("@username", username);
-
-                        // Execute the query and get the permission value
-                        var permissionResult = command.ExecuteScalar();
-
-                        // Check if the result is null
-                        if (permissionResult == null || permissionResult == DBNull.Value)
-                        {
-                            return false; // No matching user or no permission found
-                        }
-
-                        // Convert result to string and check permission
-                        string permission = permissionResult.ToString();
-
-                        // Return true only if the permission is "Viewer&Designer"
-                        return permission == "Viewer&Designer";
-                    }
-                }
-                catch (Exception)
-                {
-                    // Log the exception if necessary
-                    return false;
-                }
-            }
-        }
     }
 }
