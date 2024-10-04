@@ -72,7 +72,7 @@ namespace Dash
 
             if (!IsPostBack)
             {
-                authenticate();
+                Authenticate();
                 HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
                 admin.Visible = true;
                 defaultCompany();
@@ -219,7 +219,7 @@ namespace Dash
             TxtRePassword.Text = "";
         }
 
-        private void authenticate()
+        private void Authenticate()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -228,16 +228,13 @@ namespace Dash
                     conn.Open();
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT userRole FROM Users WHERE uname='{username}';", conn);
+                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
                         role = (reader["userRole"].ToString());
                     }
-                    if (role == "Admin")
-                    {
-                    }
-                    else
+                    if (role != "Admin")
                     {
                         Response.Redirect("Logon.aspx", true);
                     }
@@ -249,7 +246,7 @@ namespace Dash
             }
         }
 
-        private List<bool> showConfig()
+        private List<bool> ShowConfig()
         {
             string singular;
             valuesBool.Clear();
@@ -787,7 +784,7 @@ namespace Dash
             {
                 FillListGraphsNames();
                 makeSQLquery();
-                showConfig();
+                ShowConfig();
             }
         }
 
@@ -984,7 +981,7 @@ namespace Dash
                         cmd.ExecuteNonQuery();
                         usersGridView.Selection.SetSelection(0, true);
                         FillListGraphs();
-                        showConfig();
+                        ShowConfig();
                         deletePermisionEntry();
                         FillUsers();
 
@@ -1014,7 +1011,7 @@ namespace Dash
         {
             graphsListBox.Enabled = true;
             FillListGraphs();
-            showConfig();
+            ShowConfig();
             updateForm();
         }
 
@@ -1037,7 +1034,7 @@ namespace Dash
         {
             graphsListBox.Enabled = true;
             FillListGraphs();
-            showConfig();
+            ShowConfig();
             updateForm();
         }
 

@@ -20,7 +20,6 @@ namespace Dash
     public partial class IndexTenant : System.Web.UI.Page
     {
         private string connection;
-        public static string ConnectionString;
         private SqlConnection conn;
         private int companyID;
         private int stringID;
@@ -39,9 +38,10 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
-
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(connection);
+
             if (Request.Cookies["dashboard"] != null)
             {
                 // New OOP structure 23.09.2024
@@ -52,11 +52,10 @@ namespace Dash
             }
 
             HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+            //ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
             ASPxDashboard3.AllowCreateNewDashboard = true;
             ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;

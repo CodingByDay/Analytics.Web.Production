@@ -202,11 +202,19 @@ namespace Dash
 
         private void GraphsGridView_DataBound(object sender, EventArgs e)
         {
-            if (graphsGridView.VisibleRowCount > 0)
+            if (CurrentUsername != string.Empty)
             {
-                graphsGridView.Selection.BeginSelection();
-                ShowConfigForUser();
-                graphsGridView.Selection.EndSelection();
+                graphsGridView.FilterExpression = string.Empty;
+
+                if (graphsGridView.VisibleRowCount > 0)
+                {
+                    graphsGridView.Selection.BeginSelection();
+                    ShowConfigForUser();
+                    graphsGridView.Selection.EndSelection();
+                }
+            } else
+            {
+                graphsGridView.FilterExpression = "id = -9999";
             }
         }
 
@@ -282,14 +290,15 @@ namespace Dash
                     conn.Open();
                     var plurals = companiesGridView.GetSelectedFieldValues("id_company");
                     if (plurals.Count != 0)
-                    {
+                    {                      
                         var id = (int) plurals[0];
+
                         CurrentCompany = GetCompanyName(id);
-                        CurrentUsername = GetFirstUserForCompany(CurrentCompany);
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter
                         graphsGridView.DataBind();
+                        
                     }
                 }
                 catch (Exception ex)
@@ -416,56 +425,7 @@ namespace Dash
 
      
 
-        private void UpdateForm()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    isEditUser = true;
-                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
-                    {
-                        userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{userRightNow}'", conn);
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        TxtName.Text = sdr["full_name"].ToString();
-                        TxtUserName.Text = sdr["uname"].ToString();
-                        TxtUserName.Enabled = false;
-                        referrer.Text = sdr["referrer"].ToString();
-                        int number = (int)sdr["id_company"];
-                        string dare = GetCompanyName(number);
-
-                        email.Enabled = false;
-                        string role = sdr["user_role"].ToString();
-                        string type = sdr["view_allowed"].ToString();
-                        email.Text = sdr["email"].ToString();
-                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                    }
-                    sdr.Close();
-                    cmd.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
         public string GetCompanyName(int company)
         {
@@ -966,10 +926,7 @@ namespace Dash
             }
         }
 
-        public static bool testConnection()
-        {
-            return true;
-        }
+ 
 
   
 

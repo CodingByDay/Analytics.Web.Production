@@ -57,8 +57,7 @@ namespace Dash
             ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
             ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             // Hide the back button.
-            HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-            admin.Visible = false;
+
             var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
             ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
             ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
@@ -66,7 +65,7 @@ namespace Dash
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
+            //ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
             if (!IsPostBack)

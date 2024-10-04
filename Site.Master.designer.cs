@@ -24,13 +24,13 @@ namespace Dash
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggle;
 
         /// <summary>
-        /// adminButtonAnchor control.
+        /// adminButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButtonAnchor;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButton;
 
         /// <summary>
         /// groupsButton control.
@@ -51,22 +51,22 @@ namespace Dash
         protected global::System.Web.UI.HtmlControls.HtmlAnchor filtersButton;
 
         /// <summary>
-        /// backButtonA control.
+        /// backButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButtonA;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButton;
 
         /// <summary>
-        /// signOutAnchor control.
+        /// signOutButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor signOutAnchor;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor signOutButton;
 
         /// <summary>
         /// MainContent control.

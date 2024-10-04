@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.XtraRichEdit.Model;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
@@ -13,30 +14,29 @@ namespace Dash
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;
+        private string connection;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-     
-                HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
-                HttpContext.Current.Response.AddHeader("Expires", "0");
 
-                signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-                adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-                backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-                string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                conn = new SqlConnection(ConnectionString);
-                conn.Open();
-                // Create SqlCommand to select pwd field from users table given supplied userName.
-                cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{UserNameForCheckingAdmin}';", conn);
-                // Execute command and fetch pwd field into lookupPassword string.
-                userRole = (string)cmd.ExecuteScalar();
-                CheckIsAdminShowAdminButtonOrNot(userRole);
-                CheckWhetherToShowTheSwitcherAtAll();
-                ConditionalyAddStylesBasedOnTheUrl();
-            
+            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
+            HttpContext.Current.Response.AddHeader("Expires", "0");
+
+            signOutButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            adminButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+            backButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+
+
+            string uname = HttpContext.Current.User.Identity.Name; 
+            CheckUserTypeModifyUI(uname);
+
+            CheckWhetherToShowTheSwitcherAtAll();
+
+            ConditionalyAddStylesBasedOnTheUrl();
+         
         }
 
         private void ConditionalyAddStylesBasedOnTheUrl()
@@ -131,17 +131,44 @@ namespace Dash
             Response.Redirect("Home.aspx", true);
         }
 
-        private void CheckIsAdminShowAdminButtonOrNot(string userRole)
+        private void CheckUserTypeModifyUI(string uname)
         {
-            if (userRole != "SuperAdmin" && userRole != "Admin")
+            // Use 'using' statements to ensure proper disposal of resources
+            using (var conn = new SqlConnection(connection))
             {
-                adminButtonAnchor.Visible = false;
-            }
-            else
-            {
-                adminButtonAnchor.Visible = true;
+                conn.Open();
+                // Use a parameterized query to avoid SQL injection
+                using (var cmd = new SqlCommand("SELECT user_role FROM users WHERE uname = @UserName", conn))
+                {
+                    // Add the parameter for the user name
+                    cmd.Parameters.AddWithValue("@UserName", uname);
+
+                    // Execute command and fetch user_role field into the userRole variable
+                    userRole = cmd.ExecuteScalar()?.ToString();
+
+                    if(userRole == "User")
+                    {
+                        adminButton.Visible = false;
+                        groupsButton.Visible = false;
+                        filtersButton.Visible = false;
+                        backButton.Visible = false;
+                    } else if (userRole == "SuperAdmin")
+                    {
+                        adminButton.Visible = true;
+                        groupsButton.Visible = true;
+                        filtersButton.Visible = true;
+                        backButton.Visible = false;
+                    } else if (userRole == "Admin")
+                    {
+                        adminButton.Visible = true;
+                        groupsButton.Visible = true;
+                        filtersButton.Visible = true;
+                        backButton.Visible = false;
+                    }
+                }
             }
         }
+
 
         protected void Administration_Click(object sender, EventArgs e)
         {
