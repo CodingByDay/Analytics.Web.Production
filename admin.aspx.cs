@@ -177,13 +177,14 @@ namespace Dash
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
-            graphsGridView.SettingsBehavior.AllowFocusedRow = false;
+            graphsGridView.SettingsBehavior.AllowFocusedRow = true;
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
 
 
             if (!IsPostBack)
             {
+
             } 
 
 
@@ -192,7 +193,7 @@ namespace Dash
         
         }
 
-        /*private void InitializeFilters()
+        /* private void InitializeFilters()
         {
             // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
             // 2.10.2024 Janko Jovičić
@@ -1089,14 +1090,36 @@ namespace Dash
 
         protected void MoveUpButton_Click(object sender, EventArgs e)
         {
-            var debug = true;
+            // Clear any sorting on the grid to allow moving rows freely
+            graphsGridView.ClearSort();
+
+            // Get the index of the currently focused row
+            int focusedRowIndex = graphsGridView.FocusedRowIndex;
+
+            // If the focused row is the first row, it can't be moved up
+            if (focusedRowIndex <= 0)
+            {
+                return;
+            }
+
+            // Get the data object of the currently focused row
+            var focusedObj = graphsGridView.GetRow(focusedRowIndex);
+
+            // Swap the focused row with the row above
+            if (focusedObj != null && focusedRowIndex > 0)
+            {
+               graphsGridView.SortBy()
+            }
+
+            // Rebind the grid to reflect the changes
+            graphsGridView.DataBind();
         }
 
         protected void MoveDownButton_Click(object sender, EventArgs e)
         {
-            var debug = true;
+            graphsGridView.DataBind();
         }
 
-       
+
     }
 }
