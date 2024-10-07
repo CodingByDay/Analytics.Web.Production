@@ -197,7 +197,7 @@ namespace Dash
             usersGridView.DataBound += UsersGridView_DataBound;
 
             graphsGridView.EnableRowsCache = true;
-            graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+            graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
             graphsGridView.SettingsBehavior.AllowFocusedRow = true;
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
@@ -217,7 +217,7 @@ namespace Dash
 
         private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)
         {
-            CurrentFocusGraph = graphsGridView.FocusedRowIndex;
+   
         }
 
         /* private void InitializeFilters()
@@ -235,6 +235,7 @@ namespace Dash
 
         private void GraphsGridView_DataBound(object sender, EventArgs e)
         {
+
             if (CurrentUsername != string.Empty)
             {
 
@@ -1118,7 +1119,7 @@ namespace Dash
             try
             {
                 // Get the index of the focused row
-                int focusedRowIndex = CurrentFocusGraph;
+                int focusedRowIndex = graphsGridView.FocusedRowIndex;
                 int beforeFocusedRowIndex = focusedRowIndex - 1;
                 // Get the DataRow for the focused row
                 DataRow focusedRowData = graphsGridView.GetDataRow(focusedRowIndex);
@@ -1139,8 +1140,10 @@ namespace Dash
                             UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
                         }                                                   
                     }
-                    graphsGridView.DataBind();
+
                     graphsGridView.FocusedRowIndex = focusedRowIndex - 1;
+                    graphsGridView.DataBind();
+                    
                 }
             } catch(Exception) 
             {
@@ -1150,7 +1153,38 @@ namespace Dash
 
         protected void MoveDownButton_Click(object sender, EventArgs e)
         {
-            graphsGridView.DataBind();
+            try
+            {
+                // Get the index of the focused row
+                int focusedRowIndex = graphsGridView.FocusedRowIndex;
+                int afterFocusedRowIndex = focusedRowIndex + 1;
+                // Get the DataRow for the focused row
+                DataRow focusedRowData = graphsGridView.GetDataRow(focusedRowIndex);
+                // Retrieve the id from the DataRow
+                if (focusedRowData != null)
+                {
+                    for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                    {
+                        DataRow dr = graphsGridView.GetDataRow(i);
+                        int dashboardId = (int)dr["id"];
+                        if (i == afterFocusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                        }
+                        else if (i == focusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                        }
+                    }
+
+                    graphsGridView.FocusedRowIndex = focusedRowIndex + 1;
+                    graphsGridView.DataBind();
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         private void UpdateSortOrder(string uname, int dashboardId, int sortOrder)
