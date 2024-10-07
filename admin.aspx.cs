@@ -1113,7 +1113,7 @@ namespace Dash
             }
         }
 
-        protected void MoveUpButton_Click(object sender, EventArgs e)
+        public void MoveUpButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -1137,18 +1137,14 @@ namespace Dash
                         else if (i == focusedRowIndex)
                         {
                             UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
-                        }
-                        else
-                        {
-                            UpdateSortOrder(CurrentUsername, dashboardId, i);
-                        }
+                        }                                                   
                     }
-
                     graphsGridView.DataBind();
+                    graphsGridView.FocusedRowIndex = focusedRowIndex - 1;
                 }
-            } catch(Exception ex) 
+            } catch(Exception) 
             {
-                var debug = true;
+                return;
             }
         }
 

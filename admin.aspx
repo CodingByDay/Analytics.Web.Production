@@ -349,31 +349,34 @@
        </div>
        </div>
 
-    <asp:SqlDataSource 
+<asp:SqlDataSource 
     ID="query" 
     runat="server" 
     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
     SelectCommand="
-        SELECT 
-            d.id, 
-            d.caption, 
-            d.belongs, 
-            d.meta_data, 
-            COALESCE(ds.sort_order, NULL) AS sort_order 
-        FROM 
-            dashboards d
-        LEFT JOIN 
-            dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
-        ORDER BY 
-            ds.sort_order ASC, 
-            d.id ASC;" 
-
-        UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id"
-        
-        >
+    SELECT 
+        d.id, 
+        d.caption, 
+        d.belongs, 
+        d.meta_data, 
+        COALESCE(ds.sort_order, NULL) AS sort_order 
+    FROM 
+        dashboards d
+    LEFT JOIN 
+        dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+    ORDER BY 
+        CASE 
+            WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  
+            ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
+                  WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
+        END,
+        d.id;" 
+    UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+    
     <SelectParameters>
         <asp:Parameter Name="uname" Type="String" />
     </SelectParameters>
+    
     <UpdateParameters>
         <asp:Parameter Name="belongs" Type="String" />
         <asp:Parameter Name="id" Type="Int32" />
@@ -390,18 +393,10 @@
 
 
 
-                <asp:UpdatePanel ID="UpdatePanelButtons" runat="server">
-                    <ContentTemplate>
-                        <div class="toolbar-custom">
-                            <asp:Button runat="server" CssClass="btn btn-primary" ID="MoveUpButton" Text="Move Up" OnClientClick="moveUp();" OnClick="MoveUpButton_Click" />
-                            <asp:Button runat="server" CssClass="btn btn-primary ml-2" ID="MoveDownButton" Text="Move Down" OnClientClick="moveDown();" OnClick="MoveDownButton_Click" />
-                        </div>
-                    </ContentTemplate>
-                    <Triggers>
-                        <asp:AsyncPostBackTrigger ControlID="MoveUpButton" EventName="Click" />
-                        <asp:AsyncPostBackTrigger ControlID="MoveDownButton" EventName="Click" />
-                    </Triggers>
-                </asp:UpdatePanel>
+          <div class="toolbar-custom">
+            <asp:Button runat="server" CssClass="btn btn-primary" ID="MoveUpButton" Text="Move Up" OnClick="MoveUpButton_Click" />
+            <asp:Button runat="server" CssClass="btn btn-primary ml-2" ID="MoveDownButton" Text="Move Down" OnClick="MoveDownButton_Click" />
+        </div>
 
 
            </div>
