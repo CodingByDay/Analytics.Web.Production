@@ -230,7 +230,6 @@ namespace Dash.DatabaseStorage
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
-            string FinalString = "(";
 
             var availableUser = permissionsUser.Permissions.Select(p => p.id).ToList();
             var availableGroup = permissionsGroup.Permissions.Select(p => p.id).ToList();
@@ -250,7 +249,27 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($"SELECT id, caption FROM dashboards WHERE id in ({inClause});");
+                SqlCommand GetCommand = new SqlCommand($@"
+                SELECT 
+                    d.id, 
+                    d.caption, 
+                    d.belongs, 
+                    d.meta_data, 
+                    COALESCE(ds.sort_order, NULL) AS sort_order 
+                FROM 
+                    dashboards d
+                LEFT JOIN 
+                    dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname 
+                WHERE 
+                    d.id IN ({inClause}) 
+                ORDER BY 
+                    CASE 
+                        WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  -- Order by sort_order for non-NULL
+                        ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
+                              WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
+                    END,
+                    d.id;");
+                GetCommand.Parameters.AddWithValue("@uname", HttpContext.Current.User.Identity.Name);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 string name = HttpContext.Current.User.Identity.Name;
