@@ -317,9 +317,14 @@ function onItemMasterFilterStateChanged(e) {
             return; // Return if values is undefined or its length is 0
         }
 
+        // Construct the Values array as a list of lists of FilterSelection
+        var valuesList = values.map((value, index) => {
+            return [{ Index: index, Value: value[0] }]; // Assuming value[0] is the actual value needed
+        });
+
         var filterChanged = {
             ItemName: itemName,
-            Values: values
+            Values: valuesList 
         };
     var filter = JSON.stringify(filterChanged);
         $.ajax({

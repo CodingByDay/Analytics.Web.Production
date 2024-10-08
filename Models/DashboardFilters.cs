@@ -25,7 +25,8 @@ namespace Dash.Models
 
         public DashboardFilters()
         {
-
+            string json = JsonConvert.SerializeObject(this);
+            var debug = true;
         }
 
         public DashboardFilters GetFiltersForUser(string uname)
@@ -78,14 +79,19 @@ namespace Dash.Models
         }
     }
 
-
+    public class FilterSelection
+    {
+        public int Index { get; set; }
+        public string Value { get; set; }
+    }
 
     public class DashboardFilter
     {
+
         [JsonProperty("ItemName")]
         public string ItemName { get; set; }
 
         [JsonProperty("Values")]
-        public List<List<string>> Values { get; set; }
+        public List<List<FilterSelection>> Values { get; set; }
     }
 }
