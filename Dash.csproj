@@ -483,6 +483,7 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DashboardFilters.cs" />
     <Compile Include="Models\DashboardOrder.cs" />
     <Compile Include="Models\DashboardPermissions.cs" />
     <Compile Include="Models\MetaData.cs" />
