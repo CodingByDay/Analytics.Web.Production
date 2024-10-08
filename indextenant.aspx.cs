@@ -152,7 +152,16 @@ namespace Dash
             }
         }
 
-  
+        [WebMethod]
+        public static void ProcessFilter(string filter)
+        {
+            // Deserialize the JSON string back to the DashboardFilter object
+            DashboardFilter filterObject = JsonConvert.DeserializeObject<DashboardFilter>(filter);
+            var debug = true;
+            // Your processing logic here
+        }
+
+
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
