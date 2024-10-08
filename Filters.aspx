@@ -6,8 +6,10 @@
   
 
     <style>
-
-        .container {
+        .newRow {
+            margin-top: 1em;
+        }
+        .containerFilters {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,91 +43,216 @@
         }
     </style>
 
-    <div class="container">
-        <div class="square" onclick="openModal('modal1')">
-            <img src="images/type.png" alt="Tip šifranta" />
-            <span>Šifrant tipov</span>
-        </div>
-        <div class="square" onclick="openModal('modal2')">
-            <img src="images/organization.png" alt="Šifrant podjetj" />
-            <span>Šifrant podjetj</span>
-        </div>
-        <div class="square" onclick="openModal('modal3')">
-            <img src="images/language.png" alt="Šifrant jezikov" />
-            <span>Šifrant jezikov</span>
-        </div>
+ <div class="containerFilters">
+    <div class="square" onclick="openModal('modal1')">
+        <img src="images/type.png" alt="Tip šifranta" />
+        <span>Šifrant tipov</span>
     </div>
+    <div class="square" onclick="openModal('modal2')">
+        <img src="images/organization.png" alt="Šifrant podjetj" />
+        <span>Šifrant podjetj</span>
+    </div>
+    <div class="square" onclick="openModal('modal3')">
+        <img src="images/language.png" alt="Šifrant jezikov" />
+        <span>Šifrant jezikov</span>
+    </div>
+</div>
 
-    <!-- Modal 1 -->
-    <div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal1Label">Šifrant tipov</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!-- Form content for Šifrant tipov -->
-                        <div class="mb-3">
-                            <label for="typeInput" class="form-label">Type</label>
-                            <input type="text" class="form-control" id="typeInput">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+<!-- Modal 1 (Šifrant tipov) -->
+<div class="modal fade" id="modal1" tabindex="-1" aria-labelledby="modal1Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal1Label">Šifrant tipov</h5>
+            </div>
+            <div class="modal-body">
+                <dx:BootstrapGridView ID="gridViewTypes" ClientInstanceName="gridViewTypes" runat="server" 
+                    DataSourceID="sqlDataSourceTypes" 
+                    KeyFieldName="id"
+                    SettingsDataSecurity-AllowEdit="true"
+                    SettingsDataSecurity-AllowInsert="true"
+                    SettingsDataSecurity-AllowDelete="true"
+                    AutoGenerateColumns="False"
+                    EnableRowsCache="False" >
+                    
+                    <Columns>
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                    </Columns>
+
+                    <SettingsEditing Mode="EditForm" />
+                </dx:BootstrapGridView>
+
+                <asp:SqlDataSource ID="sqlDataSourceTypes" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+                    SelectCommand="SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'type'"
+                    InsertCommand="INSERT INTO meta_options (option_type, value, description) VALUES ('type', @value, @description)"
+                    UpdateCommand="UPDATE meta_options SET value = @value, description = @description WHERE id = @id"
+                    DeleteCommand="DELETE FROM meta_options WHERE id = @id">
+                    
+                    <InsertParameters>
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </UpdateParameters>
+                    <DeleteParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                    </DeleteParameters>
+                </asp:SqlDataSource>
+
+                <!-- Add New Button -->
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewTypes')">Add New Type</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal 2 -->
-    <div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal2Label">Šifrant podjetj</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!-- Form content for Šifrant podjetj -->
-                        <div class="mb-3">
-                            <label for="organizationInput" class="form-label">Organization</label>
-                            <input type="text" class="form-control" id="organizationInput">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+<!-- Modal 2 (Šifrant podjetj) -->
+<div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal2Label">Šifrant podjetj</h5>
+            </div>
+            <div class="modal-body">
+                <dx:BootstrapGridView ID="gridViewOrganizations" ClientInstanceName="gridViewOrganizations" runat="server" 
+                    DataSourceID="sqlDataSourceOrganizations" 
+                    KeyFieldName="id"
+                    SettingsDataSecurity-AllowEdit="true"
+                    SettingsDataSecurity-AllowInsert="true"
+                    SettingsDataSecurity-AllowDelete="true"
+                    AutoGenerateColumns="False"
+                    EnableRowsCache="False" >
+                    
+                    <Columns>
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                    </Columns>
+
+                    <SettingsEditing Mode="EditForm" />
+                </dx:BootstrapGridView>
+
+                <asp:SqlDataSource ID="sqlDataSourceOrganizations" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+                    SelectCommand="SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'company'"
+                    InsertCommand="INSERT INTO meta_options (option_type, value, description) VALUES ('company', @value, @description)"
+                    UpdateCommand="UPDATE meta_options SET value = @value, description = @description WHERE id = @id"
+                    DeleteCommand="DELETE FROM meta_options WHERE id = @id">
+                    
+                    <InsertParameters>
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </UpdateParameters>
+                    <DeleteParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                    </DeleteParameters>
+                </asp:SqlDataSource>
+
+                <!-- Add New Button -->
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewOrganizations')">Add New Organization</button>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal 3 -->
-    <div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="modal3Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal3Label">Šifrant jezikov</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <!-- Form content for Šifrant jezikov -->
-                        <div class="mb-3">
-                            <label for="languageInput" class="form-label">Language</label>
-                            <input type="text" class="form-control" id="languageInput">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </div>
+<!-- Modal 3 (Šifrant jezikov) -->
+<div class="modal fade" id="modal3" tabindex="-1" aria-labelledby="modal3Label" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal3Label">Šifrant jezikov</h5>
+            </div>
+            <div class="modal-body">
+                <dx:BootstrapGridView ID="gridViewLanguages" ClientInstanceName="gridViewLanguages" runat="server" 
+                    DataSourceID="sqlDataSourceLanguages" 
+                    KeyFieldName="id"
+                    SettingsDataSecurity-AllowEdit="true"
+                    SettingsDataSecurity-AllowInsert="true"
+                    SettingsDataSecurity-AllowDelete="true"
+                    AutoGenerateColumns="False"
+                    EnableRowsCache="False" >
+                    
+                    <Columns>
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                    </Columns>
+
+                    <SettingsEditing Mode="EditForm" />
+                </dx:BootstrapGridView>
+
+                <asp:SqlDataSource ID="sqlDataSourceLanguages" runat="server" 
+                    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+                    SelectCommand="SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'language'"
+                    InsertCommand="INSERT INTO meta_options (option_type, value, description) VALUES ('language', @value, @description)"
+                    UpdateCommand="UPDATE meta_options SET value = @value, description = @description WHERE id = @id"
+                    DeleteCommand="DELETE FROM meta_options WHERE id = @id">
+                    
+                    <InsertParameters>
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </InsertParameters>
+                    <UpdateParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                        <asp:Parameter Name="value" Type="String" />
+                        <asp:Parameter Name="description" Type="String" />
+                    </UpdateParameters>
+                    <DeleteParameters>
+                        <asp:Parameter Name="id" Type="Int32" />
+                    </DeleteParameters>
+                </asp:SqlDataSource>
+
+                <!-- Add New Button -->
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewLanguages')">Add New Language</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <script>
         function openModal(modalId) {
             var myModal = new bootstrap.Modal(document.getElementById(modalId));
             myModal.show();
+        }
+
+
+        function gridView_AddNewRow(gridViewId) {
+
+            event.preventDefault();
+
+            if (gridViewId == "gridViewTypes") {
+
+                // Add a new row to the grid
+                gridViewTypes.AddNewRow();
+                // Start editing the last added row (the new row)
+                var newRowIndex = gridViewTypes.cpTotalRows - 1; // Get the index of the new row
+            } else if (gridViewId == "gridViewOrganizations") {
+                // Add a new row to the grid
+                gridViewOrganizations.AddNewRow();
+                // Start editing the last added row (the new row)
+                var newRowIndex = gridViewOrganizations.cpTotalRows - 1; // Get the index of the new row
+            } else if (gridViewId == "gridViewTypes") {
+
+                // Add a new row to the grid
+                gridViewLanguages.AddNewRow();
+                // Start editing the last added row (the new row)
+                var newRowIndex = gridViewLanguages.cpTotalRows - 1; // Get the index of the new row
+            }
         }
     </script>
 
