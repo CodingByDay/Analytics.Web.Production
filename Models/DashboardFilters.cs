@@ -25,8 +25,7 @@ namespace Dash.Models
 
         public DashboardFilters()
         {
-            string json = JsonConvert.SerializeObject(this);
-            var debug = true;
+
         }
 
         public DashboardFilters GetFiltersForUser(string uname)
@@ -70,9 +69,14 @@ namespace Dash.Models
             return permissions;
         }
 
-
+        public void FilterChanged(DashboardFilter filterChange)
+        {
+            foreach (var filter in filterChange.Values)
+            {
+               // Continue here more oop friendly class implementation.
+            }
+        }
     }
-
 
 
 

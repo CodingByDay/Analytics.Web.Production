@@ -155,8 +155,10 @@ namespace Dash
         [WebMethod]
         public static void ProcessFilter(string filter)
         {
+            DashboardFilters filters = new DashboardFilters(HttpContext.Current.User.Identity.Name);
             // Deserialize the JSON string back to the DashboardFilter object
-            DashboardFilter filterObject = JsonConvert.DeserializeObject<DashboardFilter>(filter);
+            DashboardFilter filterChange = JsonConvert.DeserializeObject<DashboardFilter>(filter);
+            filters.FilterChanged(filterChange);
             var debug = true;
             // Your processing logic here
         }
