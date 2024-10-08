@@ -156,7 +156,19 @@ function removeItemOnce(arr) {
 
     return arr;
 }
+function getSafeParsedCookie(cookieName) {
+    let cookieValue = getCookie(cookieName);
 
+    if (!cookieValue) {
+        return null;
+    }
+
+    try {
+        return JSON.parse(cookieValue);
+    } catch (error) {
+        return null;
+    }
+}
 function updatecustomizeWidgets(sender, args) {
     // update
 
@@ -199,11 +211,10 @@ function updatecustomizeWidgets(sender, args) {
     var items = dashboard.GetDashboardControl().dashboard().items();
     tabItems = []
     window.counter = 0;
-    d_old = JSON.parse(getCookie('old'));
 
-    d_new = JSON.parse(getCookie('new'));
-    console.log(d_old);
-    console.log(d_new);
+    d_old = getSafeParsedCookie('old');
+    d_new = getSafeParsedCookie('new');
+
     for (var i = 0; i < items.length; i++) {
         var iCurrent = items[i];
         item_caption = iCurrent.name();
@@ -288,8 +299,19 @@ function onBeforeRender(sender) {
     dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
     dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
     dashboardControl.unregisterExtension("designerToolbar");
+    var viewerApiExtension = dashboardControl.findExtension('viewerApi');
+    if (viewerApiExtension) {
+        viewerApiExtension.on('itemMasterFilterStateChanged', onItemMasterFilterStateChanged);
+    }
 }
 
+
+
+
+function onItemMasterFilterStateChanged(e) {
+    console.log(e);
+    // Stop here solve the issue of the context menu.
+}
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

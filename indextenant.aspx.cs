@@ -64,7 +64,7 @@ namespace Dash
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-
+            
           
             SetUpPage();
         }

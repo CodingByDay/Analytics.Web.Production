@@ -250,7 +250,7 @@
     <Content Include="Index.aspx" />
     <Content Include="IndexTenant.aspx" />
     <Content Include="Js\app.js" />
-    <Content Include="Js\application\admin.js" />
+    <Content Include="Js\application\main.js" />
     <Content Include="Js\AssignMetadata.js" />
     <Content Include="Js\bootstrap.js" />
     <Content Include="Js\DeleteExtension.js" />
