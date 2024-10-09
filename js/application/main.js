@@ -307,40 +307,46 @@ function onBeforeRender(sender) {
 
 
 
-
 function onItemMasterFilterStateChanged(e) {
-        var itemName = e.itemName;
-        var values = e.values
 
-        // Use optional chaining to safely access length
-        if (!values?.length) {
-            return; // Return if values is undefined or its length is 0
-        }
+    var itemName = e.itemName;
+    var values = e.values;
 
-        // Construct the Values array as a list of lists of FilterSelection
-        var valuesList = values.map((value, index) => {
-            return [{ Index: index, Value: value[0] }]; // Assuming value[0] is the actual value needed
-        });
+    // Check if values exist and has length
+    if (!values?.length) {
+        return; // Return if values is undefined or its length is 0
+    }
 
-        var filterChanged = {
-            ItemName: itemName,
-            Values: valuesList 
-        };
+    // Construct the Values array as a list of FilterSelection
+    var valuesList = values.map((value, index) => {
+        return { Index: index, Value: value[0] }; // Assuming 'value' is the actual value needed
+    });
+
+    // Create the filter object as per the C# DashboardFilter structure
+    var filterChanged = {
+        ItemName: itemName,
+        Values: valuesList // Array of FilterSelection objects
+    };
+
+    debugger;
+
+    // Convert the filterChanged object to JSON
     var filter = JSON.stringify(filterChanged);
-        $.ajax({
-            type: "POST",
-            url: 'IndexTenant.aspx/ProcessFilter',
-            data: JSON.stringify({ filter: filter }), // Wrap in an object with 'filter' key
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (msg) {
-                debugger;
-            },
-            error: function (e) {
-                debugger;
-            }
-        });
-   
+
+    // Send an AJAX POST request to the server-side method
+    $.ajax({
+        type: "POST",
+        url: 'IndexTenant.aspx/ProcessFilter',
+        data: JSON.stringify({ filter: filter }), // Wrap in an object with 'filter' key
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (msg) {
+            console.log("Filter successfully processed.", msg);
+        },
+        error: function (e) {
+            console.error("Error processing filter.", e);
+        }
+    });
 }
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();

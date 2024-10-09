@@ -72,9 +72,17 @@ namespace Dash.Models
 
         public void FilterChanged(DashboardFilter filterChange)
         {
-            foreach (var filter in filterChange.Values)
+            if (this.Filters.Any(f => f.ItemName == filterChange.ItemName))
             {
-               // Continue here more oop friendly class implementation.
+                if(this.Filters.Where(f => f.ItemName == filterChange.ItemName).ToList().Count > 1)
+                {
+                    return;
+                }
+                var found = this.Filters.Where(f => f.ItemName == filterChange.ItemName).FirstOrDefault();
+
+            } else
+            {
+                this.Filters.Add(filterChange);
             }
         }
     }
@@ -92,6 +100,6 @@ namespace Dash.Models
         public string ItemName { get; set; }
 
         [JsonProperty("Values")]
-        public List<List<FilterSelection>> Values { get; set; }
+        public List<FilterSelection> Values { get; set; }
     }
 }
