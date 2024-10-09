@@ -1,5 +1,9 @@
 ﻿initialPayload = [];
 updatedPayload = [];
+var viewerApiExtension;
+var dashboardControl;
+
+
 /**
  * A client side event to update the column header titles based on parameter values.
  * @param sender
@@ -292,43 +296,92 @@ var extension;
  */
 
 function onBeforeRender(sender) {
-    var dashboardControl = sender.GetDashboardControl();
+    dashboardControl = sender.GetDashboardControl();
     extension = new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl);
     dashboardControl.surfaceLeft(extension.panelWidth);
     dashboardControl.registerExtension(extension);
     dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
     dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
     dashboardControl.unregisterExtension("designerToolbar");
-    var viewerApiExtension = dashboardControl.findExtension('viewerApi');
+    viewerApiExtension = dashboardControl.findExtension('viewerApi');
     if (viewerApiExtension) {
         viewerApiExtension.on('itemMasterFilterStateChanged', onItemMasterFilterStateChanged);
     }
 }
 
+function setMasterFilter(filterName, values) {
+
+    
+
+    if (!filterName.startsWith("range")) {
+        if (viewerApiExtension.canSetMasterFilter(filterName)) {
+            viewerApiExtension.setMasterFilter(filterName, values);
+        }
+    }
+}
 
 
-function onItemMasterFilterStateChanged(e) {
+async function onItemMasterFilterStateChanged(e) {  // Add async here
 
     var itemName = e.itemName;
     var values = e.values;
-
     // Check if values exist and has length
     if (!values?.length) {
-        return; // Return if values is undefined or its length is 0
+        try {
+            const msg = await $.ajax({
+                type: "POST",
+                url: 'IndexTenant.aspx/UpdateFilter',
+                data: JSON.stringify({
+                    dashboardId: window.currentDashboardId,
+                    itemName: itemName,
+                }),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+
+            debugger;
+
+            if (msg.d.Error == "") {
+                if (msg.d.Filters.length > 0) {
+                    for (var i = 0; i < msg.d.Filters.length; i++) {
+                        var current = msg.d.Filters[i];
+                        if (current.Values.length > 0 /* Add a way to uncheck the field. */) {
+                            var selectedValues = []
+                            for (var j = 0; j < current.Values.length; j++) {
+                                var currentSelection = current.Values[j].Values;
+                                selectedValues.push(currentSelection);
+                            }
+                            alert("Error debugging")
+                            setMasterFilter(itemName, selectedValues)
+                        }
+                    } 
+                } 
+            }
+
+
+
+
+
+
+        } catch (error) {
+            console.error("Error processing filter.", error);
+            throw new Error(error.responseText);
+        }
+        return;  // Return here if you want to stop execution after processing the filter
     }
 
-    // Construct the Values array as a list of FilterSelection
     var valuesList = values.map((value, index) => {
-        return { Index: index, Value: value[0] }; // Assuming 'value' is the actual value needed
+        return {
+            Index: index,
+            Values: value // Wrapping the single value inside a list (array) to match C# structure
+        };
     });
-
     // Create the filter object as per the C# DashboardFilter structure
     var filterChanged = {
+        Dashboard: window.currentDashboardId,
         ItemName: itemName,
         Values: valuesList // Array of FilterSelection objects
     };
-
-    debugger;
 
     // Convert the filterChanged object to JSON
     var filter = JSON.stringify(filterChanged);
@@ -446,6 +499,9 @@ function onCollapse() {
 }
 
 function correctTheLoadingState(s, e) {
+
+    window.currentDashboardId = e.DashboardId;
+
     var control = dashboard.GetDashboardControl();
 
     design = control.isDesignMode();

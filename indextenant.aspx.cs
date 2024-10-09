@@ -11,9 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI.HtmlControls;
+using static Dash.Models.DashboardFilters;
 
 namespace Dash
 {
@@ -64,7 +66,7 @@ namespace Dash
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-            
+           
           
             SetUpPage();
         }
@@ -159,9 +161,35 @@ namespace Dash
             // Deserialize the JSON string back to the DashboardFilter object
             DashboardFilter filterChange = JsonConvert.DeserializeObject<DashboardFilter>(filter);
             filters.FilterChanged(filterChange);
+           
         }
 
 
+
+        [WebMethod]
+        public static object UpdateFilter(int dashboardId, string itemName)
+
+        {
+            try
+            {
+           
+                DashboardFilters filters = new DashboardFilters(HttpContext.Current.User.Identity.Name);
+
+                return new
+                {
+                    Filters = filters.Filters.Where(f => f.ItemName == itemName), // Return the Filters property
+                    Error = string.Empty
+                };
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                return new { Error = ex.Message };
+            }
+        }
+
+
+    
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {

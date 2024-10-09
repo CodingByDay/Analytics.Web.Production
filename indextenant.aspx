@@ -89,6 +89,7 @@
             var initialState = '';
 
             function onDashboardEndUpdate(s, e) {
+
                 if (initialState == '') {
                     initialState = s.GetDashboardState();
                 }
