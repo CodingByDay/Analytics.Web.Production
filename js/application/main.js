@@ -14,15 +14,20 @@ let filterSelections = {};
 
 
 function onDashboardStateChanged(e) {
-    // Set the number of days until the cookie should expire (exdays):
-    const exdays = 1;
-    const date = new Date();
-    date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    let expires = "expires=" + date.toUTCString();
-    // Get the dashboard state:
-    let dState = "dashboardState=" +  dashboard.GetDashboardControl().getDashboardState() + ";";
-    // Assign the cookie name (dashboardState), the cookie value, and the expires string to document.cookie:
-    document.cookie = dState + expires + ";path=/";
+    let dState = "dashboardState=" + dashboard.GetDashboardControl().getDashboardState();
+    $.ajax({
+        type: "POST",
+        url: "IndexTenant.aspx/ProcessStateChanged", 
+        data: JSON.stringify({ state: dState }),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (response) {
+            console.log("Success:", response);
+        },
+        error: function (xhr, status, error) {
+            console.error("Error:", error);
+        }
+    });
 }
 
 
@@ -322,16 +327,6 @@ function onBeforeRender(sender) {
     viewerApiExtension = dashboardControl.findExtension('viewerApi');
 }
 
-function setMasterFilter(filterName, values) {
-
-    
-
-    if (!filterName.startsWith("range")) {
-        if (viewerApiExtension.canSetMasterFilter(filterName)) {
-            viewerApiExtension.setMasterFilter(filterName, values);
-        }
-    }
-}
 
 
 function setCookie(cname, cvalue, exdays) {

@@ -66,9 +66,19 @@ namespace Dash
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-
+            ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
           
             SetUpPage();
+        }
+
+        private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
+        {
+            e.InitialState = GetInitialStateForTheUser();
+        }
+
+        private DashboardState GetInitialStateForTheUser()
+        {
+            return new DashboardState();
         }
 
         private void SetUpPage()
@@ -154,33 +164,13 @@ namespace Dash
             }
         }
 
-    
-
-
         [WebMethod]
-        public static object UpdateFilter(int dashboardId, string itemName)
-
+        public static void ProcessStateChanged(string state)
         {
-            try
-            {
-           
-                DashboardFilters filters = new DashboardFilters(HttpContext.Current.User.Identity.Name);
-
-                return new
-                {
-                    Filters = filters.Filters.Where(f => f.ItemName == itemName), // Return the Filters property
-                    Error = string.Empty
-                };
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions appropriately
-                return new { Error = ex.Message };
-            }
+            string json = state;
+            
         }
 
-
-    
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
