@@ -2,6 +2,7 @@
 updatedPayload = [];
 var viewerApiExtension;
 var dashboardControl;
+let filterSelections = {};
 
 
 /**
@@ -9,6 +10,21 @@ var dashboardControl;
  * @param sender
  * @param args
  */
+
+
+
+function onDashboardStateChanged(e) {
+    // Set the number of days until the cookie should expire (exdays):
+    const exdays = 1;
+    const date = new Date();
+    date.setTime(date.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    let expires = "expires=" + date.toUTCString();
+    // Get the dashboard state:
+    let dState = "dashboardState=" +  dashboard.GetDashboardControl().getDashboardState() + ";";
+    // Assign the cookie name (dashboardState), the cookie value, and the expires string to document.cookie:
+    document.cookie = dState + expires + ";path=/";
+}
+
 
 function onItemCaptionToolbarUpdated(s, e) {
     var list = dashboard.GetParameters().GetParameterList();
@@ -304,9 +320,6 @@ function onBeforeRender(sender) {
     dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
     dashboardControl.unregisterExtension("designerToolbar");
     viewerApiExtension = dashboardControl.findExtension('viewerApi');
-    if (viewerApiExtension) {
-        viewerApiExtension.on('itemMasterFilterStateChanged', onItemMasterFilterStateChanged);
-    }
 }
 
 function setMasterFilter(filterName, values) {
@@ -321,86 +334,6 @@ function setMasterFilter(filterName, values) {
 }
 
 
-async function onItemMasterFilterStateChanged(e) {  // Add async here
-
-    var itemName = e.itemName;
-    var values = e.values;
-    // Check if values exist and has length
-    if (!values?.length) {
-        try {
-            const msg = await $.ajax({
-                type: "POST",
-                url: 'IndexTenant.aspx/UpdateFilter',
-                data: JSON.stringify({
-                    dashboardId: window.currentDashboardId,
-                    itemName: itemName,
-                }),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json"
-            });
-
-            debugger;
-
-            if (msg.d.Error == "") {
-                if (msg.d.Filters.length > 0) {
-                    for (var i = 0; i < msg.d.Filters.length; i++) {
-                        var current = msg.d.Filters[i];
-                        if (current.Values.length > 0 /* Add a way to uncheck the field. */) {
-                            var selectedValues = []
-                            for (var j = 0; j < current.Values.length; j++) {
-                                var currentSelection = current.Values[j].Values;
-                                selectedValues.push(currentSelection);
-                            }
-                            alert("Error debugging")
-                            setMasterFilter(itemName, selectedValues)
-                        }
-                    } 
-                } 
-            }
-
-
-
-
-
-
-        } catch (error) {
-            console.error("Error processing filter.", error);
-            throw new Error(error.responseText);
-        }
-        return;  // Return here if you want to stop execution after processing the filter
-    }
-
-    var valuesList = values.map((value, index) => {
-        return {
-            Index: index,
-            Values: value // Wrapping the single value inside a list (array) to match C# structure
-        };
-    });
-    // Create the filter object as per the C# DashboardFilter structure
-    var filterChanged = {
-        Dashboard: window.currentDashboardId,
-        ItemName: itemName,
-        Values: valuesList // Array of FilterSelection objects
-    };
-
-    // Convert the filterChanged object to JSON
-    var filter = JSON.stringify(filterChanged);
-
-    // Send an AJAX POST request to the server-side method
-    $.ajax({
-        type: "POST",
-        url: 'IndexTenant.aspx/ProcessFilter',
-        data: JSON.stringify({ filter: filter }), // Wrap in an object with 'filter' key
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (msg) {
-            console.log("Filter successfully processed.", msg);
-        },
-        error: function (e) {
-            console.error("Error processing filter.", e);
-        }
-    });
-}
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

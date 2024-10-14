@@ -133,6 +133,7 @@
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"
             DashboardEndUpdate="onDashboardEndUpdate"
+            DashboardStateChanged="onDashboardStateChanged"
             DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
             ItemWidgetUpdated="updatecustomizeWidgets"
             DashboardInitialized="correctTheLoadingState" />
