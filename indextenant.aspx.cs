@@ -73,13 +73,14 @@ namespace Dash
 
         private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
         {
-            e.InitialState = GetInitialStateForTheUser();
+            var dashboardId = e.DashboardId;
+            UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+            var userStates = userDashboardStates.GetInitialStateForTheUser(dashboardId);
+            DashboardState state = JsonConvert.DeserializeObject<DashboardState>(userStates.State);
+            e.InitialState = state;
         }
 
-        private DashboardState GetInitialStateForTheUser()
-        {
-            return new DashboardState();
-        }
+  
 
         private void SetUpPage()
         {
@@ -168,7 +169,9 @@ namespace Dash
         public static void ProcessStateChanged(string state)
         {
             string json = state;
-            
+            UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+            userDashboardStates.UpdateStates(json);
+            userDashboardStates.SetStatesForUser();
         }
 
 
