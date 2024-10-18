@@ -316,7 +316,7 @@ namespace Dash.DatabaseStorage
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                    Logger.LogError(typeof(TenantAdmin), ex.InnerException.Message);
                     return -1;
                 }
             }

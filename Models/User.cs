@@ -151,7 +151,7 @@ namespace Dash.Models
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogError(typeof(tenantadmin), ex.Message);
+                        Logger.LogError(typeof(TenantAdmin), ex.Message);
                     }
                 }
             }

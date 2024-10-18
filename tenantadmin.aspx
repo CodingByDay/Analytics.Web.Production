@@ -1,135 +1,60 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TenantAdmin.aspx.cs" Inherits="Dash.tenantadmin" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="TenantAdmin.aspx.cs" Inherits="Dash.TenantAdmin" %>
 <%@ Register assembly="DevExpress.Web.Bootstrap.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
 <%@ Register assembly="DevExpress.Web.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
 
-<asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
+<asp:Content ID="MainContent" ContentPlaceHolderID="MainContent" runat="server">
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+         <script type="text/c#" runat="server">
 
+             [System.Web.Services.WebMethod(EnableSession = true)]
+             public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
+             {
+                 var result = Dash.HelperClasses.CheckConnection.TestConnection(InitialCatalog, DataSource, UserID, Password);
+                 if(result)
+                 {
+                     return true;
+                 }
 
-    <style>
+                 else
+                 {
+                     return false;
+                 }
+             }
 
-         .outer_p {
-         display: flex;
-         gap: 3vh;
-         justify-content: center;
-         align-items: center;
-         }
+    </script>
 
-        .box {
-            min-height:485px;
+    <script>
+
+        function testConnection() {
+
+            var InitialCatalog = document.getElementById("dbNameInstance").value;
+            var DataSource = document.getElementById("dbDataSource").value;
+            var UserID = document.getElementById("dbUser").value;
+            var Password = document.getElementById("dbPassword").value;
+
+            $.ajax({
+                type: 'POST',
+                url: '<%= ResolveUrl("~/Admin.aspx/test") %>',
+                data: JSON.stringify({ InitialCatalog: InitialCatalog, DataSource: DataSource, UserID: UserID, Password: Password }),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (msg) {
+                    if (msg.d) {
+                        notify(false, "Uspešna konekcija.");
+                    } else {
+                        notify(true, "Napaka v konekciji.");
+                    }
+                }
+            });
         }
-
-        .radio input[type="radio"] {
-        margin-left: 3px;
-             margin-right: 3px;
-        }
-        body {
-            background-color:white!important;
-        }
-
-         html {
-            background-color: white!important;
-        }
-        
-        .column {
-            background-color: none!important;
-        }
-
-
-        #userForm {
-            background-color: none!important;
-        }
-        .saveByUser {
-            float: right!important;
-        }
-
-        .user {
-            float: right!important;
-        }
-
-        .control {
-            min-height: 300px!important;
-            max-height: 300px!important;
-        }
-        .columns {
-            margin: auto;
-
-        }
-
-        #companyForm, #userForm {
-            display:none;
-        }
-
-        .column {
-            display: inline;
-        }
-
-        #saveGraphs, #byUser {
-       
-       
-       
-            display: inline-block;
-            
-        }
-        .grid_w {
-         margin-bottom: 35px;
-        }
-        .item {
-            padding-left: 15px!important;
-
-        }
-        #saveGraphs, #byUser, #deleteCompany, #company, #user, #deleteUser {
-            bottom: auto;
-        }
-        #deleteCompany, #company {
-            display: inline-block;
-        }
-
-
-        #user, #deleteUser {
-            display: inline-block;
-        }
-
-        #byUser, #saveGraphs {
-            display: inline-block!important;
-        }
-        #byUser {
-            float:right!important;
-        }
-
-
-        #user, #company, #byUser {
-            float:right!important;
-        }
-
-       .wrapper {
-           margin: auto!important;
-       }
-        
-        #by {
-            display:block;
-            color: black;
-        }
-        .by {
-            display:block;
-            color: black;
-        }
-
-        .delete {
-            float:right!important;
-        }
-
-    </style>
-	<script>
 
         /**
-       *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
-       * @param isError
-       * @param message
-       */
+         *  is Error is boolean showing whether or not swall is an error notification or not. The message is the string to be shown in the message body.
+         * @param isError
+         * @param message
+         */
         function notify(isError, message) {
             if (isError) {
                 Swal.fire(
@@ -146,16 +71,26 @@
             }
         }
 
-        function refresh() {
-        }
+        function checkFields(company_name, website, company_number) {
 
-        function click() {
-            document.getElementById("<%= hidden.ClientID %>").click();
-        }
+            company_name = document.getElementById("companyName").value
+            website = document.getElementById("website").value
+            company_number = document.getElementById("companyNumber").value
 
+            if (company_name == "" || website == "" || company_number == "") {
+                notify(true, "Podatki manjkajo.")
+            } else {
+                if (isNaN(company_number)) {
+                    notify(true, "Številka ni v pravi obliki.")
+                } else {
+                    btnRegistration = document.getElementById('<%=companyButton.ClientID %>');
+                    btnRegistration.click();
+                }
+
+            }
+        }
 
         function showDialogSync() {
-
 
             $("#userForm").css('display', 'flex');
 
@@ -163,148 +98,234 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                document.getElementById('overlay').style.backgroundColor = "gray";
+                // document.getElementById('overlay').style.backgroundColor = "gray";
 
             }, 100);
 
         }
 
 
+        function showDialogSyncCompany() {
+            $('#companyModal').modal('show');
 
-        function showOrHideDivUser() {
-            var v = document.getElementById("userForm");
+        }
 
-            if (v.style.display === "none") {
 
-                v.style.display = "block";
-            } else {
-                v.style.display = "none"
+
+        function showDialogSyncUser() {
+            $('#userFormModal').modal('show');
+
+        }
+
+
+
+
+        function OnInitSpecific(s, e, gridName) {
+
+            AdjustSize(gridName);
+
+            if (gridName == "company") {
+                document.getElementById("gridContainerCompanies").style.visibility = "";
+            } else if (gridName == "user") {
+                document.getElementById("gridContainerUser").style.visibility = "";
+            } else if (gridName == "dashboard") {
+                document.getElementById("gridContainerDashboard").style.visibility = "";
             }
 
-
         }
-        function showOrHideDivByUser() {
 
-            var v = document.getElementById("by");
-            var button = document.getElementById("byUser");
+        function OnEndCallback(s, e, gridName) {
+            AdjustSize(gridName);
+        }
 
-            if (v.style.display === "none") {
+        function AdjustSize(gridName) {
 
+            var height = Math.max(0, document.documentElement.clientHeight - (0.2 * document.documentElement.clientHeight)); // 10vh bottom margin 06.09.2024 Janko Jovičić
 
-                v.style.display = "block";
-                button.innerHTML = "Skrij";
-
-            } else {
-                //pass
-                v.style.display = "none";
-                button.innerHTML = "Po uporabniku";
-
+            if (gridName == "company") {
+                companyGrid.SetHeight(height);
+            } else if (gridName == "user") {
+                userGrid.SetHeight(height);
+            } else if (gridName == "dashboard") {
+                dashboardGrid.SetHeight(height);
             }
+
         }
 
 
-        function OnEndCallback() {
-            document.getElementById('<%= hidden.ClientID %>').click();
+        function filterGrid(category) {
+
+            if (category === 'all') {
+
+                dashboardGrid.PerformCallback("");
+            } else {
+
+                dashboardGrid.PerformCallback("filter|" + category);
+            }
+
         }
+
+
 
     </script>
 
 
+	
 
-	<div class="outer_p"> 
-	        <div class="inner_p">
 
-		          <dx:BootstrapGridView ID="usersGridView" runat="server" Width="400"  Settings-VerticalScrollableHeight="400"  Settings-VerticalScrollBarMode="Visible" AutoGenerateColumns="False" SettingsEditing-Mode="PopupEditForm"  OnSelectionChanged="usersGridView_SelectionChanged1" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+    <div class="content-flex">
+        <div class="inner-item companies">
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name, admin_id FROM companies"></asp:SqlDataSource>
+            <div class="control_obj">
+             <div class="grid-container full-height">
+                 <div id="gridContainerCompanies" style="visibility: hidden">
+
+            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+                <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
+
+              <Settings VerticalScrollBarMode="Visible" />
+             <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
+             </SettingsPager>
+            <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
+
+                <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
+
+                   <SettingsDataSecurity AllowEdit="True" />
+                <Columns>
+
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Actions">
+      
+                    </dx:BootstrapGridViewCommandColumn>
+
+                    <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="False" ReadOnly="True" VisibleIndex="1">
+                    </dx:BootstrapGridViewTextColumn>
+                    <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
+                    </dx:BootstrapGridViewTextColumn>
+                    <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
+                    </dx:BootstrapGridViewTextColumn>
+                      <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
+                    </dx:BootstrapGridViewTextColumn>
+                </Columns>
+                    <SettingsSearchPanel Visible="True" />
+                    <CssClasses Control="control" />
+                    </dx:BootstrapGridView>
+                     </div>
+	            </div>
+	        </div>
+
+
+
+
+            <div class="action-buttons">
+                <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
+                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Briši">
+                  <SettingsBootstrap RenderOption="Danger" />
+                 </dx:BootstrapButton>
+            </div>
+
+
+
+
+           </div>
+
+	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
+        <UpdateParameters>
+            <asp:Parameter Name="belongs" />
+            <asp:Parameter Name="id" />
+        </UpdateParameters>
+    </asp:SqlDataSource>
+        <div class="inner-item user">
+            <div class="control_obj">
+            <div id="gridContainerUser" style="visibility: hidden">
+
+            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users]"></asp:SqlDataSource>
+            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
-          <Settings VerticalScrollBarMode="Visible" />
-          <SettingsPager Mode="ShowAllRecords" PageSize="6" Visible="False">
+              <Settings VerticalScrollBarMode="Visible" />
+          <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
 <SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="*">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Actions">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
-                  <SettingsEditForm Visible="False" />
+              <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
+              <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Pwd"  Visible="false" Name="Password" VisibleIndex="2" Caption="Password">
+              <dx:BootstrapGridViewTextColumn FieldName="password"  Visible="false" Name="password" VisibleIndex="2" Caption="Password">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="userRole" Visible="false" Name="UserRole" VisibleIndex="3" Caption="UserRole" >
+              <dx:BootstrapGridViewTextColumn FieldName="user_role" Visible="false" Name="user_role" VisibleIndex="3" Caption="UserRole">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="ViewState" Visible="false" Name="ViewState" VisibleIndex="3" Caption="ViewState" >
+			   <dx:BootstrapGridViewTextColumn FieldName="view_allowed" Visible="false" Name="view_allowed" VisibleIndex="3" Caption="ViewState">
               </dx:BootstrapGridViewTextColumn>
-			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="Email" VisibleIndex="3" Caption="Email" >
+			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
-			 
           </Columns>
-          <SettingsSearchPanel Visible="True"  />
+          <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
-
-
-
-
-    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-		<br />
-		<button type="button"  runat="server" onserverclick="new_user_ServerClick" id="new_user" class="btn btn-success">Registracija</button>
-           <dx:BootstrapButton runat="server" ID="deleteUser"  Text="Briši" CssClasses-Control="delete" OnClick="deleteUser_Click" AutoPostBack="true">
-    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
-
-
-   <dx:BootstrapButton runat="server" Visible="false" OnClick="hidden_Click" ID="hidden"  Text="hidden" CssClasses-Control="delete">
-                                            <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
-
-
+                </div>
                 </div>
 
+    <FilteringSettings ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
+
+                <div class="action-buttons">
+                    <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
+                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
+                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
+                    <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
+                </div>
+		                        
+
+   </div>
+
+	   <div class="inner-item graphs">
+           <div class="control_obj">
+                                <div id="gridContainerDashboard" style="visibility: hidden">
+<asp:ScriptManager runat="server" />
 
 
-
-
-
-
-
-        <div class="inner_p">
-
-	<dx:BootstrapListBox ID="graphsListBox" Width="400" SelectionMode="CheckColumn" runat="server" AllowCustomValues="true"   EnableSelectAll="true"   ViewStateMode="Enabled" ClientEnabled="true" CssClasses-Control="control" FilteringSettings-EditorNullText="Poiščite graf" >
-                <CssClasses Control="box"  CheckBox="item"  />
-
-       <FilteringSettings  ShowSearchUI="true" EditorNullTextDisplayMode="Unfocused" />
-
-       
-</dx:BootstrapListBox>
-      
-      <br />       
-
-      <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="saveGraphs_Click" CssClasses-Control="saveGraphs" AutoPostBack="true">
-    <SettingsBootstrap RenderOption="Primary" />
-
-          </dx:BootstrapButton>
-    
-
-
-            </div>
-
-
-
-
-
-
-
-
-
-        <div class="inner_p">
-
-	   <dx:BootstrapGridView ID="namesGridView" runat="server" Width="400"   Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible" KeyFieldName="ID"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"    CssClasses-Control="graph">
-<CssClasses Control="grid_w"></CssClasses>
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+<CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
-          <Settings VerticalScrollBarMode="Visible" />
+              <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
+   <Toolbars>
+        <dx:BootstrapGridViewToolbar Name="FilterToolbar">
+            <Items>
+
+                <dx:BootstrapGridViewToolbarItem  Text="Filter">
+                     <Template>
+                        <div class="dropdown">
+                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#checkboxModal">
+                                <i class="fas fa-filter"></i> Filter
+                            </button>      
+                        </div>
+                    </Template>
+                </dx:BootstrapGridViewToolbarItem>
+
+                <dx:BootstrapGridViewToolbarItem Text="Remove Filters" Name="RemoveFilter">
+                    <Template>
+                        <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-times" CssClasses-Control="btn btn-danger" Text="Remove Filters" ID="ClearFilterButton" OnClick="ClearFilterButton_Click" AutoPostBack="false" Visible='<%# (Session["ActiveFilter"] != null && (bool)Session["ActiveFilter"]) %>'>
+                    </dx:BootstrapButton>
+                    </Template>
+                 </dx:BootstrapGridViewToolbarItem>
+
+   
+
+
+            </Items>
+        </dx:BootstrapGridViewToolbar>
+
+    </Toolbars>
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
@@ -312,172 +333,417 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn VisibleIndex="0" ShowEditButton="True">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Action">
               </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="ID" Name="ID" Caption="ID"  Visible="false" ReadOnly="True" VisibleIndex="1">
+              <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="Name" Name="Name" VisibleIndex="2" Caption="Naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="CustomName" Name="CustomName" VisibleIndex="3" Caption="Analiza">
+              <dx:BootstrapGridViewTextColumn FieldName="belongs" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
-          
-            </div>
 
-</div>
-</section>	
 
-	
+       </div>
+       </div>
+
+<asp:SqlDataSource 
+    ID="query" 
+    runat="server" 
+    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+    SelectCommand="
+    SELECT 
+        d.id, 
+        d.caption, 
+        d.belongs, 
+        d.meta_data, 
+        COALESCE(ds.sort_order, NULL) AS sort_order 
+    FROM 
+        dashboards d
+    LEFT JOIN 
+        dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+    ORDER BY 
+        CASE 
+            WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  
+            ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
+                  WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
+        END,
+        d.id;" 
+    UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+    
+    <SelectParameters>
+        <asp:Parameter Name="uname" Type="String" />
+    </SelectParameters>
+    
+    <UpdateParameters>
+        <asp:Parameter Name="belongs" Type="String" />
+        <asp:Parameter Name="id" Type="Int32" />
+    </UpdateParameters>
+</asp:SqlDataSource>
+
+
+
+
+           <div class="action-buttons">
+                 <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
+                    <SettingsBootstrap RenderOption="Primary" />
+                  </dx:BootstrapButton>
+
+
+
+          <div class="toolbar-custom">
+            <asp:Button runat="server" CssClass="btn btn-primary" ID="MoveUpButton" Text="Move Up" OnClick="MoveUpButton_Click" />
+            <asp:Button runat="server" CssClass="btn btn-primary ml-2" ID="MoveDownButton" Text="Move Down" OnClick="MoveDownButton_Click" />
+        </div>
+
+
+           </div>
+
+
+         <br />
+    <SettingsBootstrap RenderOption="Primary" />
+           </div>
+        </div>
+
+
+
+
+
 	<section class="columns">
-	
-	<div class="column" id="userForm" style="display: none">
-                       
-                    <br />
-                   <div class ="auth">
-                  
-                                                <br />
-                       <div id="new" style="position:absolute;left:0px;top:0px;">
-                   <center><dx:BootstrapButton runat="server" ID="newUser"  Text="Novi uporabnik" OnClick="newUser_Click" UseSubmitBehavior="False" CausesValidation="False" AutoPostBack="false">
-                    <SettingsBootstrap RenderOption="Success" /></dx:BootstrapButton></center></div>
-               
-                       <hr />
-    <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ime in Priimek</label>
-                 <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>            
-                          <br />
-
-
-
-     <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Email</label>
-                 <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control form-control-lg"></asp:TextBox>
-          </div>
-                    
-                      <br />
-<div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Uporabniško ime</label>
-                        <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>  
-          </div>
-                  
-                
-               
-                 
-                      <br />
-                       <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Geslo</label>
-<asp:TextBox ID="TxtPassword" runat="server"  TextMode="Password" placeholder="Geslo" CssClass="form-control form-control-lg"></asp:TextBox>           
-
-                       </div>
-                 
-         
-                      <br />
-                        <div class="form-row">
-             <label class="col-sm-2 col-form-label" for="name">Ponovite geslo</label>
-                        <asp:TextBox ID="TxtRePassword" runat="server"  TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control form-control-lg"></asp:TextBox>  
-
-                       </div>
-                  
-                         <br />
-            </div>
-        <div class="other">
-
-                            <br />
-                            <br />
-                          
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-
-
-           <h3 >Vloga uporabnika</h3>    
-                            <br />
-
-                  
-                       <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal"  CellSpacing="8"  CellPadding="5">  
-                            <asp:ListItem>Admin</asp:ListItem>  
-                            <asp:ListItem>User</asp:ListItem>  
-                        </asp:RadioButtonList>  
-                <br />
-          
-<h3 style="text-decoration: solid; ">Pravice uporabnika.</h3>    
-                    <br />
-                 
-
-              <asp:DropDownList ID="userTypeList" runat="server">
-        <asp:ListItem>Viewer</asp:ListItem>
-        <asp:ListItem>Viewer&amp;Designer</asp:ListItem>
-    </asp:DropDownList>
-        <br />
-        <br />
-             
-              <h3 style="text-decoration: solid; ">Baza.</h3>    
-                    <h4 style="text-decoration: solid"Podjetje:</h4>  
-                        <asp:DropDownList ID="companiesList" runat="server"  
-                                          AppendDataBoundItems="true">  
-                           
-                        </asp:DropDownList>  
-                    <br />
-                    <br />
-                 <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi"  OnClick="registrationButton_Click" />
-
-
-                        <div id="btns" style="position:absolute;float:right; right:0px;top:0px;">
-
-                      <button type="button" class="btn btn-danger" id="closeUser" style="padding: 3px;">X</button>
+<!-- Bootstrap Modal Structure -->
+<div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="companyModalLabel">Podjetje</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form starts here -->
+        <form id="companyForm">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <!-- Company Part -->
+                <div class="companyPart">
+                  <div class="form-group">
+                    <label for="companyName">Naziv podjetja</label>
+                    <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="companyNumber">Kontaktna številka</label>
+                    <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="website">Spletna stran</label>
+                    <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group" style="display: none;">
+                    <label for="listAdmin" id="labl">Admin</label>
+                    <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"></asp:DropDownList>
+                  </div>
                 </div>
               </div>
-                    <br />
-	</div>
+              <div class="col-md-6">
+                <!-- Connection Part -->
+                <div class="connectionPart">
+                  <div class="form-group">
+                    <label for="dbDataSource">Data source</label>
+                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbUser">Uporabnik</label>
+                    <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbPassword">Geslo</label>
+                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="dbNameInstance">Naziv baze</label>
+                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                  <div class="form-group">
+                    <label for="connName">Naziv povezave</label>
+                    <asp:TextBox ID="connName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+        <!-- End of form -->
+      </div>
+      <div class="modal-footer">
+        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="CompanyButton_Click" />
+        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
+        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
+      </div>
+    </div>
+  </div>
+</div>
 
-	
+
+
+<div class="modal fade" id="userFormModal" tabindex="-1" role="dialog" aria-labelledby="userFormModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="userFormModalLabel">Uporabniški obrazec</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="TxtName">Ime in Priimek</label>
+                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="email">Email</label>
+                  <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtUserName">Uporabniško ime</label>
+                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="referer">Komercialist</label>
+                  <asp:TextBox ID="referrer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtPassword">Geslo</label>
+                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                  <label for="TxtRePassword">Ponovite geslo</label>
+                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control"></asp:TextBox>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <!-- User Role and Rights -->
+                <h3>Vloga uporabnika</h3>
+                <div class="form-group">
+                  <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
+                    <asp:ListItem>Admin</asp:ListItem>
+                    <asp:ListItem>User</asp:ListItem>
+                  </asp:RadioButtonList>
+                </div>
+                <h3>Pravice uporabnika</h3>
+                <div class="form-group">
+                  <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
+                    <asp:ListItem>Viewer</asp:ListItem>
+                    <asp:ListItem>Viewer & Designer</asp:ListItem>
+                  </asp:DropDownList>
+                </div>
+               
+              </div>
+            </div>
+          </div>
+
+        <!-- End of form -->
+      </div>
+      <div class="modal-footer">
+        <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="RegistrationButton_Click" />
+        <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal">Zapri</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="checkboxModal" tabindex="-1" role="dialog" aria-labelledby="checkboxModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document"> <!-- Changed modal-lg to modal-xl -->
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="assignMetadataModalLabel">Izberite metapodatke</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid"> <!-- Use container-fluid for wider content -->
+                <div class="row">
+                    <!-- Checkbox Group 1 -->
+                    <div class="col-md-4">
+                        <h4>Področje</h4>
+                        <div class="form-group type">
+                            <dx:BootstrapGridView ID="TypeGroup" ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeGroup" KeyFieldName="id">
+                  
+
+                                <SettingsDataSecurity AllowEdit="False" />
+                                <Columns>
+                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                </Columns>
+                                <SettingsSearchPanel Visible="False" />
+                            </dx:BootstrapGridView>
+                            <asp:SqlDataSource ID="queryTypeGroup" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'type';" />
+                        </div>
+                    </div>
+
+                    <!-- Checkbox Group 2 -->
+                    <div class="col-md-4">
+                        <h4>Podjetje</h4>
+                        <div class="form-group company">
+                            <dx:BootstrapGridView ID="CompanyGroup"  ClientInstanceName="CompanyGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryCompanyGroup" KeyFieldName="id">
+                                <SettingsDataSecurity AllowEdit="False" />
+                                <Columns>
+                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                </Columns>
+                                <SettingsSearchPanel Visible="False" />
+                            </dx:BootstrapGridView>
+                            <asp:SqlDataSource ID="queryCompanyGroup" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'company';" />
+                        </div>
+                    </div>
+
+                    <!-- Checkbox Group 3 -->
+                    <div class="col-md-4">
+                        <h4>Jezik</h4>
+                        <div class="form-group language">
+                            <dx:BootstrapGridView ID="LanguageGroup" ClientInstanceName="LanguageGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeLanguage" KeyFieldName="id">
+                                <SettingsDataSecurity AllowEdit="False" />
+                                <Columns>
+                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
+                                </Columns>
+                                <SettingsSearchPanel Visible="False" />
+                            </dx:BootstrapGridView>
+                            <asp:SqlDataSource ID="queryTypeLanguage" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'language';" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
+            <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="BtnFilter_Click" />
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+
 </section>
-            <script>
-
-                $("#newUser").click(function (e) {
-
-                    e.preventDefault();
-
-                })
-
-
-                function user() {
-
-                    var userForm = $("#userForm");
-                    userForm.show();
-                }
-
-
-
-                $(document).ready(function () {
-                    $("#user").click(function () {
-                        $("#userForm").css('display', 'flex');
-
-                    });
-                });
-
-
-
-
-
-                $(document).ready(function () {
-                    $("#closeCompany").click(function () {
-                        $("#companyForm").css('display', 'none');
-                    });
-                });
-
-                $(document).ready(function () {
-                    $("#closeUser").click(function () {
-                        $("#userForm").css('display', 'none');
-                    });
-                });
-
-            </script>
- 
   
+
+<script>
+
+    $("#newUser").click(function (e) {
+
+        e.preventDefault();
+
+    })
+
+    function user() {
+
+        var userForm = $("#userForm");
+        userForm.show();
+    }
+
+    function company() {
+
+        var userForm = $("#companyForm");
+        userForm.css('display', 'flex');
+
+    }
+
+    $(document).ready(function () {
+        $("#user").click(function () {
+            $("#userForm").css('display', 'flex');
+
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                //document.getElementById('overlay').style.backgroundColor = "gray";
+
+            }, 100);
+
+        });
+    });
+    function setCookie(name, value, days) {
+        var expires = "";
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            expires = "; expires=" + date.toUTCString();
+        }
+        document.cookie = name + "=" + (value || "") + expires + "; path=/";
+    }
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+        }
+        return null;
+    }
+
+    $(document).ready(function () {
+        $("#company").click(function () {
+
+            document.getElementById("companyName").value = "";
+            document.getElementById("companyNumber").value = "";
+            document.getElementById("website").value = "";
+            document.getElementById("dbDataSource").value = "";
+            document.getElementById("dbUser").value = "";
+            document.getElementById("dbPassword").value = "";
+            document.getElementById("dbNameInstance").value = "";
+            document.getElementById("connName").value = "";
+            setCookie("Edit", "no", 365);
+            $("#companyForm").css('display', 'flex');
+            var x = document.getElementsByTagName("BODY")[0]
+            var elem = document.getElementById("companyForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 1;
+                //document.getElementById('overlay').style.backgroundColor = "gray";
+            }, 100);
+        });
+    });
+
+    $(document).ready(function () {
+        $("#closeCompany").click(function () {
+            var elem = document.getElementById("companyForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 0;
+            }, 100);
+
+            $("#companyForm").css('display', 'none');
+
+        });
+    });
+
+    $(document).ready(function () {
+        $("#closeUser").click(function () {
+
+            var elem = document.getElementById("userForm");
+
+            setTimeout(function () {
+                elem.style.opacity = 0;
+            }, 100);
+
+            $("#userForm").css('display', 'none');
+        });
+    });
+</script>
+
 </asp:Content>
 
