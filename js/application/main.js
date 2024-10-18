@@ -14,11 +14,12 @@ let filterSelections = {};
 
 
 function onDashboardStateChanged(e) {
-    let dState = "dashboardState=" + dashboard.GetDashboardControl().getDashboardState();
+    let dashboardId = getCookie("dashboard");
+    let dState = dashboard.GetDashboardControl().getDashboardState();
     $.ajax({
         type: "POST",
         url: "IndexTenant.aspx/ProcessStateChanged", 
-        data: JSON.stringify({ state: dState }),
+        data: JSON.stringify({ state: dState, dashboard: dashboardId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {

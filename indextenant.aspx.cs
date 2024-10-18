@@ -73,11 +73,19 @@ namespace Dash
 
         private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
         {
-            var dashboardId = e.DashboardId;
-            UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
-            var userStates = userDashboardStates.GetInitialStateForTheUser(dashboardId);
-            DashboardState state = JsonConvert.DeserializeObject<DashboardState>(userStates.State);
-            e.InitialState = state;
+            try
+            {
+                var dashboardId = e.DashboardId;
+                UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+                var userStates = userDashboardStates.GetInitialStateForTheUser(dashboardId);
+                if (userStates.State != null)
+                {
+                    e.InitialState = userStates.State;
+                }
+            } catch(Exception ex)
+            {
+                var debug = true;
+            }
         }
 
   
@@ -166,12 +174,25 @@ namespace Dash
         }
 
         [WebMethod]
-        public static void ProcessStateChanged(string state)
+        public static void ProcessStateChanged(string state, string dashboard)
         {
-            string json = state;
-            UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
-            userDashboardStates.UpdateStates(json);
-            userDashboardStates.SetStatesForUser();
+            try
+            {
+                DashboardState stateObject = new DashboardState();
+
+                if (state != string.Empty)
+                {
+                    stateObject.LoadFromJson(state);
+                }
+                UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+                userDashboardStates.UpdateStates(dashboard, stateObject);
+                userDashboardStates.SetStatesForUser();                            
+            }
+            catch (JsonException ex)
+            {
+                var debug = true;
+            }
+ 
         }
 
 

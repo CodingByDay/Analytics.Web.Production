@@ -55,9 +55,9 @@ namespace Dash.Models
                             return new UserDashboardState();
                         }
                         // Deserialize the JSON string back into the object
-                        var permissions = ConvertJsonToPermissions(result);
-                        // Return the permissions object
-                        return permissions;
+                        var states = ConvertJsonToStates(result);
+                        // Return the states object
+                        return states;
                     }
                 }
                 catch (Exception)
@@ -67,11 +67,11 @@ namespace Dash.Models
                 }
             }
         }
-        public UserDashboardState ConvertJsonToPermissions(string json)
+        public UserDashboardState ConvertJsonToStates(string json)
         {
             string unescapedJson = Regex.Unescape(json);
-            var permissions = JsonConvert.DeserializeObject<UserDashboardState>(unescapedJson);
-            return permissions;
+            var states = JsonConvert.DeserializeObject<UserDashboardState>(unescapedJson);
+            return states;
         }
 
         public DashboardStateSingle GetInitialStateForTheUser(string dashboardId)
@@ -90,7 +90,7 @@ namespace Dash.Models
 
         public string ConvertStatesToJson()
         {
-            return JsonConvert.SerializeObject(this.States);
+            return JsonConvert.SerializeObject(this);
         }
         public bool SetStatesForUser()
         {
@@ -132,7 +132,7 @@ namespace Dash.Models
             }
         }
 
-        public void UpdateStates(string dashboardId, string json)
+        public void UpdateStates(string dashboardId, DashboardState stateObject)
         {
             // Find if the dashboard state already exists in the list
             var existingState = States.FirstOrDefault(s => s.DashboardId == dashboardId);
@@ -140,7 +140,7 @@ namespace Dash.Models
             if (existingState != null)
             {
                 // If it exists, update the existing state
-                existingState.State = json;
+                existingState.State = stateObject;
             }
             else
             {
@@ -148,12 +148,11 @@ namespace Dash.Models
                 States.Add(new DashboardStateSingle
                 {
                     DashboardId = dashboardId,
-                    State = json
+                    State = stateObject
                 });
             }
 
             // After updating or inserting, save the updated states to the database
-            string updatedJson = ConvertStatesToJson();
             SetStatesForUser();
         }
 
@@ -163,6 +162,6 @@ namespace Dash.Models
     public class DashboardStateSingle
     {
         public string DashboardId { get; set; } = string.Empty;
-        public string State { get; set; } = string.Empty;
+        public DashboardState State { get; set; } = new DashboardState();
     }
 }
