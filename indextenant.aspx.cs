@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI.HtmlControls;
@@ -84,7 +85,7 @@ namespace Dash
                 }
             } catch(Exception ex)
             {
-                var debug = true;
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
 
@@ -125,9 +126,9 @@ namespace Dash
                     SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
                     var result = cmd.ExecuteNonQuery();
                 }
-                catch
+                catch(Exception ex)
                 {
-                    return;
+                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
                 }
             }
         }
@@ -188,78 +189,110 @@ namespace Dash
                 userDashboardStates.UpdateStates(dashboard, stateObject);
                 userDashboardStates.SetStatesForUser();                            
             }
-            catch (JsonException ex)
+            catch (Exception ex)
             {
-                var debug = true;
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
- 
+
         }
 
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
-            string group = GetCurrentUserID();
-            e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
+            try
+            {
+                string group = GetCurrentUserID();
+                e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
+            } catch(Exception ex)
+            {
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+            }
         }
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            Response.Cookies["dashboard"].Value = e.DashboardId;
-            return;
+            try
+            {
+                Response.Cookies["dashboard"].Value = e.DashboardId;
+                return;
+            } catch (Exception ex)
+            {
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+            }
         }
 
        
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
-            string type_string = e.ConnectionParameters.GetType().Name;
-
-            if (type_string == "MsSqlConnectionParameters")
+            try
             {
-                ConnectionStringSettings conn = GetConnectionString();
-                MsSqlConnectionParameters parameters =
-                      (MsSqlConnectionParameters)e.ConnectionParameters;
-                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                string type_string = e.ConnectionParameters.GetType().Name;
 
-                SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
-                msSqlConnection.ServerName = builder.DataSource;
-                msSqlConnection.DatabaseName = builder.InitialCatalog;
-                msSqlConnection.UserName = builder.UserID;
-                msSqlConnection.Password = builder.Password;
-                e.ConnectionParameters = msSqlConnection;
-            }
-            else
+                if (type_string == "MsSqlConnectionParameters")
+                {
+                    ConnectionStringSettings conn = GetConnectionString();
+                    MsSqlConnectionParameters parameters =
+                          (MsSqlConnectionParameters)e.ConnectionParameters;
+                    MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+
+                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
+                    msSqlConnection.ServerName = builder.DataSource;
+                    msSqlConnection.DatabaseName = builder.InitialCatalog;
+                    msSqlConnection.UserName = builder.UserID;
+                    msSqlConnection.Password = builder.Password;
+                    e.ConnectionParameters = msSqlConnection;
+                }
+                else
+                {
+                    ConnectionStringSettings conn = GetConnectionString();
+                    CustomStringConnectionParameters parameters =
+                            (CustomStringConnectionParameters)e.ConnectionParameters;
+                    MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                    parameters.ConnectionString = conn.ConnectionString;
+                }
+            } catch(Exception ex)
             {
-                ConnectionStringSettings conn = GetConnectionString();
-                CustomStringConnectionParameters parameters =
-                        (CustomStringConnectionParameters)e.ConnectionParameters;
-                MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                parameters.ConnectionString = conn.ConnectionString;
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
 
         private string GetCurrentUserID()
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Users WHERE uname='{UserNameForChecking}'", conn);
             try
             {
-                var result = cmd.ExecuteScalar();
-                companyID = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
+                string userNameForChecking = HttpContext.Current.User.Identity.Name; // Get the current username
+                string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+                // Use 'using' statement to ensure resources are disposed properly
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    // Use parameterized query to avoid SQL injection
+                    using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @username", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@username", userNameForChecking);
+                        try
+                        {
+                            var result = cmd.ExecuteScalar();
+                            if (result != null)
+                            {
+                                int companyId = Convert.ToInt32(result);
+                                return GetConnectionStringName(companyId);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                            return string.Empty; // Return null or an appropriate value if an error occurs
+                        }
+                    }
+                }
+                return string.Empty;
+            }catch (Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                return string.Empty;
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            var a = GetConnectionStringName(companyID);
-            return a;
         }
 
         private ConnectionStringSettings GetConnectionString()
@@ -278,9 +311,9 @@ namespace Dash
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // Implement logging here
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
             string connectionName = GetConnectionStringName(companyID);
             return ConfigurationManager.ConnectionStrings[connectionName];
@@ -290,8 +323,6 @@ namespace Dash
         private string GetConnectionStringName(int companyID)
         {
             string result = string.Empty;
-            string uname = HttpContext.Current.User.Identity.Name; // For checking admin permission.
-
             try
             {
                 using (var conn = new SqlConnection(connection))
@@ -309,9 +340,9 @@ namespace Dash
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
 
             return result;
