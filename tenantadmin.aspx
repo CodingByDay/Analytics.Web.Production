@@ -174,60 +174,15 @@
 
 
     <div class="content-flex">
-        <div class="inner-item companies">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name, admin_id FROM companies"></asp:SqlDataSource>
-            <div class="control_obj">
-             <div class="grid-container full-height">
-                 <div id="gridContainerCompanies" style="visibility: hidden">
-
-            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
-                <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
-
-              <Settings VerticalScrollBarMode="Visible" />
-             <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
-             </SettingsPager>
-            <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
-
-                <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
-
-                   <SettingsDataSecurity AllowEdit="True" />
-                <Columns>
-
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Actions">
-      
-                    </dx:BootstrapGridViewCommandColumn>
-
-                    <dx:BootstrapGridViewTextColumn FieldName="id_company" Visible="False" ReadOnly="True" VisibleIndex="1">
-                    </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
-                    </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
-                    </dx:BootstrapGridViewTextColumn>
-                      <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
-                    </dx:BootstrapGridViewTextColumn>
-                </Columns>
-                    <SettingsSearchPanel Visible="True" />
-                    <CssClasses Control="control" />
-                    </dx:BootstrapGridView>
-                     </div>
-	            </div>
-	        </div>
 
 
 
 
-            <div class="action-buttons">
-                <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
-                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Briši">
-                  <SettingsBootstrap RenderOption="Danger" />
-                 </dx:BootstrapButton>
-            </div>
 
 
 
 
-           </div>
+     
 
 	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
         <UpdateParameters>

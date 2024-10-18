@@ -172,17 +172,7 @@ namespace Dash
             btnFilterBootstrap.Visible = IsFilterActive;
 
 
-            companiesGridView.SettingsBehavior.AllowFocusedRow = false;
-            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            companiesGridView.EnableCallBacks = false;
-            companiesGridView.EnableRowsCache = true;
 
-            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
-            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-            companiesGridView.DataBound += CompaniesGridView_DataBound;
 
             usersGridView.SettingsBehavior.AllowFocusedRow = false;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -252,10 +242,7 @@ namespace Dash
 
 
 
-        private void CompaniesGridView_DataBound(object sender, EventArgs e)
-        {
-            companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
-        }
+    
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
@@ -313,33 +300,7 @@ namespace Dash
             }
         }
 
-        private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var plurals = companiesGridView.GetSelectedFieldValues("id_company");
-                    if (plurals.Count != 0)
-                    {
-                        var id = (int)plurals[0];
-
-                        CurrentCompany = GetCompanyName(id);
-                        // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
-                        usersGridView.FilterExpression = $"[id_company] = {id}";
-                        usersGridView.DataBind();  // Refresh the userGridView with the applied filter
-                        graphsGridView.DataBind();
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
         private string GetFirstUserForCompany(string company)
         {
@@ -433,7 +394,7 @@ namespace Dash
                         role = (reader["user_role"].ToString());
                     }
                     cmd.Dispose();
-                    if (role == "SuperAdmin")
+                    if (role == "Admin")
                     {
                         return;
                     }
@@ -694,7 +655,7 @@ namespace Dash
                 build.UserID = dbUser.Text;
                 build.Password = dbPassword.Text;
                 //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                UpdateCompanyData();
+ 
             }
         }
 
@@ -728,27 +689,7 @@ namespace Dash
             return build.ConnectionString;
         }
 
-        private void UpdateCompanyData()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var admin = listAdmin.SelectedValue;
-                    var websiteString = website.Text;
-                    var companyNum = companyNumber.Text;
-                    SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}', website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
-                    cmd.ExecuteNonQuery();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+
 
         private void CreateAdminForTheCompany(string name, string cName)
         {
@@ -867,47 +808,7 @@ namespace Dash
             }
         }
 
-        protected void DeleteCompany_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    if (companiesGridView.FocusedRowIndex != -1)
-                    {
-                        var current = Session["current"].ToString();
-                        var id = GetIdCompany(current);
-                        Dashboard graph = new Dashboard(id);
-                        graph.Delete(id);
-                        SqlCommand user = new SqlCommand($"DELETE FROM users WHERE id_company={id}", conn);
-                        RemoveConnectionString(current);
-                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-                        cmd.ExecuteNonQuery();
-                        try
-                        {
-                            user.ExecuteNonQuery();
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
-                        }
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-
-                        cmd.Dispose();
-                        string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
-                        int companyID = GetIdCompany(companyName);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    var d = ex;
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
         private void RemoveConnectionString(string current)
         {

@@ -10,11 +10,9 @@ namespace Dash
 {
     public partial class Logon : System.Web.UI.Page
     {
-        private SqlConnection conn;
         private SqlCommand cmd;
         private string role;
         private List<String> strings = new List<string>();
-        private bool passport = false;
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -167,8 +165,7 @@ namespace Dash
                     Response.Redirect(strRedirect, false);
                     Context.ApplicationInstance.CompleteRequest();
                 }
-                conn.Close();
-                conn.Dispose();
+
             }
             else
             {
