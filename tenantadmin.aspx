@@ -194,8 +194,18 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+        <asp:SqlDataSource 
+            ID="usersGrid" 
+            runat="server" 
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+            SelectCommand="SELECT * FROM [users] WHERE id_company = @company_id AND uname != @uname;">
+            <SelectParameters>
+                <asp:Parameter Name="company_id" Type="Int32" />
+                <asp:Parameter Name="uname" Type="String" />
+            </SelectParameters>
+        </asp:SqlDataSource>           
+                
+                <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -320,17 +330,19 @@
         dashboards d
     LEFT JOIN 
         dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+    WHERE 
+        d.id IN (SELECT value FROM STRING_SPLIT(@ids, ','))
     ORDER BY 
         CASE 
             WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  
             ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
                   WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
         END,
-        d.id;" 
-    UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+        d.id;">
     
     <SelectParameters>
         <asp:Parameter Name="uname" Type="String" />
+        <asp:Parameter Name="ids" Type="String" />
     </SelectParameters>
     
     <UpdateParameters>

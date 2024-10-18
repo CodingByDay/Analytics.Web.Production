@@ -7,10 +7,12 @@ using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Policy;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
@@ -193,16 +195,82 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
-
             if (!IsPostBack)
             {
 
             }
 
+            usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany();
+            usersGrid.SelectParameters["uname"].DefaultValue = HttpContext.Current.User.Identity.Name;
+            query.SelectParameters["ids"].DefaultValue = GetAllowedDashboardsForAdmin(HttpContext.Current.User.Identity.Name);
 
+            InitializeUiChanges();
             Authenticate();
 
+        }
 
+        private void InitializeUiChanges()
+        {
+            SiteMaster mymaster = Master as SiteMaster;
+            mymaster.BackButtonVisible = true;
+        }
+
+        private string GetAllowedDashboardsForAdmin(string name)
+        {
+            string ids = string.Empty;
+            DashboardPermissions dashboardPermissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+            for(int i=0; i<dashboardPermissions.Permissions.Count; i++) 
+            {
+                var currentPermission = dashboardPermissions.Permissions[i];
+                if(i!=dashboardPermissions.Permissions.Count-1)
+                {
+                    ids += currentPermission.id + ",";
+                } else
+                {
+                    ids += currentPermission.id;
+                }
+            }
+            return ids;
+        }
+
+        private string GetUserCompany()
+        {
+            // Get the username from the current HttpContext
+            string username = HttpContext.Current.User.Identity.Name;
+
+            // Connection string from your configuration
+            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            // Variable to store the company ID
+            string companyId = string.Empty;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    conn.Open();
+                    // Create a parameterized SQL query to prevent SQL injection
+                    string query = "SELECT id_company FROM users WHERE uname = @uname";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@uname", username);
+                        var result = cmd.ExecuteScalar();
+                        if (result != null)
+                        {
+                            companyId = result.ToString();
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(TenantAdmin), ex.Message);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+            return companyId;
         }
 
         private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)

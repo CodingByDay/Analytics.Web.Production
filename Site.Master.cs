@@ -16,6 +16,17 @@ namespace Dash
         private SqlConnection conn;
         private string connection;
 
+        public bool BackButtonVisible
+        {
+            get { return backButton.Visible; }
+
+
+            set { 
+                backButton.Visible = value;
+                backButtonOuter.Visible = value;
+            }
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -155,8 +166,7 @@ namespace Dash
                         groupsButtonOuter.Visible = false;
                         filtersButton.Visible = false;
                         filterButtonOuter.Visible = false;
-                        backButton.Visible = false;
-                        backButtonOuter.Visible = false;
+             
                     } else if (userRole == "SuperAdmin")
                     {
                         adminButton.Visible = true;
@@ -165,8 +175,7 @@ namespace Dash
                         groupsButtonOuter.Visible = true;
                         filtersButton.Visible = true;
                         filterButtonOuter.Visible = true;
-                        backButton.Visible = false;
-                        backButtonOuter.Visible = false;
+
                     } else if (userRole == "Admin")
                     {
                         adminButton.Visible = true;
@@ -175,8 +184,7 @@ namespace Dash
                         groupsButtonOuter.Visible = false;
                         filtersButton.Visible = false;
                         filterButtonOuter.Visible = false;
-                        backButton.Visible = false;
-                        backButtonOuter.Visible = false;
+
                     }
                 }
             }

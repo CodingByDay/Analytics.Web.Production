@@ -172,7 +172,7 @@
                 <i class="fa fa-filter"></i> Šifranti
                 </a></div>
 
-                <div class="inner" runat="server" id="backButtonOuter">   <a runat="server" id="backButton" onserverclick="Back_Click"  title="Back">
+                <div class="inner" runat="server" id="backButtonOuter" visible="false">   <a runat="server" id="backButton" onserverclick="Back_Click"  title="Back">
                 <i class="fa fa-reply"></i> Nazaj
                 </a></div>
 
