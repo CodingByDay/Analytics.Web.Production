@@ -24,6 +24,15 @@ namespace Dash
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggle;
 
         /// <summary>
+        /// adminButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminButtonOuter;
+
+        /// <summary>
         /// adminButton control.
         /// </summary>
         /// <remarks>
@@ -31,6 +40,15 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButton;
+
+        /// <summary>
+        /// groupsButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl groupsButtonOuter;
 
         /// <summary>
         /// groupsButton control.
@@ -42,6 +60,15 @@ namespace Dash
         protected global::System.Web.UI.HtmlControls.HtmlAnchor groupsButton;
 
         /// <summary>
+        /// filterButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterButtonOuter;
+
+        /// <summary>
         /// filtersButton control.
         /// </summary>
         /// <remarks>
@@ -49,6 +76,15 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlAnchor filtersButton;
+
+        /// <summary>
+        /// backButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl backButtonOuter;
 
         /// <summary>
         /// backButton control.

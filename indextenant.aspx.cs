@@ -48,7 +48,7 @@ namespace Dash
             if (Request.Cookies["dashboard"] != null)
             {
                 // New OOP structure 23.09.2024
-                if (   // User or group have permissions.
+                if (   // User or group permissions.
                        dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString())
                     || dataBaseDashboardStorage.permissionsGroup.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()
                     ))

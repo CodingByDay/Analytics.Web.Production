@@ -149,21 +149,33 @@ namespace Dash
                     if(userRole == "User")
                     {
                         adminButton.Visible = false;
+                        adminButtonOuter.Visible = false;
                         groupsButton.Visible = false;
+                        groupsButtonOuter.Visible = false;
                         filtersButton.Visible = false;
+                        filterButtonOuter.Visible = false;
                         backButton.Visible = false;
+                        backButtonOuter.Visible = false;
                     } else if (userRole == "SuperAdmin")
                     {
                         adminButton.Visible = true;
+                        adminButtonOuter.Visible = true;
                         groupsButton.Visible = true;
+                        groupsButtonOuter.Visible = true;
                         filtersButton.Visible = true;
+                        filterButtonOuter.Visible = true;
                         backButton.Visible = false;
+                        backButtonOuter.Visible = false;
                     } else if (userRole == "Admin")
                     {
                         adminButton.Visible = true;
-                        groupsButton.Visible = true;
-                        filtersButton.Visible = true;
+                        adminButtonOuter.Visible = true;
+                        groupsButton.Visible = false;
+                        groupsButtonOuter.Visible = false;
+                        filtersButton.Visible = false;
+                        filterButtonOuter.Visible = false;
                         backButton.Visible = false;
+                        backButtonOuter.Visible = false;
                     }
                 }
             }
