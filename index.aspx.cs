@@ -201,7 +201,8 @@ namespace Dash
             }
             else
             {
-                Response.Redirect("Logon.aspx", true);
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 

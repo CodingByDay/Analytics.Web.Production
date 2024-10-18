@@ -24,7 +24,8 @@ namespace Dash
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Logon.aspx", true);
+            Response.Redirect("Logon.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void change_Click(object sender, EventArgs e)

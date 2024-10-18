@@ -158,19 +158,23 @@ namespace Dash
                 if (role == "SuperAdmin")
                 {
                     strRedirect = "Index.aspx";
-                    Response.Redirect(strRedirect, true);
+                    Response.Redirect(strRedirect, false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
                     strRedirect = "IndexTenant.aspx";
-                    Response.Redirect(strRedirect, true);
+                    Response.Redirect(strRedirect, false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 conn.Close();
                 conn.Dispose();
             }
             else
             {
-                Response.Redirect("Logon.aspx", true);
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+
             }
         }
 

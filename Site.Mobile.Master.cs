@@ -29,22 +29,26 @@ namespace Dash
         protected void cmdsignOut_Click(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Home.aspx", true);
+            Response.Redirect("Home.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void administration_Click(object sender, EventArgs e)
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Admin.aspx", true);
+                Response.Redirect("Admin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("TenantAdmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("Logon.aspx", true);
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -52,11 +56,13 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Index", true);
+                Response.Redirect("Index", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("IndexTenant", true);
+                Response.Redirect("IndexTenant", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -66,32 +72,38 @@ namespace Dash
 
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Index", true);
+                Response.Redirect("Index", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("IndexTenant", true);
+                Response.Redirect("IndexTenant", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
         protected void mobile_button_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Emulator", true);
+            Response.Redirect("Emulator", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void adminButtonAnchor_ServerClick(object sender, EventArgs e)
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Admin.aspx", true);
+                Response.Redirect("Admin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("TenantAdmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("Logon.aspx", true); // config for securing data.
+                Response.Redirect("Logon.aspx", false); // config for securing data.
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -99,18 +111,21 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Index", true);
+                Response.Redirect("Index", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("IndexTenant", true);
+                Response.Redirect("IndexTenant", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
         protected void signOutAnchor_ServerClick(object sender, EventArgs e)
         {
             FormsAuthentication.SignOut();
-            Response.Redirect("Home.aspx", true);
+            Response.Redirect("Home.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
     }
 }

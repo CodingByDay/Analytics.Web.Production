@@ -360,7 +360,6 @@ namespace Dash
                     return string.Empty;
                 }
             }
-
         }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
@@ -399,7 +398,6 @@ namespace Dash
                 // Show the configuration for the user.
                 ShowConfigForUser();
             }
-
         }
 
         private void ShowConfigForUser()
@@ -437,10 +435,12 @@ namespace Dash
                     cmd.Dispose();
                     if (role == "SuperAdmin")
                     {
+                        return;
                     }
                     else
                     {
-                        Response.Redirect("Logon.aspx", true);
+                        Response.Redirect("Logon.aspx", false);
+                        Context.ApplicationInstance.CompleteRequest();
                     }
                 }
                 catch (Exception ex)
@@ -450,14 +450,6 @@ namespace Dash
                 }
             }
         }
-
-
-
-
-
-
-
-
 
         public string GetCompanyName(int company)
         {

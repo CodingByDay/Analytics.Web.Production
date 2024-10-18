@@ -128,7 +128,8 @@ namespace Dash
         {
             FormsAuthentication.SignOut();
             Session["current"] = string.Empty;
-            Response.Redirect("Home.aspx", true);
+            Response.Redirect("Home.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         private void CheckUserTypeModifyUI(string uname)
@@ -188,15 +189,18 @@ namespace Dash
             // Data
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Admin.aspx", true);
+                Response.Redirect("Admin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else if (userRole == "Admin")
             {
-                Response.Redirect("TenantAdmin.aspx", true);
+                Response.Redirect("TenantAdmin.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("Logon.aspx", true);
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
@@ -204,22 +208,26 @@ namespace Dash
         {
             if (userRole == "SuperAdmin")
             {
-                Response.Redirect("Index.aspx", true);
+                Response.Redirect("Index.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
             else
             {
-                Response.Redirect("IndexTenant.aspx", true);
+                Response.Redirect("IndexTenant.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
             }
         }
 
         protected void Filters_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Filters.aspx", true);
+            Response.Redirect("Filters.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
 
         protected void groupsButton_ServerClick(object sender, EventArgs e)
         {
-            Response.Redirect("Groups.aspx", true);
+            Response.Redirect("Groups.aspx", false);
+            Context.ApplicationInstance.CompleteRequest();
         }
     }
 }
