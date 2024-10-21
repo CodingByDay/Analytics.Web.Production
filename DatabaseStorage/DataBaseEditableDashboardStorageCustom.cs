@@ -76,12 +76,12 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "INSERT INTO Dashboards (Dashboard, Caption) " +
-                    "output INSERTED.ID " +
-                    "VALUES (@Dashboard, @Caption)");
+                    "INSERT INTO dashboards (dashboard, caption) " +
+                    "output INSERTED.id " +
+                    "VALUES (@dashboard, @caption)");
                 string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped;
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                InsertCommand.Parameters.Add("caption", SqlDbType.NVarChar).Value = stripped;
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
                 return ID;
@@ -101,8 +101,8 @@ namespace Dash.DatabaseStorage
 
                     // Use a parameterized query to prevent SQL injection
                     string query = @"SELECT company_name
-                             FROM Users
-                             INNER JOIN Companies ON Users.id_company = Companies.id_company
+                             FROM users
+                             INNER JOIN companies ON users.id_company = campanies.id_company
                              WHERE uname = @uname";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -138,8 +138,8 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
-                GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                SqlCommand GetCommand = new SqlCommand("SELECT dashboard FROM dashboards WHERE id=@id");
+                GetCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 reader.Read();
@@ -309,7 +309,7 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM Companies WHERE company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM campanies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     var id = System.Convert.ToInt32(result);
                     return id;
@@ -332,10 +332,10 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "UPDATE Dashboards Set Dashboard = @Dashboard " +
-                    "WHERE ID = @ID");
-                InsertCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                    "UPDATE dashboards SET dashboard = @dashboard " +
+                    "WHERE id = @id");
+                InsertCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 InsertCommand.ExecuteNonQuery();
 

@@ -56,7 +56,9 @@ height: 100% !important;
 
         <script async>
 
-
+            window.onload = function () {
+                setInterval(checkViewerMode, 1000);
+            };
             function AssignMetadata(dashboardid) {
                 showMetadataPopup();
             }              

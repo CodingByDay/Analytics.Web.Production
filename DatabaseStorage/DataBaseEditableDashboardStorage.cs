@@ -28,7 +28,7 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-
+          
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -37,12 +37,12 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "INSERT INTO Dashboards (Dashboard, Caption) " +
-                    "output INSERTED.ID " +
-                    "VALUES (@Dashboard, @Caption)");
+                    "INSERT INTO dashboards (dashboard, caption) " +
+                    "output INSERTED.id " +
+                    "VALUES (@dashboard, @caption)");
                 string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped;
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                InsertCommand.Parameters.Add("caption", SqlDbType.NVarChar).Value = stripped;
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
                 return ID;
@@ -54,8 +54,8 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT Dashboard FROM Dashboards WHERE ID=@ID");
-                GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                SqlCommand GetCommand = new SqlCommand("SELECT dashboard FROM dashboards WHERE id=@id");
+                GetCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 reader.Read();
@@ -72,7 +72,7 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT ID, Caption FROM Dashboards");
+                SqlCommand GetCommand = new SqlCommand("SELECT id, caption FROM dashboards");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 while (reader.Read())
@@ -95,10 +95,10 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "UPDATE Dashboards Set Dashboard = @Dashboard " +
-                    "WHERE ID = @ID");
-                InsertCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                    "UPDATE dashboards SET dashboard = @dashboard " +
+                    "WHERE id = @id");
+                InsertCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 InsertCommand.ExecuteNonQuery();
             }

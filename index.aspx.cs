@@ -141,13 +141,21 @@ namespace Dash
 
         private void ASPxDashboard3_DashboardLoading(object sender, DashboardLoadingWebEventArgs e)
         {
-            Session["current"] = e.DashboardId.ToString();
-
-            var currentDashboardId = Session["current"];
-            long parsed;
-            if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string)currentDashboardId, out parsed))
+            try
             {
-                LoadMetaDataAndApplySelections((int)parsed);
+                Response.Cookies["dashboard"].Value = e.DashboardId;
+
+                Session["current"] = e.DashboardId.ToString();
+
+                var currentDashboardId = Session["current"];
+                long parsed;
+                if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string)currentDashboardId, out parsed))
+                {
+                    LoadMetaDataAndApplySelections((int)parsed);
+                }
+            } catch (Exception ex)
+            {
+                return;
             }
         }
 
