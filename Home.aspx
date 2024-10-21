@@ -43,15 +43,7 @@
 </head>
 	<!--Start of Tawk.to Script-->
 <script type="text/javascript">
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
-    (function () {
-        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
-        s1.async = true;
-        s1.src = 'https://embed.tawk.to/61486979d326717cb6826050/1fg1do0lk';
-        s1.charset = 'UTF-8';
-        s1.setAttribute('crossorigin', '*');
-        s0.parentNode.insertBefore(s1, s0);
-	})();
+
 
 	/**
 	 * Detects if the user is on mobile. */
@@ -167,7 +159,7 @@
 							<li class="active visible-sm visible-xs"><a href="#">Home</a></li>
 							<li><a href="#" style="color:#236fc4!important">Overview</a></li>
 							<li><a href="#cta" style="color:#236fc4!important">About Analytics</a></li>
-							<li><a href="#" onclick="window.open('Administracija.pdf', '_blank', 'fullscreen=yes'); return false;" style="color:#236fc4!important">Support</a></li>
+							<li><a href="#" onclick="window.open('App_Data/Administracija.pdf', '_blank', 'fullscreen=yes'); return false;" style="color:#236fc4!important">Support</a></li>
 						</ul>
 					
 					</div>
