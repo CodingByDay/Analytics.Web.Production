@@ -970,9 +970,6 @@ namespace Dash
 
                 var selectedTypes = GetSelectedValues(TypeGroup, "value");
 
-                var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
-
-                var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
 
 
                 List<int> Ids = new List<int>();
@@ -982,7 +979,7 @@ namespace Dash
                 {
                     int id = (int)row["id"];
                     var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
-                    if (FilterDashboardComply(selectedTypes, selectedCompanies, selectedLanguages, metadata))
+                    if (FilterDashboardComply(selectedTypes, metadata))
                     {
                         Ids.Add(id);
                     }
@@ -1021,27 +1018,13 @@ namespace Dash
             }
         }
 
-        public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
+        public bool FilterDashboardComply(List<string> selectedTypes, MetaData dashboardMetaData)
         {
             try
             {
                 foreach (string item in selectedTypes)
                 {
                     if (!dashboardMetaData.Types.Contains(item))
-                    {
-                        return false;
-                    }
-                }
-                foreach (string item in selectedCompanies)
-                {
-                    if (!dashboardMetaData.Companies.Contains(item))
-                    {
-                        return false;
-                    }
-                }
-                foreach (string item in selectedLanguages)
-                {
-                    if (!dashboardMetaData.Languages.Contains(item))
                     {
                         return false;
                     }

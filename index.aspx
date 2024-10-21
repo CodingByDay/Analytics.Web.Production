@@ -80,29 +80,35 @@ height: 100% !important;
 
             }
 
+
             function onItemCaptionToolbarUpdated(s, e) {
-                var list = dashboard.GetParameters().GetParameterList();
-                if (list.length > 0) {
+                var control = dashboard.GetDashboardControl();
+                design = control.isDesignMode();
 
-                    window.item_caption = e.Options.staticItems[0].text;
-                    var parameterized_values = regex_return(item_caption);
-                    if (parameterized_values.length != 0) {
-                        parameterized_values.forEach((singular) => {
-                            const found = list.find(element => element.Name == singular)
-                            indexOfElement = list.indexOf(found)
-                            if (found != null && indexOfElement != -1) {
-                                text_to_replace = "#" + found.Name
-                                try {
-                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
-                                } catch (err) {
-                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                if (!design) {
+                    var list = dashboard.GetParameters().GetParameterList();
+                    if (list.length > 0) {
+
+                        window.item_caption = e.Options.staticItems[0].text;
+                        var parameterized_values = regex_return(item_caption);
+                        if (parameterized_values.length != 0) {
+                            parameterized_values.forEach((singular) => {
+                                const found = list.find(element => element.Name == singular)
+                                indexOfElement = list.indexOf(found)
+                                if (found != null && indexOfElement != -1) {
+                                    text_to_replace = "#" + found.Name
+                                    try {
+                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                    } catch (err) {
+                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                    }
+                                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                                    e.Options.staticItems[0].text = window.item_caption;
                                 }
-                                window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                                e.Options.staticItems[0].text = window.item_caption;
-                            }
-                        })
-                    }
+                            })
+                        }
 
+                    }
                 }
             }
 

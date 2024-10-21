@@ -94,6 +94,11 @@
                     initialState = s.GetDashboardState();
                 }
             }
+
+            window.onload = function () {
+                setInterval(checkViewerMode, 1000);
+            };
+
         </script>
         <style>
         .dx-widget  {  
