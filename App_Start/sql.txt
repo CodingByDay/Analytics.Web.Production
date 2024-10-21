@@ -1,6 +1,6 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [Analytics_IN_SIST_DEV]    Script Date: 10/4/2024 2:50:46 PM ******/
+/****** Object:  Database [Analytics_IN_SIST_DEV]    Script Date: 10/21/2024 11:22:10 AM ******/
 CREATE DATABASE [Analytics_IN_SIST_DEV]
  CONTAINMENT = NONE
  ON  PRIMARY 
@@ -80,23 +80,23 @@ ALTER DATABASE [Analytics_IN_SIST_DEV] SET QUERY_STORE = OFF
 GO
 USE [Analytics_IN_SIST_DEV]
 GO
-/****** Object:  User [petpakn]    Script Date: 10/4/2024 2:50:47 PM ******/
+/****** Object:  User [petpakn]    Script Date: 10/21/2024 11:22:11 AM ******/
 CREATE USER [petpakn] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [petpak]    Script Date: 10/4/2024 2:50:47 PM ******/
+/****** Object:  User [petpak]    Script Date: 10/21/2024 11:22:11 AM ******/
 CREATE USER [petpak] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [jankoj]    Script Date: 10/4/2024 2:50:47 PM ******/
+/****** Object:  User [jankoj]    Script Date: 10/21/2024 11:22:11 AM ******/
 CREATE USER [jankoj] FOR LOGIN [jankoj] WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [dashboards]    Script Date: 10/4/2024 2:50:47 PM ******/
+/****** Object:  User [dashboards]    Script Date: 10/21/2024 11:22:11 AM ******/
 CREATE USER [dashboards] FOR LOGIN [dashboards] WITH DEFAULT_SCHEMA=[dbo]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [jankoj]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [dashboards]
 GO
-/****** Object:  Table [dbo].[companies]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[companies]    Script Date: 10/21/2024 11:22:11 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -116,7 +116,7 @@ CREATE TABLE [dbo].[companies](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[company_strings]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[company_strings]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -130,7 +130,7 @@ CREATE TABLE [dbo].[company_strings](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[custom_names]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[custom_names]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -145,7 +145,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -161,7 +161,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[dashboards]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[dashboards]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -179,7 +179,7 @@ CREATE TABLE [dbo].[dashboards](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -195,7 +195,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[groups]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[groups]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -212,7 +212,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[meta_options]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[meta_options]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -228,7 +228,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -243,7 +243,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[users]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Table [dbo].[users]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -259,6 +259,7 @@ CREATE TABLE [dbo].[users](
 	[dashboard_permissions] [nvarchar](max) NULL,
 	[referrer] [varchar](255) NULL,
 	[group_id] [int] NULL,
+	[dashboard_states] [nvarchar](max) NOT NULL,
  CONSTRAINT [PK_Users] PRIMARY KEY NONCLUSTERED 
 (
 	[uname] ASC
@@ -267,7 +268,7 @@ CREATE TABLE [dbo].[users](
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [IX_OptionType]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  Index [IX_OptionType]    Script Date: 10/21/2024 11:22:12 AM ******/
 CREATE NONCLUSTERED INDEX [IX_OptionType] ON [dbo].[meta_options]
 (
 	[option_type] ASC
@@ -285,11 +286,16 @@ ALTER TABLE [dbo].[dashboards] ADD  CONSTRAINT [DF_meta_data]  DEFAULT ('{"Types
 GO
 ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_permissions]  DEFAULT (N'{"Permissions":[]}') FOR [dashboard_permissions]
 GO
+ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_states]  DEFAULT ('{"States": []}') FOR [dashboard_states]
+GO
 ALTER TABLE [dbo].[companies]  WITH CHECK ADD FOREIGN KEY([admin_id])
 REFERENCES [dbo].[users] ([uname])
 GO
-ALTER TABLE [dbo].[custom_names]  WITH CHECK ADD FOREIGN KEY([company_id])
+ALTER TABLE [dbo].[custom_names]  WITH CHECK ADD  CONSTRAINT [FK_CustomNames_Companies] FOREIGN KEY([company_id])
 REFERENCES [dbo].[companies] ([id_company])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[custom_names] CHECK CONSTRAINT [FK_CustomNames_Companies]
 GO
 ALTER TABLE [dbo].[dashboard_view_logs]  WITH CHECK ADD FOREIGN KEY([dashboard_id])
 REFERENCES [dbo].[dashboards] ([id])
@@ -326,7 +332,7 @@ ON DELETE SET NULL
 GO
 ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_groups]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1397,7 +1403,7 @@ AS BEGIN
   END CATCH
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[spChangePassword]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  StoredProcedure [dbo].[spChangePassword]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1433,7 +1439,7 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[spIsPasswordResetLinkValid]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  StoredProcedure [dbo].[spIsPasswordResetLinkValid]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1454,7 +1460,7 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[spResetPassword]    Script Date: 10/4/2024 2:50:48 PM ******/
+/****** Object:  StoredProcedure [dbo].[spResetPassword]    Script Date: 10/21/2024 11:22:12 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON

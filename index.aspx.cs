@@ -118,39 +118,7 @@ namespace Dash
             }
         }
 
-        /* private void CheckMetaDataSelections(MetaData metaData)
-         {
-             // TypeGroup: Set selected rows based on metaData.Types
-             for(int i = 0; i < TypeGroup.VisibleRowCount;i++)
-             {
-                 string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
-                 if (metaData.Types.Contains(rowValue))
-                 {
-                     TypeGroup.Selection.SetSelection(i, true);
-                 }
-             }
-
-             // CompanyGroup: Set selected rows based on metaData.Companies
-             for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
-             {
-                 string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
-                 if (metaData.Companies.Contains(rowValue))
-                 {
-                     CompanyGroup.Selection.SetSelection(i, true);
-                 }
-             }
-
-             // LanguageGroup: Set selected rows based on metaData.Languages
-             for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
-             {
-                 string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
-                 if (metaData.Languages.Contains(rowValue))
-                 {
-                     LanguageGroup.Selection.SetSelection(i, true);
-                 }
-             }
-         }
-        */
+      
 
         [WebMethod]
         public static void DeleteItem(string id)
