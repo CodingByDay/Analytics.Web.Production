@@ -7,7 +7,9 @@ img#pic {
     left: 0;
     top: 4px;
 }
-
+label#switcherOuter {
+    margin-top: 0.5em;
+}
 .outer {
     display: flex;
     align-items: center;

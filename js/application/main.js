@@ -5,12 +5,6 @@ var dashboardControl;
 let filterSelections = {};
 
 
-/**
- * A client side event to update the column header titles based on parameter values.
- * @param sender
- * @param args
- */
-
 
 
 function onDashboardStateChanged(e) {
@@ -23,10 +17,10 @@ function onDashboardStateChanged(e) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
-            console.log("Success:", response);
+            
         },
         error: function (xhr, status, error) {
-            console.error("Error:", error);
+            
         }
     });
 }
@@ -195,11 +189,9 @@ function removeItemOnce(arr) {
 }
 function getSafeParsedCookie(cookieName) {
     let cookieValue = getCookie(cookieName);
-
     if (!cookieValue) {
         return null;
     }
-
     try {
         return JSON.parse(cookieValue);
     } catch (error) {
@@ -210,7 +202,6 @@ function updatecustomizeWidgets(sender, args) {
     var control = dashboard.GetDashboardControl();
     design = control.isDesignMode();
     if (!design) {
-        // update
         var parName = []
         var collection = dashboard.GetParameters().GetParameterList();
 

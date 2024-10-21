@@ -60,6 +60,7 @@ namespace Dash
                     AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
                     AddCssLink("~/Content/Css/All.css");
+                    AddCssLink("~/Content/Css/Graphs.css");
                     AddCssLink("~/Content/Css/Website.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
@@ -69,6 +70,7 @@ namespace Dash
                     AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
                     AddCssLink("~/Content/Css/All.css");
                     AddCssLink("~/Content/Css/Website.css");
+                    AddCssLink("~/Content/Css/Graphs.css");
                     AddCssLink("~/Content/Css/Admin.css");
                     break;
 
@@ -131,7 +133,7 @@ namespace Dash
             // Check if the URL contains "Index" or "IndexTenant"
             if (!currentUrl.Contains("Index") && !currentUrl.Contains("IndexTenant"))
             {
-                toggle.Visible = false;
+                switcherOuter.Visible = false;
             }
         }
 

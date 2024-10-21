@@ -281,10 +281,6 @@
     <Content Include="Logon.aspx" />
     <Content Include="package.json" />
     <Content Include="package1.json" />
-    <Content Include="Js\.subl51.tmp" />
-    <Content Include="Js\.subl571.tmp" />
-    <Content Include="Js\.sublf4b.tmp" />
-    <Content Include="Js\.sublf6c.tmp" />
     <Content Include="libman.json" />
     <Content Include="App_Data\Administracija.pdf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
