@@ -25,7 +25,9 @@
     </script>
 
     <script>
-
+        window.addEventListener('resize', function () {
+            location.reload();
+        });
         function testConnection() {
 
             var InitialCatalog = document.getElementById("dbNameInstance").value;

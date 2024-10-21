@@ -709,7 +709,6 @@ namespace Dash
                 CreateAdminForTheCompany(adminname, companyName.Text);
                 UpdateAdminCompany(adminname, companyName.Text);
                 var checkDB = CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-
                 companyNumber.Text = "";
                 companyName.Text = "";
                 website.Text = "";
@@ -785,25 +784,43 @@ namespace Dash
 
         protected void DeleteUser_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            string username = null;
+            try
             {
-                try
+                var selectedValues = usersGridView.GetSelectedFieldValues("uname");
+                // Ensure a user is selected
+                if (selectedValues != null && selectedValues.Count > 0)
                 {
-                    conn.Open();
-                    string username = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM users WHERE uname='{username}'", conn);
-                    deletedID = usersGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    var company = GetCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
-                    var spacelessCompany = company.Replace(" ", string.Empty);
-                    idFromString = GetIdCompany(spacelessCompany);
-                    cmd.ExecuteNonQuery();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
+                    username = selectedValues[0]?.ToString();
+                    if (!string.IsNullOrEmpty(username))
+                    {
+                        using (SqlConnection conn = new SqlConnection(connection))
+                        using (SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE uname = @uname", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@uname", username);
+                            conn.Open();
+                            cmd.ExecuteNonQuery();
+                            usersGridView.DataBind();
+                            // Notify success
+                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uporabnik izbrisan.')", true);
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    return;
                 }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = ex.InnerException?.Message ?? ex.Message;
+                Logger.LogError(typeof(Admin), errorMessage);
+                // Notify failure
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju uporabnika.')", true);
             }
         }
 

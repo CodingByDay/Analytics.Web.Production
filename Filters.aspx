@@ -225,6 +225,9 @@
 
 
     <script>
+        window.addEventListener('resize', function () {
+            location.reload();
+        });
         function openModal(modalId) {
             var myModal = new bootstrap.Modal(document.getElementById(modalId));
             myModal.show();
