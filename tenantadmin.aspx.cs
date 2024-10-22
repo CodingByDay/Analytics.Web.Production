@@ -918,21 +918,28 @@ namespace Dash
 
         private int GetIdCompany(string current)
         {
-            string spaceless = current.Trim();
-            using (SqlConnection conn = new SqlConnection(connection))
+            if (current != null)
             {
-                try
+                string spaceless = current.Trim();
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
-                    result = cmd.ExecuteScalar();
-                    int id = System.Convert.ToInt32(result);
-                    return id;
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
+                        result = cmd.ExecuteScalar();
+                        int id = System.Convert.ToInt32(result);
+                        return id;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
                 }
-                catch (Exception)
-                {
-                    return -1;
-                }
+            }
+            else
+            {
+                return -1;
             }
         }
 

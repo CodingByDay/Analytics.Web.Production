@@ -35,19 +35,19 @@ namespace Dash.HelperClasses
 
         public static bool CheckDatabaseConnection(string conn)
         {
-            SqlConnection connection = new SqlConnection(conn);
-            bool result;
             try
             {
-                connection.Open();
-                result = true;
-                connection.Close();
+                using (SqlConnection connection = new SqlConnection(conn))
+                {
+                    connection.Open();
+                    return true;
+                }
             }
-            catch (Exception)
+            catch (SqlException)
             {
-                result = false;
+                // Optionally log the exception here for debugging
+                return false;
             }
-            return result;
         }
 
         // 26.08.2024 Janko Jovičić Code cleaning.
