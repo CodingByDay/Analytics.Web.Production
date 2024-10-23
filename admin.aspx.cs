@@ -183,7 +183,11 @@ namespace Dash
             companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
             companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
             companiesGridView.DataBound += CompaniesGridView_DataBound;
-           
+
+
+
+
+
             usersGridView.SettingsBehavior.AllowFocusedRow = false;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -210,9 +214,7 @@ namespace Dash
             }
 
             InitializeUiChanges();
-            Authenticate();
-
-        
+            Authenticate();  
         }
 
         private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)
@@ -258,7 +260,12 @@ namespace Dash
 
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
-            companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
+            companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);   
+            
+            if(CurrentCompany == GetFirstCompany())
+            {
+                companiesGridView.FocusedRowIndex = 0;
+            }
         }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
@@ -455,14 +462,7 @@ namespace Dash
                 }
             }
         }
-
-      
-
-
-
      
-
-      
 
         public string GetCompanyName(int company)
         {
@@ -645,17 +645,34 @@ namespace Dash
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_company) FROM companies", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
-                    cmd.ExecuteNonQuery();
-                    Dashboard graph = new Dashboard(next);
-                    graph.SetGraphs(next);
+
+                    // Fetch the current max id, handle if no companies exist
+                    using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(MAX(id_company), 0) FROM companies", conn))
+                    {
+                        var result = cmd.ExecuteScalar();
+                        int next = Convert.ToInt32(result) + 1;
+
+                        // Use parameterized queries to avoid SQL injection
+                        using (SqlCommand insertCmd = new SqlCommand("INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES(@Id, @Name, @Number, @Website, @DbName)", conn))
+                        {
+                            insertCmd.Parameters.AddWithValue("@Id", next);
+                            insertCmd.Parameters.AddWithValue("@Name", companyName.Text);
+                            insertCmd.Parameters.AddWithValue("@Number", companyNumber.Text);
+                            insertCmd.Parameters.AddWithValue("@Website", website.Text);
+                            insertCmd.Parameters.AddWithValue("@DbName", connName.Text);
+
+                            insertCmd.ExecuteNonQuery();
+                        }
+
+                        // Set up the dashboard
+                        Dashboard graph = new Dashboard(next);
+                        graph.SetGraphs(next);
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                    // Log the main exception message
+                    Logger.LogError(typeof(Admin), ex.Message);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }

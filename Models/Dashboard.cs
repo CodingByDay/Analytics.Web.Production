@@ -75,17 +75,17 @@ namespace Dash.Models
                     conn.Open();
                     var username = HttpContext.Current.User.Identity.Name;
                     // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"select d.ID, d.Caption from Dashboards d;", conn);
+                    var cmd = new SqlCommand($"SELECT d.ID, d.caption FROM dashboards d;", conn);
                     SqlDataReader reader = cmd.ExecuteReader();
                     List<Names> data = new List<Names>();
                     while (reader.Read())
                     {
-                        var Caption = (reader["Caption"].ToString());
+                        var Caption = (reader["caption"].ToString());
                         data.Add(new Names { original = Caption, custom = Caption });
                     }
                     reader.Close();
                     var json = JsonConvert.SerializeObject(data);
-                    var insert = new SqlCommand($"insert into CustomNames(names, company_id) values('{json}', {id});", conn);
+                    var insert = new SqlCommand($"INSERT INTO custom_names(names, company_id) values('{json}', {id});", conn);
                     insert.ExecuteNonQuery();
                 }
                 catch (Exception ex)

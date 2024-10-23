@@ -654,28 +654,7 @@ namespace Dash
             }
         }
 
-        private void InsertCompany()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_company) FROM companies", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
-                    cmd.ExecuteNonQuery();
-                    Dashboard graph = new Dashboard(next);
-                    graph.SetGraphs(next);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+
 
         private void UpdateAdminCompany(string admin_value, string cName)
         {
@@ -696,35 +675,7 @@ namespace Dash
             }
         }
 
-        protected void CompanyButton_Click(object sender, EventArgs e)
-        {
-            var ed = Request.Cookies["Edit"].Value.ToString();
-
-            if (!isEditHappening && ed == "no")
-            {
-                InsertCompany();
-                var names = companyName.Text.Split(' ');
-                Random random = new Random();
-                string adminname = $"{names[0]}{random.Next(1, 1000)}";
-                CreateAdminForTheCompany(adminname, companyName.Text);
-                UpdateAdminCompany(adminname, companyName.Text);
-                var checkDB = CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
-            }
-            else
-            {
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-                build.InitialCatalog = dbNameInstance.Text;
-                build.DataSource = dbDataSource.Text;
-                build.UserID = dbUser.Text;
-                build.Password = dbPassword.Text;
-                //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
- 
-            }
-        }
+      
 
         private void AddConnectionString(string stringConnection)
         {
