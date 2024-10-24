@@ -560,7 +560,7 @@ namespace Dash
                     conn.Open();
                     if (TxtPassword.Text != TxtRePassword.Text)
                     {
-                        Notify("Gesla niso ista.", true);
+                        Notify("Gesla se ne ujemata.", true);
                         ClearInputs();
                         return;
                     }
@@ -609,23 +609,29 @@ namespace Dash
                     conn.Open();
                     string query;
 
-                    if (!string.IsNullOrEmpty(TxtPassword.Text) && TxtPassword.Text == TxtRePassword.Text)
+                    if (!string.IsNullOrEmpty(TxtPassword.Text))
                     {
-                        string hashedPassword = HashPassword(TxtPassword.Text);
-                        query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed, 
+                        if(TxtPassword.Text == TxtRePassword.Text) {
+                            string hashedPassword = HashPassword(TxtPassword.Text);
+                            query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed, 
                           full_name = @full_name, referrer = @referrer WHERE uname = @uname";
 
-                        using (SqlCommand cmdEdit = new SqlCommand(query, conn))
-                        {
-                            cmdEdit.Parameters.AddWithValue("@password", hashedPassword);
-                            cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
-                            cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
-                            cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
-                            cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
-                            cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
+                            using (SqlCommand cmdEdit = new SqlCommand(query, conn))
+                            {
+                                cmdEdit.Parameters.AddWithValue("@password", hashedPassword);
+                                cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
+                                cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
+                                cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
 
-                            cmdEdit.ExecuteNonQuery();
+                                cmdEdit.ExecuteNonQuery();
+                            }
+                        } else {
+                            Notify("Gesla se ne ujemata.", true);
+                            return;
                         }
+                        
                     }
                     else
                     {
