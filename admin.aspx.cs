@@ -351,6 +351,15 @@ namespace Dash
                         var id = (int) plurals[0];
 
                         CurrentCompany = GetCompanyName(id);
+
+
+                        var firstUser = GetFirstUserForCompany(CurrentCompany);
+
+                        CurrentUsername = firstUser;
+                        query.SelectParameters["uname"].DefaultValue = CurrentUsername;
+                        usersGridView.FocusedRowIndex = 0;
+                        
+                    
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter
@@ -378,7 +387,7 @@ namespace Dash
                     SqlCommand cmd = new SqlCommand($"SELECT TOP (1) uname FROM Users WHERE id_company = @id;", conn);
                     cmd.Parameters.AddWithValue("@id", id_company);
                     var user = (string)cmd.ExecuteScalar();
-                    return user;
+                    return user ?? string.Empty;
                 }
                 catch (Exception)
                 {

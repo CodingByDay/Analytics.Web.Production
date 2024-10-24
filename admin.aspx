@@ -381,6 +381,7 @@
         dashboards d
     LEFT JOIN 
         dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+    WHERE @uname IN (SELECT uname FROM users)
     ORDER BY 
         CASE 
             WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  
