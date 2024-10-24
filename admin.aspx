@@ -25,6 +25,23 @@
     </script>
 
     <script>
+        $(document).ready(function () {
+            $('#company').on('click', function () {
+                // Make an AJAX call to set the session variable to false
+                $.ajax({
+                    type: "POST",
+                    url: "Admin.aspx/CreatingCompanySessionEdit", // Update with your actual page name
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        return;
+                    },
+                    error: function (xhr, status, error) {
+                        location.reload();
+                    }
+                });
+            });
+        });
 
         function testConnection() {
 
@@ -176,12 +193,12 @@
 
     <div class="content-flex">
         <div class="inner-item companies">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name, admin_id FROM companies"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView"  ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -204,9 +221,7 @@
                     <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
                     <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
-                    </dx:BootstrapGridViewTextColumn>
-                      <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
-                    </dx:BootstrapGridViewTextColumn>
+                    </dx:BootstrapGridViewTextColumn>                    
                 </Columns>
                     <SettingsSearchPanel Visible="True" />
                     <CssClasses Control="control" />
@@ -426,7 +441,6 @@
       </div>
       <div class="modal-body">
         <!-- Form starts here -->
-        <form id="companyForm">
           <div class="container">
             <div class="row">
               <div class="col-md-6">
@@ -443,11 +457,7 @@
                   <div class="form-group">
                     <label for="website">Spletna stran</label>
                     <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group" style="display: none;">
-                    <label for="listAdmin" id="labl">Admin</label>
-                    <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"></asp:DropDownList>
-                  </div>
+                  </div>                  
                 </div>
               </div>
               <div class="col-md-6">
@@ -477,7 +487,6 @@
               </div>
             </div>
           </div>
-        </form>
         <!-- End of form -->
       </div>
       <div class="modal-footer">
@@ -488,8 +497,6 @@
     </div>
   </div>
 </div>
-
-
 
 <div class="modal fade" id="userFormModal" tabindex="-1" role="dialog" aria-labelledby="userFormModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
@@ -504,6 +511,13 @@
           <div class="container">
             <div class="row">
               <div class="col-md-6">
+
+                <!-- Hidden input for username -->
+                <input type="text" name="Username" style="display:none;" autocomplete="on">
+
+                <!-- Hidden input for password -->
+                <input type="password" name="Password" style="display:none;" autocomplete="on">
+
                 <div class="form-group">
                   <label for="TxtName">Ime in Priimek</label>
                   <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
@@ -514,7 +528,7 @@
                 </div>
                 <div class="form-group">
                   <label for="TxtUserName">Uporabniško ime</label>
-                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
+                  <asp:TextBox  ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
                   <label for="referer">Komercialist</label>

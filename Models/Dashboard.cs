@@ -35,15 +35,20 @@ namespace Dash.Models
                 try
                 {
                     conn.Open();
+                    // Serialize the data to JSON format
                     var json = Newtonsoft.Json.JsonConvert.SerializeObject(data);
                     var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    var cmd = new SqlCommand($"update CustomNames set names='{json}' where company_id={id}", conn);
-                    cmd.ExecuteNonQuery();
+                    // Use parameterized query to avoid SQL injection
+                    using (SqlCommand cmd = new SqlCommand("UPDATE CustomNames SET names = @Names WHERE company_id = @CompanyID", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Names", json);
+                        cmd.Parameters.AddWithValue("@CompanyID", id);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), $"Error updating company names: {ex.Message}, StackTrace: {ex.StackTrace}");
                 }
             }
         }
@@ -138,22 +143,36 @@ namespace Dash.Models
 
         public string GetSingularNameOriginal(int id, string customInner)
         {
-            string original = string.Empty;
             var names = GetNamesCurrent(id);
+            var nameEntry = names.FirstOrDefault(x => x.custom == customInner);
+
+            if (nameEntry == null)
+            {
+                return string.Empty; // Handle the case where no matching name is found
+            }
+
+            string original = nameEntry.original;
+
             try
             {
-                original = names.FirstOrDefault(x => x.custom == customInner).original;
                 using (SqlConnection conn = new SqlConnection(Connection))
                 {
                     conn.Open();
-                    var cmd = new SqlCommand($"SELECT d.id FROM dashboards d WHERE d.caption = '{original}'", conn);
-                    int result = (int)cmd.ExecuteScalar();
-                    original = result.ToString();
+                    using (SqlCommand cmd = new SqlCommand("SELECT d.id FROM dashboards d WHERE d.caption = @Caption", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Caption", original);
+                        var result = cmd.ExecuteScalar();
+
+                        if (result != null)
+                        {
+                            original = result.ToString();
+                        }
+                    }
                 }
             }
-            catch (Exception)
+            catch (SqlException ex)
             {
-                return original;
+                Logger.LogError(typeof(Admin), ex.Message); // Log the exception
             }
 
             return original;
@@ -219,19 +238,22 @@ namespace Dash.Models
             }
         }
 
-        internal void Delete(int companyID)
+        public void DeleteCustomNames(int companyID)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
                 try
                 {
                     conn.Open();
-                    var insert = new SqlCommand($"DELETE FROM CustomNames WHERE company_id={companyID};", conn);
-                    insert.ExecuteNonQuery();
+                    using (SqlCommand deleteCommand = new SqlCommand("DELETE FROM custom_names WHERE company_id = @CompanyID", conn))
+                    {
+                        deleteCommand.Parameters.AddWithValue("@CompanyID", companyID);
+                        deleteCommand.ExecuteNonQuery();
+                    }
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                    Logger.LogError(typeof(Admin), ex.Message);
                 }
             }
         }

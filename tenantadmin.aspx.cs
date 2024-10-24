@@ -846,26 +846,7 @@ namespace Dash
 
       
 
-        private void RemoveConnectionString(string current)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE company_name='{current}'", conn);
-                    result = cmd.ExecuteScalar();
-                    Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                    config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
-                    config.Save(ConfigurationSaveMode.Modified, true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return;
-                }
-            }
-        }
+        
 
         private int GetIdCompany(string current)
         {
