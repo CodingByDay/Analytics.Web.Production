@@ -71,24 +71,7 @@
             }
         }
 
-        function checkFields(company_name, website, company_number) {
-
-            company_name = document.getElementById("companyName").value
-            website = document.getElementById("website").value
-            company_number = document.getElementById("companyNumber").value
-
-            if (company_name == "" || website == "" || company_number == "") {
-                notify(true, "Podatki manjkajo.")
-            } else {
-                if (isNaN(company_number)) {
-                    notify(true, "Številka ni v pravi obliki.")
-                } else {
-                    btnRegistration = document.getElementById('<%=companyButton.ClientID %>');
-                    btnRegistration.click();
-                }
-
-            }
-        }
+     
 
         function showDialogSync() {
 
@@ -383,79 +366,7 @@
 
 	<section class="columns">
 <!-- Bootstrap Modal Structure -->
-<div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="companyModalLabel">Podjetje</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form starts here -->
-        <form id="companyForm">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6">
-                <!-- Company Part -->
-                <div class="companyPart">
-                  <div class="form-group">
-                    <label for="companyName">Naziv podjetja</label>
-                    <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="companyNumber">Kontaktna številka</label>
-                    <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="website">Spletna stran</label>
-                    <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group" style="display: none;">
-                    <label for="listAdmin" id="labl">Admin</label>
-                    <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"></asp:DropDownList>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <!-- Connection Part -->
-                <div class="connectionPart">
-                  <div class="form-group">
-                    <label for="dbDataSource">Data source</label>
-                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbUser">Uporabnik</label>
-                    <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbPassword">Geslo</label>
-                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbNameInstance">Naziv baze</label>
-                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="connName">Naziv povezave</label>
-                    <asp:TextBox ID="connName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <!-- End of form -->
-      </div>
-      <div class="modal-footer">
-        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="CompanyButton_Click" />
-        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
-        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 
@@ -470,8 +381,16 @@
       </div>
       <div class="modal-body">
           <div class="container">
+
             <div class="row">
               <div class="col-md-6">
+
+                <!-- Hidden input for username -->
+                <input type="text" name="Username" style="display:none;" autocomplete="on">
+                <!-- Hidden input for password -->
+                <input type="password" name="Password" style="display:none;" autocomplete="on">
+
+
                 <div class="form-group">
                   <label for="TxtName">Ime in Priimek</label>
                   <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>

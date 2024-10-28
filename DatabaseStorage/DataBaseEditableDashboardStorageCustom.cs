@@ -102,7 +102,7 @@ namespace Dash.DatabaseStorage
                     // Use a parameterized query to prevent SQL injection
                     string query = @"SELECT company_name
                              FROM users
-                             INNER JOIN companies ON users.id_company = campanies.id_company
+                             INNER JOIN companies ON users.id_company = companies.id_company
                              WHERE uname = @uname";
 
                     using (SqlCommand cmd = new SqlCommand(query, conn))
@@ -291,13 +291,7 @@ namespace Dash.DatabaseStorage
                         list.Add(new DashboardInfo() { ID = ID, Name = Caption });
                     }
                 }
-                var graphs = graph.GetGraphs(id);
-                List<Models.Dashboard.Names> data = new List<Models.Dashboard.Names>();
-                foreach (var obj in graphs)
-                {
-                    data.Add(new Models.Dashboard.Names { original = obj.Name, custom = obj.CustomName });
-                }
-                graph.UpdateGraphs(data, id);
+
             }
             return list;
         }
@@ -309,7 +303,7 @@ namespace Dash.DatabaseStorage
                 try
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM campanies WHERE company_name='{current}'", conn);
+                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{current}'", conn);
                     result = cmd.ExecuteScalar();
                     var id = System.Convert.ToInt32(result);
                     return id;

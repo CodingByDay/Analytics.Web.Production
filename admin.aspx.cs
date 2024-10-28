@@ -974,6 +974,8 @@ namespace Dash
 
                     // Refresh the grid
                     companiesGridView.DataBind();
+                    usersGridView.DataBind();
+                    graphsGridView.DataBind();
 
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
                 }

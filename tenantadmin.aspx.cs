@@ -312,61 +312,8 @@ namespace Dash
 
     
 
-        private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        {
-            listAdmin.Visible = true;
-            Response.Cookies["Edit"].Value = "yes";
-            isEditHappening = true;
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            UpdateFormCompany(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
-            e.Cancel = true;
-        }
 
-        private void UpdateFormCompany(string v)
-        {
-            // Select * from companies where id_company={}
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT * FROM companies WHERE id_company={v};", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        company_name = (reader["company_name"].ToString());
-                        company_number = (reader["company_number"].ToString());
-                        websiteCompany = (reader["website"].ToString());
-                        admin_id = (reader["admin_id"].ToString());
-                        databaseName = (reader["database_name"].ToString());
-                    }
-
-                    companyName.Text = company_name;
-                    companyNumber.Text = company_number;
-                    website.Text = websiteCompany;
-
-                    listAdmin.SelectedValue = admin_id;
-                    var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
-
-                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionDB);
-                    dbDataSource.Text = builder.DataSource;
-                    dbNameInstance.Text = builder.InitialCatalog;
-                    dbUser.Text = builder.UserID;
-                    dbPassword.Text = builder.Password;
-                    connName.Text = databaseName.ToString();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
       
 
@@ -675,63 +622,7 @@ namespace Dash
             }
         }
 
-      
-
-        private void AddConnectionString(string stringConnection)
-        {
-            try
-            {
-                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                var builder = new SqlConnectionStringBuilder(stringConnection);
-                ConnectionStringSettings conn = new ConnectionStringSettings();
-                conn.ConnectionString = builder.ConnectionString;
-                conn.Name = connName.Text;
-                config.ConnectionStrings.ConnectionStrings.Add(conn);
-                config.Save(ConfigurationSaveMode.Modified, true);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
-            }
-        }
-
-        private string CreateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
-        {
-            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-            build.InitialCatalog = dbNameInstance;
-            build.DataSource = dbSource;
-            build.UserID = dbUser;
-            build.Password = dbPassword;
-            AddConnectionString(build.ConnectionString);
-            return build.ConnectionString;
-        }
-
-
-
-        private void CreateAdminForTheCompany(string name, string cName)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
-                    string Company = cName;
-                    int IdCompany = GetIdCompany(Company);
-                    string FinalQueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{IdCompany}','Viewer&Designer','{name}', '{name}@{name}.com')");
-                    SqlCommand createUser = new SqlCommand(FinalQueryRegistration, conn);
-                    var id = GetIdCompany(cName.Trim());
-                    createUser.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+           
 
         protected void DeleteUser_Click(object sender, EventArgs e)
         {

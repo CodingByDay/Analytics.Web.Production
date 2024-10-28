@@ -53,7 +53,7 @@ namespace Dash.Models
             }
         }
 
-        public void UpdateGraphs(List<Names> payload, int companyID)
+        public void UpdateGraphs(List<Names> payload, int companyId)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
             {
@@ -61,7 +61,7 @@ namespace Dash.Models
                 {
                     conn.Open();
                     var json = JsonConvert.SerializeObject(payload);
-                    var insert = new SqlCommand($"UPDATE custom_names SET names='{json}' WHERE company_id={companyID};", conn);
+                    var insert = new SqlCommand($"UPDATE custom_names SET names='{json}' WHERE company_id={companyId};", conn);
                     insert.ExecuteNonQuery();
                 }
                 catch (Exception ex)
@@ -203,8 +203,8 @@ namespace Dash.Models
                     SqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
                     {
-                        var ID = (reader["ID"].ToString());
-                        var Caption = (reader["Caption"].ToString());
+                        var ID = (reader["id"].ToString());
+                        var Caption = (reader["caption"].ToString());
                         var NamesObj = (reader["names"].ToString());
                         var uscaped = Regex.Unescape(NamesObj).Replace(@"\", string.Empty);
 
