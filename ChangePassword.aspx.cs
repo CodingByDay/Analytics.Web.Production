@@ -58,7 +58,7 @@ namespace Dash
           }
         };
 
-            return ExecuteSP("spIsPasswordResetLinkValid", paramList);
+            return ExecuteSP("sp_is_password_reset_link_valid", paramList);
         }
 
         private bool ChangeUserPassword()
@@ -77,7 +77,7 @@ namespace Dash
                 }
             };
 
-            return ExecuteSP("spChangePassword", paramList);
+            return ExecuteSP("sp_change_password", paramList);
         }
 
         private bool checkEquality()

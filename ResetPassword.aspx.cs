@@ -21,7 +21,7 @@ namespace Dash
         }
 
         /// <summary>
-        /// Stored procedure checking if the user exists and fetching the uuid and an emal.
+        ///  Stored procedure checking if the user exists and fetching the uuid and an emal.
         ///  Stored procedure: spResetPassword
         ///  Parameter/s: @Username
         /// </summary>
@@ -32,7 +32,7 @@ namespace Dash
             conn = new SqlConnection(ConnectionString);
             using (conn)
             {
-                SqlCommand cmd = new SqlCommand("spResetPassword", conn);
+                SqlCommand cmd = new SqlCommand("sp_reset_password", conn);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);

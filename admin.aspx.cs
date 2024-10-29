@@ -236,7 +236,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
-
+            graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
             if (!IsPostBack)
             {
 
@@ -244,6 +244,18 @@ namespace Dash
 
             InitializeUiChanges();
             Authenticate();  
+        }
+
+        private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+        {
+           e.Cancel = true;
+           string id = e.Keys["id"] != null ? e.Keys["id"].ToString() : string.Empty;
+           query.UpdateParameters["dashboard_id"].DefaultValue = id;
+           query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+           query.UpdateParameters["custom_name"].DefaultValue = e.NewValues["custom_name"] != null ? e.NewValues["custom_name"].ToString() : string.Empty;
+           query.Update();
+           graphsGridView.DataBind();
+           graphsGridView.CancelEdit();
         }
 
         private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)

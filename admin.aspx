@@ -347,16 +347,16 @@
 
 <SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
-          <SettingsDataSecurity AllowEdit="False" />
+          <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption="Action">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Action">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="custom_caption" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
+              <dx:BootstrapGridViewTextColumn FieldName="custom_name" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
               </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
@@ -367,47 +367,15 @@
        </div>
 
 <asp:SqlDataSource
-    EnableCaching="true"
-    CacheExpirationPolicy="Sliding"
-    CacheDuration="60"
+    EnableCaching="false"
     ID="query" 
     runat="server" 
     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
-    SelectCommand="
-    SELECT 
-        d.id, 
-        d.caption, 
-        d.belongs, 
-        d.meta_data, 
-        COALESCE(ds.sort_order, ROW_NUMBER() OVER (ORDER BY d.id)) AS sort_order,
-        c.names,
-        j.custom AS custom_caption
-    FROM 
-        dashboards d
-
-    LEFT JOIN 
-        dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
-
-    OUTER APPLY (
-        SELECT names 
-        FROM custom_names 
-        WHERE company_id = @company
-    ) c
-
-    OUTER APPLY OPENJSON(c.names)
-        WITH (
-            original NVARCHAR(255),
-            custom NVARCHAR(255)
-        ) AS j
-
-    WHERE 
-        j.original = d.caption 
-        AND @uname IN (SELECT uname FROM users)
-
-    ORDER BY 
-        COALESCE(ds.sort_order, ROW_NUMBER() OVER (ORDER BY d.id)),
-        d.id;" 
-    UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+    SelectCommand="sp_get_dashboards" 
+    SelectCommandType="StoredProcedure"
+    UpdateCommand="sp_upsert_dashboards_custom_names"
+    UpdateCommandType="StoredProcedure"
+    >
     
     <SelectParameters>
         <asp:Parameter Name="uname" Type="String" Direction="Input" />
@@ -415,8 +383,9 @@
     </SelectParameters>
     
     <UpdateParameters>
-        <asp:Parameter Name="belongs" Type="String" />
-        <asp:Parameter Name="id" Type="Int32" />
+        <asp:Parameter Name="dashboard_id" Type="Int32" />
+        <asp:Parameter Name="company_id" Type="Int32" />
+        <asp:Parameter Name="custom_name" Type="String" />
     </UpdateParameters>
 </asp:SqlDataSource>
 

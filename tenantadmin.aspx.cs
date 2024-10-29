@@ -169,12 +169,8 @@ namespace Dash
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-
             btnFilterBootstrap = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
             btnFilterBootstrap.Visible = IsFilterActive;
-
-
-
 
             usersGridView.SettingsBehavior.AllowFocusedRow = false;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -195,6 +191,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
+
             if (!IsPostBack)
             {
 

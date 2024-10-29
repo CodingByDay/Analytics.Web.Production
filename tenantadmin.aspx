@@ -304,26 +304,9 @@
     ID="query" 
     runat="server" 
     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
-    SelectCommand="
-    SELECT 
-        d.id, 
-        d.caption, 
-        d.belongs, 
-        d.meta_data, 
-        COALESCE(ds.sort_order, NULL) AS sort_order 
-    FROM 
-        dashboards d
-    LEFT JOIN 
-        dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
-    WHERE 
-        d.id IN (SELECT value FROM STRING_SPLIT(@ids, ','))
-    ORDER BY 
-        CASE 
-            WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  
-            ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
-                  WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
-        END,
-        d.id;">
+    SelectCommand="sp_get_dashboards" 
+    SelectCommandType="StoredProcedure"
+   >
     
     <SelectParameters>
         <asp:Parameter Name="uname" Type="String" />
