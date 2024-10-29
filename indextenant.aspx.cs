@@ -68,7 +68,6 @@ namespace Dash
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
             ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
-          
             SetUpPage();
         }
 
@@ -79,6 +78,7 @@ namespace Dash
                 var dashboardId = e.DashboardId;
                 UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
                 var userStates = userDashboardStates.GetInitialStateForTheUser(dashboardId);
+                LogDashboardView(HttpContext.Current.User.Identity.Name, e.DashboardId);
                 if (userStates.State != null)
                 {
                     e.InitialState = userStates.State;
@@ -214,7 +214,6 @@ namespace Dash
             try
             {
                 Response.Cookies["dashboard"].Value = e.DashboardId;
-                LogDashboardView(HttpContext.Current.User.Identity.Name, e.DashboardId);
                 return;
             } catch (Exception ex)
             {
