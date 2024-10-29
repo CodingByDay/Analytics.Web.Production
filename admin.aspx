@@ -245,12 +245,7 @@
 
            </div>
 
-	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
-        <UpdateParameters>
-            <asp:Parameter Name="belongs" />
-            <asp:Parameter Name="id" />
-        </UpdateParameters>
-    </asp:SqlDataSource>
+
         <div class="inner-item user">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">

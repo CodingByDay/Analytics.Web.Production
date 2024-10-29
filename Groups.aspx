@@ -7,20 +7,7 @@
 
          <script type="text/c#" runat="server">
 
-             [System.Web.Services.WebMethod(EnableSession = true)]
-             public static bool test(string InitialCatalog, string DataSource, string UserID, string Password)
-             {
-                 var result = Dash.HelperClasses.CheckConnection.TestConnection(InitialCatalog, DataSource, UserID, Password);
-                 if(result)
-                 {
-                     return true;
-                 }
-
-                 else
-                 {
-                     return false;
-                 }
-             }
+          
 
     </script>
 
@@ -72,24 +59,7 @@
             }
         }
 
-        function checkFields(company_name, website, company_number) {
-
-            company_name = document.getElementById("companyName").value
-            website = document.getElementById("website").value
-            company_number = document.getElementById("companyNumber").value
-
-            if (company_name == "" || website == "" || company_number == "") {
-               notify(true, "Podatki manjkajo.")
-            } else {
-                if (isNaN(company_number)) {
-                    notify(true, "Številka ni v pravi obliki.")
-                } else {
-                    btnRegistration = document.getElementById('<%=companyButton.ClientID %>');
-                    btnRegistration.click();
-                }
-
-            }
-        }
+       
 
         function showDialogSync() {
 
@@ -176,7 +146,7 @@
 
     <div class="content-flex">
         <div class="inner-item companies">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name, admin_id FROM companies"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
@@ -205,8 +175,6 @@
                     </dx:BootstrapGridViewTextColumn>
                     <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
                     </dx:BootstrapGridViewTextColumn>
-                      <dx:BootstrapGridViewTextColumn FieldName="admin_id" Caption="Admin" VisibleIndex="4">
-                    </dx:BootstrapGridViewTextColumn>
                 </Columns>
                     <SettingsSearchPanel Visible="True" />
                     <CssClasses Control="control" />
@@ -225,12 +193,7 @@
 
            </div>
 
-	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
-        <UpdateParameters>
-            <asp:Parameter Name="belongs" />
-            <asp:Parameter Name="id" />
-        </UpdateParameters>
-    </asp:SqlDataSource>
+
         <div class="inner-item user">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
@@ -320,29 +283,25 @@
 
 <SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
-          <SettingsDataSecurity AllowEdit="True" />
+          <SettingsDataSecurity AllowEdit="False" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Action">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption="Action">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongs" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
-              </dx:BootstrapGridViewTextColumn>
+
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
        </div>
        </div>
 
-      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, belongs, meta_data FROM dashboards;" UpdateCommand="UPDATE dashboards SET belongs=@belongs WHERE id=@id">
+      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, meta_data FROM dashboards;" >
 
-          <UpdateParameters>
-              <asp:Parameter Name="belongs" />
-              <asp:Parameter Name="id" />
-          </UpdateParameters>
+ 
       </asp:SqlDataSource>
 
 
@@ -365,80 +324,6 @@
 
 
 <section class="columns">
-<!-- Bootstrap Modal Structure -->
-<div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="companyModalLabel">Podjetje</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <!-- Form starts here -->
-        <form id="companyForm">
-          <div class="container">
-            <div class="row">
-              <div class="col-md-6">
-                <!-- Company Part -->
-                <div class="companyPart">
-                  <div class="form-group">
-                    <label for="companyName">Naziv podjetja</label>
-                    <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="companyNumber">Kontaktna številka</label>
-                    <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="website">Spletna stran</label>
-                    <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group" style="display: none;">
-                    <label for="listAdmin" id="labl">Admin</label>
-                    <asp:DropDownList ID="listAdmin" runat="server" Enabled="true" Visible="false"></asp:DropDownList>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <!-- Connection Part -->
-                <div class="connectionPart">
-                  <div class="form-group">
-                    <label for="dbDataSource">Data source</label>
-                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbUser">Uporabnik</label>
-                    <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbPassword">Geslo</label>
-                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="dbNameInstance">Naziv baze</label>
-                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                  <div class="form-group">
-                    <label for="connName">Naziv povezave</label>
-                    <asp:TextBox ID="connName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </form>
-        <!-- End of form -->
-      </div>
-      <div class="modal-footer">
-        <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="CompanyButton_Click" />
-        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
-        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
-      </div>
-    </div>
-  </div>
-</div>
 
         <div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-labelledby="groupFormModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">

@@ -141,53 +141,8 @@ namespace Dash.Models
             }
         }
 
-        public string GetSingularNameOriginal(int id, string customInner)
-        {
-            var names = GetNamesCurrent(id);
-            var nameEntry = names.FirstOrDefault(x => x.custom == customInner);
+       
 
-            if (nameEntry == null)
-            {
-                return string.Empty; // Handle the case where no matching name is found
-            }
-
-            string original = nameEntry.original;
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(Connection))
-                {
-                    conn.Open();
-                    using (SqlCommand cmd = new SqlCommand("SELECT d.id FROM dashboards d WHERE d.caption = @Caption", conn))
-                    {
-                        cmd.Parameters.AddWithValue("@Caption", original);
-                        var result = cmd.ExecuteScalar();
-
-                        if (result != null)
-                        {
-                            original = result.ToString();
-                        }
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                Logger.LogError(typeof(Admin), ex.Message); // Log the exception
-            }
-
-            return original;
-        }
-
-        public List<Names> GetNamesCurrent(int id)
-        {
-            var graphs = GetGraphs(id);
-            List<Dashboard.Names> data = new List<Dashboard.Names>();
-            foreach (var obj in graphs)
-            {
-                data.Add(new Dashboard.Names { original = obj.Name, custom = obj.CustomName });
-            }
-            return data;
-        }
 
         public List<DashboardInternal> GetGraphs(int id)
         {

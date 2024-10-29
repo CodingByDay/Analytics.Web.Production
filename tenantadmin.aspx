@@ -169,12 +169,7 @@
 
      
 
-	<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT dashboards.caption, dashboards.belongs, dashboards.id FROM dashboards " UpdateCommand="UPDATE dashboards SET belongs = @belongs WHERE (id = @id)">
-        <UpdateParameters>
-            <asp:Parameter Name="belongs" />
-            <asp:Parameter Name="id" />
-        </UpdateParameters>
-    </asp:SqlDataSource>
+
         <div class="inner-item user">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
@@ -290,8 +285,8 @@
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="belongs" Name="Podjetje" VisibleIndex="3" Caption="Analiza">
-              </dx:BootstrapGridViewTextColumn>
+                <dx:BootstrapGridViewTextColumn FieldName="custom_name" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
+                </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
@@ -300,22 +295,26 @@
        </div>
        </div>
 
-<asp:SqlDataSource 
+<asp:SqlDataSource
+    EnableCaching="false"
     ID="query" 
     runat="server" 
     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
     SelectCommand="sp_get_dashboards" 
     SelectCommandType="StoredProcedure"
-   >
+    UpdateCommand="sp_upsert_dashboards_custom_names"
+    UpdateCommandType="StoredProcedure"
+    >
     
     <SelectParameters>
-        <asp:Parameter Name="uname" Type="String" />
-        <asp:Parameter Name="ids" Type="String" />
+        <asp:Parameter Name="uname" Type="String" Direction="Input" />
+        <asp:Parameter Name="company" Type="Int32" Direction="Input" />       
     </SelectParameters>
     
     <UpdateParameters>
-        <asp:Parameter Name="belongs" Type="String" />
-        <asp:Parameter Name="id" Type="Int32" />
+        <asp:Parameter Name="dashboard_id" Type="Int32" />
+        <asp:Parameter Name="company_id" Type="Int32" />
+        <asp:Parameter Name="custom_name" Type="String" />
     </UpdateParameters>
 </asp:SqlDataSource>
 

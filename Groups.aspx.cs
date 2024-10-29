@@ -60,7 +60,6 @@ namespace Dash
         private string company_name;
         private string company_number;
         private string websiteCompany;
-        private string admin_id;
         private string databaseName;
         private bool isEditHappening = false;
         private bool isEditUser;
@@ -244,49 +243,7 @@ namespace Dash
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
         }
 
-        private void UpdateFormCompany(string v)
-        {
-            // Select * from companies where id_company={}
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT * FROM companies WHERE id_company={v};", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        company_name = (reader["company_name"].ToString());
-                        company_number = (reader["company_number"].ToString());
-                        websiteCompany = (reader["website"].ToString());
-                        admin_id = (reader["admin_id"].ToString());
-                        databaseName = (reader["database_name"].ToString());
-                    }
-
-                    companyName.Text = company_name;
-                    companyNumber.Text = company_number;
-                    website.Text = websiteCompany;
-
-                    listAdmin.SelectedValue = admin_id;
-                    var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
-
-                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionDB);
-                    dbDataSource.Text = builder.DataSource;
-                    dbNameInstance.Text = builder.InitialCatalog;
-                    dbUser.Text = builder.UserID;
-                    dbPassword.Text = builder.Password;
-                    connName.Text = databaseName.ToString();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -463,79 +420,10 @@ namespace Dash
             }
         }
 
-        private void UpdateFormName(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
+    
 
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
 
-        protected void RegistrationButton_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
-
-        private void InsertCompany()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_company) FROM companies", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
-                    cmd.ExecuteNonQuery();
-                    Dashboard graph = new Dashboard(next);
-                    graph.SetGraphs(next);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
-
-        private void UpdateAdminCompany(string admin_value, string cName)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+       
         public (string groupName, string groupDescription) GetDataForGroupById(int groupId)
         {
       
@@ -580,165 +468,9 @@ namespace Dash
                 }
             }
         }
-        protected void CompanyButton_Click(object sender, EventArgs e)
-        {
-            var ed = Request.Cookies["Edit"].Value.ToString();
-
-            if (!isEditHappening && ed == "no")
-            {
-                InsertCompany();
-                var names = companyName.Text.Split(' ');
-                Random random = new Random();
-                string adminname = $"{names[0]}{random.Next(1, 1000)}";
-                CreateAdminForTheCompany(adminname, companyName.Text);
-                UpdateAdminCompany(adminname, companyName.Text);
-                var checkDB = CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-
-                companyNumber.Text = "";
-                companyName.Text = "";
-                website.Text = "";
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
-            }
-            else
-            {
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-                build.InitialCatalog = dbNameInstance.Text;
-                build.DataSource = dbDataSource.Text;
-                build.UserID = dbUser.Text;
-                build.Password = dbPassword.Text;
-                //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                UpdateCompanyData();
-            }
-        }
-
-        private void AddConnectionString(string stringConnection)
-        {
-            try
-            {
-                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                var builder = new SqlConnectionStringBuilder(stringConnection);
-                ConnectionStringSettings conn = new ConnectionStringSettings();
-                conn.ConnectionString = builder.ConnectionString;
-                conn.Name = connName.Text;
-                config.ConnectionStrings.ConnectionStrings.Add(conn);
-                config.Save(ConfigurationSaveMode.Modified, true);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
-            }
-        }
-
-        private string CreateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
-        {
-            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-            build.InitialCatalog = dbNameInstance;
-            build.DataSource = dbSource;
-            build.UserID = dbUser;
-            build.Password = dbPassword;
-            AddConnectionString(build.ConnectionString);
-            return build.ConnectionString;
-        }
-
-        private void UpdateCompanyData()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var admin = listAdmin.SelectedValue;
-                    var websiteString = website.Text;
-                    var companyNum = companyNumber.Text;
-                    SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}', website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
-                    cmd.ExecuteNonQuery();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
-
-        private void CreateAdminForTheCompany(string name, string cName)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
-                    string Company = cName;
-                    int IdCompany = GetIdCompany(Company);
-                    string FinalQueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{IdCompany}','Viewer&Designer','{name}', '{name}@{name}.com')");
-                    SqlCommand createUser = new SqlCommand(FinalQueryRegistration, conn);
-                    var id = GetIdCompany(cName.Trim());
-                    createUser.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
-
-        protected void DeleteUser_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string username = groupsGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM users WHERE uname='{username}'", conn);
-                    deletedID = groupsGridView.GetSelectedFieldValues("Uname")[0].ToString();
-                    var company = GetCompanyQuery(groupsGridView.GetSelectedFieldValues("uname")[0].ToString());
-                    var spacelessCompany = company.Replace(" ", string.Empty);
-                    idFromString = GetIdCompany(spacelessCompany);
-                    cmd.ExecuteNonQuery();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-        }
+      
 
 
-
-
-
-        private string GetCompanyQuery(string uname)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM users INNER JOIN companies ON users.id_company = companies.id_company WHERE uname='{uname}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        companyInfo = (reader["company_name"].ToString());
-                    }
-                    var final = companyInfo.Replace(" ", string.Empty);
-                    return final;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return string.Empty;
-                }
-            }
-        }
 
         protected void SaveGraphs_Click(object sender, EventArgs e)
         {
@@ -781,27 +513,6 @@ namespace Dash
         }
 
       
-
-        private void RemoveConnectionString(string current)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT database_name FROM companies WHERE company_name='{current}'", conn);
-                    result = cmd.ExecuteScalar();
-                    Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                    config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
-                    config.Save(ConfigurationSaveMode.Modified, true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return;
-                }
-            }
-        }
 
         private int GetIdCompany(string current)
         {
@@ -848,25 +559,6 @@ namespace Dash
 
 
 
-
-        public static bool testConnection()
-        {
-            return true;
-        }
-
-
-
-        protected void NewUser_Click(object sender, EventArgs e)
-        {
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
-        }
-
-
-
-        protected void NewUserClick(object sender, EventArgs e)
-        {
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
-        }
 
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {

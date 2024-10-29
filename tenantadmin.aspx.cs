@@ -191,6 +191,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
+            graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
 
             if (!IsPostBack)
             {
@@ -199,11 +200,23 @@ namespace Dash
 
             usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany();
             usersGrid.SelectParameters["uname"].DefaultValue = HttpContext.Current.User.Identity.Name;
-            query.SelectParameters["ids"].DefaultValue = GetAllowedDashboardsForAdmin(HttpContext.Current.User.Identity.Name);
 
             InitializeUiChanges();
             Authenticate();
 
+        }
+
+
+        private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
+        {
+            e.Cancel = true;
+            string id = e.Keys["id"] != null ? e.Keys["id"].ToString() : string.Empty;
+            query.UpdateParameters["dashboard_id"].DefaultValue = id;
+            query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+            query.UpdateParameters["custom_name"].DefaultValue = e.NewValues["custom_name"] != null ? e.NewValues["custom_name"].ToString() : string.Empty;
+            query.Update();
+            graphsGridView.DataBind();
+            graphsGridView.CancelEdit();
         }
 
         private void InitializeUiChanges()
@@ -295,6 +308,7 @@ namespace Dash
             {
 
                 query.SelectParameters["uname"].DefaultValue = CurrentUsername;
+                query.SelectParameters["company"].DefaultValue = GetUserCompany().ToString();
 
                 if (graphsGridView.VisibleRowCount > 0)
                 {
@@ -312,28 +326,7 @@ namespace Dash
 
       
 
-      
 
-        private string GetFirstUserForCompany(string company)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    int id_company = GetIdCompany(company);
-
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) uname FROM Users WHERE id_company = @id;", conn);
-                    cmd.Parameters.AddWithValue("@id", id_company);
-                    var user = (string)cmd.ExecuteScalar();
-                    return user;
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
-            }
-        }
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {

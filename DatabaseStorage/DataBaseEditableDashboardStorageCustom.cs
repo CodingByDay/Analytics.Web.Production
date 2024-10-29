@@ -226,11 +226,10 @@ namespace Dash.DatabaseStorage
             return doc;
         }
 
-     
+
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
-
             var availableUser = permissionsUser.Permissions.Select(p => p.id).ToList();
             var availableGroup = permissionsGroup.Permissions.Select(p => p.id).ToList();
 
@@ -249,49 +248,27 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(this.connection))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand($@"
-                SELECT 
-                    d.id, 
-                    d.caption, 
-                    d.belongs, 
-                    d.meta_data, 
-                    COALESCE(ds.sort_order, NULL) AS sort_order 
-                FROM 
-                    dashboards d
-                LEFT JOIN 
-                    dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname 
-                WHERE 
-                    d.id IN ({inClause}) 
-                ORDER BY 
-                    CASE 
-                        WHEN ds.sort_order IS NOT NULL THEN ds.sort_order  -- Order by sort_order for non-NULL
-                        ELSE (SELECT COUNT(*) FROM dashboards_sorted_by_user AS sub_ds 
-                              WHERE sub_ds.sort_order IS NOT NULL AND sub_ds.dashboard_id < d.id) + 1
-                    END,
-                    d.id;");
-                GetCommand.Parameters.AddWithValue("@uname", HttpContext.Current.User.Identity.Name);
-                GetCommand.Connection = connection;
-                SqlDataReader reader = GetCommand.ExecuteReader();
-                string name = HttpContext.Current.User.Identity.Name;
-                int id = GetIdCompany(GetCompanyForUser());
-                Models.Dashboard graph = new Models.Dashboard(id);
-                var payload = graph.GetNames(id);
-                while (reader.Read())
-                {
-                    string ID = reader.GetInt32(0).ToString();
-                    string Caption = reader.GetString(1);
-                    try
-                    {
-                        var custom = payload.FirstOrDefault(x => x.original == Caption).custom;
 
-                        list.Add(new DashboardInfo() { ID = ID, Name = custom });
-                    }
-                    catch
+                // Create the command for the stored procedure
+                using (SqlCommand GetCommand = new SqlCommand("sp_get_dashboards", connection))
+                {
+                    GetCommand.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters for the stored procedure
+                    GetCommand.Parameters.AddWithValue("@uname", HttpContext.Current.User.Identity.Name);
+                    GetCommand.Parameters.AddWithValue("@company", GetIdCompany(GetCompanyForUser()));
+
+                    // Execute the command and read the results
+                    using (SqlDataReader reader = GetCommand.ExecuteReader())
                     {
-                        list.Add(new DashboardInfo() { ID = ID, Name = Caption });
+                        while (reader.Read())
+                        {
+                            string ID = reader["id"].ToString(); // Use column name
+                            string customName = reader["custom_name"] != DBNull.Value ? reader["custom_name"].ToString() : string.Empty; // Use column name
+                            list.Add(new DashboardInfo() { ID = ID, Name = customName });
+                        }
                     }
                 }
-
             }
             return list;
         }

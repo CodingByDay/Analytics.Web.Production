@@ -237,6 +237,7 @@ namespace Dash
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
             graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
+
             if (!IsPostBack)
             {
 
@@ -743,9 +744,6 @@ namespace Dash
                             insertCmd.ExecuteNonQuery();
                         }
 
-                        // Set up the dashboard
-                        Dashboard graph = new Dashboard(next);
-                        graph.SetGraphs(next);
                     }
                 }
                 catch (Exception ex)

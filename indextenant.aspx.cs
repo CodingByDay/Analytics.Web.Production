@@ -214,6 +214,7 @@ namespace Dash
             try
             {
                 Response.Cookies["dashboard"].Value = e.DashboardId;
+                LogDashboardView(HttpContext.Current.User.Identity.Name, e.DashboardId);
                 return;
             } catch (Exception ex)
             {
@@ -221,7 +222,29 @@ namespace Dash
             }
         }
 
-       
+
+
+        public void LogDashboardView(string userId, string dashboardId)
+        {
+            using (SqlConnection connection = new SqlConnection(this.connection))
+            {
+                connection.Open();
+
+                string query = @"
+                    INSERT INTO dashboard_view_logs (user_id, dashboard_id, view_time)
+                    VALUES (@userId, @dashboardId, GETDATE());";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@userId", userId);
+                    command.Parameters.AddWithValue("@dashboardId", dashboardId);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
             try
