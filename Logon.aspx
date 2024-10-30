@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#"  AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="Dash.Logon" EnableEventValidation="false"%>
 
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>

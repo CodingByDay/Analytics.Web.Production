@@ -1,8 +1,8 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="IndexTenant.aspx.cs" Inherits="Dash.indextenant" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="IndexTenant.aspx.cs" Inherits="Dash.IndexTenant" %>
 
-<%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Dashboard.v23.2.Web.WebForms, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 
-<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v23.2, Version=23.2.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
 
     <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -39,7 +39,6 @@
             }
 
             function askPopup() {
-                console.log("ask");
             }
 
             function PerformDelete(dashboardid) {
@@ -90,10 +89,16 @@
             var initialState = '';
 
             function onDashboardEndUpdate(s, e) {
+
                 if (initialState == '') {
                     initialState = s.GetDashboardState();
                 }
             }
+
+            window.onload = function () {
+                setInterval(checkViewerMode, 1000);
+            };
+
         </script>
         <style>
         .dx-widget  {  
@@ -127,11 +132,13 @@
         <div style="position: absolute; left: 0; right: 0; top:35px; bottom:0;">
 
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
-        <ClientSideEvents BeforeRender="onBeforeRender"
+        <ClientSideEvents 
+            BeforeRender="onBeforeRender"
             DashboardInitializing ="ask"
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"
             DashboardEndUpdate="onDashboardEndUpdate"
+            DashboardStateChanged="onDashboardStateChanged"
             DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
             ItemWidgetUpdated="updatecustomizeWidgets"
             DashboardInitialized="correctTheLoadingState" />
