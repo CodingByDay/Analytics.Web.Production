@@ -64,6 +64,13 @@
     background-repeat: no-repeat; /* Prevents the image from repeating */
     min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
 }
+
+     html, body {
+    height: 100%; /* Ensures the body takes full height */
+    margin: 0; /* Removes default margin */
+    overflow: hidden; /* Prevents scrolling */
+}
+
     </style>
    
  

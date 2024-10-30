@@ -28,10 +28,13 @@
 	    <meta name="msapplication-TileImage" content="images/logo.png">
 
       <style>
-         body {
-         background-color: #17c0eb;
-         font-family: Nunito Sans;
-         }
+            body {
+            background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+            background-size: cover; /* This makes sure the image covers the entire background */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
+        }
          .btn {
          background-color: #17c0eb;
          width: 100%;
@@ -40,9 +43,9 @@
          font-size: 18px;
          }
          .btn:hover {
-         background-color: #2d3436;
-         color: #fff;
-         }
+            background-color: #39ace7;
+            color: #fff;
+        }
          input {
          height: 50px !important;
          }

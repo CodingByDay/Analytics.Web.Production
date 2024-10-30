@@ -7,10 +7,13 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
 
       <style>
-         body {
-         background-color: #17c0eb;
-         font-family: Nunito Sans;
-         }
+           body {
+            background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+            background-size: cover; /* This makes sure the image covers the entire background */
+            background-position: center; /* Centers the image */
+            background-repeat: no-repeat; /* Prevents the image from repeating */
+            min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
+        }
          .btn {
          background-color: #17c0eb;
          width: 100%;
