@@ -156,7 +156,7 @@
 
         function AdjustSize(gridName) {
 
-            var height = Math.max(0, document.documentElement.clientHeight - (0.2 * document.documentElement.clientHeight)); // 10vh bottom margin 06.09.2024 Janko Jovičić
+            var height = Math.max(0, document.documentElement.clientHeight - (0.25 * document.documentElement.clientHeight)); 
 
             if (gridName == "company") {
                 companyGrid.SetHeight(height);

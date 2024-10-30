@@ -4,11 +4,11 @@
 
 img#pic {
     position: absolute;
-    left: 0;
-    top: 4px;
+    left: 2px;
+    top: 5px;
 }
 label#switcherOuter {
-    margin-top: 0.5em;
+    margin-top: 0.4em;
 }
 .outer {
     display: flex;
