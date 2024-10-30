@@ -7,14 +7,8 @@ namespace Dash
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            login.Click += Login_Click;
         }
 
-        private void Login_Click(object sender, EventArgs e)
-        {
-            var version = ConfigurationManager.AppSettings["version"];
-            Response.Redirect($"Logon.aspx?version={version}", false);
-            Context.ApplicationInstance.CompleteRequest();
-        }
+    
     }
 }

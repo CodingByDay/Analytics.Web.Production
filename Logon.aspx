@@ -57,7 +57,13 @@
          width: 100%!important;
          height: 100%!important;
      }
-
+     body {
+    background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+    background-size: cover; /* This makes sure the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
+}
     </style>
    
  

@@ -46,11 +46,11 @@ namespace Dash
                     if (Convert.ToBoolean(rdr["ReturnCode"]))
                     {
                         SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
-                        Response.Write($"<script type=\"text/javascript\">alert('Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.'  );</script>");
+                        Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.', 'success'); };</script>");
                     }
                     else
                     {
-                        Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake. Uporabniško ime ne obstaja.'  );</script>");
+                        Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'Prišlo je do napake. Uporabniško ime ne obstaja.', 'error'); };</script>");
                     }
                 }
             }

@@ -4,10 +4,29 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Resetiraj geslo.</title>
+      <title>Pozabljeno geslo</title>
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+         <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="72x72" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="76x76" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="114x114" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="120x120" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="144x144" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="152x152" href="images/logo.png">
+	    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
+	    <link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
+	    <link rel="icon" type="image/png" href="images/logo.png" sizes="194x194">
+	    <link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
+	    <link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
+	    <link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
+	    <link rel="shortcut icon" href="images/logo.png">
+	    <meta name="msapplication-TileColor" content="#603cba">
+	    <meta name="msapplication-TileImage" content="images/logo.png">
+
       <style>
          body {
          background-color: #17c0eb;
@@ -60,15 +79,14 @@
 
       <div class="container d-flex justify-content-center align-items-center vh-100">
          <div class="bg-white text-center p-5 mt-3 center">
-            <h3>Pozabili geslo? </h3>
-            <p>Če ste pozabili geslo, lahko ga resetirate.</p>
+            <h3>Pozabiljeno geslo? </h3>
             <form class="pb-3" action="#" runat="server">
                <div class="form-group">
                    <asp:TextBox ID="username" runat="server" placeholder="Uporabniško ime" CssClass="form-control form-control-lg"></asp:TextBox>
 
                </div>
            
-          <asp:Button ID="reset" runat="server" Text="Resetiraj" type="submit" OnClick="reset_Click" CssClass="btn" />
+          <asp:Button ID="reset" runat="server" Text="Pošlji povezavo" type="submit" OnClick="reset_Click" CssClass="btn" />
                 <br />
                 <br />
                 <hr />

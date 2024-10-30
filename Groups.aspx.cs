@@ -203,11 +203,16 @@ namespace Dash
             }
 
 
+            InitializeUiChanges();
             Authenticate();
 
 
         }
-
+        private void InitializeUiChanges()
+        {
+            SiteMaster mymaster = Master as SiteMaster;
+            mymaster.BackButtonVisible = true;
+        }
         /*private void InitializeFilters()
         {
             // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
