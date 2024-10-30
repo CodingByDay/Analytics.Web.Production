@@ -6,6 +6,10 @@
   
 
     <style>
+        .square:hover {
+            opacity: 0.8;
+            font-weight: 700;
+        }
         .newRow {
             margin-top: 1em;
         }
@@ -76,11 +80,12 @@
                     EnableRowsCache="False" >
                     
                     <Columns>
-                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" Caption="Možnosti" ShowDeleteButton="True" VisibleIndex="0" />
                         <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
-                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
-                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
+                                                    <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -107,7 +112,7 @@
                 </asp:SqlDataSource>
 
                 <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewTypes')">Add New Type</button>
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewTypes')">Nov tip</button>
             </div>
         </div>
     </div>
@@ -131,11 +136,12 @@
                     EnableRowsCache="False" >
                     
                     <Columns>
-                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" Caption="Možnosti" />
                         <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
-                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
-                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
+                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -162,7 +168,7 @@
                 </asp:SqlDataSource>
 
                 <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewOrganizations')">Add New Organization</button>
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewOrganizations')">Novo podjetje</button>
             </div>
         </div>
     </div>
@@ -186,11 +192,12 @@
                     EnableRowsCache="False" >
                     
                     <Columns>
-                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" />
+                        <dx:BootstrapGridViewCommandColumn ShowEditButton="True" ShowDeleteButton="True" VisibleIndex="0" Caption="Možnosti" />
                         <dx:BootstrapGridViewDataColumn FieldName="option_type" Visible="false" Caption="Option Type" />
-                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Value" />
-                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Description" />
+                        <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
+                        <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
+                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -217,7 +224,7 @@
                 </asp:SqlDataSource>
 
                 <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewLanguages')">Add New Language</button>
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewLanguages')">Novi jezik</button>
             </div>
         </div>
     </div>

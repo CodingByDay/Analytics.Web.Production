@@ -86,6 +86,10 @@
             h3 {
                 font-size: 24px; /* Smaller font size for smaller screens */
             }
+
+            .form-card {
+                margin-top: -20em!important;
+            }
         }
     </style>
 </head>

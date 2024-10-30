@@ -92,6 +92,7 @@ namespace Dash
                     }
                 }
             }
+
         }
 
         private void LoadMetaDataAndApplySelections(int dashboardId)

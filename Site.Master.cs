@@ -51,7 +51,27 @@ namespace Dash
             HideHamburgerIfNecessary();
 
 
+            if (Request.Browser.IsMobileDevice && Request.Browser.ScreenPixelsWidth <= 767)
+            {
+                HideActionButtonsForMobile();
+            }
+
         }
+
+        private void HideActionButtonsForMobile()
+        {
+            adminButton.Visible = false;
+            adminButtonOuter.Visible = false;
+            backButton.Visible = false;
+            backButtonOuter.Visible = false;
+            filtersButton.Visible = false;
+            filterButtonOuter.Visible = false;
+            groupsButton.Visible = false;
+            groupsButtonOuter.Visible = false;
+            pic.Visible = false;
+        }
+
+
 
         private void HideHamburgerIfNecessary()
         {

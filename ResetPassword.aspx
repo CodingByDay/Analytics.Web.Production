@@ -64,6 +64,17 @@
          width: 90%;
          }
          }
+
+           @media(max-width: 768px) {
+              h3 {
+                  font-size: 24px; /* Smaller font size for smaller screens */
+              }
+
+               .bg-white.text-center.p-5.mt-3.center {
+                  margin-top: -20em!important;
+              }
+          }
+
       </style>
    </head>
    <body>

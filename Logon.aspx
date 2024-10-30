@@ -46,6 +46,19 @@
     </script>
      <style>
          /* Smartphones (portrait and landscape) ----------- */
+         @media (max-width: 767px) {
+             #formContent {
+                 margin-top:-70%;
+             }
+             input[type=button], input[type=submit], input[type=reset] {
+
+                padding: 10px;
+            
+            }
+
+         }
+         
+
 
 .login {
     text-align: center!important;

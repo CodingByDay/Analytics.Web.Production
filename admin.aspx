@@ -205,14 +205,14 @@
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
-            <SettingsText SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
+            <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
                 <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Actions">
+                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Možnosti" >
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -261,11 +261,11 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-<SettingsText SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
+<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Actions">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
@@ -340,11 +340,11 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
-<SettingsText SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Action">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
