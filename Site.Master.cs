@@ -47,7 +47,21 @@ namespace Dash
             CheckWhetherToShowTheSwitcherAtAll();
 
             ConditionalyAddStylesBasedOnTheUrl();
-         
+
+            HideHamburgerIfNecessary();
+
+
+        }
+
+        private void HideHamburgerIfNecessary()
+        {
+            string currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+
+            // Check if the URL contains "Index" or "IndexTenant"
+            if (!currentUrl.Contains("Index") && !currentUrl.Contains("IndexTenant"))
+            {
+                pic.Visible = false;
+            }
         }
 
         private void ConditionalyAddStylesBasedOnTheUrl()
