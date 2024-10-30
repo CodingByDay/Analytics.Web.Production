@@ -199,7 +199,6 @@ namespace Dash
             }
 
             usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany();
-            usersGrid.SelectParameters["uname"].DefaultValue = HttpContext.Current.User.Identity.Name;
 
             InitializeUiChanges();
             Authenticate();
@@ -693,7 +692,12 @@ namespace Dash
             }
             else
             {
-                SaveUserPermissions();
+                if (HttpContext.Current.User.Identity.Name != CurrentUsername)
+                {
+                    SaveUserPermissions();
+                }
+
+                graphsGridView.DataBind();
             }
         }
 

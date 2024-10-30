@@ -287,7 +287,7 @@ namespace Dash
                 if (graphsGridView.VisibleRowCount > 0)
                 {
                     graphsGridView.Selection.BeginSelection();
-                    //ShowConfigForUser();
+                    ShowConfigForUser();
                     graphsGridView.Selection.EndSelection();
                 }
             } 
@@ -445,7 +445,7 @@ namespace Dash
             if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
             {
                 // Show the configuration for the user.
-               // ShowConfigForUser();
+                ShowConfigForUser();
             }
 
         }
@@ -929,6 +929,7 @@ namespace Dash
             else
             {
                 SaveUserPermissions();
+                graphsGridView.DataBind();
             }
         }
 

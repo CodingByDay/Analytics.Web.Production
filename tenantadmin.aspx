@@ -179,10 +179,9 @@
             ID="usersGrid" 
             runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
-            SelectCommand="SELECT * FROM [users] WHERE id_company = @company_id AND uname != @uname;">
+            SelectCommand="SELECT * FROM [users] WHERE id_company = @company_id;">
             <SelectParameters>
                 <asp:Parameter Name="company_id" Type="Int32" />
-                <asp:Parameter Name="uname" Type="String" />
             </SelectParameters>
         </asp:SqlDataSource>           
                 
