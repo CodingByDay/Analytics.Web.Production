@@ -9,20 +9,9 @@
       <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300i,400,700&display=swap" rel="stylesheet">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
          <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="72x72" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="76x76" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="114x114" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="120x120" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="144x144" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="152x152" href="images/logo.png">
-	    <link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
-	    <link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
-	    <link rel="icon" type="image/png" href="images/logo.png" sizes="194x194">
-	    <link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
-	    <link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
-	    <link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
+        <!-- Favicons -->
+        <link href="assets/img/favicon.ico" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 	    <link rel="shortcut icon" href="images/logo.png">
 	    <meta name="msapplication-TileColor" content="#603cba">
 	    <meta name="msapplication-TileImage" content="images/logo.png">

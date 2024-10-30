@@ -69,32 +69,41 @@ namespace Dash
                 string email = ConfigurationManager.AppSettings["email"];
                 string username = ConfigurationManager.AppSettings["username"];
                 string password = ConfigurationManager.AppSettings["password"];
-                // MailMessage class is present is System.Net.Mail namespace
+
+                // MailMessage class is present in System.Net.Mail namespace
                 MailMessage mailMessage = new MailMessage(email, ToEmail);
+
                 // StringBuilder class is present in System.Text namespace
                 StringBuilder sbEmailBody = new StringBuilder();
                 sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
                 sbEmailBody.Append("Prosimo da na naslednji povezavi resetirate geslo.");
-                sbEmailBody.Append("<br/>"); sbEmailBody.Append("https://dash.in-sist.si/ChangePassword.aspx?uid=" + UniqueId);
+                sbEmailBody.Append("<br/>");
+
+                // Get the base URL dynamically
+                string baseUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}/";
+                sbEmailBody.Append($"<a href='{baseUrl}ChangePassword.aspx?uid={UniqueId}'>Resetirajte geslo</a><br/><br/>");
+
                 sbEmailBody.Append("<br/><br/>");
-                sbEmailBody.Append("<b>IN SIST d.o.o.</b>");
+                sbEmailBody.Append("<b>In.Sist d.o.o.</b>");
+
                 mailMessage.IsBodyHtml = true;
                 mailMessage.Body = sbEmailBody.ToString();
-                mailMessage.Subject = "Resetiranje gesla IN SIST";
+                mailMessage.Subject = "Resetiranje gesla In.Sist d.o.o.";
+
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                 smtpClient.Credentials = new System.Net.NetworkCredential()
                 {
                     UserName = username,
-                    Password = "edtstqntgzlaszcr"
+                    Password = password 
                 };
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailMessage);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                var s = ex;
-                var stop = true;
+                return;
             }
         }
+
     }
 }

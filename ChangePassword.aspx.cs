@@ -8,16 +8,14 @@ namespace Dash
 {
     public partial class ChangePassword : System.Web.UI.Page
     {
-        private SqlConnection conn;
-
-        // Comment
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                 if (!IsPasswordResetLinkValid())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Čas za resetiranje gesla je potekal ali link ni več vredo.'  );</script>");
+                    ShowAlert("Čas za resetiranje gesla je potekal ali link ni več vredo.");
+                    Response.Redirect("Logon.aspx", false);
                 }
             }
         }
@@ -30,88 +28,94 @@ namespace Dash
 
         protected void change_Click(object sender, EventArgs e)
         {
-            if (checkEquality())
+            if (ArePasswordsEqual())
             {
                 if (ChangeUserPassword())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjeno.'  );</script>");
+                    ShowAlert("Geslo uspešno spremenjeno.");
+                    Response.Redirect("Logon.aspx", false); // Redirect after successful password change
                 }
                 else
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Link za spremembo gesla je potekal ali ni vejaven.'  );</script>");
+                    ShowAlert("Link za spremembo gesla je potekal ali ni vejaven.");
                 }
             }
             else
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Gesla niso ista.'  );</script>");
+                ShowAlert("Gesla nista enaka.");
             }
         }
 
         private bool IsPasswordResetLinkValid()
         {
-            List<SqlParameter> paramList = new List<SqlParameter>()
-         {
-         new SqlParameter()
-          {
-            ParameterName = "@GUID",
-            Value = Request.QueryString["uid"]
-          }
-        };
+            var uid = Request.QueryString["uid"];
+            if (string.IsNullOrEmpty(uid))
+            {
+                return false; // Handle missing UID
+            }
 
-            return ExecuteSP("sp_is_password_reset_link_valid", paramList);
+            var paramList = new List<SqlParameter>
+            {
+                new SqlParameter("@GUID", uid)
+            };
+
+            return ExecuteStoredProcedure("sp_is_password_reset_link_valid", paramList);
         }
 
         private bool ChangeUserPassword()
         {
-            List<SqlParameter> paramList = new List<SqlParameter>()
+            var uid = Request.QueryString["uid"];
+            if (string.IsNullOrEmpty(uid))
             {
-                new SqlParameter()
-                {
-                    ParameterName = "@GUID",
-                    Value = Request.QueryString["uid"]
-                },
-                new SqlParameter()
-                {
-                    ParameterName = "@Password",
-                    Value = FormsAuthentication.HashPasswordForStoringInConfigFile(pwd.Text, "SHA1")
-                }
+                return false; // Handle missing UID
+            }
+
+            var paramList = new List<SqlParameter>
+            {
+                new SqlParameter("@GUID", uid),
+                new SqlParameter("@Password", HashPassword(pwd.Text))
             };
 
-            return ExecuteSP("sp_change_password", paramList);
+            return ExecuteStoredProcedure("sp_change_password", paramList);
         }
 
-        private bool checkEquality()
+        private bool ArePasswordsEqual()
         {
-            if (pwd.Text == REpwd.Text)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return string.Equals(pwd.Text, REpwd.Text);
         }
 
-        private bool ExecuteSP(string SPName, List<SqlParameter> SPParameters)
+        private bool ExecuteStoredProcedure(string spName, List<SqlParameter> spParameters)
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            conn = new SqlConnection(ConnectionString);
-
-            using (conn)
+            using (var conn = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand(SPName, conn);
-
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-                foreach (SqlParameter parameter in SPParameters)
+                using (var cmd = new SqlCommand(spName, conn))
                 {
-                    cmd.Parameters.Add(parameter);
-                }
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                conn.Open();
-                return Convert.ToBoolean(cmd.ExecuteScalar());
+                    cmd.Parameters.AddRange(spParameters.ToArray());
+
+                    conn.Open();
+                    return Convert.ToBoolean(cmd.ExecuteScalar());
+                }
             }
+        }
+
+        private string HashPassword(string password)
+        {
+            // Consider using a more secure hashing algorithm like PBKDF2, bcrypt, or Argon2
+            return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+        }
+        private void ShowAlert(string message)
+        {
+            string script = $@"
+            <script type='text/javascript'>
+                document.addEventListener('DOMContentLoaded', function() {{
+                    Swal.fire('{message}');
+                }});
+            </script>";
+            ClientScript.RegisterStartupScript(this.GetType(), "ShowAlert", script, false);
         }
     }
 }
