@@ -302,6 +302,9 @@ namespace Dash
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            var key = e.EditingKeyValue;
+            companiesGridView.Selection.SelectRowByKey(key);
+
             IsEditCompany = true;
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
@@ -413,6 +416,9 @@ namespace Dash
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            var key = e.EditingKeyValue;
+            usersGridView.Selection.SelectRowByKey(key);
+
             IsEditUser = true;
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;

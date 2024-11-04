@@ -329,6 +329,9 @@ namespace Dash
 
         private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            var key = e.EditingKeyValue;
+            usersGridView.Selection.SelectRowByKey(key);
+
             TxtUserName.Enabled = false;
             var name = e.EditingKeyValue;
             // Call js. function here if the test passes.
