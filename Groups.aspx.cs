@@ -299,6 +299,10 @@ namespace Dash
 
         private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
+            var key = e.EditingKeyValue;
+
+            groupsGridView.Selection.SelectRowByKey(key);
+
             GroupEdit = true;
             GroupsGrids.Visible = true;
 
