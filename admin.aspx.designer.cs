@@ -96,6 +96,33 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView graphsGridView;
 
         /// <summary>
+        /// TypeFilterDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource TypeFilterDataSource;
+
+        /// <summary>
+        /// CompanyFilterDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource CompanyFilterDataSource;
+
+        /// <summary>
+        /// LanguageFilterDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource LanguageFilterDataSource;
+
+        /// <summary>
         /// query control.
         /// </summary>
         /// <remarks>

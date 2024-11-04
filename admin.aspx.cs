@@ -1,8 +1,10 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
+using DevExpress.Data.Filtering;
 using DevExpress.Utils.Behaviors;
 using DevExpress.Utils.DragDrop;
+using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
@@ -237,6 +239,7 @@ namespace Dash
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
             graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
+            graphsGridView.CustomCallback += Grid_CustomCallback;
 
             if (!IsPostBack)
             {
@@ -246,6 +249,8 @@ namespace Dash
             InitializeUiChanges();
             Authenticate();  
         }
+
+      
 
         private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
@@ -390,6 +395,23 @@ namespace Dash
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
+        }
+
+        protected void Grid_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            if (e.Parameters == "FilterByCategories")
+            {
+                var column = graphsGridView.DataColumns["CategoryName"];
+                var lookup = graphsGridView.FindFilterCellTemplateControl(column, "Lookup") as ASPxGridLookup;
+                if (lookup != null)
+                    graphsGridView.ApplyFilterToColumn(column, CreateCriteria(lookup, column.FieldName));
+            }
+        }
+
+        protected CriteriaOperator CreateCriteria(ASPxGridLookup gridLookup, string fieldName)
+        {
+            var values = gridLookup.GridView.GetSelectedFieldValues(fieldName);
+            return values.Count > 0 ? new InOperator(fieldName, values) : null;
         }
 
         private string GetFirstUserForCompany(string company)

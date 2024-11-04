@@ -185,6 +185,18 @@
             location.reload();
         });
 
+        function Type_Lookup_ValueChanged(s, e) {
+            grid.PerformCallback("FilterByType");
+        }
+
+        function Company_Lookup_ValueChanged(s, e) {
+            grid.PerformCallback("FilterByCompany");
+        }
+
+        function Language_Lookup_ValueChanged(s, e) {
+            grid.PerformCallback("FilterByLanguage");
+        }
+
     </script>
 
 
@@ -347,12 +359,48 @@
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
-                  <SettingsEditForm Visible="False" />
+              <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="custom_name" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
               </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+
+                  <FilterTemplate>  
+                    <dx:ASPxGridLookup runat="server" ID="Lookup" AutoGenerateColumns="False" KeyFieldName="id"  
+                        DataSourceID="TypeFilterDataSource" SelectionMode="Multiple" TextFormatString="{0}">  
+                        <Columns>  
+                            <dx:GridViewDataTextColumn FieldName="description" />  
+                        </Columns>  
+                        <ClientSideEvents ValueChanged="Type_Lookup_ValueChanged" />  
+                    </dx:ASPxGridLookup>  
+                </FilterTemplate>  
+
+
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+                      <FilterTemplate>  
+                          <dx:ASPxGridLookup runat="server" ID="Lookup" AutoGenerateColumns="False" KeyFieldName="id"  
+                              DataSourceID="CompanyFilterDataSource" SelectionMode="Multiple" TextFormatString="{0}">  
+                              <Columns>  
+                                  <dx:GridViewDataTextColumn FieldName="description" />  
+                              </Columns>  
+                              <ClientSideEvents ValueChanged="Company_Lookup_ValueChanged" />  
+                          </dx:ASPxGridLookup>  
+                      </FilterTemplate>
+              </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewTextColumn FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+                     <FilterTemplate>  
+                       <dx:ASPxGridLookup runat="server" ID="Lookup" AutoGenerateColumns="False" KeyFieldName="id"  
+                           DataSourceID="LanguageFilterDataSource" SelectionMode="Multiple" TextFormatString="{0}">  
+                           <Columns>  
+                               <dx:GridViewDataTextColumn FieldName="description" />  
+                           </Columns>  
+                           <ClientSideEvents ValueChanged="Language_Lookup_ValueChanged" />  
+                       </dx:ASPxGridLookup>  
+                   </FilterTemplate>
+             </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
@@ -360,7 +408,20 @@
 
        </div>
        </div>
+<asp:SqlDataSource ID="TypeFilterDataSource" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:YourConnectionStringName %>"
+    SelectCommand="SELECT * FROM meta_options WHERE option_type = 'type'">
+</asp:SqlDataSource>
 
+<asp:SqlDataSource ID="CompanyFilterDataSource" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:YourConnectionStringName %>"
+    SelectCommand="SELECT * FROM meta_options WHERE option_type = 'company'">
+</asp:SqlDataSource>
+
+<asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:YourConnectionStringName %>"
+    SelectCommand="SELECT * FROM meta_options WHERE option_type = 'language'">
+</asp:SqlDataSource>
 <asp:SqlDataSource
     EnableCaching="false"
     ID="query" 
