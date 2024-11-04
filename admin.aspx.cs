@@ -1356,5 +1356,60 @@ namespace Dash
                 }
             }
         }
+
+        protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
+        {
+            List<string> data = new List<string>();
+            if(e.Column.Caption == "Tip")
+            {
+                data = GetFilterValuesForSpecificFilter("type");
+            } else if (e.Column.Caption == "Podjetje")
+            {
+                data = GetFilterValuesForSpecificFilter("company");
+            } else if (e.Column.Caption == "Jezik")
+            {
+                data = GetFilterValuesForSpecificFilter("language");
+            }
+
+            e.Values.Clear();
+
+            for (int i = 0; i<data.Count;i++)
+            {
+                e.AddValue(data[i], "=");
+            }
+        }
+
+        private List<string> GetFilterValuesForSpecificFilter(string filter)
+        {
+            List<string> filterValues = new List<string>();
+
+            // Define your connection string (replace with actual connection string)
+
+            // Define the query
+            string query = "SELECT description FROM meta_options WHERE option_type = @filter";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    // Add parameter to prevent SQL injection
+                    command.Parameters.AddWithValue("@filter", filter);
+
+                    // Open the connection
+                    conn.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Read each result and add to the list
+                        while (reader.Read())
+                        {
+                            filterValues.Add(reader["description"].ToString());
+                        }
+                    }
+                }
+            }
+
+            return filterValues;
+        }
     }
 }
