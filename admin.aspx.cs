@@ -239,7 +239,7 @@ namespace Dash
             graphsGridView.EnableCallBacks = false;
             graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
             graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
-            graphsGridView.CustomCallback += Grid_CustomCallback;
+            graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
             if (!IsPostBack)
             {
@@ -250,7 +250,26 @@ namespace Dash
             Authenticate();  
         }
 
-      
+        private void GraphsGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            e.Handled = true;
+
+            foreach(var row in e.UpdateValues)
+            {
+                string rowId = row.Keys["id"].ToString();
+                query.UpdateParameters["dashboard_id"].DefaultValue = rowId;
+                query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+                query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
+
+                query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null ? row.NewValues["meta_type"].ToString() : string.Empty;
+                query.UpdateParameters["meta_company"].DefaultValue = row.NewValues["meta_company"] != null ? row.NewValues["meta_company"].ToString() : string.Empty;
+                query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null ? row.NewValues["meta_language"].ToString() : string.Empty;
+                query.Update();
+            }
+
+            graphsGridView.DataBind();
+
+        }
 
         private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
@@ -397,17 +416,7 @@ namespace Dash
             }
         }
 
-        protected void Grid_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
-        {
-            if (e.Parameters == "FilterByCategories")
-            {
-                var column = graphsGridView.DataColumns["CategoryName"];
-                var lookup = graphsGridView.FindFilterCellTemplateControl(column, "Lookup") as ASPxGridLookup;
-                if (lookup != null)
-                    graphsGridView.ApplyFilterToColumn(column, CreateCriteria(lookup, column.FieldName));
-            }
-        }
-
+   
         protected CriteriaOperator CreateCriteria(ASPxGridLookup gridLookup, string fieldName)
         {
             var values = gridLookup.GridView.GetSelectedFieldValues(fieldName);
@@ -1359,7 +1368,9 @@ namespace Dash
 
         protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
         {
-            List<string> data = new List<string>();
+            e.Handled = true;
+
+            List<MetaOption> data = new List<MetaOption>();
             if(e.Column.Caption == "Tip")
             {
                 data = GetFilterValuesForSpecificFilter("type");
@@ -1375,18 +1386,18 @@ namespace Dash
 
             for (int i = 0; i<data.Count;i++)
             {
-                e.AddValue(data[i], "=");
+                e.AddValue(displayText: data[i].description, value: data[i].value);
             }
         }
 
-        private List<string> GetFilterValuesForSpecificFilter(string filter)
+        private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
         {
-            List<string> filterValues = new List<string>();
+            List<MetaOption> filterValues = new List<MetaOption>();
 
             // Define your connection string (replace with actual connection string)
 
             // Define the query
-            string query = "SELECT description FROM meta_options WHERE option_type = @filter";
+            string query = "SELECT description, value FROM meta_options WHERE option_type = @filter";
 
             using (SqlConnection conn = new SqlConnection(connection))
             {
@@ -1403,7 +1414,9 @@ namespace Dash
                         // Read each result and add to the list
                         while (reader.Read())
                         {
-                            filterValues.Add(reader["description"].ToString());
+                            filterValues.Add(new MetaOption { description = reader["description"].ToString(),  
+                                                              value = reader["description"].ToString() 
+                                                            });
                         }
                     }
                 }

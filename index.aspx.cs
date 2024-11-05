@@ -1,9 +1,11 @@
 ﻿using Dash.DatabaseStorage;
+using Dash.Models;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
+using DevExpress.Web.Internal;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,22 +31,8 @@ namespace Dash
         private string role;
         private static int permisionID;
 
-        private MetaData metaData
-        {
-            get
-            {
-                if (Session["MetaData"] == null)
-                {
-                    // Create a new instance if the session is empty
-                    Session["MetaData"] = new MetaData();
-                }
-                return Session["MetaData"] as MetaData;
-            }
-            set
-            {
-                Session["MetaData"] = value;
-            }
-        }
+
+      
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -65,7 +53,7 @@ namespace Dash
             ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
             ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
             ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            //ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
+            // ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
             ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
             if (!IsPostBack)
@@ -92,32 +80,8 @@ namespace Dash
                     }
                 }
             }
-
         }
 
-        private void LoadMetaDataAndApplySelections(int dashboardId)
-        {
-            string query = "SELECT meta_data FROM dashboards WHERE id = @dashboardId";
-            var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = dashboardId;
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            string jsonMetaData = reader["meta_data"].ToString();
-                            metaData = JsonConvert.DeserializeObject<MetaData>(jsonMetaData);
-                        }
-                    }
-                }
-            }
-        }
 
       
 
@@ -148,13 +112,7 @@ namespace Dash
 
                 Session["current"] = e.DashboardId.ToString();
 
-                var currentDashboardId = Session["current"];
-                long parsed;
-                if (!String.IsNullOrEmpty((string)currentDashboardId) && Int64.TryParse((string)currentDashboardId, out parsed))
-                {
-                    LoadMetaDataAndApplySelections((int)parsed);
-                }
-            } catch (Exception ex)
+            } catch (Exception)
             {
                 return;
             }
@@ -218,129 +176,9 @@ namespace Dash
             return stringFinal;
         }
 
-        private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
-        {
-            var selectedValues = new List<string>();
-            foreach (string row in gridView.GetSelectedFieldValues(columnName))
-            {
-                selectedValues.Add(row);
-            }
-            return selectedValues;
-        }
+     
 
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                var selectedTypes = GetSelectedValues(TypeGroup, "value");
+   
 
-                var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
-
-                var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
-
-                // Create MetaData object and assign selected values
-                MetaData metaData = new MetaData
-                {
-                    Types = selectedTypes,
-                    Languages = selectedLanguages,
-                    Companies = selectedCompanies
-                };
-
-                // Serialize MetaData to JSON
-                string jsonMetaData = JsonConvert.SerializeObject(metaData);
-
-                var connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    // Prepare the SQL command to update the meta_data column
-                    if (Session["current"] != null && int.TryParse(Session["current"].ToString(), out int dashboardId))
-                    {
-                        // Prepare the SQL command to update the meta_data column
-                        string updateQuery = "UPDATE dashboards SET meta_data = @metaData WHERE id = @dashboardId";
-
-                        using (SqlCommand command = new SqlCommand(updateQuery, connection))
-                        {
-                            // Add parameters to the command
-                            command.Parameters.Add("@metaData", SqlDbType.NVarChar).Value = jsonMetaData;
-                            command.Parameters.Add("@dashboardId", SqlDbType.Int).Value = dashboardId;
-
-                            // Execute the update command
-                            int rowsAffected = command.ExecuteNonQuery();
-                            if (rowsAffected > 0)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Uspešno spremenjeni meta podatki'); };", true);
-                            }
-                            else
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showNotificationDevexpress('Napaka pri dodajanju meta podatkov'); };", true);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                return;
-            }
-        }
-
-        protected void TypeGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
-        {
-            if (metaData.Types != null)
-            {
-                for (int i = 0; i < TypeGroup.VisibleRowCount; i++)
-                {
-                    string rowValue = TypeGroup.GetRowValues(i, "value").ToString();
-                    if (metaData.Types.Contains(rowValue))
-                    {
-                        TypeGroup.Selection.SetSelection(i, true);
-                    }
-                    else
-                    {
-                        TypeGroup.Selection.SetSelection(i, false);
-                    }
-                }
-            }
-        }
-
-        protected void LanguageGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
-        {
-            if (metaData.Languages != null)
-            {
-                for (int i = 0; i < LanguageGroup.VisibleRowCount; i++)
-                {
-                    string rowValue = LanguageGroup.GetRowValues(i, "value").ToString();
-                    if (metaData.Languages.Contains(rowValue))
-                    {
-                        LanguageGroup.Selection.SetSelection(i, true);
-                    }
-                    else
-                    {
-                        LanguageGroup.Selection.SetSelection(i, false);
-                    }
-                }
-            }
-        }
-
-        protected void CompanyGroup_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
-        {
-            if (metaData.Companies != null)
-            {
-                for (int i = 0; i < CompanyGroup.VisibleRowCount; i++)
-                {
-                    string rowValue = CompanyGroup.GetRowValues(i, "value").ToString();
-                    if (metaData.Companies.Contains(rowValue))
-                    {
-                        CompanyGroup.Selection.SetSelection(i, true);
-                    }
-                    else
-                    {
-                        CompanyGroup.Selection.SetSelection(i, false);
-                    }
-                }
-            }
-        }
     }
 }

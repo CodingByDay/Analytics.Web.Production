@@ -584,6 +584,8 @@
     <Compile Include="Models\DashboardOrder.cs" />
     <Compile Include="Models\DashboardPermissions.cs" />
     <Compile Include="Models\MetaData.cs" />
+    <Compile Include="Models\MetaDataEnum.cs" />
+    <Compile Include="Models\MetaOption.cs" />
     <Compile Include="Models\UserDashboardState.cs" />
     <Compile Include="Navigation.ascx.cs">
       <DependentUpon>Navigation.ascx</DependentUpon>

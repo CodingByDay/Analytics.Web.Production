@@ -186,15 +186,18 @@
         });
 
         function Type_Lookup_ValueChanged(s, e) {
-            grid.PerformCallback("FilterByType");
+            alert("test")
+            dashboardGrid.PerformCallback("FilterByType");
         }
 
         function Company_Lookup_ValueChanged(s, e) {
-            grid.PerformCallback("FilterByCompany");
+            alert("test2")
+            dashboardGrid.PerformCallback("FilterByCompany");
         }
 
         function Language_Lookup_ValueChanged(s, e) {
-            grid.PerformCallback("FilterByLanguage");
+            alert("test3")
+            dashboardGrid.PerformCallback("FilterByLanguage");
         }
 
     </script>
@@ -269,7 +272,7 @@
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
-              <Settings VerticalScrollBarMode="Visible" />
+              <Settings  VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
@@ -277,7 +280,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
@@ -314,8 +317,9 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="true" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView   SettingsBehavior-AllowDragDrop="true"  OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
+                              <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
@@ -356,29 +360,39 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+                              
+
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id" Settings-AllowHeaderFilter="False"  Visible="false" ReadOnly="True" VisibleIndex="1">
+
               <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="caption" Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
+
+              <dx:BootstrapGridViewTextColumn  FieldName="caption" Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
+
               <dx:BootstrapGridViewTextColumn FieldName="custom_name" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
               </dx:BootstrapGridViewTextColumn>
 
 
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+                      <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith" DataSourceID="TypeFilterDataSource">
+                      </PropertiesComboBox>
+              </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewTextColumn FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+                      <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith" DataSourceID="CompanyFilterDataSource">
+                      </PropertiesComboBox>
+              </dx:BootstrapGridViewComboBoxColumn>
 
-              </dx:BootstrapGridViewTextColumn>
-
-              <dx:BootstrapGridViewTextColumn FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
-                    
-              </dx:BootstrapGridViewTextColumn>
-
-              <dx:BootstrapGridViewTextColumn FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                   
-             </dx:BootstrapGridViewTextColumn>
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+                     <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith" DataSourceID="LanguageFilterDataSource">
+                     </PropertiesComboBox>
+             </dx:BootstrapGridViewComboBoxColumn>
 
 
           </Columns>
@@ -425,6 +439,9 @@
         <asp:Parameter Name="dashboard_id" Type="Int32" />
         <asp:Parameter Name="company_id" Type="Int32" />
         <asp:Parameter Name="custom_name" Type="String" />
+        <asp:Parameter Name="meta_type" Type="Int32" />
+        <asp:Parameter Name="meta_company" Type="Int32" />
+        <asp:Parameter Name="meta_language" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
 

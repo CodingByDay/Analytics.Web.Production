@@ -13,6 +13,10 @@
     width: 7em;
 }
 
+
+label.form-check-label {
+    padding-left: 2em;
+}
 .modal-xl {
     max-width: 90%; /* This controls how wide the modal should be */
 }

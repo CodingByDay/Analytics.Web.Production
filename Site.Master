@@ -199,15 +199,13 @@
     <script>    
         var toggle = document.getElementById("toggle");
 
-        var state = getCookie("state");
-        if (state == "light") {
-
-            toggle.checked = false;
-
-        } else {
-
-            toggle.checked = true;
-
+        if (toggle) { // Check if the element exists
+            var state = getCookie("state");
+            if (state === "light") {
+                toggle.checked = false;
+            } else {
+                toggle.checked = true;
+            }
         }</script>
 
      <asp:ContentPlaceHolder id="LayoutContentPlaceHolder" runat="server">
