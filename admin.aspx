@@ -213,7 +213,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -235,7 +235,7 @@
                     </dx:BootstrapGridViewTextColumn>
                     <dx:BootstrapGridViewTextColumn FieldName="company_name" Caption="Podjetje" VisibleIndex="2">
                     </dx:BootstrapGridViewTextColumn>
-                    <dx:BootstrapGridViewTextColumn FieldName="database_name" Caption="Naziv konekcije" VisibleIndex="3">
+                    <dx:BootstrapGridViewTextColumn FieldName="database_name" Visible="False" Caption="Naziv konekcije" VisibleIndex="3">
                     </dx:BootstrapGridViewTextColumn>                    
                 </Columns>
                     <SettingsSearchPanel Visible="True" />
@@ -265,9 +265,10 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users] WHERE id_company IS NOT NULL;;"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users_groups];"></asp:SqlDataSource>
+            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
+                                              <SettingsEditing Mode="Inline" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
@@ -293,6 +294,13 @@
               </dx:BootstrapGridViewTextColumn>
 			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
+
+                <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="Jezik" VisibleIndex="3" Caption="Skupina">
+                     <PropertiesComboBox TextField="group_name" ValueField="group_id" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith" DataSourceID="GroupsDropdown">
+                     </PropertiesComboBox>
+             </dx:BootstrapGridViewComboBoxColumn>
+       
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
@@ -418,6 +426,11 @@
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
             SelectCommand="SELECT * FROM meta_options WHERE option_type = 'language'">
         </asp:SqlDataSource>
+
+            <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
+             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+             SelectCommand="SELECT group_id, group_name FROM groups;">
+         </asp:SqlDataSource>
 
 <asp:SqlDataSource
     EnableCaching="false"
