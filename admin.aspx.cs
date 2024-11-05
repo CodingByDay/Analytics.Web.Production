@@ -234,11 +234,6 @@ namespace Dash
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
-            graphsGridView.SettingsBehavior.AllowFocusedRow = true;
-            graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
-            graphsGridView.EnableCallBacks = false;
-            graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
-            graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
             graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
             if (!IsPostBack)
@@ -271,17 +266,7 @@ namespace Dash
 
         }
 
-        private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
-        {
-           e.Cancel = true;
-           string id = e.Keys["id"] != null ? e.Keys["id"].ToString() : string.Empty;
-           query.UpdateParameters["dashboard_id"].DefaultValue = id;
-           query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
-           query.UpdateParameters["custom_name"].DefaultValue = e.NewValues["custom_name"] != null ? e.NewValues["custom_name"].ToString() : string.Empty;
-           query.Update();
-           graphsGridView.DataBind();
-           graphsGridView.CancelEdit();
-        }
+        
 
         private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)
         {
@@ -392,15 +377,7 @@ namespace Dash
                         var id = (int) plurals[0];
 
                         CurrentCompany = GetCompanyName(id);
-
-
-                        var firstUser = GetFirstUserForCompany(CurrentCompany);
-
-                        CurrentUsername = firstUser;
-                        query.SelectParameters["uname"].DefaultValue = CurrentUsername;
-                        usersGridView.FocusedRowIndex = 0;
-                        
-                    
+                                  
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter
@@ -976,7 +953,7 @@ namespace Dash
             {
                 DashboardPermissions permissions = new DashboardPermissions();
                 var selectedIds = graphsGridView.GetSelectedFieldValues("id");
-                if (selectedIds != null && selectedIds.Count > 0)
+                if (selectedIds != null)
                 {
                     for (int i = 0; i < selectedIds.Count; i++)
                     {
