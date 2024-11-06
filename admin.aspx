@@ -205,6 +205,12 @@
                 s.PerformCallback(key);
             }
         }
+        function groupChanged(s, e) {
+
+            // Save batch changes
+            userGrid.UpdateEdit(); // Calls SaveBatchChanges on the server side
+        }
+
     </script>
 
 
@@ -270,7 +276,20 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-            <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users_groups];"></asp:SqlDataSource>
+ <asp:SqlDataSource 
+    ID="usersGrid" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+    SelectCommand="SELECT * FROM [users_groups];"
+    UpdateCommand="UPDATE users SET group_id = @group WHERE uname = @uname">
+    
+    <UpdateParameters>
+        <asp:Parameter Name="group" Type="Int32" />
+        <asp:Parameter Name="uname" Type="String" />
+    </UpdateParameters>
+</asp:SqlDataSource>
+
+
+
             <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
@@ -285,6 +304,12 @@
 <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
+                <Templates>
+          <StatusBar>
+          </StatusBar>
+</Templates>
+
+
           <Columns>
               <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
                     <CustomButtons >
@@ -305,7 +330,7 @@
               </dx:BootstrapGridViewTextColumn>
 
                 <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="Jezik" VisibleIndex="3" Caption="Skupina">
-                     <PropertiesComboBox TextField="group_name" ValueField="group_id" EnableSynchronization="False"
+                     <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged" TextField="group_name" ValueField="group_id" EnableSynchronization="False"
                         IncrementalFilteringMode="StartsWith" DataSourceID="GroupsDropdown">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
