@@ -216,8 +216,8 @@ namespace Dash
                     {
                         adminButton.Visible = true;
                         adminButtonOuter.Visible = true;
-                        groupsButton.Visible = false;
-                        groupsButtonOuter.Visible = false;
+                        groupsButton.Visible = true;
+                        groupsButtonOuter.Visible = true;
                         filtersButton.Visible = false;
                         filterButtonOuter.Visible = false;
 

@@ -288,6 +288,20 @@
               </dx:BootstrapGridViewTextColumn>
                 <dx:BootstrapGridViewTextColumn FieldName="custom_name" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
                 </dx:BootstrapGridViewTextColumn>
+
+
+               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+                     <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
+                       IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource">
+                     </PropertiesComboBox>
+             </dx:BootstrapGridViewComboBoxColumn>
+
+
+             <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+                    <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
+                       IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
+                    </PropertiesComboBox>
+            </dx:BootstrapGridViewComboBoxColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
@@ -295,7 +309,38 @@
 
        </div>
        </div>
+<asp:SqlDataSource ID="TypeFilterDataSource" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+    SelectCommand=
+    "
+        SELECT * FROM meta_options WHERE option_type = 'type'
+        UNION ALL
+        SELECT -1 AS id, 'type', '', 'Brez tipa'
+        ORDER BY id ASC;
+    ">
+</asp:SqlDataSource>
 
+<asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+    SelectCommand=
+    "
+    SELECT * FROM meta_options WHERE option_type = 'language'
+     UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+    >
+</asp:SqlDataSource>
+
+    <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
+     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+     SelectCommand=
+        "
+            SELECT group_id AS [group], group_name 
+            FROM groups
+            UNION ALL
+            SELECT -1 AS [group], 'Brez skupine' AS group_name
+            ORDER BY group_id ASC;
+        "
+    >
+ </asp:SqlDataSource>
 <asp:SqlDataSource
     EnableCaching="false"
     ID="query" 

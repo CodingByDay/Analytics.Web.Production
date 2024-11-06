@@ -205,8 +205,63 @@ namespace Dash
 
             InitializeUiChanges();
             Authenticate();
+            LimitCompanyGrid();
 
+        }
 
+        private void LimitCompanyGrid()
+        {
+            try
+            {
+                string type = GetUserType();
+                if (!string.IsNullOrEmpty(type))
+                {
+                    // For all companies set the default values to -1 06.11.2024 Janko Jovičić
+                    if (type == "SuperAdmin")
+                    {
+                        companiesGrid.SelectParameters["company_id"].DefaultValue = "-1";
+                    }
+                    else if (type == "Admin")
+                    {
+                        companiesGrid.SelectParameters["company_id"].DefaultValue = GetCompanyIdForUser(HttpContext.Current.User.Identity.Name).ToString();
+
+                    }
+                }
+            } catch (Exception)
+            {
+                return;
+            }
+        }
+        public int GetCompanyIdForUser(string uname)
+        {
+            int companyId = -1; // Default to -1 or any invalid value if the user is not found
+
+            // Define the SQL query to get the company_id for a specific user
+            string query = "SELECT id_company FROM users WHERE uname = @uname";
+
+            // Set up the connection and command
+            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ToString()))
+            {
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@uname", uname); // Use parameterized query to prevent SQL injection
+
+                try
+                {
+                    connection.Open();
+                    object result = cmd.ExecuteScalar(); // Execute the query and get the first column of the first row
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        companyId = Convert.ToInt32(result); // Convert the result to an integer
+                    }
+                }
+                catch (Exception)
+                {
+                    
+                }
+            }
+
+            return companyId; // Return the company ID, or -1 if not found
         }
         private void InitializeUiChanges()
         {
@@ -368,6 +423,32 @@ namespace Dash
             }
         }
 
+        private string GetUserType()
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    var username = HttpContext.Current.User.Identity.Name;
+                    // Create SqlCommand to select pwd field from users table given supplied userName.
+                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        role = (reader["user_role"].ToString());
+                    }
+                    return role;
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    return string.Empty;
+                }
+            }
+        }
+
         private void Authenticate()
         {
             using (SqlConnection conn = new SqlConnection(connection))
@@ -384,7 +465,7 @@ namespace Dash
                         role = (reader["user_role"].ToString());
                     }
                     cmd.Dispose();
-                    if (role == "SuperAdmin")
+                    if (role == "SuperAdmin" || role == "Admin")
                     {
                     }
                     else

@@ -146,7 +146,29 @@
 
     <div class="content-flex">
         <div class="inner-item companies">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies"></asp:SqlDataSource>
+
+
+		  <asp:SqlDataSource 
+            ID="companiesGrid" 
+            runat="server" 
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
+            SelectCommand="
+                SELECT 
+                    id_company, 
+                    company_name, 
+                    database_name 
+                FROM 
+                    companies
+                WHERE 
+                    @company_id = -1 OR id_company = @company_id;">
+    
+            <SelectParameters>
+                <asp:Parameter Name="company_id" Type="Int32" />
+            </SelectParameters>
+        </asp:SqlDataSource>
+
+
+
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
@@ -299,7 +321,7 @@
        </div>
        </div>
 
-      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption, meta_data FROM dashboards;" >
+      <asp:SqlDataSource ID="query" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, caption  FROM dashboards;" >
 
  
       </asp:SqlDataSource>
