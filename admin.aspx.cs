@@ -227,9 +227,10 @@ namespace Dash
             usersGridView.EnableCallBacks = false;
             usersGridView.EnableRowsCache = true;
             usersGridView.CustomCallback += UsersGridView_CustomCallback;
-
+            usersGridView.BatchUpdate += UsersGridView_BatchUpdate;
             usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
             usersGridView.DataBound += UsersGridView_DataBound;
+
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
@@ -244,7 +245,19 @@ namespace Dash
             Authenticate();  
         }
 
+        private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            e.Handled = true;
 
+            foreach (var row in e.UpdateValues)
+            {
+                usersGrid.UpdateParameters["group"].DefaultValue = row.NewValues["group_name"] != null ? row.NewValues["group_name"].ToString() : string.Empty;
+                usersGrid.UpdateParameters["uname"].DefaultValue = CurrentUsername;
+                usersGrid.Update();
+            }
+
+            usersGridView.DataBind();
+        }
 
         private void UsersGridView_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
         {

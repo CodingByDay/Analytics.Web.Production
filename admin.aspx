@@ -329,8 +329,8 @@
 			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
 
-                <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="Jezik" VisibleIndex="3" Caption="Skupina">
-                     <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged" TextField="group_name" ValueField="group_id" EnableSynchronization="False"
+                <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="group" VisibleIndex="3" Caption="Skupina">
+                     <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged" TextField="group_name" ValueField="group" EnableSynchronization="False"
                         IncrementalFilteringMode="StartsWith" DataSourceID="GroupsDropdown">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
@@ -463,7 +463,7 @@
 
             <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
              ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-             SelectCommand="SELECT group_id, group_name FROM groups;">
+             SelectCommand="SELECT group_id as [group], group_name FROM groups;">
          </asp:SqlDataSource>
 
 <asp:SqlDataSource
