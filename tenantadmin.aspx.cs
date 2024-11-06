@@ -300,6 +300,64 @@ namespace Dash
             usersGridView.Selection.SetSelectionByKey(CurrentUsername, true);
         }
 
+        protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
+        {
+            e.Handled = true;
+
+            List<MetaOption> data = new List<MetaOption>();
+            if (e.Column.Caption == "Tip")
+            {
+                data = GetFilterValuesForSpecificFilter("type");
+            }
+            else if (e.Column.Caption == "Jezik")
+            {
+                data = GetFilterValuesForSpecificFilter("language");
+            }
+
+            e.Values.Clear();
+
+            for (int i = 0; i < data.Count; i++)
+            {
+                e.AddValue(displayText: data[i].description, value: data[i].value);
+            }
+        }
+        private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
+        {
+            List<MetaOption> filterValues = new List<MetaOption>();
+
+            // Define your connection string (replace with actual connection string)
+
+            // Define the query
+            string query = "SELECT description, value FROM meta_options WHERE option_type = @filter";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    // Add parameter to prevent SQL injection
+                    command.Parameters.AddWithValue("@filter", filter);
+
+                    // Open the connection
+                    conn.Open();
+
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        // Read each result and add to the list
+                        while (reader.Read())
+                        {
+                            filterValues.Add(new MetaOption
+                            {
+                                description = reader["description"].ToString(),
+                                value = reader["description"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+
+            return filterValues;
+        }
+
         private void GraphsGridView_DataBound(object sender, EventArgs e)
         {
 
