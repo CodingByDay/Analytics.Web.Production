@@ -199,7 +199,12 @@
             alert("test3")
             dashboardGrid.PerformCallback("FilterByLanguage");
         }
-
+        function onCustomButtonClick(s, e) {
+            if (e.buttonID === 'EditBtn') {
+                var key = s.GetRowKey(e.visibleIndex);
+                s.PerformCallback(key);
+            }
+        }
     </script>
 
 
@@ -266,12 +271,12 @@
             <div id="gridContainerUser" style="visibility: hidden">
 
             <asp:SqlDataSource ID="usersGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [users_groups];"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
-                                              <SettingsEditing Mode="Inline" />
+                              <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
+                    <ClientSideEvents CustomButtonClick="function(s, e) { onCustomButtonClick(s, e); }" Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
               <Settings  VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
@@ -281,7 +286,11 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+                    <CustomButtons >
+                    <dx:BootstrapGridViewCommandColumnCustomButton  Visibility="AllDataRows"  ID="EditBtn" Text="Uredi" CssClass="custom-edit-btn" />
+                </CustomButtons>
+
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />

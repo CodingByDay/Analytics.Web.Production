@@ -226,11 +226,10 @@ namespace Dash
             usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
             usersGridView.EnableCallBacks = false;
             usersGridView.EnableRowsCache = true;
+            usersGridView.CustomCallback += UsersGridView_CustomCallback;
 
-            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
             usersGridView.DataBound += UsersGridView_DataBound;
-
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
@@ -243,6 +242,16 @@ namespace Dash
 
             InitializeUiChanges();
             Authenticate();  
+        }
+
+        private void UsersGridView_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            var key = e.Parameters;
+            usersGridView.Selection.SelectRowByKey(key);
+            IsEditUser = true;
+            TxtUserName.Enabled = false;
+            UpdateFormName(key.ToString());
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
         }
 
         private void GraphsGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
@@ -422,18 +431,7 @@ namespace Dash
 
         }
 
-        private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        {
-            var key = e.EditingKeyValue;
-            usersGridView.Selection.SelectRowByKey(key);
-
-            IsEditUser = true;
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            UpdateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
-            e.Cancel = true;
-        }
+       
 
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -462,6 +460,7 @@ namespace Dash
                 ShowConfigForUser();
             }
 
+            usersGridView.StartEdit(usersGridView.FindVisibleIndexByKeyValue(CurrentUsername));
         }
 
         private void ShowConfigForUser()
