@@ -235,7 +235,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
             graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
-
+            graphsGridView.RowValidating += GraphsGridView_RowValidating;
             if (!IsPostBack)
             {
 
@@ -243,6 +243,11 @@ namespace Dash
 
             InitializeUiChanges();
             Authenticate();  
+        }
+
+        private void GraphsGridView_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
+        {
+            var debug = true;
         }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
@@ -276,13 +281,21 @@ namespace Dash
             foreach(var row in e.UpdateValues)
             {
                 string rowId = row.Keys["id"].ToString();
+
                 query.UpdateParameters["dashboard_id"].DefaultValue = rowId;
                 query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
                 query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
 
-                query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null ? row.NewValues["meta_type"].ToString() : string.Empty;
-                query.UpdateParameters["meta_company"].DefaultValue = row.NewValues["meta_company"] != null ? row.NewValues["meta_company"].ToString() : string.Empty;
-                query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null ? row.NewValues["meta_language"].ToString() : string.Empty;
+                query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null
+                    ? row.NewValues["meta_type"].ToString()
+                    : DBNull.Value.ToString();
+                query.UpdateParameters["meta_company"].DefaultValue = row.NewValues["meta_company"] != null
+                    ? row.NewValues["meta_company"].ToString()
+                    : DBNull.Value.ToString();
+                query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null
+                    ? row.NewValues["meta_language"].ToString()
+                    : DBNull.Value.ToString();
+
                 query.Update();
             }
 

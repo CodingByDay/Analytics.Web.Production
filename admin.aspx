@@ -420,19 +420,19 @@
 
               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
                       <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" DataSourceID="TypeFilterDataSource">
+                        IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
                       <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" DataSourceID="CompanyFilterDataSource">
+                        IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                     <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" DataSourceID="LanguageFilterDataSource">
+                     <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
 
@@ -448,22 +448,46 @@
 
         <asp:SqlDataSource ID="TypeFilterDataSource" runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-            SelectCommand="SELECT * FROM meta_options WHERE option_type = 'type'">
+            SelectCommand=
+            "
+                SELECT * FROM meta_options WHERE option_type = 'type'
+                UNION ALL
+                SELECT -1 AS id, 'type', '', 'Brez tipa'
+                ORDER BY id ASC;
+            ">
         </asp:SqlDataSource>
 
         <asp:SqlDataSource ID="CompanyFilterDataSource" runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-            SelectCommand="SELECT * FROM meta_options WHERE option_type = 'company'">
+            SelectCommand=
+            "
+            SELECT * FROM meta_options WHERE option_type = 'company'
+            UNION ALL SELECT -1, 'company', '', 'Brez podjetja'
+            ORDER BY id ASC;
+            "
+            >
         </asp:SqlDataSource>
 
         <asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-            SelectCommand="SELECT * FROM meta_options WHERE option_type = 'language'">
+            SelectCommand=
+            "
+            SELECT * FROM meta_options WHERE option_type = 'language'
+             UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+            >
         </asp:SqlDataSource>
 
             <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
              ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-             SelectCommand="SELECT group_id as [group], group_name FROM groups;">
+             SelectCommand=
+                "
+                    SELECT group_id AS [group], group_name 
+                    FROM groups
+                    UNION ALL
+                    SELECT -1 AS [group], 'Brez skupine' AS group_name
+                    ORDER BY group_id ASC;
+                "
+            >
          </asp:SqlDataSource>
 
 <asp:SqlDataSource
@@ -486,9 +510,9 @@
         <asp:Parameter Name="dashboard_id" Type="Int32" />
         <asp:Parameter Name="company_id" Type="Int32" />
         <asp:Parameter Name="custom_name" Type="String" />
-        <asp:Parameter Name="meta_type" Type="Int32" />
-        <asp:Parameter Name="meta_company" Type="Int32" />
-        <asp:Parameter Name="meta_language" Type="Int32" />
+        <asp:Parameter Name="meta_type"   ConvertEmptyStringToNull="true" Type="Int32" />
+        <asp:Parameter Name="meta_company" ConvertEmptyStringToNull="true" Type="Int32" />
+        <asp:Parameter Name="meta_language" ConvertEmptyStringToNull="true" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
 
