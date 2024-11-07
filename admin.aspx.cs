@@ -203,10 +203,6 @@ namespace Dash
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
 
-            btnFilterBootstrap = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-            btnFilterBootstrap.Visible = IsFilterActive;
-
-
             companiesGridView.SettingsBehavior.AllowFocusedRow = false;
             companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
             companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -1153,63 +1149,7 @@ namespace Dash
             return selectedValues;
         }
 
-        public void BtnFilter_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                
-                var selectedTypes = GetSelectedValues(TypeGroup, "value");
-
-                var selectedCompanies = GetSelectedValues(CompanyGroup, "value");
-
-                var selectedLanguages = GetSelectedValues(LanguageGroup, "value");
-
-
-                List<int> Ids = new List<int>();
-
-                DataView dvGraphs = (DataView) query.Select(DataSourceSelectArguments.Empty);
-                foreach (DataRowView row in dvGraphs)
-                {
-                    int id = (int)row["id"];
-                    var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
-                    if (FilterDashboardComply(selectedTypes, selectedCompanies, selectedLanguages, metadata))
-                    {
-                        Ids.Add(id);
-                    }
-                }
-
-              
-                string FilterIds = string.Empty;
-                for (int i = 0; i < Ids.Count; i++)
-                {
-                    if (i != Ids.Count - 1)
-                    {
-                        FilterIds += Ids.ElementAt(i) + ",";
-                    }
-                    else
-                    {
-                        FilterIds += Ids.ElementAt(i);
-                    }
-                }
-                if (Ids.Count == 0)
-                {
-                    // No items to display.
-                    graphsGridView.FilterExpression = $"[id] = -9999";
-                }
-                else
-                {
-                    graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
-                }
-                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-                button.Visible = true;
-                IsFilterActive = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                return;
-            }
-        }
+    
 
         public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
         {

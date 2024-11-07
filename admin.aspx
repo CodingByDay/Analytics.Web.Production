@@ -367,34 +367,7 @@
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
-   <Toolbars>
-        <dx:BootstrapGridViewToolbar Name="FilterToolbar">
-            <Items>
-
-                <dx:BootstrapGridViewToolbarItem  Text="Filter">
-                     <Template>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#checkboxModal">
-                                <i class="fas fa-filter"></i> Filter
-                            </button>      
-                        </div>
-                    </Template>
-                </dx:BootstrapGridViewToolbarItem>
-
-                <dx:BootstrapGridViewToolbarItem Text="Remove Filters" Name="RemoveFilter">
-                    <Template>
-                        <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-times" CssClasses-Control="btn btn-danger" Text="Remove Filters" ID="ClearFilterButton" OnClick="ClearFilterButton_Click" AutoPostBack="false" Visible='<%# (Session["ActiveFilter"] != null && (bool)Session["ActiveFilter"]) %>'>
-                    </dx:BootstrapButton>
-                    </Template>
-                 </dx:BootstrapGridViewToolbarItem>
-
-   
-
-
-            </Items>
-        </dx:BootstrapGridViewToolbar>
-
-    </Toolbars>
+  
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
@@ -488,6 +461,10 @@
                       ORDER BY group_id ASC;
                 "
             >
+
+            <SelectParameters>
+                  <asp:Parameter Name="company" Type="Int32" Direction="Input" />       
+            </SelectParameters>
          </asp:SqlDataSource>
 
 <asp:SqlDataSource
@@ -690,80 +667,8 @@
   </div>
 </div>
 
-<div class="modal fade" id="checkboxModal" tabindex="-1" role="dialog" aria-labelledby="checkboxModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document"> <!-- Changed modal-lg to modal-xl -->
-    <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="assignMetadataModalLabel">Izberite metapodatke</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="container-fluid"> <!-- Use container-fluid for wider content -->
-                <div class="row">
-                    <!-- Checkbox Group 1 -->
-                    <div class="col-md-4">
-                        <h4>Področje</h4>
-                        <div class="form-group type">
-                            <dx:BootstrapGridView ID="TypeGroup" ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeGroup" KeyFieldName="id">
-                  
 
-                                <SettingsDataSecurity AllowEdit="False" />
-                                <Columns>
-                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                </Columns>
-                                <SettingsSearchPanel Visible="False" />
-                            </dx:BootstrapGridView>
-                            <asp:SqlDataSource ID="queryTypeGroup" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'type';" />
-                        </div>
-                    </div>
 
-                    <!-- Checkbox Group 2 -->
-                    <div class="col-md-4">
-                        <h4>Podjetje</h4>
-                        <div class="form-group company">
-                            <dx:BootstrapGridView ID="CompanyGroup"  ClientInstanceName="CompanyGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryCompanyGroup" KeyFieldName="id">
-                                <SettingsDataSecurity AllowEdit="False" />
-                                <Columns>
-                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                </Columns>
-                                <SettingsSearchPanel Visible="False" />
-                            </dx:BootstrapGridView>
-                            <asp:SqlDataSource ID="queryCompanyGroup" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'company';" />
-                        </div>
-                    </div>
-
-                    <!-- Checkbox Group 3 -->
-                    <div class="col-md-4">
-                        <h4>Jezik</h4>
-                        <div class="form-group language">
-                            <dx:BootstrapGridView ID="LanguageGroup" ClientInstanceName="LanguageGroup" AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" DataSourceID="queryTypeLanguage" KeyFieldName="id">
-                                <SettingsDataSecurity AllowEdit="False" />
-                                <Columns>
-                                    <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" VisibleIndex="0" ShowEditButton="False" Width="40px" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                    <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                </Columns>
-                                <SettingsSearchPanel Visible="False" />
-                            </dx:BootstrapGridView>
-                            <asp:SqlDataSource ID="queryTypeLanguage" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'language';" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
-            <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="BtnFilter_Click" />
-        </div>
-    </div>
-</div>
-</div>
 
 
 
