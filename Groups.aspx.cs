@@ -266,8 +266,32 @@ namespace Dash
             Authenticate();
             LimitCompanyGrid();
             HideColumnForCompanies();
-
+            LimitDashboardsPermissions();
         }
+
+        private void LimitDashboardsPermissions()
+        {
+            try
+            {
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+                List<int> permittedDashboardIds = dashboardPermissions.Permissions.Select(p => p.id).ToList();
+                string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
+                // Apply the filter to graphsGridView
+                string type = GetUserType();
+                if (!string.IsNullOrEmpty(type))
+                {
+                    if (type == "Admin")
+                    {
+                        graphsGridView.FilterExpression = filterExpression;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
+        }
+
 
         private void HideColumnForCompanies()
         {

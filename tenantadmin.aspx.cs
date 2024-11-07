@@ -216,7 +216,22 @@ namespace Dash
 
             InitializeUiChanges();
             Authenticate();
+            LimitDashboardsToLocalAdminPermissions();
+        }
 
+        private void LimitDashboardsToLocalAdminPermissions()
+        {
+            try
+            {
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+                List<int> permittedDashboardIds = dashboardPermissions.Permissions.Select(p => p.id).ToList();
+                string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
+                // Apply the filter to graphsGridView
+                graphsGridView.FilterExpression = filterExpression;
+            } catch (Exception)
+            {
+                return;
+            }
         }
 
         private void UsersGridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)

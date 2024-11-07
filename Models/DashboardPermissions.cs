@@ -185,7 +185,7 @@ namespace Dash.Models
                         return false; // No rows affected, return false
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Log the error (optional)
                     // Handle the exception properly or return false in case of failure

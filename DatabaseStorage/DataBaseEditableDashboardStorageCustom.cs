@@ -269,8 +269,6 @@ namespace Dash.DatabaseStorage
             // Combine both lists and remove duplicates
             var combinedIds = availableUser.Union(availableGroup).ToList();
 
-            // Build the IN clause dynamically
-            var inClause = string.Join(",", combinedIds);
 
             if (combinedIds.Count == 0)
             {
@@ -298,7 +296,9 @@ namespace Dash.DatabaseStorage
                         {
                             string ID = reader["id"].ToString(); // Use column name
                             string customName = reader["custom_name"] != DBNull.Value ? reader["custom_name"].ToString() : string.Empty; // Use column name
-                            list.Add(new DashboardInfo() { ID = ID, Name = customName });
+                            if (combinedIds.Exists(x => x.ToString() == ID)) {
+                                list.Add(new DashboardInfo() { ID = ID, Name = customName });
+                            }
                         }
                     }
                 }
