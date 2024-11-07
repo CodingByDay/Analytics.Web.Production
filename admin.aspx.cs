@@ -235,7 +235,7 @@ namespace Dash
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
             graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
-            graphsGridView.RowValidating += GraphsGridView_RowValidating;
+
             if (!IsPostBack)
             {
 
@@ -245,10 +245,6 @@ namespace Dash
             Authenticate();  
         }
 
-        private void GraphsGridView_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
-        {
-            var debug = true;
-        }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
         {
@@ -414,7 +410,8 @@ namespace Dash
                         var id = (int) plurals[0];
 
                         CurrentCompany = GetCompanyName(id);
-                                  
+                        GroupsDropdown.SelectParameters["company"].DefaultValue = id.ToString();
+
                         // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
                         usersGridView.FilterExpression = $"[id_company] = {id}";
                         usersGridView.DataBind();  // Refresh the userGridView with the applied filter

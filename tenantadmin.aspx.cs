@@ -183,6 +183,7 @@ namespace Dash
             usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
             usersGridView.DataBound += UsersGridView_DataBound;
+            usersGridView.BatchUpdate += UsersGridView_BatchUpdate;
 
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
@@ -190,7 +191,6 @@ namespace Dash
             graphsGridView.SettingsBehavior.AllowFocusedRow = true;
             graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
             graphsGridView.EnableCallBacks = false;
-            graphsGridView.FocusedRowChanged += GraphsGridView_FocusedRowChanged;
             graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
 
             if (!IsPostBack)
@@ -199,12 +199,26 @@ namespace Dash
             }
 
             usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany();
+            GroupsDropdown.SelectParameters["company"].DefaultValue = GetUserCompany();
 
             InitializeUiChanges();
             Authenticate();
 
         }
 
+        private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            e.Handled = true;
+
+            foreach (var row in e.UpdateValues)
+            {
+                usersGrid.UpdateParameters["group"].DefaultValue = row.NewValues["group_name"] != null ? row.NewValues["group_name"].ToString() : string.Empty;
+                usersGrid.UpdateParameters["uname"].DefaultValue = CurrentUsername;
+                usersGrid.Update();
+            }
+
+            usersGridView.DataBind();
+        }
 
         private void GraphsGridView_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
@@ -282,10 +296,7 @@ namespace Dash
             return companyId;
         }
 
-        private void GraphsGridView_FocusedRowChanged(object sender, EventArgs e)
-        {
-
-        }
+   
 
         /* private void InitializeFilters()
         {

@@ -153,6 +153,13 @@
             location.reload();
         });
 
+        function groupChanged(s, e) {
+
+            // Save batch changes
+            userGrid.UpdateEdit(); // Calls SaveBatchChanges on the server side
+        }
+
+
     </script>
 
 
@@ -175,18 +182,24 @@
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
-        <asp:SqlDataSource 
-            ID="usersGrid" 
-            runat="server" 
+
+         <asp:SqlDataSource 
+            ID="usersGrid" runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
-            SelectCommand="SELECT * FROM [users] WHERE id_company = @company_id;">
+            SelectCommand="SELECT * FROM [users_groups] WHERE id_company = @company_id;"
+            UpdateCommand="UPDATE users SET group_id = @group WHERE uname = @uname">
             <SelectParameters>
-                <asp:Parameter Name="company_id" Type="Int32" />
+                 <asp:Parameter Name="company_id" Type="Int32" />
             </SelectParameters>
-        </asp:SqlDataSource>           
+            <UpdateParameters>
+                <asp:Parameter Name="group" Type="Int32" />
+                <asp:Parameter Name="uname" Type="String" />
+            </UpdateParameters>
+        </asp:SqlDataSource>         
                 
                 <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
+                              <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
@@ -198,6 +211,10 @@
 <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
+                                    <Templates>
+          <StatusBar>
+          </StatusBar>
+</Templates>
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
               </dx:BootstrapGridViewCommandColumn>
@@ -212,6 +229,11 @@
               </dx:BootstrapGridViewTextColumn>
 			   <dx:BootstrapGridViewTextColumn FieldName="email" Visible="false" Name="email" VisibleIndex="3" Caption="Email">
               </dx:BootstrapGridViewTextColumn>
+                 <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="group" VisibleIndex="3" Caption="Skupina">
+                <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged" TextField="group_name" ValueField="group" EnableSynchronization="False"
+                   IncrementalFilteringMode="StartsWith" DataSourceID="GroupsDropdown">
+                </PropertiesComboBox>
+        </dx:BootstrapGridViewComboBoxColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
@@ -316,7 +338,7 @@
     "
         SELECT * FROM meta_options WHERE option_type = 'type'
         UNION ALL
-        SELECT -1 AS id, 'type', '', 'Brez tipa'
+        SELECT NULL AS id, 'type', '', 'Brez tipa'
         ORDER BY id ASC;
     ">
 </asp:SqlDataSource>
@@ -326,7 +348,7 @@
     SelectCommand=
     "
     SELECT * FROM meta_options WHERE option_type = 'language'
-     UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+     UNION ALL SELECT NULL, '', '', 'Brez' ORDER BY id ASC;"
     >
 </asp:SqlDataSource>
 
@@ -334,13 +356,18 @@
      ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
      SelectCommand=
         "
-            SELECT group_id AS [group], group_name 
-            FROM groups
-            UNION ALL
-            SELECT -1 AS [group], 'Brez skupine' AS group_name
-            ORDER BY group_id ASC;
+             SELECT group_id AS [group], group_name 
+             FROM groups WHERE company_id = @company
+             UNION ALL
+             SELECT NULL AS [group], 'Brez skupine' AS group_name
+             ORDER BY group_id ASC;
         "
     >
+
+    <SelectParameters>
+        <asp:Parameter Name="company" Type="Int32" Direction="Input" />       
+    </SelectParameters>
+
  </asp:SqlDataSource>
 <asp:SqlDataSource
     EnableCaching="false"

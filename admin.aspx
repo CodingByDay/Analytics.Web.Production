@@ -452,7 +452,7 @@
             "
                 SELECT * FROM meta_options WHERE option_type = 'type'
                 UNION ALL
-                SELECT -1 AS id, 'type', '', 'Brez tipa'
+                SELECT NULL AS id, 'type', '', 'Brez tipa'
                 ORDER BY id ASC;
             ">
         </asp:SqlDataSource>
@@ -462,7 +462,7 @@
             SelectCommand=
             "
             SELECT * FROM meta_options WHERE option_type = 'company'
-            UNION ALL SELECT -1, 'company', '', 'Brez podjetja'
+            UNION ALL SELECT NULL, 'company', '', 'Brez podjetja'
             ORDER BY id ASC;
             "
             >
@@ -473,7 +473,7 @@
             SelectCommand=
             "
             SELECT * FROM meta_options WHERE option_type = 'language'
-             UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+             UNION ALL SELECT NULL, '', '', 'Brez' ORDER BY id ASC;"
             >
         </asp:SqlDataSource>
 
@@ -481,11 +481,11 @@
              ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
              SelectCommand=
                 "
-                    SELECT group_id AS [group], group_name 
-                    FROM groups
-                    UNION ALL
-                    SELECT -1 AS [group], 'Brez skupine' AS group_name
-                    ORDER BY group_id ASC;
+                      SELECT group_id AS [group], group_name 
+                      FROM groups WHERE company_id = @company
+                      UNION ALL
+                      SELECT NULL AS [group], 'Brez skupine' AS group_name
+                      ORDER BY group_id ASC;
                 "
             >
          </asp:SqlDataSource>
