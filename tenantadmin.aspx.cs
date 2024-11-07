@@ -169,8 +169,6 @@ namespace Dash
         {
             connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            btnFilterBootstrap = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-            btnFilterBootstrap.Visible = IsFilterActive;
 
             usersGridView.SettingsBehavior.AllowFocusedRow = false;
             usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -876,61 +874,7 @@ namespace Dash
             return selectedValues;
         }
 
-        public void BtnFilter_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-                var selectedTypes = GetSelectedValues(TypeGroup, "value");
-
-
-
-                List<int> Ids = new List<int>();
-
-                DataView dvGraphs = (DataView)query.Select(DataSourceSelectArguments.Empty);
-                foreach (DataRowView row in dvGraphs)
-                {
-                    int id = (int)row["id"];
-                    var metadata = JsonConvert.DeserializeObject<MetaData>((string)row["meta_data"]);
-                    if (FilterDashboardComply(selectedTypes, metadata))
-                    {
-                        Ids.Add(id);
-                    }
-                }
-
-
-                string FilterIds = string.Empty;
-                for (int i = 0; i < Ids.Count; i++)
-                {
-                    if (i != Ids.Count - 1)
-                    {
-                        FilterIds += Ids.ElementAt(i) + ",";
-                    }
-                    else
-                    {
-                        FilterIds += Ids.ElementAt(i);
-                    }
-                }
-                if (Ids.Count == 0)
-                {
-                    // No items to display.
-                    graphsGridView.FilterExpression = $"[id] = -9999";
-                }
-                else
-                {
-                    graphsGridView.FilterExpression = $"[id] IN ({FilterIds})";
-                }
-                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-                button.Visible = true;
-                IsFilterActive = true;
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                return;
-            }
-        }
-
+    
         public bool FilterDashboardComply(List<string> selectedTypes, MetaData dashboardMetaData)
         {
             try

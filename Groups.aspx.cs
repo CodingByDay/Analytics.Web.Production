@@ -1,6 +1,7 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
+using DevExpress.Data.Helpers;
 using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
 using System;
@@ -264,7 +265,32 @@ namespace Dash
             InitializeUiChanges();
             Authenticate();
             LimitCompanyGrid();
+            HideColumnForCompanies();
 
+        }
+
+        private void HideColumnForCompanies()
+        {
+            try
+            {
+                string type = GetUserType();
+                if (!string.IsNullOrEmpty(type))
+                {
+                    // For all companies set the default values to -1 06.11.2024 Janko Jovičić
+                    if (type == "SuperAdmin")
+                    {
+                        graphsGridView.Columns[4].Visible = true;
+                    }
+                    else if (type == "Admin")
+                    {
+                        graphsGridView.Columns[4].Visible = false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         private void LimitCompanyGrid()

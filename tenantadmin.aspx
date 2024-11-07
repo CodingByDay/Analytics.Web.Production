@@ -267,31 +267,7 @@
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
    <Toolbars>
-        <dx:BootstrapGridViewToolbar Name="FilterToolbar">
-            <Items>
-
-                <dx:BootstrapGridViewToolbarItem  Text="Filter">
-                     <Template>
-                        <div class="dropdown">
-                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#checkboxModal">
-                                <i class="fas fa-filter"></i> Filter
-                            </button>      
-                        </div>
-                    </Template>
-                </dx:BootstrapGridViewToolbarItem>
-
-                <dx:BootstrapGridViewToolbarItem Text="Remove Filters" Name="RemoveFilter">
-                    <Template>
-                        <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-times" CssClasses-Control="btn btn-danger" Text="Remove Filters" ID="ClearFilterButton" OnClick="ClearFilterButton_Click" AutoPostBack="false" Visible='<%# (Session["ActiveFilter"] != null && (bool)Session["ActiveFilter"]) %>'>
-                    </dx:BootstrapButton>
-                    </Template>
-                 </dx:BootstrapGridViewToolbarItem>
-
-   
-
-
-            </Items>
-        </dx:BootstrapGridViewToolbar>
+      
 
     </Toolbars>
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
@@ -503,51 +479,6 @@
   </div>
 </div>
 
-<div class="modal fade" id="checkboxModal" tabindex="-1" role="dialog" aria-labelledby="checkboxModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document"> <!-- Changed modal-xl to modal-lg -->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="assignMetadataModalLabel">Izberite metapodatke</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <!-- Checkbox Group 1 -->
-                        <div class="col-md-12"> <!-- Make the content full width inside the smaller modal -->
-                            <h4>Področje</h4>
-                            <div class="form-group type">
-                                <dx:BootstrapGridView ID="TypeGroup" ClientInstanceName="TypeGroup" AutoPostBack="false" runat="server" 
-                                    Settings-VerticalScrollBarMode="Visible" Width="100%" AutoGenerateColumns="False" 
-                                    DataSourceID="queryTypeGroup" KeyFieldName="id">
-                                    <SettingsDataSecurity AllowEdit="False" />
-                                    <Columns>
-                                        <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="true" 
-                                            VisibleIndex="0" ShowEditButton="False" Width="40px" />
-                                        <dx:BootstrapGridViewTextColumn FieldName="description" Visible="true" Name="value" 
-                                            ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                        <dx:BootstrapGridViewTextColumn FieldName="value" Visible="false" Name="value" 
-                                            ReadOnly="false" VisibleIndex="1" Caption="Vrednost" />
-                                    </Columns>
-                                    <SettingsSearchPanel Visible="False" />
-                                </dx:BootstrapGridView>
-                                <asp:SqlDataSource ID="queryTypeGroup" runat="server" 
-                                    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" 
-                                    SelectCommand="SELECT id, value, description FROM meta_options WHERE option_type = 'type';" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Zapri</button>
-                <asp:Button ID="btnFilter" runat="server" CssClass="btn btn-primary" Text="Filtriraj" OnClick="BtnFilter_Click" />
-            </div>
-        </div>
-    </div>
-</div>
 
 
 
