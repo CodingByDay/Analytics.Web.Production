@@ -186,17 +186,14 @@
         });
 
         function Type_Lookup_ValueChanged(s, e) {
-            alert("test")
             dashboardGrid.PerformCallback("FilterByType");
         }
 
         function Company_Lookup_ValueChanged(s, e) {
-            alert("test2")
             dashboardGrid.PerformCallback("FilterByCompany");
         }
 
         function Language_Lookup_ValueChanged(s, e) {
-            alert("test3")
             dashboardGrid.PerformCallback("FilterByLanguage");
         }
         function onCustomButtonClick(s, e) {
@@ -224,7 +221,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -300,7 +297,7 @@
 
 
 
-            <dx:BootstrapGridView ID="usersGridView"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="usersGridView"  SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
@@ -369,7 +366,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="true" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
@@ -537,7 +534,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="companyModalLabel">Podjetje</h5>
+        <h5 class="modal-title" id="companyModalLabel"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -605,7 +602,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="userFormModalLabel">Uporabniški obrazec</h5>
+        <h5 class="modal-title" id="userFormModalLabel"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -648,14 +645,14 @@
               </div>
               <div class="col-md-6">
                 <!-- User Role and Rights -->
-                <h3>Vloga uporabnika</h3>
+                <h5>Vloga uporabnika</h5>
                 <div class="form-group">
                   <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
                     <asp:ListItem>Admin</asp:ListItem>
                     <asp:ListItem>User</asp:ListItem>
                   </asp:RadioButtonList>
                 </div>
-                <h3>Pravice uporabnika</h3>
+                <h5>Pravice uporabnika</h5>
                 <div class="form-group">
                   <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
                     <asp:ListItem>Viewer</asp:ListItem>
@@ -759,7 +756,7 @@
 
             setTimeout(function () {
                 elem.style.opacity = 1;
-                //document.getElementById('overlay').style.backgroundColor = "gray";
+                // document.getElementById('overlay').style.backgroundColor = "gray";
             }, 100);
         });
     });

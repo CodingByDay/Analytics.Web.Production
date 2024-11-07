@@ -72,6 +72,9 @@ span.badge.badge-secondary {
 /* 
     Admin design 2024 / 2025 Janko Jovičić
 */
+.focused_row {
+    background-color: rgba(0, 0, 0, .1);
+}
 a, span, td {
     color: darkslategray;
 }
@@ -93,7 +96,15 @@ td {
 body {
     max-width: 100% !important;
 }
+label {
+    font-size: smaller;
+    color: darkslategray;
+}
 
+h5 {
+    color: darkslategray!important;
+
+}
 
 
 
@@ -116,7 +127,6 @@ body {
 .inner-item {
     display: flex;
     flex-direction: column;
-    background-color: #f9f9f9; /* Optional background color */
     border-radius: 8px;
     padding: 10px;
 }

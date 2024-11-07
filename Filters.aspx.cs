@@ -21,6 +21,13 @@ namespace Dash
             gridViewOrganizations.CustomJSProperties += GridViewOrganizations_CustomJSProperties;
             gridViewLanguages.CustomJSProperties += GridViewLanguages_CustomJSProperties;
 
+            gridViewTypes.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+            gridViewTypes.SettingsCommandButton.DeleteButton.IconCssClass = "fa fa-trash";
+            gridViewOrganizations.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+            gridViewOrganizations.SettingsCommandButton.DeleteButton.IconCssClass = "fa fa-trash";
+            gridViewLanguages.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+            gridViewLanguages.SettingsCommandButton.DeleteButton.IconCssClass = "fa fa-trash";
+
             if (!IsPostBack)
             {
            

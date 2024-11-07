@@ -21,13 +21,13 @@
         }
 
         .square {
-            width: 150px;
-            height: 150px;
+            width: 100px;
+            height: 100px;
             margin: 20px;
             background-color: #f0f0f0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
             border: 2px solid #ccc;
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
@@ -41,8 +41,7 @@
         }
 
         .square span {
-            margin-top: 10px;
-            font-size: 14px;
+            font-size: 12px;
             color: #333;
         }
     </style>
@@ -85,7 +84,7 @@
                         <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
                         <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
-                                                    <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
+                                                    <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " CommandDelete=" " ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -141,7 +140,7 @@
                         <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
                         <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
-                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
+                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " CommandDelete=" " ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -197,7 +196,7 @@
                         <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
                         <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
-                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" CommandDelete="Pobriši" ></SettingsText>
+                                <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " CommandDelete=" " ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
