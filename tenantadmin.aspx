@@ -160,6 +160,13 @@
         }
 
 
+        function onCustomButtonClick(s, e) {
+            if (e.buttonID === 'EditBtn') {
+                var key = s.GetRowKey(e.visibleIndex);
+                s.PerformCallback(key);
+            }
+        }
+
     </script>
 
 
@@ -202,7 +209,7 @@
                               <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
+                    <ClientSideEvents CustomButtonClick="function(s, e) { onCustomButtonClick(s, e); }" Init="function(s, e) { OnInitSpecific(s, e, 'user'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'user'); }" />
 
               <Settings VerticalScrollBarMode="Visible" />
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
@@ -216,7 +223,10 @@
           </StatusBar>
 </Templates>
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+                        <CustomButtons>
+                            <dx:BootstrapGridViewCommandColumnCustomButton  Visibility="AllDataRows"  ID="EditBtn" Text="Uredi" CssClass="custom-edit-btn" />
+                        </CustomButtons>
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
@@ -258,7 +268,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 <SettingsEditing Mode="Batch" />
 
@@ -365,6 +375,8 @@
         <asp:Parameter Name="dashboard_id" Type="Int32" />
         <asp:Parameter Name="company_id" Type="Int32" />
         <asp:Parameter Name="custom_name" Type="String" />
+        <asp:Parameter Name="meta_type"   ConvertEmptyStringToNull="true" Type="Int32" />
+        <asp:Parameter Name="meta_language" ConvertEmptyStringToNull="true" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
 

@@ -90,7 +90,23 @@ namespace Dash
             }
         }
 
+        private bool IsEditUser
+        {
+            get
+            {
+                if (Session["IsEditUser"] == null)
+                {
 
+                    Session["IsEditUser"] = false;
+
+                }
+                return (bool)Session["IsEditUser"];
+            }
+            set
+            {
+                Session["IsEditUser"] = value;
+            }
+        }
 
 
         private string CurrentUsername
@@ -178,18 +194,17 @@ namespace Dash
             usersGridView.EnableCallBacks = false;
             usersGridView.EnableRowsCache = true;
 
-            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
             usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
             usersGridView.DataBound += UsersGridView_DataBound;
             usersGridView.BatchUpdate += UsersGridView_BatchUpdate;
+            usersGridView.CustomCallback += UsersGridView_CustomCallback;
+
 
             graphsGridView.EnableRowsCache = true;
             graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            graphsGridView.DataBound += GraphsGridView_DataBound;
             graphsGridView.SettingsBehavior.AllowFocusedRow = true;
-            graphsGridView.SettingsBehavior.AllowSelectByRowClick = false;
-            graphsGridView.EnableCallBacks = false;
-            graphsGridView.RowUpdating += GraphsGridView_RowUpdating;
+            graphsGridView.DataBound += GraphsGridView_DataBound;
+            graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
             if (!IsPostBack)
             {
@@ -203,6 +218,44 @@ namespace Dash
             Authenticate();
 
         }
+
+        private void UsersGridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
+        {
+            var key = e.Parameters;
+            usersGridView.Selection.SelectRowByKey(key);
+            IsEditUser = true;
+            TxtUserName.Enabled = false;
+            UpdateFormName(key.ToString());
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
+        }
+
+        private void GraphsGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            e.Handled = true;
+
+            foreach (var row in e.UpdateValues)
+            {
+                string rowId = row.Keys["id"].ToString();
+
+                query.UpdateParameters["dashboard_id"].DefaultValue = rowId;
+                query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+                query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
+
+                query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null
+                    ? row.NewValues["meta_type"].ToString()
+                    : DBNull.Value.ToString();
+
+                query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null
+                    ? row.NewValues["meta_language"].ToString()
+                    : DBNull.Value.ToString();
+
+                query.Update();
+            }
+
+            graphsGridView.DataBind();
+
+        }
+
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
         {
@@ -394,18 +447,6 @@ namespace Dash
 
 
 
-        private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        {
-            var key = e.EditingKeyValue;
-            usersGridView.Selection.SelectRowByKey(key);
-
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            // Call js. function here if the test passes.
-            UpdateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
-            e.Cancel = true;
-        }
 
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -543,124 +584,171 @@ namespace Dash
             }
         }
 
-        protected void RegistrationButton_Click(object sender, EventArgs e)
+        private void UpdateUser()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    if (TxtUserName.Enabled == true)
+                    string query;
+
+                    if (!string.IsNullOrEmpty(TxtPassword.Text))
                     {
-                        if (TxtPassword.Text != TxtRePassword.Text)
+                        if (TxtPassword.Text == TxtRePassword.Text)
                         {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
+                            string hashedPassword = HashPassword(TxtPassword.Text);
+                            query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed, 
+                          full_name = @full_name, referrer = @referrer WHERE uname = @uname";
+
+                            using (SqlCommand cmdEdit = new SqlCommand(query, conn))
+                            {
+                                cmdEdit.Parameters.AddWithValue("@password", hashedPassword);
+                                cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
+                                cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
+                                cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
+
+                                cmdEdit.ExecuteNonQuery();
+                            }
                         }
                         else
                         {
-                            SqlCommand check = new SqlCommand($"SELECT count(*) FROM Users WHERE uname='{TxtUserName.Text}'", conn);
-                            var resultCheck = check.ExecuteScalar();
-                            Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                            check.Dispose();
-                            if (resultUsername > 0)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-                            }
-                            else
-                            {
-                                string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                                string CompanyInsert = CurrentCompany;
-                                int IdCompany = GetIdCompany(CompanyInsert);
-                                string QueryRegistration = String.Format($"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{IdCompany}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', '{referrer.Text}')");
-                                SqlCommand createUser = new SqlCommand(QueryRegistration, conn);
-                                var username = TxtUserName.Text;
-                                try
-                                {
-                                    var id = GetIdCompany(CurrentCompany);
-                                    createUser.ExecuteNonQuery();
-                                    createUser.Dispose();
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                    var company = CurrentCompany;
-                                    var spacelessCompany = company.Replace(" ", string.Empty);
-                                }
-                                catch (Exception ex)
-                                {
-                                    var log = ex;
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                }
-                            }
-                            cmd.Dispose();
+                            Notify("Gesla se ne ujemata.", true);
+                            return;
                         }
+
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(TxtRePassword.Text))
-                        {
-                            HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE users SET password='{HashedPasswordEdit}', user_role='{userRole.SelectedValue}', view_allowed='{userTypeList.SelectedValue}', full_name='{TxtName.Text}', referrer='{referrer.Text}' WHERE uname='{TxtUserName.Text}'", conn);
-                        }
-                        else
-                        {
-                            cmdEdit = new SqlCommand($"UPDATE users SET user_role='{userRole.SelectedValue}', view_allowed='{userTypeList.SelectedValue}', referrer='{referrer.Text}', full_name='{TxtName.Text}' WHERE uname='{TxtUserName.Text}'", conn);
-                        }
-                        if (TxtPassword.Text != TxtRePassword.Text)
-                        {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso enaka.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var username = TxtUserName.Text.Replace(" ", string.Empty); ;
-                                cmdEdit.ExecuteNonQuery();
+                        query = @"UPDATE users SET user_role = @user_role, view_allowed = @view_allowed, 
+                          referrer = @referrer, full_name = @full_name WHERE uname = @uname";
 
-                                cmdEdit.Dispose();
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
+                        using (SqlCommand cmdEdit = new SqlCommand(query, conn))
+                        {
+                            cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                            cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                            cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
+                            cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
+                            cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
 
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-                                var company = CurrentCompany;
-                            }
-                            catch (Exception ex)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                var debug = ex.Message;
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-                            }
-                            cmdEdit.Dispose();
+                            cmdEdit.ExecuteNonQuery();
                         }
                     }
+
+                    Notify("Uspešno spremenjeni podatki.", false);
+                    ClearInputs();
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    LogErrorAndNotify(ex);
                 }
             }
         }
 
 
+
+        private bool IsUsernameExists(SqlConnection conn, string username)
+        {
+            string query = "SELECT COUNT(*) FROM Users WHERE uname = @uname";
+            using (SqlCommand cmdCheck = new SqlCommand(query, conn))
+            {
+                cmdCheck.Parameters.AddWithValue("@uname", username);
+                return (int)cmdCheck.ExecuteScalar() > 0;
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+        }
+
+        private void ClearInputs()
+        {
+            TxtName.Text = "";
+            TxtPassword.Text = "";
+            TxtRePassword.Text = "";
+            TxtUserName.Text = "";
+            email.Text = "";
+        }
+
+        private void Notify(string message, bool isError)
+        {
+            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", $"notify({isError.ToString().ToLower()}, '{message}')", true);
+        }
+
+        private void LogErrorAndNotify(Exception ex)
+        {
+            Logger.LogError(typeof(Admin), ex.InnerException?.Message ?? ex.Message);
+            Notify("Napaka...", true);
+        }
+
+        protected void RegistrationButton_Click(object sender, EventArgs e)
+        {
+            if (IsEditUser)
+            {
+                UpdateUser();
+            }
+            else
+            {
+                InsertUser();
+            }
+
+            // Call DataBind at the end
+            usersGridView.DataBind();
+        }
+
+
+
+        private void InsertUser()
+        {
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                try
+                {
+                    conn.Open();
+                    if (TxtPassword.Text != TxtRePassword.Text)
+                    {
+                        Notify("Gesla se ne ujemata.", true);
+                        ClearInputs();
+                        return;
+                    }
+
+                    if (IsUsernameExists(conn, TxtUserName.Text))
+                    {
+                        Notify("Uporabniško ime že obstaja.", true);
+                        return;
+                    }
+
+                    string hashedPassword = HashPassword(TxtPassword.Text);
+                    int idCompany = GetIdCompany(CurrentCompany);
+                    string query = @"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) 
+                             VALUES (@uname, @password, @user_role, @id_company, @view_allowed, @full_name, @Email, @referrer)";
+
+                    using (SqlCommand createUser = new SqlCommand(query, conn))
+                    {
+                        createUser.Parameters.AddWithValue("@uname", TxtUserName.Text);
+                        createUser.Parameters.AddWithValue("@password", hashedPassword);
+                        createUser.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                        createUser.Parameters.AddWithValue("@id_company", idCompany);
+                        createUser.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                        createUser.Parameters.AddWithValue("@full_name", TxtName.Text);
+                        createUser.Parameters.AddWithValue("@Email", email.Text);
+                        createUser.Parameters.AddWithValue("@referrer", referrer.Text);
+
+                        createUser.ExecuteNonQuery();
+                    }
+
+                    Notify("Uspešno kreiran uporabnik.", false);
+                    ClearInputs();
+                }
+                catch (Exception ex)
+                {
+                    LogErrorAndNotify(ex);
+                }
+            }
+        }
 
         private void UpdateAdminCompany(string admin_value, string cName)
         {

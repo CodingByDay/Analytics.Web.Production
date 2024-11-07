@@ -4,6 +4,7 @@ using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -83,9 +84,41 @@ namespace Dash.DatabaseStorage
                 InsertCommand.Parameters.Add("caption", SqlDbType.NVarChar).Value = stripped;
                 InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
-                string ID = InsertCommand.ExecuteScalar().ToString();
-                return ID;
+
+                object result = InsertCommand.ExecuteScalar();
+
+                if(result == null)
+                {
+                    return "";
+                }
+                // Adding the permission for the admins of the company
+
+                // Call the procedure to get admin IDs who need permissions for this dashboard
+                SqlCommand GetAdminsCommand = new SqlCommand("sp_get_user_role_info", connection);
+                GetAdminsCommand.CommandType = CommandType.StoredProcedure;
+                GetAdminsCommand.Parameters.Add("uname", SqlDbType.VarChar).Value = HttpContext.Current.User.Identity.Name; 
+
+                using (SqlDataReader reader = GetAdminsCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        string adminUname = reader["uname"].ToString();
+                        if(adminUname != "Role not recognized")
+                        {
+                            DashboardPermissions dashboardPermissions = new DashboardPermissions(adminUname);
+                            dashboardPermissions.Permissions.Add(new DashboardPermission { id = Int32.Parse(result.ToString()) });
+                            dashboardPermissions.SetPermissionsForUser(adminUname);
+                        }
+                    }
+                }
+
+
+                return result.ToString();
             }
+
+
+
+
         }
 
         public string GetCompanyForUser()
