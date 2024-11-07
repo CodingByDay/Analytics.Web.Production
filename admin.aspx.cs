@@ -6,6 +6,7 @@ using DevExpress.Utils.Behaviors;
 using DevExpress.Utils.DragDrop;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
+using DevExpress.XtraReports.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -239,7 +240,10 @@ namespace Dash
             }
 
             InitializeUiChanges();
-            Authenticate();  
+            Authenticate();
+
+
+            companiesGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
         }
 
 

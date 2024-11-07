@@ -267,6 +267,10 @@ namespace Dash
             LimitCompanyGrid();
             HideColumnForCompanies();
             LimitDashboardsPermissions();
+
+            groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+
+
         }
 
         private void LimitDashboardsPermissions()

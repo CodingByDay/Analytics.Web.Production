@@ -231,14 +231,14 @@
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
-            <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
+            <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
                 <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="True" VisibleIndex="0" Caption="Možnosti" >
+                    <dx:BootstrapGridViewCommandColumn  HeaderBadge-IconCssClass="fa fa-caret-down"  ShowEditButton="True" VisibleIndex="0" Caption=" " >
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -249,8 +249,18 @@
                     <dx:BootstrapGridViewTextColumn FieldName="database_name" Visible="False" Caption="Naziv konekcije" VisibleIndex="3">
                     </dx:BootstrapGridViewTextColumn>                    
                 </Columns>
+
+
+
                     <SettingsSearchPanel Visible="True" />
                     <CssClasses Control="control" />
+
+
+ 
+            
+
+
+
                     </dx:BootstrapGridView>
                      </div>
 	            </div>
@@ -311,9 +321,9 @@
 
 
           <Columns>
-              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"   SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption=" ">
                     <CustomButtons >
-                    <dx:BootstrapGridViewCommandColumnCustomButton  Visibility="AllDataRows"  ID="EditBtn" Text="Uredi" CssClass="custom-edit-btn" />
+                    <dx:BootstrapGridViewCommandColumnCustomButton IconCssClass="fas fa-edit"  Visibility="AllDataRows"  ID="EditBtn" Text="" CssClass="custom-edit-btn" />
                 </CustomButtons>
 
               </dx:BootstrapGridViewCommandColumn>
@@ -375,7 +385,7 @@
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption=" ">
                               
 
               </dx:BootstrapGridViewCommandColumn>
@@ -384,7 +394,7 @@
               <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
 
-              <dx:BootstrapGridViewTextColumn  FieldName="caption" Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
+              <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="caption"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
 
               <dx:BootstrapGridViewTextColumn FieldName="custom_name" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">

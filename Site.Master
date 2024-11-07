@@ -36,6 +36,7 @@
 	<meta name="msapplication-TileImage" content="images/logo.png">
 
     <link href="~/Content/Css/All.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 
 
 

@@ -173,7 +173,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView" SettingsResizing-ColumnResizeMode="Control" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server"  KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server"  KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -187,7 +187,7 @@
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn ShowEditButton="False" VisibleIndex="0" Caption="Možnosti">
+                    <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"   ShowEditButton="False" VisibleIndex="0" Caption=" ">
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -221,7 +221,7 @@
             <div id="gridContainerUser" style="visibility: hidden">
 
             <asp:SqlDataSource ID="groupsGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [groups]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="groupsGridView" SettingsResizing-ColumnResizeMode="Control" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="groupsGridView" SettingsResizing-ColumnResizeMode="NextColumn" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
            <CssClasses Control="grid"></CssClasses>
 
           <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -231,11 +231,11 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-        <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi"  SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
+        <SettingsText  CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" "  SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"  SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="True" Caption=" ">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="group_id" Visible="false" Name="id" ReadOnly="false" VisibleIndex="1" Caption="Skupina">
               <SettingsEditForm Visible="False" />
@@ -268,7 +268,7 @@
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 
-      <dx:BootstrapGridView ID="graphsGridView" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true" runat="server" SettingsResizing-ColumnResizeMode="Control" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView ID="graphsGridView" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true" runat="server" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -291,7 +291,7 @@
 
           <SettingsDataSecurity AllowEdit="False" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption=" ">
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
