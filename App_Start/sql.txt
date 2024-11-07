@@ -1,102 +1,102 @@
 ﻿USE [master]
 GO
-/****** Object:  Database [Analytics_IN_SIST_DEV]    Script Date: 10/29/2024 3:20:33 PM ******/
-CREATE DATABASE [Analytics_IN_SIST_DEV]
+/****** Object:  Database [Analytics_IN_SIST_NEW_DEV]    Script Date: 11/7/2024 12:11:52 PM ******/
+CREATE DATABASE [Analytics_IN_SIST_NEW_DEV]
  CONTAINMENT = NONE
  ON  PRIMARY 
-( NAME = N'petpak', FILENAME = N'D:\MSSQL15.SPLAHOST\MSSQL\DATA\official.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+( NAME = N'petpak', FILENAME = N'D:\MSSQL15.SPLAHOST\MSSQL\DATA\official_new.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
  LOG ON 
-( NAME = N'petpak_log', FILENAME = N'L:\MSSQL15.SPLAHOST\MSSQL\Log\official.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+( NAME = N'petpak_log', FILENAME = N'L:\MSSQL15.SPLAHOST\MSSQL\Log\official_new.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
  WITH CATALOG_COLLATION = DATABASE_DEFAULT
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET COMPATIBILITY_LEVEL = 150
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET COMPATIBILITY_LEVEL = 150
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
-EXEC [Analytics_IN_SIST_DEV].[dbo].[sp_fulltext_database] @action = 'enable'
+EXEC [Analytics_IN_SIST_NEW_DEV].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ANSI_NULL_DEFAULT OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ANSI_NULL_DEFAULT OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ANSI_NULLS OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ANSI_NULLS OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ANSI_PADDING OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ANSI_PADDING OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ANSI_WARNINGS OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ANSI_WARNINGS OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ARITHABORT OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ARITHABORT OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET AUTO_CLOSE OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET AUTO_CLOSE OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET AUTO_SHRINK OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET AUTO_SHRINK OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET AUTO_UPDATE_STATISTICS ON 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET CURSOR_DEFAULT  GLOBAL 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET CURSOR_DEFAULT  GLOBAL 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET CONCAT_NULL_YIELDS_NULL OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET CONCAT_NULL_YIELDS_NULL OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET NUMERIC_ROUNDABORT OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET QUOTED_IDENTIFIER OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET QUOTED_IDENTIFIER OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET RECURSIVE_TRIGGERS OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET  DISABLE_BROKER 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET  DISABLE_BROKER 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET TRUSTWORTHY OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET TRUSTWORTHY OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET PARAMETERIZATION SIMPLE 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET READ_COMMITTED_SNAPSHOT OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET HONOR_BROKER_PRIORITY OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET RECOVERY SIMPLE 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET RECOVERY SIMPLE 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET  MULTI_USER 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET  MULTI_USER 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET PAGE_VERIFY CHECKSUM  
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET PAGE_VERIFY CHECKSUM  
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET DB_CHAINING OFF 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET DB_CHAINING OFF 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET TARGET_RECOVERY_TIME = 60 SECONDS 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET DELAYED_DURABILITY = DISABLED 
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET ACCELERATED_DATABASE_RECOVERY = OFF  
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET QUERY_STORE = OFF
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET QUERY_STORE = OFF
 GO
-USE [Analytics_IN_SIST_DEV]
+USE [Analytics_IN_SIST_NEW_DEV]
 GO
-/****** Object:  User [petpakn]    Script Date: 10/29/2024 3:20:34 PM ******/
+/****** Object:  User [petpakn]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE USER [petpakn] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [petpak]    Script Date: 10/29/2024 3:20:34 PM ******/
+/****** Object:  User [petpak]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE USER [petpak] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [jankoj]    Script Date: 10/29/2024 3:20:34 PM ******/
+/****** Object:  User [jankoj]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE USER [jankoj] FOR LOGIN [jankoj] WITH DEFAULT_SCHEMA=[dbo]
 GO
-/****** Object:  User [dashboards]    Script Date: 10/29/2024 3:20:34 PM ******/
+/****** Object:  User [dashboards]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE USER [dashboards] FOR LOGIN [dashboards] WITH DEFAULT_SCHEMA=[dbo]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [jankoj]
 GO
 ALTER ROLE [db_owner] ADD MEMBER [dashboards]
 GO
-/****** Object:  Table [dbo].[dashboards]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[dashboards]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -106,14 +106,16 @@ CREATE TABLE [dbo].[dashboards](
 	[dashboard] [varbinary](max) NULL,
 	[caption] [nvarchar](255) NULL,
 	[viewer_only] [int] NULL,
-	[meta_data] [nvarchar](max) NULL,
+	[meta_type] [int] NULL,
+	[meta_company] [int] NULL,
+	[meta_language] [int] NULL,
  CONSTRAINT [PK_Dashboards] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[users]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[users]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -136,7 +138,7 @@ CREATE TABLE [dbo].[users](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -152,7 +154,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[companies]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[companies]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -171,7 +173,7 @@ CREATE TABLE [dbo].[companies](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  View [dbo].[dashboards_log]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  View [dbo].[dashboards_log]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -194,53 +196,7 @@ JOIN
 companies c ON c.id_company = (SELECT id_company FROM users WHERE uname = u.uname)
 
 GO
-/****** Object:  Table [dbo].[company_string]    Script Date: 10/29/2024 3:20:35 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[company_string](
-	[ID] [int] IDENTITY(1,1) NOT NULL,
-	[string] [char](100) NULL,
- CONSTRAINT [PK_company_string] PRIMARY KEY CLUSTERED 
-(
-	[ID] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[dashboards_custom_names]    Script Date: 10/29/2024 3:20:35 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[dashboards_custom_names](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[dashboard_id] [int] NOT NULL,
-	[company_id] [int] NOT NULL,
-	[custom_name] [varchar](max) NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 10/29/2024 3:20:35 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE TABLE [dbo].[dashboards_sorted_by_user](
-	[id] [int] IDENTITY(1,1) NOT NULL,
-	[uname] [varchar](15) NOT NULL,
-	[dashboard_id] [int] NOT NULL,
-	[sort_order] [int] NOT NULL,
-PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
-/****** Object:  Table [dbo].[groups]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[groups]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -257,7 +213,78 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[meta_options]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  View [dbo].[users_groups]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE VIEW [dbo].[users_groups] AS
+SELECT 
+    u.uname, 
+    u.password, 
+    u.user_role, 
+    u.view_allowed, 
+    u.email, 
+	u.id_company,
+    g.group_name,
+	g.group_id
+FROM 
+    users u
+LEFT JOIN 
+    groups g ON u.group_id = g.group_id
+WHERE 
+    u.id_company IS NOT NULL;
+GO
+/****** Object:  Table [dbo].[company_string]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[company_string](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[string] [char](100) NULL,
+ CONSTRAINT [PK_company_string] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboards_custom_names]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards_custom_names](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[company_id] [int] NOT NULL,
+	[custom_name] [varchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards_sorted_by_user](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[uname] [varchar](15) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[sort_order] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[meta_options]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -273,7 +300,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -288,7 +315,7 @@ PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Index [IDX_dashboard_view_logs_dashboard]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Index [IDX_dashboard_view_logs_dashboard]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_dashboard] ON [dbo].[dashboard_view_logs]
 (
 	[dashboard_id] ASC
@@ -296,7 +323,7 @@ CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_dashboard] ON [dbo].[dashboar
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [IDX_dashboard_view_logs_user]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Index [IDX_dashboard_view_logs_user]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_user] ON [dbo].[dashboard_view_logs]
 (
 	[user_id] ASC
@@ -304,7 +331,7 @@ CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_user] ON [dbo].[dashboard_vie
 GO
 SET ANSI_PADDING ON
 GO
-/****** Object:  Index [IX_OptionType]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  Index [IX_OptionType]    Script Date: 11/7/2024 12:11:53 PM ******/
 CREATE NONCLUSTERED INDEX [IX_OptionType] ON [dbo].[meta_options]
 (
 	[option_type] ASC
@@ -317,8 +344,6 @@ GO
 ALTER TABLE [dbo].[dashboard_view_logs] ADD  DEFAULT (getdate()) FOR [view_time]
 GO
 ALTER TABLE [dbo].[dashboards] ADD  DEFAULT ('0') FOR [viewer_only]
-GO
-ALTER TABLE [dbo].[dashboards] ADD  CONSTRAINT [DF_meta_data]  DEFAULT ('{"Types": [], "Companies": [], "Languages": []}') FOR [meta_data]
 GO
 ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_permissions]  DEFAULT (N'{"Permissions":[]}') FOR [dashboard_permissions]
 GO
@@ -335,6 +360,22 @@ REFERENCES [dbo].[users] ([uname])
 ON DELETE CASCADE
 GO
 ALTER TABLE [dbo].[dashboard_view_logs] CHECK CONSTRAINT [FK_dashboard_view_logs_user]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_company] FOREIGN KEY([meta_company])
+REFERENCES [dbo].[meta_options] ([id])
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_company]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_language] FOREIGN KEY([meta_language])
+REFERENCES [dbo].[meta_options] ([id])
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_language]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_type] FOREIGN KEY([meta_type])
+REFERENCES [dbo].[meta_options] ([id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_type]
 GO
 ALTER TABLE [dbo].[dashboards_custom_names]  WITH CHECK ADD  CONSTRAINT [FK_Company_Custom_Names] FOREIGN KEY([company_id])
 REFERENCES [dbo].[companies] ([id_company])
@@ -377,7 +418,7 @@ ON DELETE SET NULL
 GO
 ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_groups]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1448,12 +1489,12 @@ AS BEGIN
   END CATCH
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_change_password]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_change_password]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Create Proc [dbo].[sp_change_password]
+CREATE Proc [dbo].[sp_change_password]
 @GUID uniqueidentifier,
 @Password nvarchar(100)
 as
@@ -1461,7 +1502,7 @@ Begin
  Declare @UserId varchar(15)
  
  Select @UserId = username 
- from tblResetPasswordRequests
+ from reset_password_requests
  where Id= @GUID
  
  if(@UserId is null)
@@ -1472,19 +1513,19 @@ Begin
  Else
  Begin
   -- If UserId exists, Update with new password
-  Update Users set
-  [Pwd] = @Password
+  Update users set
+  [password] = @Password
   where uname = @UserId
   
   -- Delete the password reset request row 
-  Delete from tblResetPasswordRequests
+  Delete from reset_password_requests
   where Id = @GUID
   
   Select 1 as IsPasswordChanged
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[sp_get_dashboards]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_get_dashboards]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1498,7 +1539,9 @@ BEGIN
     SELECT 
         d.id, 
         d.caption, 
-        d.meta_data, 
+        mt.description AS meta_type,
+		mc.description AS meta_company,
+		ml.description AS meta_language,
         COALESCE(ds.sort_order, ROW_NUMBER() OVER (ORDER BY d.id)) AS sort_order,
         COALESCE(cn.custom_name, d.caption) AS custom_name 
     FROM 
@@ -1508,6 +1551,12 @@ BEGIN
         dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
 	LEFT JOIN
 		dashboards_custom_names cn ON d.id = cn.dashboard_id AND company_id = @company
+	LEFT JOIN 
+	    meta_options mt ON d.meta_type = mt.id
+	LEFT JOIN 
+		meta_options mc ON d.meta_company = mc.id
+	LEFT JOIN 
+		meta_options ml ON d.meta_language = ml.id
 
     WHERE 
         @uname IN (SELECT uname FROM users) AND
@@ -1520,18 +1569,85 @@ BEGIN
 
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_is_password_reset_link_valid]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_get_dashboards_simple]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Create Proc [dbo].[sp_is_password_reset_link_valid] 
+CREATE PROCEDURE [dbo].[sp_get_dashboards_simple]
+AS
+BEGIN
+    SELECT 
+        d.id, 
+        d.caption, 
+        mt.description AS meta_type,
+        mc.description AS meta_company,
+        ml.description AS meta_language
+    FROM 
+        dashboards d
+    LEFT JOIN 
+        meta_options mt ON d.meta_type = mt.id
+    LEFT JOIN 
+        meta_options mc ON d.meta_company = mc.id
+    LEFT JOIN 
+        meta_options ml ON d.meta_language = ml.id;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_user_role_info]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_get_user_role_info]
+    @uname NVARCHAR(50)
+AS
+BEGIN
+    DECLARE @user_role NVARCHAR(50);
+    DECLARE @id_company INT;
+
+    -- Fetch user role and company ID for the provided username
+    SELECT @user_role = user_role, @id_company = id_company
+    FROM users
+    WHERE uname = @uname;
+
+    -- Check user role and return appropriate data
+    IF @user_role = 'SuperAdmin'
+    BEGIN
+        -- Return empty values for super_admin
+        SELECT '' AS uname, '' AS user_role, NULL AS company_id;
+    END
+    ELSE IF @user_role = 'Admin'
+    BEGIN
+        -- Return only the data for the current admin user
+        SELECT uname, user_role, id_company
+        FROM users
+        WHERE uname = @uname;
+    END
+    ELSE IF @user_role = 'User'
+    BEGIN
+        -- Return all admins in the same company if the user is of type 'user'
+        SELECT uname, user_role, id_company
+        FROM users
+        WHERE id_company = @id_company AND user_role = 'Admin';
+    END
+    ELSE
+    BEGIN
+        SELECT 'Role not recognized' AS uname, '' AS user_role, NULL AS company_id;
+    END
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_is_password_reset_link_valid]    Script Date: 11/7/2024 12:11:53 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE Proc [dbo].[sp_is_password_reset_link_valid] 
 @GUID uniqueidentifier
 as
 Begin
  Declare @UserId int
  
- If(Exists(Select username from tblResetPasswordRequests where Id = @GUID))
+ If(Exists(Select username from reset_password_requests where id = @GUID))
  Begin
   Select 1 as IsValidPasswordResetLink
  End
@@ -1541,12 +1657,12 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[sp_reset_password]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_reset_password]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Create proc [dbo].[sp_reset_password]
+CREATE proc [dbo].[sp_reset_password]
 @UserName nvarchar(100)
 as
 Begin
@@ -1563,8 +1679,8 @@ Begin
   Declare @GUID UniqueIdentifier
   Set @GUID = NEWID()
   
-  Insert into tblResetPasswordRequests
-  (Id, username, ResetRequestDateTime)
+  Insert into reset_password_requests
+  (id, username, reset_request_datetime)
   Values(@GUID, @user, GETDATE())
   
   Select 1 as ReturnCode, @GUID as UniqueId, @Email as Email
@@ -1576,30 +1692,41 @@ Begin
  End
 End
 GO
-/****** Object:  StoredProcedure [dbo].[sp_upsert_dashboards_custom_names]    Script Date: 10/29/2024 3:20:35 PM ******/
+/****** Object:  StoredProcedure [dbo].[sp_upsert_dashboards_custom_names]    Script Date: 11/7/2024 12:11:53 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [dbo].[sp_upsert_dashboards_custom_names]
     @dashboard_id INT,
     @company_id INT,
-    @custom_name NVARCHAR(255)
+    @custom_name NVARCHAR(255),
+    @meta_type INT = NULL,       -- New parameter for meta_type
+    @meta_company INT = NULL,    -- New parameter for meta_company
+    @meta_language INT = NULL    -- New parameter for meta_language
 AS
 BEGIN
     SET NOCOUNT ON;
 
-    -- Check if a row with the specified dashboard_id and company_id already exists
+    -- Update the dashboards table with the new meta values
+    UPDATE dashboards
+    SET meta_type = @meta_type,
+        meta_company = @meta_company,
+        meta_language = @meta_language
+    WHERE id = @dashboard_id;
+
+    -- Check if a row with the specified dashboard_id and company_id already exists in dashboards_custom_names
     IF EXISTS (SELECT 1 FROM dashboards_custom_names WHERE dashboard_id = @dashboard_id AND company_id = @company_id)
     BEGIN
-        -- Update the existing row
+        -- Update the existing row in dashboards_custom_names
         UPDATE dashboards_custom_names
         SET custom_name = @custom_name
         WHERE dashboard_id = @dashboard_id AND company_id = @company_id;
     END
     ELSE
     BEGIN
-        -- Insert a new row
+        -- Insert a new row into dashboards_custom_names
         INSERT INTO dashboards_custom_names (dashboard_id, company_id, custom_name)
         VALUES (@dashboard_id, @company_id, @custom_name);
     END
@@ -1607,5 +1734,5 @@ END;
 GO
 USE [master]
 GO
-ALTER DATABASE [Analytics_IN_SIST_DEV] SET  READ_WRITE 
+ALTER DATABASE [Analytics_IN_SIST_NEW_DEV] SET  READ_WRITE 
 GO

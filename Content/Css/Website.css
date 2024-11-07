@@ -12,10 +12,8 @@
     padding-right: 7px;
 }
 
-@media (min-width: 992px) {
-    .container {
-        max-width: 1530px;
-    }
+.container {
+    max-width: 100%;
 }
 
 .form-check input {
