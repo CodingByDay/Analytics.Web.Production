@@ -182,13 +182,16 @@ height: 100% !important;
             /**
              * Change the visibility of the collapsable hamburger menu. */
             function toggleVisibilityHide(toHide) {
+                try {
+                    var picture = document.getElementById("pic")
+                    if (toHide == true) {
 
-                var picture = document.getElementById("pic")
-                if (toHide == true) {
-
-                    picture.style.visibility = "hidden"
-                } else {
-                    picture.style.visibility = "visible"
+                        picture.style.visibility = "hidden"
+                    } else {
+                        picture.style.visibility = "visible"
+                    }
+                } catch (ex) {
+                    return;
                 }
             }
 
@@ -250,10 +253,7 @@ height: 100% !important;
                     onCollapse();
                 }
 
-                // To be able to achieve selection. 27.09.2024 Janko Jovičić
-                TypeGroup.PerformCallback();
-                CompanyGroup.PerformCallback();
-                LanguageGroup.PerformCallback();
+
             }
 
 

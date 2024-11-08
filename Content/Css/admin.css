@@ -80,6 +80,10 @@ span.badge.badge-secondary {
 .focused_row {
     background-color: rgba(0, 0, 0, .1);
 }
+
+i.fas.fa-info-circle.info-icons {
+    padding-top: 0.4em;
+}
 a, span, td {
     color: darkslategray;
 }
@@ -90,7 +94,7 @@ span.fa.fa-caret-down.image {
     font-weight: 600 !important;
     font-size:0.9em;
 }
-span.image.fas.fa-edit {
+span.image.fas.fa-edit, span.image.fa.fa-trash {
     font-size: 0.8em;
 }
 td {

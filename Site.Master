@@ -63,6 +63,10 @@
     #MainContent {
       visibility: hidden; 
     }
+
+    i.fas.fa-info-circle.info-icons {
+    color: white;
+}
 </style>
 
 </head>
@@ -71,7 +75,7 @@
       <!-- Preloader -->
       <div id="preloader"></div>
         <script async>
-
+          
             const preloader = document.querySelector('#preloader');
             if (preloader) {
                 window.addEventListener('load', () => {
@@ -155,9 +159,9 @@
        
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
   <img runat="server" src="images/show.png" id="pic" style="width:25px;height:25px;"/>
-
+                  
+             
   <div class="container">
-
 
        
 
@@ -180,9 +184,13 @@
       
                        
                  </div>    
+
               </div>
-                              
+               
           <div runat="server" class="outer" style="position:absolute;float:right; right:5px">
+
+
+
               <label class="switch" runat="server" id="switcherOuter">
                     <input id="toggle" type="checkbox" name="checkbox" class="switch" runat="server" onchange="postback();">
                     <span class="slider"></span>
@@ -195,6 +203,7 @@
                 <i class="fa fa-wrench"></i> Nastavitve
                 </a></div>
                
+
 
                <div class="inner" runat="server" id="groupsButtonOuter"><a runat="server" id="groupsButton" onserverclick="groupsButton_ServerClick"  title="Administration">
                 <i class="fa fa-users"></i> Skupine

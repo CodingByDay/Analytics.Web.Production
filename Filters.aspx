@@ -111,7 +111,10 @@
                 </asp:SqlDataSource>
 
                 <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewTypes')">Nov tip</button>
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewTypes')">
+                    <i class="fas fa-plus"></i>
+                </button>
+
             </div>
         </div>
     </div>
@@ -166,8 +169,10 @@
                     </DeleteParameters>
                 </asp:SqlDataSource>
 
-                <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewOrganizations')">Novo podjetje</button>
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewOrganizations')">
+                    <i class="fas fa-plus"></i>
+                </button>
+
             </div>
         </div>
     </div>
@@ -223,7 +228,13 @@
                 </asp:SqlDataSource>
 
                 <!-- Add New Button -->
-                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewLanguages')">Novi jezik</button>
+                
+                <button class="btn btn-primary newRow" onclick="gridView_AddNewRow('gridViewLanguages')">
+                    <i class="fas fa-plus"></i>
+                </button>
+
+
+
             </div>
         </div>
     </div>
