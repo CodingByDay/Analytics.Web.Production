@@ -1,4 +1,6 @@
 ﻿using DevExpress.Web;
+using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -10,55 +12,85 @@ namespace Dash
     {
         protected void SearchResults_Callback(object sender, CallbackEventArgsBase e)
         {
-            var text = e.Parameter;
-            var results = DoSearch(text);
-            if (results.Count > 0)
+            try
             {
-                BindSearchResultsNavBar(results);
-                SearchResultsNavBar.Visible = true;
-                noResultsContainer.Visible = false;
+                var text = e.Parameter;
+                var results = DoSearch(text);
+                if (results.Count > 0)
+                {
+                    BindSearchResultsNavBar(results);
+                    SearchResultsNavBar.Visible = true;
+                    noResultsContainer.Visible = false;
+                }
+                else
+                {
+                    SearchResultsNavBar.Visible = false;
+                    requestText.InnerHtml = text;
+                    noResultsContainer.Visible = true;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SearchResultsNavBar.Visible = false;
-                requestText.InnerHtml = text;
-                noResultsContainer.Visible = true;
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private void BindSearchResultsNavBar(IList<SearchResultItem> data)
         {
-            var group = new NavBarGroup();
-            SearchResultsNavBar.Groups.Add(group);
-            foreach (var item in data)
+            try
             {
-                var navBarItem = new NavBarItem(
-                    text: string.Format("<span class='title'>{0}</span> <span class='tags'>Tags: {1}</span>", item.Title, GetFromattedTags(item.Tags)),
-                    name: "",
-                    imageUrl: "",
-                    navigateUrl: item.Url
-                );
-                group.Items.Add(navBarItem);
+                var group = new NavBarGroup();
+                SearchResultsNavBar.Groups.Add(group);
+                foreach (var item in data)
+                {
+                    var navBarItem = new NavBarItem(
+                        text: string.Format("<span class='title'>{0}</span> <span class='tags'>Tags: {1}</span>", item.Title, GetFromattedTags(item.Tags)),
+                        name: "",
+                        imageUrl: "",
+                        navigateUrl: item.Url
+                    );
+                    group.Items.Add(navBarItem);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private string GetFromattedTags(string tags)
         {
-            return string.Concat(tags.Split(',').Select(i => string.Format("<span class='tag'>{0}</span>", i.Trim())));
+            try
+            {
+                return string.Concat(tags.Split(',').Select(i => string.Format("<span class='tag'>{0}</span>", i.Trim())));
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
         }
 
         private IList<SearchResultItem> DoSearch(string text)
         {
-            var pagesNodes = XmlDataSource1.GetXmlDocument().GetElementsByTagName("page").OfType<XmlNode>();
-            return pagesNodes
-                .Where(n => n.Attributes["Title"].Value.ToUpper().Contains(text.ToUpper())
-                    || n.Attributes["Tags"].Value.ToUpper().Contains(text.ToUpper()))
-                .Select(n => new SearchResultItem()
-                {
-                    Title = n.Attributes["Title"].Value,
-                    Tags = n.Attributes["Tags"].Value,
-                    Url = n.Attributes["Url"].Value,
-                }).ToList();
+            try
+            {
+                var pagesNodes = XmlDataSource1.GetXmlDocument().GetElementsByTagName("page").OfType<XmlNode>();
+                return pagesNodes
+                    .Where(n => n.Attributes["Title"].Value.ToUpper().Contains(text.ToUpper())
+                        || n.Attributes["Tags"].Value.ToUpper().Contains(text.ToUpper()))
+                    .Select(n => new SearchResultItem()
+                    {
+                        Title = n.Attributes["Title"].Value,
+                        Tags = n.Attributes["Tags"].Value,
+                        Url = n.Attributes["Url"].Value,
+                    }).ToList();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new List<SearchResultItem>();
+            }
         }
 
         private class SearchResultItem

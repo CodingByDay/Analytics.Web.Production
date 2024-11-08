@@ -1,4 +1,5 @@
 ﻿using DevExpress.Web;
+using Sentry;
 using System;
 using System.Web.UI;
 using System.Xml;
@@ -9,32 +10,53 @@ namespace Dash
     {
         protected void NavigationTreeView_NodeDataBound(object source, DevExpress.Web.TreeViewNodeEventArgs e)
         {
-            XmlNode dataNode = ((e.Node.DataItem as IHierarchyData).Item as XmlNode);
-            if (dataNode.Name == "group")
-                e.Node.NodeStyle.CssClass += " group";
-            if (dataNode.ParentNode != null && dataNode.ParentNode.Name != "group")
-                e.Node.NodeStyle.CssClass += " introPage";
+            try
+            {
+                XmlNode dataNode = ((e.Node.DataItem as IHierarchyData).Item as XmlNode);
+                if (dataNode.Name == "group")
+                    e.Node.NodeStyle.CssClass += " group";
+                if (dataNode.ParentNode != null && dataNode.ParentNode.Name != "group")
+                    e.Node.NodeStyle.CssClass += " introPage";
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void NavigationTreeView_PreRender(object sender, EventArgs e)
         {
-            TreeViewNode node = NavigationTreeView.SelectedNode;
-            if (node != null)
+            try
             {
-                NavigationTreeView.ExpandToNode(node);
-                node.Expanded = true;
-                while (node != null)
+                TreeViewNode node = NavigationTreeView.SelectedNode;
+                if (node != null)
                 {
-                    if (node.Parent != null && node.Parent.Parent == null)
-                        node.Expanded = false;
-                    node = node.Parent;
+                    NavigationTreeView.ExpandToNode(node);
+                    node.Expanded = true;
+                    while (node != null)
+                    {
+                        if (node.Parent != null && node.Parent.Parent == null)
+                            node.Expanded = false;
+                        node = node.Parent;
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         protected void NavigationTreeView_Load(object sender, EventArgs e)
         {
-            Page.ClientScript.RegisterStartupScript(GetType(), "Initalize the view bag.", "load()", true);
+            try
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "Initalize the view bag.", "load()", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void NavigationTreeView_Init(object sender, EventArgs e)

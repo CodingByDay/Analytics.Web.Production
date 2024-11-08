@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,11 +14,25 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            try { 
+            
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void reset_Click(object sender, EventArgs e)
         {
-            SendActivationRequest();
+            try
+            {
+                SendActivationRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         /// <summary>
@@ -27,39 +42,53 @@ namespace Dash
         /// </summary>
         private void SendActivationRequest()
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            using (conn)
+            try
             {
-                SqlCommand cmd = new SqlCommand("sp_reset_password", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);
-
-                cmd.Parameters.Add(paramUsername);
-
-                conn.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                conn = new SqlConnection(ConnectionString);
+                using (conn)
                 {
-                    if (Convert.ToBoolean(rdr["ReturnCode"]))
+                    SqlCommand cmd = new SqlCommand("sp_reset_password", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);
+
+                    cmd.Parameters.Add(paramUsername);
+
+                    conn.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
                     {
-                        SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
-                        Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.', 'success'); };</script>");
-                    }
-                    else
-                    {
-                        Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'Prišlo je do napake. Uporabniško ime ne obstaja.', 'error'); };</script>");
+                        if (Convert.ToBoolean(rdr["ReturnCode"]))
+                        {
+                            SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.', 'success'); };</script>");
+                        }
+                        else
+                        {
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'Prišlo je do napake. Uporabniško ime ne obstaja.', 'error'); };</script>");
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Logon.aspx", false);
-            Context.ApplicationInstance.CompleteRequest();
+            try
+            {
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
@@ -99,9 +128,9 @@ namespace Dash
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailMessage);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return;
+                SentrySdk.CaptureException(ex);
             }
         }
 

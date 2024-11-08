@@ -4,6 +4,7 @@ using Dash.Models;
 using DevExpress.Data.Helpers;
 using DevExpress.Web.Bootstrap;
 using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -127,19 +128,27 @@ namespace Dash
 
         private string GetFirstCompany()
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
-                    var company = (string)cmd.ExecuteScalar();
-                    return company;
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
+                        var company = (string)cmd.ExecuteScalar();
+                        return company;
+                    }
+                    catch (Exception)
+                    {
+                        return string.Empty;
+                    }
                 }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
         }
 
@@ -162,114 +171,136 @@ namespace Dash
 
         private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
         {
-            List<MetaOption> filterValues = new List<MetaOption>();
-
-            // Define your connection string (replace with actual connection string)
-
-            // Define the query
-            string query = "SELECT description, value FROM meta_options WHERE option_type = @filter";
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                using (SqlCommand command = new SqlCommand(query, conn))
+                List<MetaOption> filterValues = new List<MetaOption>();
+
+                // Define your connection string (replace with actual connection string)
+
+                // Define the query
+                string query = "SELECT description, value FROM meta_options WHERE option_type = @filter";
+
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    // Add parameter to prevent SQL injection
-                    command.Parameters.AddWithValue("@filter", filter);
-
-                    // Open the connection
-                    conn.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    using (SqlCommand command = new SqlCommand(query, conn))
                     {
-                        // Read each result and add to the list
-                        while (reader.Read())
+                        // Add parameter to prevent SQL injection
+                        command.Parameters.AddWithValue("@filter", filter);
+
+                        // Open the connection
+                        conn.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            filterValues.Add(new MetaOption
+                            // Read each result and add to the list
+                            while (reader.Read())
                             {
-                                description = reader["description"].ToString(),
-                                value = reader["description"].ToString()
-                            });
+                                filterValues.Add(new MetaOption
+                                {
+                                    description = reader["description"].ToString(),
+                                    value = reader["description"].ToString()
+                                });
+                            }
                         }
                     }
                 }
-            }
 
-            return filterValues;
+                return filterValues;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new List<MetaOption>();
+            }
         }
         protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
         {
-            e.Handled = true;
+            try
+            {
+                e.Handled = true;
 
-            List<MetaOption> data = new List<MetaOption>();
-            if (e.Column.Caption == "Tip")
-            {
-                data = GetFilterValuesForSpecificFilter("type");
-            }
-            else if (e.Column.Caption == "Podjetje")
-            {
-                data = GetFilterValuesForSpecificFilter("company");
-            }
-            else if (e.Column.Caption == "Jezik")
-            {
-                data = GetFilterValuesForSpecificFilter("language");
-            }
+                List<MetaOption> data = new List<MetaOption>();
+                if (e.Column.Caption == "Tip")
+                {
+                    data = GetFilterValuesForSpecificFilter("type");
+                }
+                else if (e.Column.Caption == "Podjetje")
+                {
+                    data = GetFilterValuesForSpecificFilter("company");
+                }
+                else if (e.Column.Caption == "Jezik")
+                {
+                    data = GetFilterValuesForSpecificFilter("language");
+                }
 
-            e.Values.Clear();
+                e.Values.Clear();
 
-            for (int i = 0; i < data.Count; i++)
+                for (int i = 0; i < data.Count; i++)
+                {
+                    e.AddValue(displayText: data[i].description, value: data[i].value);
+                }
+            }
+            catch (Exception ex)
             {
-                e.AddValue(displayText: data[i].description, value: data[i].value);
+                SentrySdk.CaptureException(ex);
             }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
-
-            companiesGridView.SettingsBehavior.AllowFocusedRow = false;
-            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            companiesGridView.EnableCallBacks = false;
-            companiesGridView.EnableRowsCache = true;
-
-            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
-            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-            companiesGridView.DataBound += CompaniesGridView_DataBound;
-
-            groupsGridView.SettingsBehavior.AllowFocusedRow = false;
-            groupsGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            groupsGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            groupsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            groupsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            groupsGridView.EnableCallBacks = false;
-            groupsGridView.EnableRowsCache = true;
-
-            groupsGridView.StartRowEditing += groupsGridView_StartRowEditing;
-            groupsGridView.SelectionChanged += groupsGridView_SelectionChanged;
-            groupsGridView.DataBound += groupsGridView_DataBound;
-
-            graphsGridView.EnableRowsCache = true;
-            graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            graphsGridView.DataBound += GraphsGridView_DataBound;
-
-
-
-            if (!IsPostBack)
+            try
             {
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+
+
+                companiesGridView.SettingsBehavior.AllowFocusedRow = false;
+                companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                companiesGridView.EnableCallBacks = false;
+                companiesGridView.EnableRowsCache = true;
+
+                companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
+                companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
+                companiesGridView.DataBound += CompaniesGridView_DataBound;
+
+                groupsGridView.SettingsBehavior.AllowFocusedRow = false;
+                groupsGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                groupsGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                groupsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                groupsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                groupsGridView.EnableCallBacks = false;
+                groupsGridView.EnableRowsCache = true;
+
+                groupsGridView.StartRowEditing += groupsGridView_StartRowEditing;
+                groupsGridView.SelectionChanged += groupsGridView_SelectionChanged;
+                groupsGridView.DataBound += groupsGridView_DataBound;
+
+                graphsGridView.EnableRowsCache = true;
+                graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                graphsGridView.DataBound += GraphsGridView_DataBound;
+
+
+
+                if (!IsPostBack)
+                {
+                }
+
+
+                InitializeUiChanges();
+                Authenticate();
+                LimitCompanyGrid();
+                HideColumnForCompanies();
+                LimitDashboardsPermissions();
+
+                groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+
             }
-
-
-            InitializeUiChanges();
-            Authenticate();
-            LimitCompanyGrid();
-            HideColumnForCompanies();
-            LimitDashboardsPermissions();
-
-            groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
 
         }
 
@@ -346,39 +377,54 @@ namespace Dash
         }
         public int GetCompanyIdForUser(string uname)
         {
-            int companyId = -1; // Default to -1 or any invalid value if the user is not found
-
-            // Define the SQL query to get the company_id for a specific user
-            string query = "SELECT id_company FROM users WHERE uname = @uname";
-
-            // Set up the connection and command
-            using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ToString()))
+            try
             {
-                SqlCommand cmd = new SqlCommand(query, connection);
-                cmd.Parameters.AddWithValue("@uname", uname); // Use parameterized query to prevent SQL injection
+                int companyId = -1; // Default to -1 or any invalid value if the user is not found
 
-                try
+                // Define the SQL query to get the company_id for a specific user
+                string query = "SELECT id_company FROM users WHERE uname = @uname";
+
+                // Set up the connection and command
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ToString()))
                 {
-                    connection.Open();
-                    object result = cmd.ExecuteScalar(); // Execute the query and get the first column of the first row
+                    SqlCommand cmd = new SqlCommand(query, connection);
+                    cmd.Parameters.AddWithValue("@uname", uname); // Use parameterized query to prevent SQL injection
 
-                    if (result != null && result != DBNull.Value)
+                    try
                     {
-                        companyId = Convert.ToInt32(result); // Convert the result to an integer
+                        connection.Open();
+                        object result = cmd.ExecuteScalar(); // Execute the query and get the first column of the first row
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            companyId = Convert.ToInt32(result); // Convert the result to an integer
+                        }
+                    }
+                    catch (Exception)
+                    {
+
                     }
                 }
-                catch (Exception)
-                {
-                    
-                }
-            }
 
-            return companyId; // Return the company ID, or -1 if not found
+                return companyId; // Return the company ID, or -1 if not found
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return -1;
+            }
         }
         private void InitializeUiChanges()
         {
-            SiteMaster mymaster = Master as SiteMaster;
-            mymaster.BackButtonVisible = true;
+            try
+            {
+                SiteMaster mymaster = Master as SiteMaster;
+                mymaster.BackButtonVisible = true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
         /*private void InitializeFilters()
         {
@@ -390,16 +436,30 @@ namespace Dash
 
         private void groupsGridView_DataBound(object sender, EventArgs e)
         {
-            groupsGridView.Selection.SetSelectionByKey(CurrentGroup, true);
+            try
+            {
+                groupsGridView.Selection.SetSelectionByKey(CurrentGroup, true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void GraphsGridView_DataBound(object sender, EventArgs e)
         {
-            if (graphsGridView.VisibleRowCount > 0)
+            try
             {
-                graphsGridView.Selection.BeginSelection();
-                ShowConfigForUser();
-                graphsGridView.Selection.EndSelection();
+                if (graphsGridView.VisibleRowCount > 0)
+                {
+                    graphsGridView.Selection.BeginSelection();
+                    ShowConfigForUser();
+                    graphsGridView.Selection.EndSelection();
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -407,267 +467,338 @@ namespace Dash
 
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
-            companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
+            try
+            {
+                companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
+            try
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
       
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    var plurals = companiesGridView.GetSelectedFieldValues("id_company");
-                    if (plurals.Count != 0)
+                    try
                     {
-                        var id = (int) plurals[0];
-                        CurrentCompany = GetCompanyName(id);
-                        CurrentGroup = GetFirstGroupForCompany(CurrentCompany);
-                        groupsGridView.FilterExpression = $"[company_id] = {id}";
-                        groupsGridView.DataBind();  
-                        graphsGridView.DataBind();
+                        conn.Open();
+                        var plurals = companiesGridView.GetSelectedFieldValues("id_company");
+                        if (plurals.Count != 0)
+                        {
+                            var id = (int)plurals[0];
+                            CurrentCompany = GetCompanyName(id);
+                            CurrentGroup = GetFirstGroupForCompany(CurrentCompany);
+                            groupsGridView.FilterExpression = $"[company_id] = {id}";
+                            groupsGridView.DataBind();
+                            graphsGridView.DataBind();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private string GetFirstGroupForCompany(string company)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    int id_company = GetIdCompany(company);
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) group_name FROM groups WHERE company_id = @id;", conn);
-                    cmd.Parameters.AddWithValue("@id", id_company);
-                    var group = (string)cmd.ExecuteScalar();
-                    return group;
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
+                    try
+                    {
+                        int id_company = GetIdCompany(company);
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) group_name FROM groups WHERE company_id = @id;", conn);
+                        cmd.Parameters.AddWithValue("@id", id_company);
+                        var group = (string)cmd.ExecuteScalar();
+                        return group;
+                    }
+                    catch (Exception)
+                    {
+                        return string.Empty;
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
         }
 
         private void groupsGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
         {
-            var key = e.EditingKeyValue;
-
-            groupsGridView.Selection.SelectRowByKey(key);
-
-            GroupEdit = true;
-            GroupsGrids.Visible = true;
-
-            // In case of the programmatic call. 3.10.2024 Janko Jovičić
-            if (e != null)
+            try
             {
-                e.Cancel = true;
+                var key = e.EditingKeyValue;
+
+                groupsGridView.Selection.SelectRowByKey(key);
+
+                GroupEdit = true;
+                GroupsGrids.Visible = true;
+
+                // In case of the programmatic call. 3.10.2024 Janko Jovičić
+                if (e != null)
+                {
+                    e.Cancel = true;
+                }
+
+                int companyParameter = GetIdCompany(CurrentCompany);
+                int groupParameter = GetIdGroup(CurrentGroup);
+
+                // Assign values to SqlDataSource parameters
+                UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
+                UsersInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString();
+
+                UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
+                UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString();
+
+
+                var result = GetDataForGroupById(groupParameter);
+
+                groupName.Text = result.groupName;
+                groupDescription.Text = result.groupDescription;
+
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
             }
-
-            int companyParameter = GetIdCompany(CurrentCompany);
-            int groupParameter = GetIdGroup(CurrentGroup);
-
-            // Assign values to SqlDataSource parameters
-            UsersInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
-            UsersInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString(); 
-
-            UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
-            UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString(); 
-
-
-            var result = GetDataForGroupById(groupParameter);
-
-            groupName.Text = result.groupName;
-            groupDescription.Text = result.groupDescription;
-
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void groupsGridView_SelectionChanged(object sender, EventArgs e)
         {
-            var NamePlural = groupsGridView.GetSelectedFieldValues("group_name");
-            if (NamePlural.Count == 0)
+            try
             {
-                return;
+                var NamePlural = groupsGridView.GetSelectedFieldValues("group_name");
+                if (NamePlural.Count == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    var selectedName = NamePlural[0].ToString();
+                    CurrentGroup = selectedName;
+                    graphsGridView.DataBind();
+                }
+                if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentGroup))
+                {
+                    // Show the configuration for the user.
+                    ShowConfigForUser();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                var selectedName = NamePlural[0].ToString();
-                CurrentGroup = selectedName;
-                graphsGridView.DataBind();
-            }
-            if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentGroup))
-            {
-                // Show the configuration for the user.
-                ShowConfigForUser();
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private void ShowConfigForUser()
         {
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
-            for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+            try
             {
-                int idRow = (int)graphsGridView.GetRowValues(i, "id");
-                if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
+                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
-                    graphsGridView.Selection.SetSelection(i, true);
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    {
+                        graphsGridView.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        graphsGridView.Selection.SetSelection(i, false);
+                    }
                 }
-                else
-                {
-                    graphsGridView.Selection.SetSelection(i, false);
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private string GetUserType()
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    try
                     {
-                        role = (reader["user_role"].ToString());
+                        conn.Open();
+                        var username = HttpContext.Current.User.Identity.Name;
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            role = (reader["user_role"].ToString());
+                        }
+                        return role;
                     }
-                    return role;
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        return string.Empty;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                    return string.Empty;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
         }
 
         private void Authenticate()
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    try
                     {
-                        role = (reader["user_role"].ToString());
+                        conn.Open();
+                        var username = HttpContext.Current.User.Identity.Name;
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            role = (reader["user_role"].ToString());
+                        }
+                        cmd.Dispose();
+                        if (role == "SuperAdmin" || role == "Admin")
+                        {
+                        }
+                        else
+                        {
+                            Response.Redirect("Logon.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
+                        }
                     }
-                    cmd.Dispose();
-                    if (role == "SuperAdmin" || role == "Admin")
+                    catch (Exception ex)
                     {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                     }
-                    else
-                    {
-                        Response.Redirect("Logon.aspx", false);
-                        Context.ApplicationInstance.CompleteRequest();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
-
-
-
-
-
 
 
 
         public string GetCompanyName(int company)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn);
-                    var admin = (string)cmd.ExecuteScalar();
-                    cmd.Dispose();
-                    return admin;
+                    try
+                    {
+                        conn.Open();
+                        string uname = HttpContext.Current.User.Identity.Name;
+                        cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn);
+                        var admin = (string)cmd.ExecuteScalar();
+                        cmd.Dispose();
+                        return admin;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        return String.Empty;
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                    return String.Empty;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return String.Empty;
             }
         }
 
     
-
-
-       
         public (string groupName, string groupDescription) GetDataForGroupById(int groupId)
         {
-      
 
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-
-                    // Create the SQL command with a parameterized query
-                    using (SqlCommand command = new SqlCommand("SELECT group_name, group_description FROM groups WHERE group_id = @group_id", conn))
+                    try
                     {
-                        // Add the parameter to avoid SQL injection
-                        command.Parameters.AddWithValue("@group_id", groupId);
+                        conn.Open();
 
-                        // Execute the query and read the result
-                        using (SqlDataReader reader = command.ExecuteReader())
+                        // Create the SQL command with a parameterized query
+                        using (SqlCommand command = new SqlCommand("SELECT group_name, group_description FROM groups WHERE group_id = @group_id", conn))
                         {
-                            if (reader.Read())
-                            {
-                                // Get the group_name and group_description values
-                                string groupName = reader["group_name"].ToString();
-                                string groupDescription = reader["group_description"].ToString();
+                            // Add the parameter to avoid SQL injection
+                            command.Parameters.AddWithValue("@group_id", groupId);
 
-                                // Return the values as a tuple
-                                return (groupName, groupDescription);
-                            }
-                            else
+                            // Execute the query and read the result
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                // If no rows are found, return null values
-                                return (null, null);
+                                if (reader.Read())
+                                {
+                                    // Get the group_name and group_description values
+                                    string groupName = reader["group_name"].ToString();
+                                    string groupDescription = reader["group_description"].ToString();
+
+                                    // Return the values as a tuple
+                                    return (groupName, groupDescription);
+                                }
+                                else
+                                {
+                                    // If no rows are found, return null values
+                                    return (null, null);
+                                }
                             }
                         }
                     }
+                    catch (Exception ex)
+                    {
+                        // Log or handle the exception as needed
+                        Console.WriteLine($"Error: {ex.Message}");
+                        return (null, null);
+                    }
                 }
-                catch (Exception ex)
-                {
-                    // Log or handle the exception as needed
-                    Console.WriteLine($"Error: {ex.Message}");
-                    return (null, null);
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return (null, null);    
             }
         }
       
@@ -676,13 +807,20 @@ namespace Dash
 
         protected void SaveGraphs_Click(object sender, EventArgs e)
         {
-            if (groupsGridView.GetSelectedFieldValues() == null)
+            try
             {
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati skupino.')", true);
+                if (groupsGridView.GetSelectedFieldValues() == null)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati skupino.')", true);
+                }
+                else
+                {
+                    SaveGroupPermissions();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                SaveGroupPermissions();
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -709,6 +847,7 @@ namespace Dash
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException (ex);
                 var d = ex;
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
             }
@@ -718,58 +857,77 @@ namespace Dash
 
         private int GetIdCompany(string current)
         {
-            string clean = current.Trim();
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                string clean = current.Trim();
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{clean}'", conn);
-                    result = cmd.ExecuteScalar();
-                    int id = System.Convert.ToInt32(result);
-                    return id;
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{clean}'", conn);
+                        result = cmd.ExecuteScalar();
+                        int id = System.Convert.ToInt32(result);
+                        return id;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
                 }
-                catch (Exception)
-                {
-                    return -1;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return -1;
             }
         }
 
 
         private int GetIdGroup(string current)
         {
-            string clean = current.Trim();
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                string clean = current.Trim();
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT group_id FROM groups WHERE group_name='{clean}'", conn);
-                    result = cmd.ExecuteScalar();
-                    int id = System.Convert.ToInt32(result);
-                    return id;
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT group_id FROM groups WHERE group_name='{clean}'", conn);
+                        result = cmd.ExecuteScalar();
+                        int id = System.Convert.ToInt32(result);
+                        return id;
+                    }
+                    catch (Exception)
+                    {
+                        return -1;
+                    }
                 }
-                catch (Exception)
-                {
-                    return -1;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return -1;
             }
         }
 
-
-
-
-
-
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {
-            var selectedValues = new List<string>();
-            foreach (string row in gridView.GetSelectedFieldValues(columnName))
+            try
             {
-                selectedValues.Add(row);
+                var selectedValues = new List<string>();
+                foreach (string row in gridView.GetSelectedFieldValues(columnName))
+                {
+                    selectedValues.Add(row);
+                }
+                return selectedValues;
             }
-            return selectedValues;
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new List<string>();
+            }
         }
 
        
@@ -801,30 +959,38 @@ namespace Dash
                 }
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
+                SentrySdk.CaptureException (ex);
                 return false;
             }
         }
 
         protected void ClearFilterButton_Click(object sender, EventArgs e)
         {
-            graphsGridView.FilterExpression = string.Empty;
-            BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-            button.Visible = false;
-            IsFilterActive = false;
-            DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
-            for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+            try
             {
-                int idRow = (int)graphsGridView.GetRowValues(i, "id");
-                if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                graphsGridView.FilterExpression = string.Empty;
+                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+                button.Visible = false;
+                IsFilterActive = false;
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
+                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
-                    graphsGridView.Selection.SetSelection(i, true);
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    {
+                        graphsGridView.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        graphsGridView.Selection.SetSelection(i, false);
+                    }
                 }
-                else
-                {
-                    graphsGridView.Selection.SetSelection(i, false);
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -832,162 +998,194 @@ namespace Dash
 
         protected void NewGroup_ServerClick(object sender, EventArgs e)
         {
-            GroupEdit = false;
-            GroupsGrids.Visible = false;
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
+            try
+            {
+                GroupEdit = false;
+                GroupsGrids.Visible = false;
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void DeleteGroup_Click(object sender, EventArgs e)
         {
-            int groupId = GetIdGroup(CurrentGroup);
-            if (groupId > 0)
+            try
             {
-                // Create the connection string
-                using (SqlConnection conn = new SqlConnection(connection))
+                int groupId = GetIdGroup(CurrentGroup);
+                if (groupId > 0)
                 {
-                    // Open the connection
-                    conn.Open();
-                    // Prepare the delete command
-                    string deleteCommandText = "DELETE FROM groups WHERE group_id = @groupId";
-                    using (SqlCommand cmd = new SqlCommand(deleteCommandText, conn))
+                    // Create the connection string
+                    using (SqlConnection conn = new SqlConnection(connection))
                     {
-                        // Add the parameter
-                        cmd.Parameters.AddWithValue("@groupId", groupId);
-                        // Execute the command
-                        int rowsAffected = cmd.ExecuteNonQuery();
+                        // Open the connection
+                        conn.Open();
+                        // Prepare the delete command
+                        string deleteCommandText = "DELETE FROM groups WHERE group_id = @groupId";
+                        using (SqlCommand cmd = new SqlCommand(deleteCommandText, conn))
+                        {
+                            // Add the parameter
+                            cmd.Parameters.AddWithValue("@groupId", groupId);
+                            // Execute the command
+                            int rowsAffected = cmd.ExecuteNonQuery();
+                        }
                     }
                 }
-            } 
-            groupsGridView.DataBind();          
+                groupsGridView.DataBind();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void SaveGroupButton_Click(object sender, EventArgs e)
         {
-            if (GroupEdit)
+            try
             {
-                string groupNameValue = groupName.Text;
-                string groupDescriptionValue = groupDescription.Text;
-                int groupIdValue = GetIdGroup(CurrentGroup);
-                using (SqlConnection conn = new SqlConnection(connection))
+                if (GroupEdit)
                 {
-                    string query = "UPDATE Groups SET group_name = @groupName, group_description = @groupDescription WHERE group_id = @groupId";
-                    using (SqlCommand command = new SqlCommand(query, conn))
+                    string groupNameValue = groupName.Text;
+                    string groupDescriptionValue = groupDescription.Text;
+                    int groupIdValue = GetIdGroup(CurrentGroup);
+                    using (SqlConnection conn = new SqlConnection(connection))
                     {
-                        command.Parameters.AddWithValue("@groupName", groupNameValue);
-                        command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
-                        command.Parameters.AddWithValue("@groupId", groupIdValue);
-                        conn.Open();
-                        command.ExecuteNonQuery();
+                        string query = "UPDATE Groups SET group_name = @groupName, group_description = @groupDescription WHERE group_id = @groupId";
+                        using (SqlCommand command = new SqlCommand(query, conn))
+                        {
+                            command.Parameters.AddWithValue("@groupName", groupNameValue);
+                            command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
+                            command.Parameters.AddWithValue("@groupId", groupIdValue);
+                            conn.Open();
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
-            }
-            else // Insert new group 3.10.2024 Janko Jovičić
-            {
-                string groupNameValue = groupName.Text;
-                string groupDescriptionValue = groupDescription.Text;
-                int companyId = GetIdCompany(CurrentCompany);
-                using (SqlConnection conn = new SqlConnection(connection))
+                else // Insert new group 3.10.2024 Janko Jovičić
                 {
-                    string insertQuery = "INSERT INTO Groups (group_name, group_description, company_id) VALUES (@groupName, @groupDescription, @companyId)";
-                    using (SqlCommand command = new SqlCommand(insertQuery, conn))
+                    string groupNameValue = groupName.Text;
+                    string groupDescriptionValue = groupDescription.Text;
+                    int companyId = GetIdCompany(CurrentCompany);
+                    using (SqlConnection conn = new SqlConnection(connection))
                     {
-                        command.Parameters.AddWithValue("@groupName", groupNameValue);
-                        command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
-                        command.Parameters.AddWithValue("@companyId", companyId);
-                        conn.Open();
-                        command.ExecuteNonQuery();
+                        string insertQuery = "INSERT INTO Groups (group_name, group_description, company_id) VALUES (@groupName, @groupDescription, @companyId)";
+                        using (SqlCommand command = new SqlCommand(insertQuery, conn))
+                        {
+                            command.Parameters.AddWithValue("@groupName", groupNameValue);
+                            command.Parameters.AddWithValue("@groupDescription", groupDescriptionValue);
+                            command.Parameters.AddWithValue("@companyId", companyId);
+                            conn.Open();
+                            command.ExecuteNonQuery();
+                        }
                     }
                 }
+                groupsGridView.DataBind();
             }
-
-
-
-            groupsGridView.DataBind();
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void moveToNotInGroupButton_Click(object sender, EventArgs e)
         {
-            List<string> selectedUsernames = new List<string>();
-
-            foreach (var selectedRow in usersInGroupGrid.GetSelectedFieldValues("uname"))
+            try
             {
-                selectedUsernames.Add(selectedRow.ToString());
-            }
+                List<string> selectedUsernames = new List<string>();
 
-            if (selectedUsernames.Count > 0)
-            {
-                // Prepare the SQL update command
-                string query = "UPDATE users SET group_id = NULL WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
-
-                int groupId = GetIdGroup(CurrentGroup);
-
-                if (groupId < 0)
+                foreach (var selectedRow in usersInGroupGrid.GetSelectedFieldValues("uname"))
                 {
-                    return;
+                    selectedUsernames.Add(selectedRow.ToString());
                 }
 
-                // Execute the SQL update
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                if (selectedUsernames.Count > 0)
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
+                    // Prepare the SQL update command
+                    string query = "UPDATE users SET group_id = NULL WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
+
+                    int groupId = GetIdGroup(CurrentGroup);
+
+                    if (groupId < 0)
                     {
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                        connection.Close();
+                        return;
                     }
+
+                    // Execute the SQL update
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                    }
+
+                    // Optionally, rebind the grids to reflect the changes
+                    usersNotInGroupGrid.DataBind();
+                    usersInGroupGrid.DataBind();
+
+                    groupsGridView_StartRowEditing(this, null);
+
                 }
-
-                // Optionally, rebind the grids to reflect the changes
-                usersNotInGroupGrid.DataBind();
-                usersInGroupGrid.DataBind();
-
-                groupsGridView_StartRowEditing(this, null);
-
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
     
 
         protected void moveToInGroupButton_Click(object sender, EventArgs e)
         {
-            // Get the selected usernames from the 'usersNotInGroupGrid'
-            List<string> selectedUsernames = new List<string>();
-
-            foreach (var selectedRow in usersNotInGroupGrid.GetSelectedFieldValues("uname"))
+            try
             {
-                selectedUsernames.Add(selectedRow.ToString());
-            }
+                // Get the selected usernames from the 'usersNotInGroupGrid'
+                List<string> selectedUsernames = new List<string>();
 
-            if (selectedUsernames.Count > 0)
-            {
-                // Prepare the SQL update command
-                string query = "UPDATE users SET group_id = @group_id WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
-
-                int groupId = GetIdGroup(CurrentGroup);
-
-                if(groupId < 0) {
-                    return;
-                }
-
-                // Execute the SQL update
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                foreach (var selectedRow in usersNotInGroupGrid.GetSelectedFieldValues("uname"))
                 {
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@group_id", groupId);
-
-                        connection.Open();
-                        command.ExecuteNonQuery();
-                        connection.Close();
-                    }
+                    selectedUsernames.Add(selectedRow.ToString());
                 }
 
-                // Optionally, rebind the grids to reflect the changes
-                usersNotInGroupGrid.DataBind();
-                usersInGroupGrid.DataBind();
+                if (selectedUsernames.Count > 0)
+                {
+                    // Prepare the SQL update command
+                    string query = "UPDATE users SET group_id = @group_id WHERE uname IN ('" + string.Join("','", selectedUsernames) + "')";
 
-                groupsGridView_StartRowEditing(this, null);
+                    int groupId = GetIdGroup(CurrentGroup);
 
+                    if (groupId < 0)
+                    {
+                        return;
+                    }
+
+                    // Execute the SQL update
+                    using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString))
+                    {
+                        using (SqlCommand command = new SqlCommand(query, connection))
+                        {
+                            command.Parameters.AddWithValue("@group_id", groupId);
+
+                            connection.Open();
+                            command.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                    }
+
+                    // Optionally, rebind the grids to reflect the changes
+                    usersNotInGroupGrid.DataBind();
+                    usersInGroupGrid.DataBind();
+
+                    groupsGridView_StartRowEditing(this, null);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
     }

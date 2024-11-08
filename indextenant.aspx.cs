@@ -7,6 +7,7 @@ using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
 using DevExpress.XtraReports.UI;
 using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -41,34 +42,41 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(connection);
-
-            if (Request.Cookies["dashboard"] != null)
+            try
             {
-                // New OOP structure 23.09.2024
-                if (   // User or group permissions.
-                       dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString())
-                    || dataBaseDashboardStorage.permissionsGroup.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()
-                    ))
-                {
-                    ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                }               
-            }
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
-            ASPxDashboard3.AllowCreateNewDashboard = true;
-            ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
-            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-            ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-            ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
-            SetUpPage();
+                dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(connection);
+
+                if (Request.Cookies["dashboard"] != null)
+                {
+                    // New OOP structure 23.09.2024
+                    if (   // User or group permissions.
+                           dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString())
+                        || dataBaseDashboardStorage.permissionsGroup.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()
+                        ))
+                    {
+                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
+                    }
+                }
+
+                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+                ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
+                ASPxDashboard3.AllowCreateNewDashboard = true;
+                ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
+                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+                ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
+                SetUpPage();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
@@ -85,6 +93,7 @@ namespace Dash
                 }
             } catch(Exception ex)
             {
+                SentrySdk.CaptureException (ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
@@ -93,43 +102,57 @@ namespace Dash
 
         private void SetUpPage()
         {
-            if (Request.Cookies.Get("state") is null)
+            try
             {
-                Response.Cookies["state"].Value = "light";
-            }
-            else
-            {
-                state = Request.Cookies.Get("state").Value;
-                switch (state)
+                if (Request.Cookies.Get("state") is null)
                 {
-                    case "light":
-                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
-                        break;
-
-                    case "dark":
-                        ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
-                        break;
+                    Response.Cookies["state"].Value = "light";
                 }
+                else
+                {
+                    state = Request.Cookies.Get("state").Value;
+                    switch (state)
+                    {
+                        case "light":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                            break;
+
+                        case "dark":
+                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         [WebMethod]
         public static void DeleteItem(string id)
         {
-            string ID = id;
-            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                string ID = id;
+                var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
-                    var result = cmd.ExecuteNonQuery();
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
+                        var result = cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                    }
                 }
-                catch(Exception ex)
-                {
-                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -140,37 +163,44 @@ namespace Dash
         /// <param name="e"></param>
         private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
         {
-            var eDocument = e;
-
-            foreach (var printControl in e.GetPrintableControls())
+            try
             {
-                if (printControl.Value is XRChart)
+                var eDocument = e;
+
+                foreach (var printControl in e.GetPrintableControls())
                 {
-                    XRControl ctr = printControl.Value;
                     if (printControl.Value is XRChart)
                     {
-                        try
+                        XRControl ctr = printControl.Value;
+                        if (printControl.Value is XRChart)
                         {
-                            var chartItemName = printControl.Key;
-                            var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
-                            var legend = ((XRChart)ctr).Legend;
-                        }
-                        catch { }
-                    }
-                    else if (printControl.Key.StartsWith("grid"))
-                    {
-                        try
-                        {
-                            var ItemName = printControl.Key;
-                            var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
-                            foreach (var item in chartDashboardItem.Columns)
+                            try
                             {
-                                var deb = item;
+                                var chartItemName = printControl.Key;
+                                var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
+                                var legend = ((XRChart)ctr).Legend;
                             }
+                            catch { }
                         }
-                        catch { }
+                        else if (printControl.Key.StartsWith("grid"))
+                        {
+                            try
+                            {
+                                var ItemName = printControl.Key;
+                                var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
+                                foreach (var item in chartDashboardItem.Columns)
+                                {
+                                    var deb = item;
+                                }
+                            }
+                            catch { }
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -191,6 +221,7 @@ namespace Dash
             }
             catch (Exception ex)
             {
+                SentrySdk.CaptureException (ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
 
@@ -205,6 +236,7 @@ namespace Dash
                 e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
             } catch(Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
@@ -217,6 +249,7 @@ namespace Dash
                 return;
             } catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
@@ -225,21 +258,28 @@ namespace Dash
 
         public void LogDashboardView(string userId, string dashboardId)
         {
-            using (SqlConnection connection = new SqlConnection(this.connection))
+            try
             {
-                connection.Open();
+                using (SqlConnection connection = new SqlConnection(this.connection))
+                {
+                    connection.Open();
 
-                string query = @"
+                    string query = @"
                     INSERT INTO dashboard_view_logs (user_id, dashboard_id, view_time)
                     VALUES (@userId, @dashboardId, GETDATE());";
 
-                using (SqlCommand command = new SqlCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@userId", userId);
-                    command.Parameters.AddWithValue("@dashboardId", dashboardId);
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userId", userId);
+                        command.Parameters.AddWithValue("@dashboardId", dashboardId);
 
-                    command.ExecuteNonQuery();
+                        command.ExecuteNonQuery();
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -274,6 +314,7 @@ namespace Dash
                 }
             } catch(Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
@@ -310,8 +351,9 @@ namespace Dash
                     }
                 }
                 return string.Empty;
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
                 return string.Empty;
             }
@@ -319,55 +361,71 @@ namespace Dash
 
         private ConnectionStringSettings GetConnectionString()
         {
-            string uname = HttpContext.Current.User.Identity.Name;
             try
             {
-                using (var conn = new SqlConnection(connection))
+                string uname = HttpContext.Current.User.Identity.Name;
+                try
                 {
-                    conn.Open();
-                    using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @uname", conn))
+                    using (var conn = new SqlConnection(connection))
                     {
-                        cmd.Parameters.AddWithValue("@uname", uname);
-                        var result = cmd.ExecuteScalar();
-                        companyID = Convert.ToInt32(result);
+                        conn.Open();
+                        using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @uname", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@uname", uname);
+                            var result = cmd.ExecuteScalar();
+                            companyID = Convert.ToInt32(result);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                }
+                string connectionName = GetConnectionStringName(companyID);
+                return ConfigurationManager.ConnectionStrings[connectionName];
             }
             catch (Exception ex)
             {
-                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                SentrySdk.CaptureException(ex);
+                return new ConnectionStringSettings();
             }
-            string connectionName = GetConnectionStringName(companyID);
-            return ConfigurationManager.ConnectionStrings[connectionName];
         }
 
 
         private string GetConnectionStringName(int companyID)
         {
-            string result = string.Empty;
             try
             {
-                using (var conn = new SqlConnection(connection))
+                string result = string.Empty;
+                try
                 {
-                    conn.Open();
-                    using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyID", conn))
+                    using (var conn = new SqlConnection(connection))
                     {
-                        cmd.Parameters.AddWithValue("@companyID", companyID);
-
-                        var queryResult = cmd.ExecuteScalar();
-                        if (queryResult != null)
+                        conn.Open();
+                        using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyID", conn))
                         {
-                            result = queryResult.ToString();
+                            cmd.Parameters.AddWithValue("@companyID", companyID);
+
+                            var queryResult = cmd.ExecuteScalar();
+                            if (queryResult != null)
+                            {
+                                result = queryResult.ToString();
+                            }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                }
+
+                return result;
             }
             catch (Exception ex)
             {
-                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
-
-            return result;
         }
     }
 }

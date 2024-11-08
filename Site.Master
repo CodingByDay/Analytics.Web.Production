@@ -61,7 +61,7 @@
     }
 
     #MainContent {
-      visibility: hidden; /* Hide all page content */
+      visibility: hidden; 
     }
 </style>
 

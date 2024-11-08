@@ -7,6 +7,7 @@ using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
 using DevExpress.Web.Internal;
 using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,49 +37,56 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(Session["current"] as string))
+            try
             {
-                ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
-            }
-
-            Authenticate();
-            ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-            ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            // Hide the back button.
-
-            var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
-            ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
-            ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
-            ASPxDashboard3.Visible = true;
-            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-            ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
-            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-            // ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
-            ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
-            if (!IsPostBack)
-            {
-                ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
-                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
-                if (Request.Cookies.Get("state") is null)
+                if (!string.IsNullOrEmpty(Session["current"] as string))
                 {
-                    Response.Cookies["state"].Value = "light";
+                    ASPxDashboard3.InitialDashboardId = Session["current"].ToString();
                 }
-                else
-                {
-                    state = Request.Cookies.Get("state").Value;
-                    switch (state)
-                    {
-                        case "light":
-                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
-                            break;
 
-                        case "dark":
-                            ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
-                            break;
+                Authenticate();
+                ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
+                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                // Hide the back button.
+
+                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorage(ConnectionString);
+                ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
+                ASPxDashboard3.DashboardLoading += ASPxDashboard3_DashboardLoading;
+                ASPxDashboard3.Visible = true;
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
+                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
+                // ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
+                ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+
+                if (!IsPostBack)
+                {
+                    ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
+                    ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                    HtmlInputCheckBox toggle = (HtmlInputCheckBox)Master.FindControl("togglebox");
+                    if (Request.Cookies.Get("state") is null)
+                    {
+                        Response.Cookies["state"].Value = "light";
+                    }
+                    else
+                    {
+                        state = Request.Cookies.Get("state").Value;
+                        switch (state)
+                        {
+                            case "light":
+                                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeLight;
+                                break;
+
+                            case "dark":
+                                ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeDarkMoon;
+                                break;
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -88,19 +96,26 @@ namespace Dash
         [WebMethod]
         public static void DeleteItem(string id)
         {
-            string ID = id;
-            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                string ID = id;
+                var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
-                    var result = cmd.ExecuteNonQuery();
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
+                        var result = cmd.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                    }
                 }
-                catch
-                {
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -112,50 +127,65 @@ namespace Dash
 
                 Session["current"] = e.DashboardId.ToString();
 
-            } catch (Exception)
+            } catch (Exception ex)
             {
+                SentrySdk.CaptureException (ex);
                 return;
             }
         }
 
         private void Authenticate()
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            var username = HttpContext.Current.User.Identity.Name;
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
-            SqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
+            try
             {
-                role = (reader["user_role"].ToString());
+                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                conn = new SqlConnection(ConnectionString);
+                conn.Open();
+                var username = HttpContext.Current.User.Identity.Name;
+                // Create SqlCommand to select pwd field from users table given supplied userName.
+                cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    role = (reader["user_role"].ToString());
+                }
+                if (role == "SuperAdmin")
+                {
+                }
+                else
+                {
+                    Response.Redirect("Logon.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
             }
-            if (role == "SuperAdmin")
+            catch (Exception ex)
             {
-            }
-            else
-            {
-                Response.Redirect("Logon.aspx", false);
-                Context.ApplicationInstance.CompleteRequest();
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
         {
-            string TARGET_URL = "https://dash.in-sist.si";
-            if (Session != null)
+            try
             {
-                if (System.Web.HttpContext.Current.Session["conn"] != null)
+                string TARGET_URL = "https://dash.in-sist.si";
+                if (Session != null)
                 {
-                    if (Session["conn"].ToString() != "")
+                    if (System.Web.HttpContext.Current.Session["conn"] != null)
                     {
-                        string test = e.ConnectionName;
-                        ConnectionStringSettings conn = GetConnectionString();
-                        CustomStringConnectionParameters parameters =
-                        (CustomStringConnectionParameters)e.ConnectionParameters;
+                        if (Session["conn"].ToString() != "")
+                        {
+                            string test = e.ConnectionName;
+                            ConnectionStringSettings conn = GetConnectionString();
+                            CustomStringConnectionParameters parameters =
+                            (CustomStringConnectionParameters)e.ConnectionParameters;
 
-                        parameters.ConnectionString = conn.ConnectionString;
+                            parameters.ConnectionString = conn.ConnectionString;
+                        }
+                    }
+                    else
+                    {
+                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                     }
                 }
                 else
@@ -163,17 +193,25 @@ namespace Dash
                     DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private ConnectionStringSettings GetConnectionString()
         {
-            var ConnectionName = Session["conn"].ToString();
-            ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
-            return stringFinal;
+            try
+            {
+                var ConnectionName = Session["conn"].ToString();
+                ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
+                return stringFinal;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new ConnectionStringSettings();
+            }
         }
 
      

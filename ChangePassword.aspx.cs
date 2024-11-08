@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -10,112 +11,180 @@ namespace Dash
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                if (!IsPasswordResetLinkValid())
+                if (!IsPostBack)
                 {
-                    ShowAlert("Čas za resetiranje gesla je potekal ali link ni več vredo.");
-                    Response.Redirect("Logon.aspx", false);
+                    if (!IsPasswordResetLinkValid())
+                    {
+                        ShowAlert("Čas za resetiranje gesla je potekal ali link ni več vredo.");
+                        Response.Redirect("Logon.aspx", false);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("Logon.aspx", false);
-            Context.ApplicationInstance.CompleteRequest();
+            try
+            {
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void change_Click(object sender, EventArgs e)
         {
-            if (ArePasswordsEqual())
+            try
             {
-                if (ChangeUserPassword())
+                if (ArePasswordsEqual())
                 {
-                    ShowAlert("Geslo uspešno spremenjeno.");
-                    Response.Redirect("Logon.aspx", false); // Redirect after successful password change
+                    if (ChangeUserPassword())
+                    {
+                        ShowAlert("Geslo uspešno spremenjeno.");
+                        Response.Redirect("Logon.aspx", false); // Redirect after successful password change
+                    }
+                    else
+                    {
+                        ShowAlert("Link za spremembo gesla je potekal ali ni vejaven.");
+                    }
                 }
                 else
                 {
-                    ShowAlert("Link za spremembo gesla je potekal ali ni vejaven.");
+                    ShowAlert("Gesla nista enaka.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                ShowAlert("Gesla nista enaka.");
+                SentrySdk.CaptureException(ex);
             }
         }
 
         private bool IsPasswordResetLinkValid()
         {
-            var uid = Request.QueryString["uid"];
-            if (string.IsNullOrEmpty(uid))
+            try
             {
-                return false; // Handle missing UID
-            }
+                var uid = Request.QueryString["uid"];
+                if (string.IsNullOrEmpty(uid))
+                {
+                    return false; // Handle missing UID
+                }
 
-            var paramList = new List<SqlParameter>
+                var paramList = new List<SqlParameter>
             {
                 new SqlParameter("@GUID", uid)
             };
 
-            return ExecuteStoredProcedure("sp_is_password_reset_link_valid", paramList);
+                return ExecuteStoredProcedure("sp_is_password_reset_link_valid", paramList);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
         }
 
         private bool ChangeUserPassword()
         {
-            var uid = Request.QueryString["uid"];
-            if (string.IsNullOrEmpty(uid))
+            try
             {
-                return false; // Handle missing UID
-            }
+                var uid = Request.QueryString["uid"];
+                if (string.IsNullOrEmpty(uid))
+                {
+                    return false; // Handle missing UID
+                }
 
-            var paramList = new List<SqlParameter>
+                var paramList = new List<SqlParameter>
             {
                 new SqlParameter("@GUID", uid),
                 new SqlParameter("@Password", HashPassword(pwd.Text))
             };
 
-            return ExecuteStoredProcedure("sp_change_password", paramList);
+                return ExecuteStoredProcedure("sp_change_password", paramList);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
         }
 
         private bool ArePasswordsEqual()
         {
-            return string.Equals(pwd.Text, REpwd.Text);
+            try
+            {
+                return string.Equals(pwd.Text, REpwd.Text);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
         }
 
         private bool ExecuteStoredProcedure(string spName, List<SqlParameter> spParameters)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            using (var conn = new SqlConnection(connectionString))
+            try
             {
-                using (var cmd = new SqlCommand(spName, conn))
+                string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+                using (var conn = new SqlConnection(connectionString))
                 {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    using (var cmd = new SqlCommand(spName, conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.AddRange(spParameters.ToArray());
+                        cmd.Parameters.AddRange(spParameters.ToArray());
 
-                    conn.Open();
-                    return Convert.ToBoolean(cmd.ExecuteScalar());
+                        conn.Open();
+                        return Convert.ToBoolean(cmd.ExecuteScalar());
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
             }
         }
 
         private string HashPassword(string password)
         {
-            // Consider using a more secure hashing algorithm like PBKDF2, bcrypt, or Argon2
-            return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+            try
+            {
+                // Consider using a more secure hashing algorithm like PBKDF2, bcrypt, or Argon2
+                return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
         }
         private void ShowAlert(string message)
         {
-            string script = $@"
+            try
+            {
+                string script = $@"
             <script type='text/javascript'>
                 document.addEventListener('DOMContentLoaded', function() {{
                     Swal.fire('{message}');
                 }});
             </script>";
-            ClientScript.RegisterStartupScript(this.GetType(), "ShowAlert", script, false);
+                ClientScript.RegisterStartupScript(this.GetType(), "ShowAlert", script, false);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
     }
 }
