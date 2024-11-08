@@ -221,7 +221,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" SettingsPopup-EditForm-AllowResize="false"  SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -297,7 +297,7 @@
 
 
 
-            <dx:BootstrapGridView ID="usersGridView"  SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="usersGridView" SettingsPopup-EditForm-AllowResize="false" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
@@ -366,7 +366,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false"  SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 

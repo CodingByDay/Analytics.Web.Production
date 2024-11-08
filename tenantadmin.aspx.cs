@@ -201,7 +201,7 @@ namespace Dash
 
 
             graphsGridView.EnableRowsCache = true;
-            graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+            graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
             graphsGridView.SettingsBehavior.AllowFocusedRow = true;
             graphsGridView.DataBound += GraphsGridView_DataBound;
             graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;

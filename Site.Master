@@ -17,34 +17,67 @@
    <script src="Js/SaveAsExtension.js"></script>
    <script src="Js/AssignMetadata.js" type="text/javascript"></script>
    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
-	<link rel="shortcut icon" href="images/logo.png">
-	<meta name="msapplication-TileColor" content="#603cba">
-	<meta name="msapplication-TileImage" content="images/logo.png">
+
+      <link href="assets/img/favicon.ico" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <link href="~/Content/Css/All.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet" />
 
+<style>
+    /*--------------------------------------------------------------
+    # Preloader
+    --------------------------------------------------------------*/
+    #preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      overflow: hidden;
+      background: #ffffff; /* Background color for preloader */
+      transition: all 0.6s ease-out;
+    }
 
+    /* Blue spinner */
+    #preloader:before {
+      content: "";
+      position: fixed;
+      top: calc(50% - 30px);
+      left: calc(50% - 30px);
+      border: 6px solid #ffffff;
+      border-color: blue transparent blue transparent; /* Blue spinner color */
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: animate-preloader 1.5s linear infinite;
+    }
+
+    @keyframes animate-preloader {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #MainContent {
+      visibility: hidden; /* Hide all page content */
+    }
+</style>
 
 </head>
-<body onkeydown="return (event.keyCode!=13)">
-  
-
+<body onkeydown="return (event.keyCode!=13)" class="loading">
+        
+      <!-- Preloader -->
+      <div id="preloader"></div>
         <script async>
+
+            const preloader = document.querySelector('#preloader');
+            if (preloader) {
+                window.addEventListener('load', () => {
+                    preloader.remove();
+                });
+            }
 
             function checkCookie() {
                 let username = getCookie("username");
