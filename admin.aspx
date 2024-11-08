@@ -267,9 +267,11 @@
 
 
             <div class="action-buttons">
-                <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">Dodaj</button>
-                 <dx:BootstrapButton runat="server" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Briši">
-                  <SettingsBootstrap RenderOption="Danger" />
+                 <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">
+                    <i class="fas fa-plus"></i>
+                </button>
+                 <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="">
+                     <SettingsBootstrap RenderOption="Danger" />
                  </dx:BootstrapButton>
             </div>
 
@@ -352,8 +354,10 @@
 
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
-                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">Registracija</button>
-                    <dx:BootstrapButton runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Briši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
+                    <button type="button" runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
+                    <i class="fas fa-plus"></i>
+                    </button>
+                    <dx:BootstrapButton Badge-IconCssClass="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -504,15 +508,27 @@
 
 
            <div class="action-buttons">
-                 <dx:BootstrapButton runat="server" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
+                 <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-save" Text="" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
                   </dx:BootstrapButton>
 
 
 
           <div class="toolbar-custom">
-            <asp:Button runat="server" CssClass="btn btn-primary" ID="MoveUpButton" Text="Move Up" OnClick="MoveUpButton_Click" />
-            <asp:Button runat="server" CssClass="btn btn-primary ml-2" ID="MoveDownButton" Text="Move Down" OnClick="MoveDownButton_Click" />
+
+              <div class="special_buttons">
+
+                    <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-up" runat="server" Text="" ID="MoveUpButton" OnClick="MoveUpButton_Click"  AutoPostBack="false">
+                     <SettingsBootstrap RenderOption="Primary" />
+                   </dx:BootstrapButton>
+              
+              
+                  <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-down" runat="server" Text="" ID="MoveDownButton" OnClick="MoveDownButton_Click" AutoPostBack="false">
+                     <SettingsBootstrap RenderOption="Primary" />
+                   </dx:BootstrapButton>
+                  
+              </div>
+
         </div>
 
 

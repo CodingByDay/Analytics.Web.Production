@@ -165,7 +165,7 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MoveUpButton;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveUpButton;
 
         /// <summary>
         /// MoveDownButton control.
@@ -174,7 +174,7 @@ namespace Dash
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button MoveDownButton;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveDownButton;
 
         /// <summary>
         /// companyName control.

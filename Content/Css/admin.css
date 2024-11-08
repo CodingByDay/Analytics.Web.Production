@@ -13,6 +13,11 @@
     width: 7em;
 }
 
+.dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus {
+    color: white;
+    font-weight: bold;
+}
+
 
 label.form-check-label {
     padding-left: 2em;
