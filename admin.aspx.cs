@@ -894,51 +894,73 @@ namespace Dash
             }
         }
 
-        private void InsertCompany()
+        private int InsertCompany()
         {
+            int newCompanyId = 0;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    try
+                    conn.Open();
+
+                    using (SqlCommand insertCmd = new SqlCommand(
+                        "INSERT INTO companies (id_company, company_name, company_number, website, database_name) " +
+                        "VALUES (@Id, @Name, @Number, @Website, @DbName);", conn))
                     {
-                        conn.Open();
+                        // Manually assign a value for id_company if needed
+                        // You can calculate the next ID or insert a value directly
+                        int nextId = GetNextCompanyId(conn); // You need to implement GetNextCompanyId to get the next ID
 
-                        // Fetch the current max id, handle if no companies exist
-                        using (SqlCommand cmd = new SqlCommand("SELECT ISNULL(MAX(id_company), 0) FROM companies", conn))
+                        insertCmd.Parameters.AddWithValue("@Id", nextId);
+                        insertCmd.Parameters.AddWithValue("@Name", companyName.Text);
+                        insertCmd.Parameters.AddWithValue("@Number", companyNumber.Text);
+                        insertCmd.Parameters.AddWithValue("@Website", website.Text);
+                        insertCmd.Parameters.AddWithValue("@DbName", connName.Text);
+
+                        int affected = insertCmd.ExecuteNonQuery();
+                        // Execute the query and get the new ID
+                        if (affected == 1)
                         {
-                            var result = cmd.ExecuteScalar();
-                            int next = Convert.ToInt32(result) + 1;
-
-                            // Use parameterized queries to avoid SQL injection
-                            using (SqlCommand insertCmd = new SqlCommand("INSERT INTO companies(id_company, company_name, company_number, website, database_name) VALUES(@Id, @Name, @Number, @Website, @DbName)", conn))
-                            {
-                                insertCmd.Parameters.AddWithValue("@Id", next);
-                                insertCmd.Parameters.AddWithValue("@Name", companyName.Text);
-                                insertCmd.Parameters.AddWithValue("@Number", companyNumber.Text);
-                                insertCmd.Parameters.AddWithValue("@Website", website.Text);
-                                insertCmd.Parameters.AddWithValue("@DbName", connName.Text);
-
-                                insertCmd.ExecuteNonQuery();
-                            }
-
+                            newCompanyId = nextId;
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        // Log the main exception message
-                        Logger.LogError(typeof(Admin), ex.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                    }
+
+                    // Notify the user that the company has been added successfully
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Podjetje uspešno dodano!')", true);
                 }
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
+                // Log the exception
+                Logger.LogError(typeof(Admin), ex.Message);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+            }
+
+            return newCompanyId;
+        }
+
+
+
+
+        private int GetNextCompanyId(SqlConnection conn)
+        {
+            // Assuming the ID column is either NULL or has a value
+            using (SqlCommand cmd = new SqlCommand("SELECT MAX(id_company) FROM companies", conn))
+            {
+                var result = cmd.ExecuteScalar();
+
+                // Check if the result is DBNull and return the next ID (e.g., 1 if no rows exist)
+                if (result == DBNull.Value)
+                {
+                    return 1; // If there are no companies, return 1 as the next ID
+                }
+
+                // Otherwise, return the next ID
+                return Convert.ToInt32(result) + 1;
             }
         }
 
-       
 
         protected void CompanyButton_Click(object sender, EventArgs e)
         {
@@ -946,17 +968,25 @@ namespace Dash
             {
                 if (!IsEditCompany)
                 {
-                    InsertCompany();
-                    CreateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    var keyCompany = InsertCompany();
+
+                    companiesGridView.DataBind();
+
+                    companiesGridView.Selection.SelectRowByKey(keyCompany);
+
+                    CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
-                    companiesGridView.DataBind();
+                    
+
+
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
                 }
                 else
                 {
                     UpdateCompanyData();
+                    CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
                 }
             }
             catch (Exception ex)
@@ -965,44 +995,47 @@ namespace Dash
             }
         }
 
-        private void AddConnectionString(string stringConnection)
+        private void AddOrUpdateConnectionString(string stringConnection)
         {
             try
             {
                 Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
                 var builder = new SqlConnectionStringBuilder(stringConnection);
 
-                string newConnectionName = connName.Text;
+                string connectionName = connName.Text;
 
                 // Check if the connection string already exists
-                if (config.ConnectionStrings.ConnectionStrings[newConnectionName] != null)
+                ConnectionStringSettings existingConn = config.ConnectionStrings.ConnectionStrings[connectionName];
+
+                if (existingConn != null)
                 {
-                    return; // Exit the method if it already exists
+                    // Modify the existing connection string
+                    existingConn.ConnectionString = builder.ConnectionString;
+                }
+                else
+                {
+                    // Create a new connection string if it doesn't exist
+                    ConnectionStringSettings conn = new ConnectionStringSettings
+                    {
+                        ConnectionString = builder.ConnectionString,
+                        Name = connectionName
+                    };
+                    config.ConnectionStrings.ConnectionStrings.Add(conn);
                 }
 
-                // Create new connection string settings and add it
-                ConnectionStringSettings conn = new ConnectionStringSettings
-                {
-                    ConnectionString = builder.ConnectionString,
-                    Name = newConnectionName
-                };
-
-                config.ConnectionStrings.ConnectionStrings.Add(conn);
+                // Save the configuration changes
                 config.Save(ConfigurationSaveMode.Modified, true);
-
-                // Notify the user that the connection string has been added successfully
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno dodano!')", true);
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 // Log the full exception message
-                Logger.LogError(typeof(Admin), $"Error adding connection string: {ex.Message}, StackTrace: {ex.StackTrace}");
+                Logger.LogError(typeof(Admin), $"Error adding/updating connection string: {ex.Message}, StackTrace: {ex.StackTrace}");
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake!')", true);
             }
         }
 
-        private void CreateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        private void CreateOrModifyConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
         {
             try
             {
@@ -1011,7 +1044,7 @@ namespace Dash
                 build.DataSource = dbSource;
                 build.UserID = dbUser;
                 build.Password = dbPassword;
-                AddConnectionString(build.ConnectionString);
+                AddOrUpdateConnectionString(build.ConnectionString);
             }
             catch (Exception ex)
             {
@@ -1337,7 +1370,6 @@ namespace Dash
             try
             {
                 IsEditUser = false;
-                usersGridView.Selection.SetSelection(-1, true);
                 TxtUserName.Enabled = true;
                 email.Enabled = true;
                 TxtUserName.Text = "";

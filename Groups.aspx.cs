@@ -1000,6 +1000,8 @@ namespace Dash
         {
             try
             {
+                groupName.Text = string.Empty;
+                groupDescription.Text = string.Empty;
                 GroupEdit = false;
                 GroupsGrids.Visible = false;
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);

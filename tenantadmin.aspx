@@ -215,7 +215,7 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
+<SettingsText HeaderFilterCancelButton="Prekliči" HeaderFilterSelectAll ="Izberi vse" CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
                                     <Templates>
@@ -225,7 +225,7 @@
           <Columns>
               <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
                         <CustomButtons>
-                            <dx:BootstrapGridViewCommandColumnCustomButton  Visibility="AllDataRows"  ID="EditBtn" Text="Uredi" CssClass="custom-edit-btn" />
+                            <dx:BootstrapGridViewCommandColumnCustomButton IconCssClass="fas fa-edit"  Visibility="AllDataRows"  ID="EditBtn" Text="" CssClass="custom-edit-btn" />
                         </CustomButtons>
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
@@ -270,7 +270,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView AutoPostBack="false" CssClasses-FocusedRow="focused_row"  SettingsResizing-ColumnResizeMode="NextColumn" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView AutoPostBack="false" CssClasses-FocusedRow="focused_row" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"  SettingsResizing-ColumnResizeMode="NextColumn" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 <SettingsEditing Mode="Batch" />
 
@@ -285,11 +285,12 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
-<SettingsText CommandEdit="Uredi" CommandUpdate="Posodobi" CommandCancel="Zapri" SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+<SettingsText HeaderFilterCancelButton="Prekliči" HeaderFilterSelectAll ="Izberi vse" CommandEdit="Uredi" CommandUpdate="Posodobi" CommandCancel="Zapri" SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="True"  Caption="Možnosti">
+
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
 
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id" Settings-AllowHeaderFilter="False"   Visible="false" ReadOnly="True" VisibleIndex="1">
@@ -301,14 +302,14 @@
                 </dx:BootstrapGridViewTextColumn>
 
 
-               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
                      <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
                        IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
 
 
-             <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+             <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
                     <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
                        IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
                     </PropertiesComboBox>

@@ -228,7 +228,7 @@
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
-            <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
+            <SettingsText HeaderFilterCancelButton="Prekliči" CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
                 <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
@@ -310,7 +310,7 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
+<SettingsText HeaderFilterCancelButton="Prekliči" CommandUpdate="Posodobi" HeaderFilterSelectAll ="Izberi vse" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
                 <Templates>
@@ -339,8 +339,8 @@
               </dx:BootstrapGridViewTextColumn>
 
                 <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="group_name" Name="group" VisibleIndex="3" Caption="Skupina">
-                     <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged" TextField="group_name" ValueField="group" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" DataSourceID="GroupsDropdown">
+                     <PropertiesComboBox ClientSideEvents-SelectedIndexChanged="groupChanged"  TextField="group_name" ValueField="group" EnableSynchronization="False"
+                        IncrementalFilteringMode="StartsWith"  DataSourceID="GroupsDropdown">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
        
@@ -370,7 +370,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false"  SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
@@ -382,7 +382,7 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
-<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+<SettingsText HeaderFilterCancelButton="Prekliči" CommandUpdate="Posodobi" CommandCancel="Zapri" HeaderFilterSelectAll ="Izberi vse" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
@@ -402,19 +402,19 @@
               </dx:BootstrapGridViewTextColumn>
 
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
                       <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource">
+                        IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource" >
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje"  SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
                       <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
                         IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
                      <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
                         IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>

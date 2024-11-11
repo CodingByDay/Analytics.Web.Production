@@ -295,26 +295,29 @@
 
           <SettingsDataSecurity AllowEdit="False" />
           <Columns>
-              <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption=" ">
-              </dx:BootstrapGridViewCommandColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
-                  <SettingsEditForm Visible="False" />
-              </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="caption"  Name="Graf" VisibleIndex="2" Caption="Naziv">
-              </dx:BootstrapGridViewTextColumn>
+
+                <dx:BootstrapGridViewCommandColumn HeaderBadge-IconCssClass="fa fa-caret-down"  SelectAllCheckboxMode="Page" ShowSelectCheckbox="True"  VisibleIndex="0" ShowEditButton="False" Caption=" ">
+                </dx:BootstrapGridViewCommandColumn>
+
+                <dx:BootstrapGridViewTextColumn FieldName="id"  Visible="false" ReadOnly="True" VisibleIndex="1">
+                    <SettingsEditForm Visible="False" />
+                </dx:BootstrapGridViewTextColumn>
+
+                <dx:BootstrapGridViewTextColumn FieldName="caption" Settings-AllowHeaderFilter="False"  Name="Graf" VisibleIndex="2" Caption="Naziv">
+                </dx:BootstrapGridViewTextColumn>
 
 
-          <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
 
-          </dx:BootstrapGridViewComboBoxColumn>
+              </dx:BootstrapGridViewComboBoxColumn>
 
-          <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+              <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
 
-          </dx:BootstrapGridViewComboBoxColumn>
+              </dx:BootstrapGridViewComboBoxColumn>
 
-          <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
 
-         </dx:BootstrapGridViewComboBoxColumn>
+             </dx:BootstrapGridViewComboBoxColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
       </dx:BootstrapGridView>
