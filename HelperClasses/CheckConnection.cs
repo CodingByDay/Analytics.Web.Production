@@ -3,72 +3,53 @@ using System.Data.SqlClient;
 
 namespace Dash.HelperClasses
 {
-    public class CheckConnection
+    public static class CheckConnection
     {
-        /*       Create instance of class:
-
-                 MYSQL mysql = new MYSQL();
-
-                 Use it in Button event or anywhere.
-
-
-                 source_result = mysql.check_connection("Your connection String");
-
-                 if (source_result == false)
-
-                 {
-
-                 lbl_error.Text = lbl_error.Text + " ::Error In Source Connection";
-
-                 }        */
-
-
-
-
-
-
-
-
-
-
-
-        public bool check_connection(string conn)
-
+        /// <summary>
+        /// Tests connection paramaters and returns whether the connection was succesfull-true and !true - false!
+        /// </summary>
+        /// <param name="InitialCatalog"></param>
+        /// <param name="DataSource"></param>
+        /// <param name="UserID"></param>
+        /// <param name="Password"></param>
+        /// <returns></returns>
+        public static bool TestConnection(string InitialCatalog, string DataSource, string UserID, string Password)
         {
+            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+            build.InitialCatalog = InitialCatalog;
+            build.DataSource = DataSource;
+            build.UserID = UserID;
+            build.Password = Password;
 
-            bool result = false;
+            var _result = CheckDatabaseConnection(build.ConnectionString);
 
-            SqlConnection connection = new SqlConnection(conn);
-
-            try
-
+            if (_result == false)
             {
-
-                connection.Open();
-
-                result = true;
-
-                connection.Close();
-
+                return false;
             }
-
-            catch(Exception err)
-
+            else
             {
-             
-                result = false;
-
+                return true;
             }
-
-            return result;
-
         }
+
+        public static bool CheckDatabaseConnection(string conn)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(conn))
+                {
+                    connection.Open();
+                    return true;
+                }
+            }
+            catch (SqlException)
+            {
+                // Optionally log the exception here for debugging
+                return false;
+            }
+        }
+
+        // 26.08.2024 Janko Jovičić Code cleaning.
     }
-
-
-
-
-
-
-
 }

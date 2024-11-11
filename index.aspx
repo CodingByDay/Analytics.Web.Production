@@ -1,39 +1,67 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="Dash.index" %>
+﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Index.aspx.cs" Inherits="Dash.index" %>
+<%@ Register assembly="DevExpress.Dashboard.v24.1.Web.WebForms, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+<%@ Register assembly="DevExpress.Web.Bootstrap.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web.Bootstrap" tagprefix="dx" %>
 
-<%@ Register assembly="DevExpress.Dashboard.v20.2.Web.WebForms, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 
-<%@ Register assembly="DevExpress.Web.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.Web" tagprefix="dx" %>
+
+
+
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-     <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <div class="row">
-             <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-    <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-           <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-         <link rel="stylesheet" href="css/bootstrap.css" />
-	<link rel="stylesheet" href="fonts/font-awesome-4.3.0/css/font-awesome.min.css" />
-	<link rel="stylesheet" href="css/all.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <div class="row">
-             <webopt:bundlereference runat="server" path="~/css/graphs.css" />
-   <link href= "~/css/graphs.css" rel="stylesheet" runat="server" type="text/css" />
-        <script src="js/application/admin.js"></script>
-        <script src="js/DeleteExtension.js"></script>
 
-        
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <div class="row">
+      
 <style>
+
+
+.popup-container {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    position: fixed; /* Ensure it covers the viewport */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+    z-index: 999; /* Ensure it's on top */
+}
+
+
+.assign-metadata {
+    background: white; /* Background color */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for better visibility */
+    width: 80%; /* Adjust width as needed */
+    max-width: 600px; /* Maximum width */
+    max-height: 80%; /* Maximum height */
+    overflow: auto; /* Add scroll if content overflows */
+}
+
 #MainContent_ASPxDashboard3 {
 
 height: 100% !important;
 
-}</style>
+}
+
+
+
+
+
+</style>
 
         <script async>
-        
-              
+
+            window.onload = function () {
+                setInterval(checkViewerMode, 1000);
+            };
+            function AssignMetadata(dashboardid) {
+                showMetadataPopup();
+            }              
    
             function PerformDelete(dashboardid) {
                 setCookie("temp", dashboardid, 365);
@@ -54,30 +82,35 @@ height: 100% !important;
 
             }
 
+
             function onItemCaptionToolbarUpdated(s, e) {
-                var list = dashboard.GetParameters().GetParameterList();
-                if (list.length > 0) {
+                var control = dashboard.GetDashboardControl();
+                design = control.isDesignMode();
 
-                    window.item_caption = e.Options.staticItems[0].text;
-                    var parameterized_values = regex_return(item_caption);
-                    if (parameterized_values.length != 0) {
-                        parameterized_values.forEach((singular) => {
-                            const found = list.find(element => element.Name == singular)
-                            indexOfElement = list.indexOf(found)
-                            if (found != null && indexOfElement != -1) {
-                                text_to_replace = "#" + found.Name
-                                try {
-                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
-                                } catch (err) {
-                                    text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                if (!design) {
+                    var list = dashboard.GetParameters().GetParameterList();
+                    if (list.length > 0) {
+
+                        window.item_caption = e.Options.staticItems[0].text;
+                        var parameterized_values = regex_return(item_caption);
+                        if (parameterized_values.length != 0) {
+                            parameterized_values.forEach((singular) => {
+                                const found = list.find(element => element.Name == singular)
+                                indexOfElement = list.indexOf(found)
+                                if (found != null && indexOfElement != -1) {
+                                    text_to_replace = "#" + found.Name
+                                    try {
+                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                    } catch (err) {
+                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                    }
+                                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+                                    e.Options.staticItems[0].text = window.item_caption;
                                 }
-                                window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                                console.log(window.item_caption)
-                                e.Options.staticItems[0].text = window.item_caption;
-                            }
-                        })
-                    }
+                            })
+                        }
 
+                    }
                 }
             }
 
@@ -96,6 +129,8 @@ height: 100% !important;
                 dashboardControl.surfaceLeft(extension.panelWidth);
                 dashboardControl.registerExtension(extension);
                 dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
+                // dashboardControl.registerExtension(new AssignMetadataExtension(sender));
+                dashboardControl.unregisterExtension("designerToolbar");
 
 
             }
@@ -147,13 +182,16 @@ height: 100% !important;
             /**
              * Change the visibility of the collapsable hamburger menu. */
             function toggleVisibilityHide(toHide) {
+                try {
+                    var picture = document.getElementById("pic")
+                    if (toHide == true) {
 
-                var picture = document.getElementById("pic")
-                if (toHide == true) {
-
-                    picture.style.visibility = "hidden"
-                } else {
-                    picture.style.visibility = "visible"
+                        picture.style.visibility = "hidden"
+                    } else {
+                        picture.style.visibility = "visible"
+                    }
+                } catch (ex) {
+                    return;
                 }
             }
 
@@ -208,11 +246,14 @@ height: 100% !important;
             }
 
             function correctTheLoadingState() {
+
                 var control = dashboard.GetDashboardControl();
                 design = control.isDesignMode();
                 if (design == false) {
                     onCollapse();
                 }
+
+
             }
 
 
@@ -258,6 +299,19 @@ height: 100% !important;
                     initialState = s.GetDashboardState();
                 }
             }
+            function showMetadataPopup() {
+                $('#assignMetadataModal').modal('show');
+            }
+
+            function hideMetadataPopup() {
+                $('#assignMetadataModal').modal('hide');
+            }
+
+
+            function showNotificationDevexpress(message) {
+                DevExpress.ui.notify(message);
+                
+            }
 
         </script>
     
@@ -282,12 +336,16 @@ height: 100% !important;
                           DashboardEndUpdate="onDashboardEndUpdate"
                           ItemWidgetUpdated="updatecustomizeWidgets"        
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
-                          DashboardInitialized="correctTheLoadingState"                      
+                          DashboardInitialized="correctTheLoadingState" 
+                         
                           />
     </dx:ASPxDashboard>
 </div>
 
-   
+
+
+
+
 
 
 </asp:Content>

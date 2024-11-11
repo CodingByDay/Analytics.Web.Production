@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -13,66 +14,82 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            try { 
+            
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void reset_Click(object sender, EventArgs e)
         {
-            SendActivationRequest();
+            try
+            {
+                SendActivationRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
-
-
-
-
-
         /// <summary>
-        /// Stored procedure checking if the user exists and fetching the uuid and an emal.
+        ///  Stored procedure checking if the user exists and fetching the uuid and an emal.
         ///  Stored procedure: spResetPassword
         ///  Parameter/s: @Username
         /// </summary>
         private void SendActivationRequest()
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            using (conn)
+            try
             {
-                SqlCommand cmd = new SqlCommand("spResetPassword", conn);
-                cmd.CommandType = CommandType.StoredProcedure;
+                var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);
-
-                cmd.Parameters.Add(paramUsername);
-
-                conn.Open();
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                conn = new SqlConnection(ConnectionString);
+                using (conn)
                 {
-                    if (Convert.ToBoolean(rdr["ReturnCode"]))
-                    {
-                        SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
-                        Response.Write($"<script type=\"text/javascript\">alert('Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.'  );</script>");
+                    SqlCommand cmd = new SqlCommand("sp_reset_password", conn);
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                    }
-                    else
-                    {
-                        Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake. Uporabniško ime ne obstaja.'  );</script>");
+                    SqlParameter paramUsername = new SqlParameter("@UserName", username.Text);
 
+                    cmd.Parameters.Add(paramUsername);
+
+                    conn.Open();
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        if (Convert.ToBoolean(rdr["ReturnCode"]))
+                        {
+                            SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.', 'success'); };</script>");
+                        }
+                        else
+                        {
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'Prišlo je do napake. Uporabniško ime ne obstaja.', 'error'); };</script>");
+                        }
                     }
                 }
             }
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
-
-
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logon.aspx", true);
+            try
+            {
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
-
-
 
         private void SendPasswordResetEmail(string ToEmail, string UserName, string UniqueId)
         {
@@ -81,34 +98,41 @@ namespace Dash
                 string email = ConfigurationManager.AppSettings["email"];
                 string username = ConfigurationManager.AppSettings["username"];
                 string password = ConfigurationManager.AppSettings["password"];
-                // MailMessage class is present is System.Net.Mail namespace
+
+                // MailMessage class is present in System.Net.Mail namespace
                 MailMessage mailMessage = new MailMessage(email, ToEmail);
+
                 // StringBuilder class is present in System.Text namespace
                 StringBuilder sbEmailBody = new StringBuilder();
                 sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
                 sbEmailBody.Append("Prosimo da na naslednji povezavi resetirate geslo.");
-                sbEmailBody.Append("<br/>"); sbEmailBody.Append("https://dash.in-sist.si/ChangePassword.aspx?uid=" + UniqueId);
+                sbEmailBody.Append("<br/>");
+
+                // Get the base URL dynamically
+                string baseUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}/";
+                sbEmailBody.Append($"<a href='{baseUrl}ChangePassword.aspx?uid={UniqueId}'>Resetirajte geslo</a><br/><br/>");
+
                 sbEmailBody.Append("<br/><br/>");
-                sbEmailBody.Append("<b>IN SIST d.o.o.</b>");
+                sbEmailBody.Append("<b>In.Sist d.o.o.</b>");
+
                 mailMessage.IsBodyHtml = true;
                 mailMessage.Body = sbEmailBody.ToString();
-                mailMessage.Subject = "Resetiranje gesla IN SIST";
+                mailMessage.Subject = "Resetiranje gesla In.Sist d.o.o.";
+
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                 smtpClient.Credentials = new System.Net.NetworkCredential()
                 {
                     UserName = username,
-                    Password = "edtstqntgzlaszcr"
+                    Password = password 
                 };
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailMessage);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                var s = ex;
-                var stop = true;
+                SentrySdk.CaptureException(ex);
             }
         }
-
-
 
     }
 }

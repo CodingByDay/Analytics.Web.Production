@@ -62,7 +62,7 @@ var scroller = {
 	config : {
 		docElem : window.document.documentElement,
 		// The viewportFactor defines how much of the appearing item has to be visible in order to trigger the animation
-		// if we'd use a value of 0, this would mean that it would add the animation class as soon as the item is in the viewport. 
+		// if we'd use a value of 0, this would mean that it would add the animation class as soon as the item is in the viewport.
 		// If we were to use the value of 1, the animation would only be triggered when we see all of the item in the viewport (100% of it)
 		viewportFactor : 0,
 		elems : '.slide-holder'
@@ -70,7 +70,7 @@ var scroller = {
 	getViewportH : function() {
 		var client = this.config.docElem['clientHeight'],
 			inner = window['innerHeight'];
-		
+
 		if( client < inner )
 			return inner;
 		else

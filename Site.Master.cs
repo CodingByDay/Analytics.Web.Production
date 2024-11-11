@@ -1,123 +1,365 @@
-﻿using System;
+﻿using DevExpress.XtraRichEdit.Model;
+using Sentry;
+using System;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 
 namespace Dash
 {
     public partial class SiteMaster : MasterPage
     {
-        /// <summary>
-        ///  Add a default company entry for the new user and center the buttons. Change the names of all of the so u can change the destination.
-        /// </summary>
         private SqlCommand cmd;
         private string userRole;
         private SqlConnection conn;
+        private string connection;
+
+        public bool BackButtonVisible
+        {
+            get { return backButton.Visible; }
+
+
+            set { 
+                backButton.Visible = value;
+                backButtonOuter.Visible = value;
+            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
-            HttpContext.Current.Response.AddHeader("Expires", "0");
-
-            signOutAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            adminButtonAnchor.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            backButtonA.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-            string UserNameForCheckingAdmin = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            // Create SqlCommand to select pwd field from users table given supplied userName.
-            cmd = new SqlCommand($"Select userRole from Users where uname='{UserNameForCheckingAdmin}';", conn); /// Intepolation or the F string. C# > 5.0       
-            // Execute command and fetch pwd field into lookupPassword string.
-            userRole = (string)cmd.ExecuteScalar();
-            CheckIsAdminShowAdminButtonOrNot(userRole);
-
-        }
-
-        protected void cmdsignOut_Click(object sender, EventArgs e)
-        {
-            FormsAuthentication.SignOut();
-            Session["current"] = string.Empty;
-            Response.Redirect("home.aspx", true);
-
-
-        }
-
-        private void CheckIsAdminShowAdminButtonOrNot(string userRole)
-        {
-            if (userRole != "SuperAdmin" && userRole != "Admin")
+            try
             {
-                adminButtonAnchor.Visible = false;
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+
+
+                HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
+                HttpContext.Current.Response.AddHeader("Expires", "0");
+
+                signOutButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+                adminButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+                backButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
+
+
+                string uname = HttpContext.Current.User.Identity.Name;
+                CheckUserTypeModifyUI(uname);
+
+                CheckWhetherToShowTheSwitcherAtAll();
+
+                ConditionalyAddStylesBasedOnTheUrl();
+
+                HideHamburgerIfNecessary();
+
+
+                if (Request.Browser.IsMobileDevice && Request.Browser.ScreenPixelsWidth <= 767)
+                {
+                    HideActionButtonsForMobile();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                adminButtonAnchor.Visible = true;
+                SentrySdk.CaptureException(ex);
             }
         }
 
+     
 
-
-
-
-        protected void administration_Click(object sender, EventArgs e)
+        private void HideActionButtonsForMobile()
         {
-            // Data
-            if (userRole == "SuperAdmin")
+            try
             {
-                Response.Redirect("admin.aspx", true);
+                adminButton.Visible = false;
+                adminButtonOuter.Visible = false;
+                backButton.Visible = false;
+                backButtonOuter.Visible = false;
+                filtersButton.Visible = false;
+                filterButtonOuter.Visible = false;
+                groupsButton.Visible = false;
+                groupsButtonOuter.Visible = false;
+                pic.Visible = false;
             }
-            else if (userRole == "Admin")
+            catch (Exception ex)
             {
-                Response.Redirect("tenantadmin.aspx", true);
-
-            }
-            else
-            {
-
-                Response.Redirect("logon.aspx", true); // config for securing data.
+                SentrySdk.CaptureException(ex);
             }
         }
 
-        protected void back_Click(object sender, EventArgs e)
+
+
+        private void HideHamburgerIfNecessary()
         {
-            if (userRole == "SuperAdmin")
+            try
             {
-                Session["change"] = "yes";
-                Response.Redirect("index", true);
+                string currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+
+                // Check if the URL contains "Index" or "IndexTenant"
+                if (!currentUrl.Contains("Index") && !currentUrl.Contains("IndexTenant"))
+                {
+                    pic.Visible = false;
+                }
             }
-            else
+            catch (Exception ex)
             {
-
-                Response.Redirect("indextenant", true);
-            }
-
-        }
-
-        protected void desktop_button_Click(object sender, EventArgs e)
-        {
-            var test = userRole;
-
-
-            if (userRole == "SuperAdmin")
-            {
-                Response.Redirect("index", true);
-
-            }
-            else
-            {
-
-                Response.Redirect("indextenant", true);
-
+                SentrySdk.CaptureException(ex);
             }
         }
 
-        protected void mobile_button_Click(object sender, EventArgs e)
+        private void ConditionalyAddStylesBasedOnTheUrl()
         {
-            Response.Redirect("Emulator", true);
+            try
+            {
+                string currentPage = Page.AppRelativeVirtualPath;
+
+                switch (currentPage)
+                {
+                    case "~/Admin.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Graphs.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        AddCssLink("~/Content/Css/Admin.css");
+                        break;
+
+                    case "~/TenantAdmin.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        AddCssLink("~/Content/Css/Graphs.css");
+                        AddCssLink("~/Content/Css/Admin.css");
+                        break;
+
+                    case "~/Emulator.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        AddCssLink("~/Content/Css/Admin.css");
+                        break;
+
+                    case "~/Filters.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        AddCssLink("~/Content/Css/Admin.css");
+                        break;
+
+                    case "~/Index.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Graphs.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        break;
+
+                    case "~/IndexTenant.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Graphs.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        break;
+
+                    case "~/Groups.aspx":
+                        AddCssLink("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css");
+                        AddCssLink("https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css");
+                        AddCssLink("~/Content/Css/All.css");
+                        AddCssLink("~/Content/Css/Website.css");
+                        AddCssLink("~/Content/Css/Admin.css");
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void AddCssLink(string cssPath)
+        {
+            try
+            {
+                HtmlLink cssLink = new HtmlLink();
+                cssLink.Href = cssPath;
+                cssLink.Attributes.Add("rel", "stylesheet");
+                cssLink.Attributes.Add("type", "text/css");
+                Page.Header.Controls.Add(cssLink);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void CheckWhetherToShowTheSwitcherAtAll()
+        {
+            try
+            {
+                // Get the current URL
+                string currentUrl = HttpContext.Current.Request.Url.AbsolutePath;
+
+                // Check if the URL contains "Index" or "IndexTenant"
+                if (!currentUrl.Contains("Index") && !currentUrl.Contains("IndexTenant"))
+                {
+                    switcherOuter.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        protected void SignOut_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                FormsAuthentication.SignOut();
+                Session["current"] = string.Empty;
+                Response.Redirect("Home.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void CheckUserTypeModifyUI(string uname)
+        {
+            try
+            {
+                // Use 'using' statements to ensure proper disposal of resources
+                using (var conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    // Use a parameterized query to avoid SQL injection
+                    using (var cmd = new SqlCommand("SELECT user_role FROM users WHERE uname = @UserName", conn))
+                    {
+                        // Add the parameter for the user name
+                        cmd.Parameters.AddWithValue("@UserName", uname);
+
+                        // Execute command and fetch user_role field into the userRole variable
+                        userRole = cmd.ExecuteScalar()?.ToString();
+
+                        if (userRole == "User")
+                        {
+                            adminButton.Visible = false;
+                            adminButtonOuter.Visible = false;
+                            groupsButton.Visible = false;
+                            groupsButtonOuter.Visible = false;
+                            filtersButton.Visible = false;
+                            filterButtonOuter.Visible = false;
+
+                        }
+                        else if (userRole == "SuperAdmin")
+                        {
+                            adminButton.Visible = true;
+                            adminButtonOuter.Visible = true;
+                            groupsButton.Visible = true;
+                            groupsButtonOuter.Visible = true;
+                            filtersButton.Visible = true;
+                            filterButtonOuter.Visible = true;
+
+                        }
+                        else if (userRole == "Admin")
+                        {
+                            adminButton.Visible = true;
+                            adminButtonOuter.Visible = true;
+                            groupsButton.Visible = true;
+                            groupsButtonOuter.Visible = true;
+                            filtersButton.Visible = false;
+                            filterButtonOuter.Visible = false;
+
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+        protected void Administration_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Data
+                if (userRole == "SuperAdmin")
+                {
+                    Response.Redirect("Admin.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+                else if (userRole == "Admin")
+                {
+                    Response.Redirect("TenantAdmin.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+                else
+                {
+                    Response.Redirect("Logon.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        protected void Back_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (userRole == "SuperAdmin")
+                {
+                    Response.Redirect("Index.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+                else
+                {
+                    Response.Redirect("IndexTenant.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        protected void Filters_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("Filters.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        protected void groupsButton_ServerClick(object sender, EventArgs e)
+        {
+            try
+            {
+                Response.Redirect("Groups.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
     }
 }

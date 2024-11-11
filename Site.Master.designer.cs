@@ -15,6 +15,24 @@ namespace Dash
     {
 
         /// <summary>
+        /// pic control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlImage pic;
+
+        /// <summary>
+        /// switcherOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl switcherOuter;
+
+        /// <summary>
         /// toggle control.
         /// </summary>
         /// <remarks>
@@ -24,31 +42,85 @@ namespace Dash
         protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggle;
 
         /// <summary>
-        /// adminButtonAnchor control.
+        /// adminButtonOuter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButtonAnchor;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl adminButtonOuter;
 
         /// <summary>
-        /// backButtonA control.
+        /// adminButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButtonA;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor adminButton;
 
         /// <summary>
-        /// signOutAnchor control.
+        /// groupsButtonOuter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlAnchor signOutAnchor;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl groupsButtonOuter;
+
+        /// <summary>
+        /// groupsButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor groupsButton;
+
+        /// <summary>
+        /// filterButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl filterButtonOuter;
+
+        /// <summary>
+        /// filtersButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor filtersButton;
+
+        /// <summary>
+        /// backButtonOuter control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl backButtonOuter;
+
+        /// <summary>
+        /// backButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor backButton;
+
+        /// <summary>
+        /// signOutButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor signOutButton;
 
         /// <summary>
         /// MainContent control.

@@ -1,0 +1,1738 @@
+﻿USE [master]
+GO
+/****** Object:  Database [Analytics_IN_SIST_NEW_TESTING]    Script Date: 11/8/2024 3:33:00 PM ******/
+CREATE DATABASE [Analytics_IN_SIST_NEW_TESTING]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'petpak', FILENAME = N'D:\MSSQL15.SPLAHOST\MSSQL\DATA\official_new.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'petpak_log', FILENAME = N'L:\MSSQL15.SPLAHOST\MSSQL\Log\official_new.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [Analytics_IN_SIST_NEW_TESTING].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET  MULTI_USER 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET QUERY_STORE = OFF
+GO
+USE [Analytics_IN_SIST_NEW_TESTING]
+GO
+/****** Object:  User [petpakn]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE USER [petpakn] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [petpak]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE USER [petpak] WITHOUT LOGIN WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [jankoj]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE USER [jankoj] FOR LOGIN [jankoj] WITH DEFAULT_SCHEMA=[dbo]
+GO
+/****** Object:  User [dashboards]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE USER [dashboards] FOR LOGIN [dashboards] WITH DEFAULT_SCHEMA=[dbo]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [jankoj]
+GO
+ALTER ROLE [db_owner] ADD MEMBER [dashboards]
+GO
+/****** Object:  Table [dbo].[dashboards]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[dashboard] [varbinary](max) NULL,
+	[caption] [nvarchar](255) NULL,
+	[viewer_only] [int] NULL,
+	[meta_type] [int] NULL,
+	[meta_company] [int] NULL,
+	[meta_language] [int] NULL,
+ CONSTRAINT [PK_Dashboards] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[users]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[users](
+	[uname] [varchar](15) NOT NULL,
+	[password] [varchar](500) NULL,
+	[user_role] [varchar](25) NOT NULL,
+	[id_company] [int] NULL,
+	[view_allowed] [varchar](120) NULL,
+	[full_name] [varchar](120) NULL,
+	[email] [varchar](150) NULL,
+	[dashboard_permissions] [nvarchar](max) NULL,
+	[referrer] [varchar](255) NULL,
+	[group_id] [int] NULL,
+	[dashboard_states] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Users] PRIMARY KEY NONCLUSTERED 
+(
+	[uname] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboard_view_logs]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboard_view_logs](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [varchar](15) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[view_time] [datetime] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[companies]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[companies](
+	[id_company] [int] NOT NULL,
+	[company_name] [char](200) NULL,
+	[company_number] [bigint] NULL,
+	[website] [char](200) NULL,
+	[database_name] [varchar](120) NULL,
+	[designer] [int] NOT NULL,
+	[scripted] [int] NOT NULL,
+ CONSTRAINT [PK_companies] PRIMARY KEY CLUSTERED 
+(
+	[id_company] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[dashboards_log]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE VIEW [dbo].[dashboards_log] AS
+SELECT 
+l.user_id,
+c.company_name,
+l.dashboard_id,
+d.caption,
+l.view_time
+FROM 
+	dashboard_view_logs l
+JOIN
+users u ON l.user_id = u.uname
+JOIN 
+dashboards d ON l.dashboard_id = d.id
+JOIN
+companies c ON c.id_company = (SELECT id_company FROM users WHERE uname = u.uname)
+
+GO
+/****** Object:  Table [dbo].[groups]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[groups](
+	[group_id] [int] IDENTITY(1,1) NOT NULL,
+	[group_name] [nvarchar](255) NOT NULL,
+	[group_description] [nvarchar](1000) NULL,
+	[company_id] [int] NOT NULL,
+	[group_permissions] [nvarchar](max) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[group_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  View [dbo].[users_groups]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+CREATE VIEW [dbo].[users_groups] AS
+SELECT 
+    u.uname, 
+    u.password, 
+    u.user_role, 
+    u.view_allowed, 
+    u.email, 
+	u.id_company,
+    g.group_name,
+	g.group_id
+FROM 
+    users u
+LEFT JOIN 
+    groups g ON u.group_id = g.group_id
+WHERE 
+    u.id_company IS NOT NULL;
+GO
+/****** Object:  Table [dbo].[company_string]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[company_string](
+	[ID] [int] IDENTITY(1,1) NOT NULL,
+	[string] [char](100) NULL,
+ CONSTRAINT [PK_company_string] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboards_custom_names]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards_custom_names](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[company_id] [int] NOT NULL,
+	[custom_name] [varchar](max) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[dashboards_sorted_by_user]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[dashboards_sorted_by_user](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[uname] [varchar](15) NOT NULL,
+	[dashboard_id] [int] NOT NULL,
+	[sort_order] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[meta_options]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[meta_options](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[option_type] [nvarchar](50) NOT NULL,
+	[value] [nvarchar](255) NOT NULL,
+	[description] [nvarchar](255) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[reset_password_requests]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[reset_password_requests](
+	[id] [uniqueidentifier] NOT NULL,
+	[username] [varchar](15) NULL,
+	[reset_request_datetime] [datetime] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Index [IDX_dashboard_view_logs_dashboard]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_dashboard] ON [dbo].[dashboard_view_logs]
+(
+	[dashboard_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IDX_dashboard_view_logs_user]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE NONCLUSTERED INDEX [IDX_dashboard_view_logs_user] ON [dbo].[dashboard_view_logs]
+(
+	[user_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [IX_OptionType]    Script Date: 11/8/2024 3:33:01 PM ******/
+CREATE NONCLUSTERED INDEX [IX_OptionType] ON [dbo].[meta_options]
+(
+	[option_type] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[companies] ADD  DEFAULT ((1)) FOR [designer]
+GO
+ALTER TABLE [dbo].[companies] ADD  DEFAULT ((0)) FOR [scripted]
+GO
+ALTER TABLE [dbo].[dashboard_view_logs] ADD  DEFAULT (getdate()) FOR [view_time]
+GO
+ALTER TABLE [dbo].[dashboards] ADD  DEFAULT ('0') FOR [viewer_only]
+GO
+ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_permissions]  DEFAULT (N'{"Permissions":[]}') FOR [dashboard_permissions]
+GO
+ALTER TABLE [dbo].[users] ADD  CONSTRAINT [DF_dashboard_states]  DEFAULT ('{"States": []}') FOR [dashboard_states]
+GO
+ALTER TABLE [dbo].[dashboard_view_logs]  WITH CHECK ADD  CONSTRAINT [FK_dashboard_view_logs_dashboard] FOREIGN KEY([dashboard_id])
+REFERENCES [dbo].[dashboards] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboard_view_logs] CHECK CONSTRAINT [FK_dashboard_view_logs_dashboard]
+GO
+ALTER TABLE [dbo].[dashboard_view_logs]  WITH CHECK ADD  CONSTRAINT [FK_dashboard_view_logs_user] FOREIGN KEY([user_id])
+REFERENCES [dbo].[users] ([uname])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboard_view_logs] CHECK CONSTRAINT [FK_dashboard_view_logs_user]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_company] FOREIGN KEY([meta_company])
+REFERENCES [dbo].[meta_options] ([id])
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_company]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_language] FOREIGN KEY([meta_language])
+REFERENCES [dbo].[meta_options] ([id])
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_language]
+GO
+ALTER TABLE [dbo].[dashboards]  WITH CHECK ADD  CONSTRAINT [FK_meta_type] FOREIGN KEY([meta_type])
+REFERENCES [dbo].[meta_options] ([id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[dashboards] CHECK CONSTRAINT [FK_meta_type]
+GO
+ALTER TABLE [dbo].[dashboards_custom_names]  WITH CHECK ADD  CONSTRAINT [FK_Company_Custom_Names] FOREIGN KEY([company_id])
+REFERENCES [dbo].[companies] ([id_company])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboards_custom_names] CHECK CONSTRAINT [FK_Company_Custom_Names]
+GO
+ALTER TABLE [dbo].[dashboards_custom_names]  WITH CHECK ADD  CONSTRAINT [FK_Dashboard_Custom_Names] FOREIGN KEY([dashboard_id])
+REFERENCES [dbo].[dashboards] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboards_custom_names] CHECK CONSTRAINT [FK_Dashboard_Custom_Names]
+GO
+ALTER TABLE [dbo].[dashboards_sorted_by_user]  WITH CHECK ADD FOREIGN KEY([dashboard_id])
+REFERENCES [dbo].[dashboards] ([id])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[dashboards_sorted_by_user]  WITH CHECK ADD FOREIGN KEY([uname])
+REFERENCES [dbo].[users] ([uname])
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[groups]  WITH CHECK ADD  CONSTRAINT [fk_groups_companies] FOREIGN KEY([company_id])
+REFERENCES [dbo].[companies] ([id_company])
+GO
+ALTER TABLE [dbo].[groups] CHECK CONSTRAINT [fk_groups_companies]
+GO
+ALTER TABLE [dbo].[reset_password_requests]  WITH CHECK ADD FOREIGN KEY([username])
+REFERENCES [dbo].[users] ([uname])
+GO
+ALTER TABLE [dbo].[users]  WITH CHECK ADD  CONSTRAINT [fk_users_companies] FOREIGN KEY([id_company])
+REFERENCES [dbo].[companies] ([id_company])
+ON UPDATE CASCADE
+ON DELETE CASCADE
+GO
+ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_companies]
+GO
+ALTER TABLE [dbo].[users]  WITH CHECK ADD  CONSTRAINT [fk_users_groups] FOREIGN KEY([group_id])
+REFERENCES [dbo].[groups] ([group_id])
+ON DELETE SET NULL
+GO
+ALTER TABLE [dbo].[users] CHECK CONSTRAINT [fk_users_groups]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_alter_column]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_alter_column]
+(
+  @schemaname SYSNAME
+  ,@tablename SYSNAME
+  ,@columnname SYSNAME
+  ,@columnrename SYSNAME = @columnname
+  ,@datatype SYSNAME
+  ,@executionmode bit = 0
+)
+AS BEGIN
+  /*
+    Author: Sergio Govoni https://www.linkedin.com/in/sgovoni/
+    Version: 1.0
+    License: MIT License
+    Github repository: https://github.com/segovoni/sp_alter_column
+    Documentation will coming soon!
+  */
+
+  -- Check input parameters
+  IF (LTRIM(RTRIM(ISNULL(@schemaname, ''))) = '')
+  BEGIN
+    RAISERROR(N'The parameter schema name (@schemaname) is not specified or is empty.', 16, 1);
+    RETURN;
+  END;
+
+  IF (LTRIM(RTRIM(ISNULL(@tablename, ''))) = '')
+  BEGIN
+    RAISERROR(N'The parameter table name (@tablename) is not specified or is empty.', 16, 1);
+    RETURN;
+  END;
+
+  IF (LTRIM(RTRIM(ISNULL(@columnname, ''))) = '')
+  BEGIN
+    RAISERROR(N'The parameter column name (@columnname) is not specified or is empty.', 16, 1);
+    RETURN;
+  END;
+
+  IF (LTRIM(RTRIM(ISNULL(@columnrename, ''))) = '')
+  BEGIN
+    RAISERROR(N'The parameter column rename (@columnrename), if specified, it can not be empty.', 16, 1);
+    RETURN;
+  END;
+
+  IF (LTRIM(RTRIM(ISNULL(@datatype, ''))) = '')
+  BEGIN
+    RAISERROR(N'The parameter data type (@datatype) is not specified or is empty.', 16, 1);
+    RETURN;
+  END;
+
+  IF NOT EXISTS (SELECT
+                   ORDINAL_POSITION
+                 FROM
+                   INFORMATION_SCHEMA.COLUMNS
+                 WHERE
+                   (TABLE_SCHEMA=@schemaname)
+                   AND (TABLE_NAME=@tablename)
+                   AND (COLUMN_NAME=@columnname))
+  BEGIN
+    RAISERROR(N'The object has not been found.', 16, 1);
+    RETURN;
+  END;
+
+  -- Let's go!
+  BEGIN TRY
+    SET NOCOUNT ON;
+
+    -- Create temporary table
+    CREATE TABLE #tmp_usp_alter_column
+    (
+      schemaname SYSNAME NOT NULL
+      ,tablename SYSNAME NOT NULL
+      ,objecttype SYSNAME NOT NULL
+      ,operationtype NVARCHAR(1) NOT NULL
+      ,sqltext NVARCHAR(MAX) NOT NULL
+    );
+
+    -- Foreign key section
+    -- Drop foreign key
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      schemap.name AS schemaname
+      ,objp.name AS tablename
+      ,'FK' AS objecttype
+      ,'D' AS operationtype,
+      ('ALTER TABLE [' + RTRIM(schemap.name) + '].[' + RTRIM(objp.name) + '] ' +
+       'DROP CONSTRAINT [' + RTRIM(constr.name) + '];') AS sqltext
+    FROM
+      sys.foreign_key_columns AS fkc
+    JOIN
+      sys.objects AS objp ON objp.object_id=fkc.parent_object_id
+    JOIN
+      sys.schemas AS schemap ON objp.schema_id=schemap.schema_id
+    JOIN
+      sys.objects AS objr ON objr.object_id=fkc.referenced_object_id
+    JOIN
+      sys.schemas AS schemar ON objr.schema_id=schemar.schema_id
+    JOIN
+      sys.columns AS colr ON colr.column_id=fkc.referenced_column_id and colr.object_id=fkc.referenced_object_id
+    JOIN
+      sys.columns AS colp ON colp.column_id=fkc.parent_column_id and colp.object_id=fkc.parent_object_id
+    JOIN
+      sys.objects AS constr ON constr.object_id=fkc.constraint_object_id
+    WHERE
+      -- ToDo
+      ((schemar.name=@schemaname) AND (objr.name=@tablename) AND (colr.name=@columnname) AND (objr.type='U')) OR
+      ((schemap.name=@schemaname) AND (objp.name=@tablename) AND (colp.name=@columnname) AND (objr.type='U'));
+
+    -- Create foreign key
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      schemap.name AS schemaname
+      ,objp.name AS tablename
+      ,'FK' AS objecttype
+      ,'C' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(schemap.name) + '].[' + RTRIM(objp.name) + '] ' + 
+        CASE (fk.is_not_trusted)
+          WHEN 0 THEN 'WITH CHECK ADD CONSTRAINT [' + RTRIM(constr.name) + '] '
+          WHEN 1 THEN 'WITH NOCHECK ADD CONSTRAINT [' + RTRIM(constr.name) + '] '
+        END +
+        'FOREIGN KEY ([' + RTRIM(colp.name) + '])' + ' ' +
+        'REFERENCES [' + RTRIM(schemar.name) + '].[' + RTRIM(objr.name) + ']([' + RTRIM(colr.name) + ']);') AS sqltext
+    FROM
+      sys.foreign_key_columns AS fkc
+    JOIN
+      sys.foreign_keys AS fk ON fkc.constraint_object_id=fk.object_id
+    JOIN
+      sys.objects AS objp ON objp.object_id=fkc.parent_object_id
+    JOIN
+      sys.schemas AS schemap ON objp.schema_id=schemap.schema_id
+    JOIN
+      sys.objects AS objr ON objr.object_id=fkc.referenced_object_id
+    JOIN
+      sys.schemas AS schemar ON objr.schema_id=schemar.schema_id
+    JOIN
+      sys.columns AS colr ON colr.column_id=fkc.referenced_column_id and colr.object_id=fkc.referenced_object_id
+    JOIN
+      sys.columns AS colp ON colp.column_id=fkc.parent_column_id and colp.object_id=fkc.parent_object_id
+    JOIN
+      sys.objects AS constr ON constr.object_id=fkc.constraint_object_id
+    WHERE
+      -- ToDo
+      /*
+      (schemar.name=@schemaname)
+      AND (objr.name=@tablename)
+      AND (colr.name=@columnname)
+      AND (objr.type='U');
+      */
+      ((schemar.name=@schemaname) AND (objr.name=@tablename) AND (colr.name=@columnname) AND (objr.type='U')) OR
+      ((schemap.name=@schemaname) AND (objp.name=@tablename) AND (colp.name=@columnname) AND (objr.type='U'));
+
+    -- Default constraints section
+    -- Drop default constraints
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      S.name AS schemaname
+      ,O.name AS tablename
+      ,'DF' AS objecttype
+      ,'D' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(S.name) + '].[' + RTRIM(O.name) + '] ' +
+        'DROP [' + RTRIM(DC.name) + '];') AS sqltext
+    FROM
+      sys.default_constraints AS DC
+    JOIN
+      sys.objects AS O ON DC.parent_object_id=O.object_id
+    JOIN
+      sys.schemas AS S ON O.schema_id=S.schema_id
+    JOIN
+      sys.columns AS Col ON Col.default_object_id=DC.object_id
+    WHERE
+      (S.name=@schemaname)
+      AND (O.name=@tablename)
+      AND (Col.name=@columnname)
+      AND (DC.type='D')
+      AND (O.type='U');
+
+    -- Create default constraints
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      S.name AS schemaname
+      ,O.name AS tablename
+      ,'DF' AS objecttype
+      ,'C' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(S.name) + '].[' + RTRIM(O.name) + '] ' +
+        'ADD CONSTRAINT [' + RTRIM(DC.name) + '] ' +
+        'DEFAULT ' + DC.definition + ' ' +
+        'FOR [' + Col.name + '];') AS sqltext
+    FROM
+      sys.default_constraints AS DC
+    JOIN
+      sys.objects AS O ON DC.parent_object_id=O.object_id
+    JOIN
+      sys.schemas AS S ON O.schema_id=S.schema_id
+    JOIN
+      sys.columns AS Col ON Col.default_object_id=DC.object_id
+    WHERE
+      (S.name=@schemaname)
+      AND (O.name=@tablename)
+      AND (Col.name=@columnname)
+      AND (DC.type='D')
+      AND (O.type='U');
+
+    -- Unique constraints and Primary keys section
+    -- Drop unique constraints and primary keys
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      KCU.TABLE_SCHEMA AS schemaname
+      ,KCU.TABLE_NAME AS tablename
+      -- ToDo: Keep fixed objecttype code 
+      ,KC.type AS objecttype
+      ,'D' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(KCU.TABLE_SCHEMA) + '].[' + RTRIM(KCU.TABLE_NAME) + '] ' +
+        'DROP CONSTRAINT [' + RTRIM(KCU.CONSTRAINT_NAME) + '];') AS sqltext
+    FROM
+      INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KCU
+    JOIN
+      sys.key_constraints AS KC ON KCU.CONSTRAINT_NAME=KC.name
+    WHERE
+      (KCU.TABLE_SCHEMA=@schemaname)
+      AND (KCU.TABLE_NAME=@tablename)
+      AND (KCU.COLUMN_NAME=@columnname)
+      AND ((KC.type='UQ') OR (KC.type='PK'));
+
+    -- Create unique constraints and primary keys
+    WITH UQC_PK AS
+    (
+      SELECT
+        DISTINCT
+        'A' AS rowtype
+        -- ToDo: Keep fixed objecttype code
+        ,K.type AS objecttype
+        ,KCU.TABLE_CATALOG
+        ,KCU.TABLE_SCHEMA
+        ,KCU.TABLE_NAME
+        ,KCU.CONSTRAINT_NAME
+        ,CAST(0 AS INTEGER) AS ordinal_position
+        ,CAST('' AS VARCHAR(MAX)) AS COLUMN_NAME
+        ,CAST('ALTER TABLE [' + RTRIM(KCU.TABLE_SCHEMA) + '].[' + RTRIM(KCU.TABLE_NAME) + '] ' +
+              (CASE (K.type)
+                 WHEN 'PK' THEN 'WITH NOCHECK '
+                 ELSE ''
+               END)  +
+              'ADD CONSTRAINT [' + RTRIM(KCU.CONSTRAINT_NAME) + '] ' +
+              (CASE (K.type)
+                 WHEN 'UQ' THEN 'UNIQUE'
+                 WHEN 'PK' THEN 'PRIMARY KEY'
+               END)  + '('AS VARCHAR(MAX)) AS sqltext
+      FROM
+        INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KCU
+      JOIN
+        sys.key_constraints AS K ON KCU.CONSTRAINT_NAME=K.name
+      WHERE
+        (KCU.TABLE_SCHEMA=@schemaname) 
+        AND (KCU.TABLE_NAME=@tablename) 
+        AND (KCU.COLUMN_NAME=@columnname) 
+        AND ((K.type='UQ') OR (K.type='PK')) 
+
+      UNION ALL
+
+      SELECT
+        'R' AS rowtype
+        ,U.objecttype
+        ,U.TABLE_CATALOG
+        ,U.TABLE_SCHEMA
+        ,U.TABLE_NAME
+        ,U.CONSTRAINT_NAME
+        ,KCU2.ORDINAL_POSITION
+        ,U.COLUMN_NAME
+        ,CAST(U.sqltext +
+              CASE (KCU2.ordinal_position)
+                WHEN 1 THEN ''
+                ELSE ','
+              END + ' [' + RTRIM(KCU2.COLUMN_NAME) + '] ' AS VARCHAR(MAX)) AS sqltext
+      FROM
+        UQC_PK AS U
+      JOIN
+        INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS KCU2 ON (U.TABLE_CATALOG=KCU2.TABLE_CATALOG)
+                                                   AND (U.TABLE_SCHEMA=KCU2.TABLE_SCHEMA)
+                                                   AND (U.TABLE_NAME=KCU2.TABLE_NAME)
+                                                   AND (U.CONSTRAINT_NAME=KCU2.CONSTRAINT_NAME)
+      WHERE (KCU2.ordinal_position=U.ordinal_position + 1)
+    ),
+    UQC_PK2 AS
+    (
+      SELECT
+        MAX(UQC_PK.ordinal_position) AS maxordinalposition
+        ,UQC_PK.objecttype
+        ,UQC_PK.TABLE_SCHEMA
+        ,UQC_PK.TABLE_NAME
+        ,UQC_PK.CONSTRAINT_NAME
+      FROM
+        UQC_PK
+      WHERE
+        (UQC_PK.rowtype='R')
+      GROUP BY
+        UQC_PK.objecttype
+        ,UQC_PK.TABLE_SCHEMA
+        ,UQC_PK.TABLE_NAME
+        ,UQC_PK.CONSTRAINT_NAME
+    )
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      UQC_PK.TABLE_SCHEMA
+      ,UQC_PK.TABLE_NAME
+      ,UQC_PK.objecttype
+      ,'C'
+      ,UQC_PK.sqltext + ') '
+    FROM
+      UQC_PK2
+    JOIN
+      UQC_PK ON (UQC_PK.CONSTRAINT_NAME=UQC_PK2.CONSTRAINT_NAME)
+            AND (UQC_PK.TABLE_SCHEMA=UQC_PK2.TABLE_SCHEMA)
+            AND (UQC_PK.TABLE_NAME=UQC_PK2.TABLE_NAME)
+            AND (UQC_PK.ordinal_position=UQC_PK2.maxordinalposition);
+
+    -- Check constraints section
+    -- Drop check constraints
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      CCU.TABLE_SCHEMA AS schemaname
+      ,CCU.TABLE_NAME AS tablename
+      -- ToDo: Keep fixed objecttype code
+      ,CHK.type AS objecttype
+      ,'D' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(CCU.TABLE_SCHEMA) + '].[' + RTRIM(CCU.TABLE_NAME) + '] ' +
+        'DROP CONSTRAINT [' + RTRIM(CCU.CONSTRAINT_NAME) + '];') AS sqltext
+    FROM
+      INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS CCU
+    JOIN
+      sys.check_constraints AS CHK ON CCU.CONSTRAINT_NAME=CHK.name
+    WHERE
+      (CCU.TABLE_SCHEMA=@schemaname)
+      AND (CCU.TABLE_NAME=@tablename)
+      AND (CCU.COLUMN_NAME=@columnname)
+      AND (CHK.type='C');
+
+    -- Create (enabled) check constraints
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      CCU.TABLE_SCHEMA AS schemaname
+      ,CCU.TABLE_NAME AS tablename
+      ,CHK.type AS objecttype
+      ,'C' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(CCU.TABLE_SCHEMA) + '].[' + RTRIM(CCU.TABLE_NAME) + '] ' +
+        CASE (CHK.is_not_trusted)
+          WHEN 0 THEN 'WITH CHECK ADD CONSTRAINT [' + RTRIM(CCU.CONSTRAINT_NAME) + '] CHECK ' + RTRIM(CHK.Definition) + ';'
+          WHEN 1 THEN 'WITH NOCHECK ADD CONSTRAINT [' + RTRIM(CCU.CONSTRAINT_NAME) + '] CHECK ' + RTRIM(CHK.Definition) + ';'END ) AS sqltext
+    FROM
+      INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS CCU
+    JOIN
+      sys.check_constraints AS CHK ON CCU.CONSTRAINT_NAME=CHK.name
+    WHERE
+      (CCU.TABLE_SCHEMA=@schemaname)
+      AND (CCU.TABLE_NAME=@tablename)
+      AND (CCU.COLUMN_NAME=@columnname)
+      AND (CHK.type='C');
+
+    -- Create (disabled) check constraints
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      CCU.TABLE_SCHEMA AS schemaname
+      ,CCU.TABLE_NAME AS tablename
+      ,CHK.type AS objecttype
+      ,'I' AS operationtype
+      ,('ALTER TABLE [' + RTRIM(CCU.TABLE_SCHEMA) + '].[' + RTRIM(CCU.TABLE_NAME) + '] ' +
+        'NOCHECK CONSTRAINT [' + RTRIM(CCU.CONSTRAINT_NAME) + '];') AS sqltext
+    FROM
+      INFORMATION_SCHEMA.CONSTRAINT_COLUMN_USAGE AS CCU
+    JOIN
+      sys.check_constraints AS CHK ON CCU.CONSTRAINT_NAME=CHK.name
+    WHERE
+      (CCU.TABLE_SCHEMA=@schemaname)
+      AND (CCU.TABLE_NAME=@tablename)
+      AND (CCU.COLUMN_NAME=@columnname)
+      AND (CHK.type='C')
+      AND (CHK.is_disabled=1);
+
+    -- Statistics section
+    -- Drop statistics
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      sch.name AS schemaname
+      ,obj.name AS tablename
+      ,'STATS' AS objecttype
+      ,'D' AS operationtype
+      ,'DROP STATISTICS [' + RTRIM(sch.name) + '].[' + RTRIM(obj.name) + '].[' + RTRIM(stat.name) + ']' AS SQLStr 
+    FROM 
+      sys.stats_columns AS statc 
+    JOIN 
+      sys.stats AS stat ON ((stat.stats_id=statc.stats_id) AND (stat.object_id=statc.object_id)) 
+    JOIN 
+      sys.objects AS obj ON statc.object_id=obj.object_id 
+    JOIN 
+      sys.columns AS col ON ((col.column_id=statc.column_id) AND (col.object_id=statc.object_id)) 
+    JOIN 
+      sys.schemas AS sch ON obj.schema_id=sch.schema_id 
+    WHERE 
+      (sch.name=@schemaname)
+      AND (obj.name=@tablename)
+      AND (col.name=@columnname)
+      AND ((stat.auto_created=1) OR (stat.user_created=1))
+      AND (obj.type='U');
+
+    -- Create statistics
+    WITH Stat AS 
+    ( 
+      SELECT 
+        'A' AS RowType 
+        ,T.object_id 
+        ,T.stats_id 
+        ,T.StatLevel 
+        ,T.KeyOrdinal 
+        ,T.SchemaName 
+        ,T.TableName 
+        ,CAST('CREATE ' +
+              'STATISTICS [' + RTRIM(T.StatsName) + 
+              '] ON [' + RTRIM(T.SchemaName) + 
+              '].[' + RTRIM(T.TableName) +
+              '] ( ' AS VARCHAR(MAX)) AS SQLStr 
+      FROM 
+      ( 
+        SELECT 
+          DISTINCT 
+          stat.object_id 
+          ,stat.stats_id 
+          ,CAST(0 AS INTEGER) AS StatLevel 
+          ,CAST(0 AS INTEGER) AS KeyOrdinal 
+          ,stat.name AS StatsName 
+          ,sch.name AS SchemaName 
+          ,obj.name AS TableName 
+        FROM 
+          sys.stats_columns AS statc 
+        JOIN 
+          sys.stats AS stat ON ((stat.stats_id=statc.stats_id) 
+                            AND (stat.object_id=statc.object_id)) 
+        JOIN 
+          sys.objects AS obj ON statc.object_id=obj.object_id 
+        JOIN 
+          sys.columns AS col ON ((col.column_id=statc.column_id) 
+                             AND (col.object_id=statc.object_id)) 
+        JOIN 
+          sys.schemas AS sch ON obj.schema_id=sch.schema_id 
+        WHERE 
+          (sch.name=@schemaname)
+          AND (obj.name=@tablename)
+          AND (col.name=@columnname)
+          AND (obj.type='U')
+          AND ((stat.auto_created=1) OR (stat.user_created=1))
+      ) AS T 
+
+      UNION ALL 
+
+      SELECT 
+        'R' AS RowType 
+        ,statcol.object_id 
+        ,statcol.stats_id 
+        ,CAST(S.StatLevel + 1 AS INTEGER) AS IdxLevel 
+        ,CAST(statcol.stats_column_id AS INTEGER) KeyOrdinal 
+        ,S.SchemaName 
+        ,S.TableName 
+        ,CAST(S.SQLStr + CASE (statcol.stats_column_id) WHEN 1 THEN '' ELSE ',' END + 
+              ' [' + RTRIM(col.name) + 
+              '] ' AS VARCHAR(MAX)) AS SQLStr 
+      FROM 
+        Stat AS S 
+      JOIN 
+        sys.stats_columns AS statcol ON ((statcol.object_id=S.object_id) 
+                                     AND (statcol.stats_id=S.stats_id)) 
+      JOIN 
+        sys.columns AS col ON ((col.column_id=statcol.column_id) 
+                           AND (col.object_id=statcol.object_id)) 
+      WHERE 
+        (statcol.stats_column_id=(S.KeyOrdinal + 1)) 
+    ), 
+    Stat2 AS 
+    ( 
+      SELECT 
+        MAX(Stat.KeyOrdinal) AS MaxKeyOrdinal 
+        ,Stat.object_id 
+        ,Stat.stats_id 
+      FROM 
+        Stat 
+      JOIN 
+        sys.objects AS O ON O.object_id=Stat.object_id 
+      WHERE 
+        (Stat.RowType='R') 
+      GROUP BY 
+        Stat.object_id 
+        ,Stat.stats_id 
+    )
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      Stat.schemaname
+      ,Stat.tablename
+      ,'STATS' AS objecttype
+      ,'C' AS operationtype
+      ,Stat.SQLStr + ')'
+    FROM 
+      Stat2 
+    JOIN 
+      Stat ON ((Stat.object_id=Stat2.object_id) 
+           AND (Stat.stats_id=Stat2.stats_id)) 
+           AND (Stat.KeyOrdinal=Stat2.MaxKeyOrdinal);
+
+    -- Indexes section
+    -- Drop indexes
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      DISTINCT
+      sch.name
+      ,obj.name
+      ,'IDX' AS objecttype
+      ,'D' AS operationtype
+      ,('DROP INDEX [' + RTRIM(sch.name) + '].[' + RTRIM(obj.name) + '].[' + RTRIM(idx.name) + '];') AS sqltext
+    FROM
+      sys.index_columns AS idxc
+    JOIN
+      sys.indexes AS idx ON ((idx.index_id=idxc.index_id)
+                         AND (idx.object_id=idxc.object_id))
+    JOIN
+      sys.objects AS obj ON idxc.object_id=obj.object_id
+    JOIN
+      sys.columns AS col ON ((col.column_id=idxc.column_id)
+                         AND (col.object_id=idxc.object_id))
+    JOIN
+      sys.schemas AS sch ON obj.schema_id=sch.schema_id
+    WHERE
+      (sch.name=@schemaname)
+      AND (obj.name=@tablename)
+      AND (col.name=@columnname)
+      AND (idx.is_unique_constraint=0)
+      AND (idx.is_primary_key=0)
+      AND (obj.type='U')
+    ORDER BY
+      sqltext;
+
+    -- Create indexes
+    WITH Create_Indexes AS
+    (
+      SELECT
+        'A' AS rowtype
+        ,T.object_id
+        ,T.index_id
+        ,T.IdxLevel
+        ,T.KeyOrdinal
+        ,T.IsUnique
+        ,T.IsClustered
+        ,T.SchemaName
+        ,T.TableName
+        ,CAST('CREATE ' + T.IsUnique + T.IsClustered +
+              'INDEX [' + RTRIM(T.IndexName) + '] ON [' + RTRIM(T.SchemaName) + '].[' +
+              RTRIM(T.TableName) + '] ( 'AS VARCHAR(MAX)) AS sqltext
+      FROM
+        (SELECT
+           DISTINCT
+           idx.object_id
+           ,idx.index_id
+           ,CAST(0 AS INTEGER) AS IdxLevel
+           ,CAST(0 AS INTEGER) AS KeyOrdinal
+           ,CAST(CASE (idx.is_unique)
+                   WHEN 1 THEN 'UNIQUE '
+                   WHEN 0 THEN ''
+                   ELSE ''
+                 END AS VARCHAR(MAX)) AS IsUnique
+           ,CAST(CASE (idx.type)
+                   WHEN 1 THEN 'CLUSTERED '
+                   WHEN 2 THEN 'NONCLUSTERED '
+                   ELSE ''
+                 END AS VARCHAR(MAX)) AS IsClustered
+           ,idx.name AS IndexName
+           ,sch.name AS SchemaName
+           ,obj.name AS TableName
+         FROM
+           sys.index_columns AS idxc
+         JOIN
+           sys.indexes AS idx ON ((idx.index_id=idxc.index_id) AND (idx.object_id=idxc.object_id))
+         JOIN
+           sys.objects AS obj ON idxc.object_id=obj.object_id
+         JOIN
+           sys.columns AS col ON ((col.column_id=idxc.column_id) AND (col.object_id=idxc.object_id))
+         JOIN
+           sys.schemas AS sch ON obj.schema_id=sch.schema_id
+         WHERE
+           (sch.name=@schemaname)
+           AND (obj.name=@tablename)
+           AND (col.name=@columnname)
+           AND (idx.is_unique_constraint=0)
+           AND (idx.is_primary_key=0)
+           AND (obj.type='U')
+           AND NOT EXISTS (SELECT
+                             [object_id]
+                           FROM
+                             sys.index_columns AS ic
+                           WHERE (ic.is_included_column=1)
+                             AND (idxc.[object_id]=ic.[object_id])
+                             AND (idxc.index_id=ic.index_id)
+                          )
+        ) AS T
+             
+      UNION ALL 
+      
+      SELECT
+        'R' AS RowType
+        ,idxcol.object_id
+        ,idxcol.index_id
+        ,CAST(I.IdxLevel + 1 AS INTEGER) AS IdxLevel
+        ,CAST(idxcol.key_ordinal AS INTEGER) AS KeyOrdinal
+        ,CAST('' AS VARCHAR(MAX)) AS IsUnique
+        ,CAST('' AS VARCHAR(MAX)) AS IsClustered
+        ,I.SchemaName
+        ,I.TableName
+        ,CAST(I.sqltext + CASE (idxcol.key_ordinal)
+                            WHEN 1 THEN ''
+                            ELSE ','
+                          END + ' [' + RTRIM(col.name) + '] ' AS VARCHAR(MAX)) AS sqltext
+      FROM
+        Create_Indexes AS I
+      JOIN
+        sys.index_columns AS idxcol ON ((idxcol.object_id=I.object_id) AND (idxcol.index_id=I.index_id))
+      JOIN
+        sys.columns AS col ON ((col.column_id=idxcol.column_id) AND (col.object_id=idxcol.object_id))
+      WHERE
+        (idxcol.key_ordinal=I.KeyOrdinal + 1)
+    ),
+    Create_Indexes2 AS
+    (
+      SELECT
+        MAX(Create_Indexes.KeyOrdinal) AS MaxKeyOrdinal
+        ,Create_Indexes.object_id
+        ,Create_Indexes.index_id
+      FROM
+        Create_Indexes
+      JOIN
+        sys.objects AS O ON (O.object_id=Create_Indexes.object_id)
+      WHERE
+        (Create_Indexes.RowType='R')
+      GROUP BY
+        Create_Indexes.object_id
+        ,Create_Indexes.index_id
+    )
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      Create_Indexes.SchemaName
+      ,Create_Indexes.TableName
+      ,'IDX' AS objecttype
+      ,'C' AS operationtype
+      ,Create_Indexes.sqltext + ')'
+    FROM
+      Create_Indexes2
+    JOIN
+      Create_Indexes ON ((Create_Indexes.object_id=Create_Indexes2.object_id)
+                     AND (Create_Indexes.index_id=Create_Indexes2.index_id)
+                     AND (Create_Indexes.KeyOrdinal=Create_Indexes2.MaxKeyOrdinal));
+
+    -- Views section
+    -- Refresh views
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    )
+    SELECT
+      V.TABLE_SCHEMA
+      ,V.TABLE_NAME
+      ,'VW' AS objecttype
+      ,'R' AS OperationType
+      ,('EXECUTE sp_refreshview ''[' + RTRIM(V.TABLE_SCHEMA) + '].[' + RTRIM(V.TABLE_NAME) + ']'';') AS sqltext
+    FROM
+      INFORMATION_SCHEMA.VIEWS AS V
+    WHERE
+      (V.IS_UPDATABLE='NO');
+
+    DECLARE
+      @sqldrop NVARCHAR(MAX) = ''
+      --,@sqldropfk NVARCHAR(MAX) = ''
+      --,@sqldroppk NVARCHAR(MAX) = ''
+      --,@sqldropuq NVARCHAR(MAX) = ''
+      --,@sqldropck NVARCHAR(MAX) = ''
+      --,@sqldropdf NVARCHAR(MAX) = ''
+      --,@sqldropidx NVARCHAR(MAX) = ''
+      --,@sqldropstats NVARCHAR(MAX) = ''
+
+      ,@sqlcreate NVARCHAR(MAX) = ''
+      --,@sqlcreatefk NVARCHAR(MAX) = ''
+      --,@sqlcreatepk NVARCHAR(MAX) = ''
+      --,@sqlcreateuq NVARCHAR(MAX) = ''
+      --,@sqlcreateck NVARCHAR(MAX) = ''
+      --,@sqlcreatedf NVARCHAR(MAX) = ''
+      --,@sqlcreateidx NVARCHAR(MAX) = ''
+      --,@sqlcreatestats NVARCHAR(MAX) = ''
+
+      ,@sqlaltertable NVARCHAR(MAX) = ''
+      ,@sqlrenametable NVARCHAR(MAX) = ''
+
+      ,@crlf NVARCHAR(2) = CHAR(13)+CHAR(10)
+      ,@trancount INTEGER = @@TRANCOUNT
+      ,@olddatatype SYSNAME
+      --,@tmpNewDataType SYSNAME;
+
+    --------------------------------------------------------
+    -- DROP statements for the following objects
+    --
+    -- Foreign key (FK)
+    -- Primary key (PK)
+    -- Unique constraints (UQ)
+    -- Check constraints (CK)
+    -- Default constraints (DF)
+    -- Indexes (not related to unique constraints, IDX)
+    -- Statistics
+    --------------------------------------------------------
+
+    IF (@executionmode = 1)
+    BEGIN
+      IF (@trancount = 0)
+        -- Opening an explicit transaction to avoid auto commits
+        BEGIN TRANSACTION
+    END
+
+    DECLARE C_SQL_DROP CURSOR LOCAL FORWARD_ONLY READ_ONLY FOR
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='FK')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='PK')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='UQ')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='CK')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='DF')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='IDX')
+        AND (operationtype='D')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='STATS')
+        AND (operationtype='D');
+    
+    OPEN C_SQL_DROP;
+
+    -- First fetch
+    FETCH NEXT FROM C_SQL_DROP INTO @sqldrop
+
+    WHILE (@@FETCH_STATUS=0)
+    BEGIN
+      IF (@executionmode = 0)
+        PRINT(@sqldrop);
+      ELSE IF (@executionmode = 1)
+        EXEC(@sqldrop);
+      FETCH NEXT FROM C_SQL_DROP INTO @sqldrop
+    END;
+    
+    CLOSE C_SQL_DROP;
+    DEALLOCATE C_SQL_DROP;
+
+    SET @sqlaltertable = 'ALTER TABLE [' + @schemaname + '].[' + @tablename + 
+                         '] ALTER COLUMN [' + @columnname + 
+                         '] ' + @datatype + ';' + @CRLF;
+
+    -- ALTER TABLE
+    INSERT INTO #tmp_usp_alter_column
+    (
+      schemaname
+      ,tablename
+      ,objecttype
+      ,operationtype
+      ,sqltext
+    ) VALUES
+    (
+      @schemaname
+      ,@tablename
+      ,'COL'
+      ,'A'
+      ,@sqlaltertable
+    );
+	  
+    IF (@executionmode = 0)
+      PRINT(@sqlaltertable);
+    ELSE IF (@executionmode = 1)
+      EXEC(@sqlaltertable);
+
+    IF (@columnname <> @columnrename) AND
+       (LTRIM(RTRIM(@columnrename)) <> '')
+    BEGIN
+      SET @sqlrenametable = 'EXEC sp_rename ''[' + @schemaname + '].[' + @tablename +'].[' + @columnname + ']'', ''[' +
+                                                   @schemaname + '].[' + @tablename +'].[' + @columnrename + ']''' + @CRLF;	  
+
+      -- Rename
+      INSERT INTO #tmp_usp_alter_column
+      (
+        schemaname
+        ,tablename
+        ,objecttype
+        ,operationtype
+        ,sqltext
+      ) VALUES
+      (
+        @schemaname
+        ,@tablename
+        ,'COL'
+        ,'R'
+        ,@sqlrenametable
+      );
+
+      IF (@executionmode = 0)
+        PRINT(@sqlrenametable);
+      ELSE IF (@executionmode = 1)
+        EXEC(@sqlrenametable);
+    END;
+
+    --------------------------------------------------------
+    -- CREATE statements for the following objects
+    --
+    -- Foreign key (FK)
+    -- Primary key (PK)
+    -- Unique constraints (UQ)
+    -- Check constraints (CK)
+    -- Default constraints (DF)
+    -- Indexes (not related to unique constraints, IDX)
+    -- Statistics
+    --------------------------------------------------------
+    DECLARE C_SQL_CREATE CURSOR LOCAL FORWARD_ONLY READ_ONLY FOR
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='FK')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='PK')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='UQ')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='CK')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='DF')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='IDX')
+        AND (operationtype='C')
+      UNION ALL
+      SELECT
+        sqltext
+      FROM
+        #tmp_usp_alter_column
+      WHERE
+        (objecttype='STATS')
+        AND (operationtype='C');
+    
+    OPEN C_SQL_CREATE;
+
+    -- First fetch
+    FETCH NEXT FROM C_SQL_CREATE INTO @sqlcreate
+
+    WHILE (@@FETCH_STATUS=0)
+    BEGIN
+      IF (@executionmode = 0)
+        PRINT(@sqlcreate);
+      ELSE IF (@executionmode = 1)
+        EXEC(@sqlcreate);
+
+      FETCH NEXT FROM C_SQL_CREATE INTO @sqlcreate;
+    END;
+    
+    CLOSE C_SQL_CREATE;
+    DEALLOCATE C_SQL_CREATE;
+
+    --PRINT(@sqldropfk + @sqldroppk + @sqldropuq + @sqldropck + @sqldropdf + @sqldropidx + @sqldropstats);
+    --PRINT(@sqlcreatefk + @sqlcreatepk + @sqlcreateuq + @sqlcreateck + @sqlcreatedf + @sqlcreateidx + @sqlcreatestats);
+    IF (@executionmode = 0)
+      SELECT * FROM #tmp_usp_alter_column;
+
+    IF (@executionmode = 1) AND
+       (@trancount = 0) AND
+       (@@ERROR = 0)
+      COMMIT TRANSACTION;
+
+    SET NOCOUNT OFF;
+  END TRY
+  BEGIN CATCH
+    IF (@executionmode = 1) AND
+       (@trancount = 0)
+      ROLLBACK TRANSACTION;
+
+    -- Error handling
+    DECLARE
+      @ErrorMessage NVARCHAR(MAX)
+      ,@ErrorSeverity INTEGER
+      ,@ErrorState INTEGER;
+
+    SELECT 
+      @ErrorMessage = ERROR_MESSAGE()
+      ,@ErrorSeverity = ERROR_SEVERITY()
+      ,@ErrorState = ERROR_STATE();
+
+    SET NOCOUNT OFF;
+
+    RAISERROR(@ErrorMessage, @ErrorSeverity, @ErrorState);
+  END CATCH
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_change_password]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE Proc [dbo].[sp_change_password]
+@GUID uniqueidentifier,
+@Password nvarchar(100)
+as
+Begin
+ Declare @UserId varchar(15)
+ 
+ Select @UserId = username 
+ from reset_password_requests
+ where Id= @GUID
+ 
+ if(@UserId is null)
+ Begin
+  -- If UserId does not exist
+  Select 0 as IsPasswordChanged
+ End
+ Else
+ Begin
+  -- If UserId exists, Update with new password
+  Update users set
+  [password] = @Password
+  where uname = @UserId
+  
+  -- Delete the password reset request row 
+  Delete from reset_password_requests
+  where Id = @GUID
+  
+  Select 1 as IsPasswordChanged
+ End
+End
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_dashboards]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_get_dashboards]
+    @uname NVARCHAR(50),
+    @company INT
+AS
+BEGIN
+   
+    SELECT 
+        d.id, 
+        d.caption, 
+        mt.description AS meta_type,
+		mc.description AS meta_company,
+		ml.description AS meta_language,
+        COALESCE(ds.sort_order, ROW_NUMBER() OVER (ORDER BY d.id)) AS sort_order,
+        COALESCE(cn.custom_name, d.caption) AS custom_name 
+    FROM 
+        dashboards d
+
+    LEFT JOIN 
+        dashboards_sorted_by_user ds ON d.id = ds.dashboard_id AND ds.uname = @uname
+	LEFT JOIN
+		dashboards_custom_names cn ON d.id = cn.dashboard_id AND company_id = @company
+	LEFT JOIN 
+	    meta_options mt ON d.meta_type = mt.id
+	LEFT JOIN 
+		meta_options mc ON d.meta_company = mc.id
+	LEFT JOIN 
+		meta_options ml ON d.meta_language = ml.id
+
+    WHERE 
+        @uname IN (SELECT uname FROM users) AND
+		@company IN (SELECT id_company from companies)
+
+
+    ORDER BY 
+        COALESCE(ds.sort_order, ROW_NUMBER() OVER (ORDER BY d.id)),
+        d.id;
+
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_dashboards_simple]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_get_dashboards_simple]
+AS
+BEGIN
+    SELECT 
+        d.id, 
+        d.caption, 
+        mt.description AS meta_type,
+        mc.description AS meta_company,
+        ml.description AS meta_language
+    FROM 
+        dashboards d
+    LEFT JOIN 
+        meta_options mt ON d.meta_type = mt.id
+    LEFT JOIN 
+        meta_options mc ON d.meta_company = mc.id
+    LEFT JOIN 
+        meta_options ml ON d.meta_language = ml.id;
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_user_role_info]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_get_user_role_info]
+    @uname NVARCHAR(50)
+AS
+BEGIN
+    DECLARE @user_role NVARCHAR(50);
+    DECLARE @id_company INT;
+
+    -- Fetch user role and company ID for the provided username
+    SELECT @user_role = user_role, @id_company = id_company
+    FROM users
+    WHERE uname = @uname;
+
+    -- Check user role and return appropriate data
+    IF @user_role = 'SuperAdmin'
+    BEGIN
+        -- Return empty values for super_admin
+        SELECT '' AS uname, '' AS user_role, NULL AS company_id;
+    END
+    ELSE IF @user_role = 'Admin'
+    BEGIN
+        -- Return only the data for the current admin user
+        SELECT uname, user_role, id_company
+        FROM users
+        WHERE uname = @uname;
+    END
+    ELSE IF @user_role = 'User'
+    BEGIN
+        -- Return all admins in the same company if the user is of type 'user'
+        SELECT uname, user_role, id_company
+        FROM users
+        WHERE id_company = @id_company AND user_role = 'Admin';
+    END
+    ELSE
+    BEGIN
+        SELECT 'Role not recognized' AS uname, '' AS user_role, NULL AS company_id;
+    END
+END;
+GO
+/****** Object:  StoredProcedure [dbo].[sp_is_password_reset_link_valid]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE Proc [dbo].[sp_is_password_reset_link_valid] 
+@GUID uniqueidentifier
+as
+Begin
+ Declare @UserId int
+ 
+ If(Exists(Select username from reset_password_requests where id = @GUID))
+ Begin
+  Select 1 as IsValidPasswordResetLink
+ End
+ Else
+ Begin
+  Select 0 as IsValidPasswordResetLink
+ End
+End
+GO
+/****** Object:  StoredProcedure [dbo].[sp_reset_password]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE proc [dbo].[sp_reset_password]
+@UserName nvarchar(100)
+as
+Begin
+ Declare @user varchar(15)
+ Declare @Email nvarchar(100)
+ 
+ Select @user = uname, @Email = Email 
+ from Users
+ where uname = @UserName
+ 
+ if(@user IS NOT NULL)
+ Begin
+  --If username exists
+  Declare @GUID UniqueIdentifier
+  Set @GUID = NEWID()
+  
+  Insert into reset_password_requests
+  (id, username, reset_request_datetime)
+  Values(@GUID, @user, GETDATE())
+  
+  Select 1 as ReturnCode, @GUID as UniqueId, @Email as Email
+ End
+ Else
+ Begin
+  --If username does not exist
+  SELECT 0 as ReturnCode, NULL as UniqueId, NULL as Email
+ End
+End
+GO
+/****** Object:  StoredProcedure [dbo].[sp_upsert_dashboards_custom_names]    Script Date: 11/8/2024 3:33:01 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_upsert_dashboards_custom_names]
+    @dashboard_id INT,
+    @company_id INT,
+    @custom_name NVARCHAR(255),
+    @meta_type INT = NULL,       -- New parameter for meta_type
+    @meta_company INT = NULL,    -- New parameter for meta_company
+    @meta_language INT = NULL    -- New parameter for meta_language
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    -- Update the dashboards table with the new meta values
+    UPDATE dashboards
+    SET meta_type = @meta_type,
+        meta_company = @meta_company,
+        meta_language = @meta_language
+    WHERE id = @dashboard_id;
+
+    -- Check if a row with the specified dashboard_id and company_id already exists in dashboards_custom_names
+    IF EXISTS (SELECT 1 FROM dashboards_custom_names WHERE dashboard_id = @dashboard_id AND company_id = @company_id)
+    BEGIN
+        -- Update the existing row in dashboards_custom_names
+        UPDATE dashboards_custom_names
+        SET custom_name = @custom_name
+        WHERE dashboard_id = @dashboard_id AND company_id = @company_id;
+    END
+    ELSE
+    BEGIN
+        -- Insert a new row into dashboards_custom_names
+        INSERT INTO dashboards_custom_names (dashboard_id, company_id, custom_name)
+        VALUES (@dashboard_id, @company_id, @custom_name);
+    END
+END;
+GO
+USE [master]
+GO
+ALTER DATABASE [Analytics_IN_SIST_NEW_TESTING] SET  READ_WRITE 
+GO

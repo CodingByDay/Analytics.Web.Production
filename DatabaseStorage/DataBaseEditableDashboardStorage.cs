@@ -2,20 +2,16 @@
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Dash.DatabaseStorage
 {
-
     public class DataBaseEditableDashboardStorage : IEditableDashboardStorage
     {
-
         private string connectionString;
         private SqlConnection conn;
         private int permisionID;
@@ -32,8 +28,7 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-
-
+          
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
@@ -42,64 +37,34 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "INSERT INTO Dashboards (Dashboard, Caption) " +
-                    "output INSERTED.ID " +
-                    "VALUES (@Dashboard, @Caption)");
+                    "INSERT INTO dashboards (dashboard, caption) " +
+                    "output INSERTED.id " +
+                    "VALUES (@dashboard, @caption)");
                 string stripped = String.Concat(dashboardName.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                InsertCommand.Parameters.Add("Caption", SqlDbType.NVarChar).Value = stripped;
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                InsertCommand.Parameters.Add("caption", SqlDbType.NVarChar).Value = stripped;
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 string ID = InsertCommand.ExecuteScalar().ToString();
-                connection.Close();
-                InsertPermision(stripped);
                 return ID;
             }
         }
 
-
-
-        private void InsertPermision(string dashboardName)
-        {
-            using (SqlConnection conn = new SqlConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"ALTER TABLE permisions_user ADD {dashboardName} int not null default(0);", conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception)
-                {
-
-                }
-            }
-
-        }
         public XDocument LoadDashboard(string dashboardID)
         {
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT  Dashboard FROM Dashboards WHERE ID=@ID");
-                GetCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                SqlCommand GetCommand = new SqlCommand("SELECT dashboard FROM dashboards WHERE id=@id");
+                GetCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 reader.Read();
                 byte[] data = reader.GetValue(0) as byte[];
                 MemoryStream stream = new MemoryStream(data);
-                connection.Close();
                 var doc = XDocument.Load(stream);
-
-
-
-
-
                 return doc;
             }
         }
-
-       
 
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
@@ -107,7 +72,7 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT ID, Caption FROM Dashboards");
+                SqlCommand GetCommand = new SqlCommand("SELECT id, caption FROM dashboards");
                 GetCommand.Connection = connection;
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 while (reader.Read())
@@ -116,7 +81,6 @@ namespace Dash.DatabaseStorage
                     string Caption = reader.GetString(1);
                     list.Add(new DashboardInfo() { ID = ID, Name = Caption });
                 }
-                connection.Close();
             }
             return list;
         }
@@ -131,17 +95,13 @@ namespace Dash.DatabaseStorage
                 stream.Position = 0;
 
                 SqlCommand InsertCommand = new SqlCommand(
-                    "UPDATE Dashboards Set Dashboard = @Dashboard " +
-                    "WHERE ID = @ID");
-                InsertCommand.Parameters.Add("ID", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
-                InsertCommand.Parameters.Add("Dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
+                    "UPDATE dashboards SET dashboard = @dashboard " +
+                    "WHERE id = @id");
+                InsertCommand.Parameters.Add("id", SqlDbType.Int).Value = Convert.ToInt32(dashboardID);
+                InsertCommand.Parameters.Add("dashboard", SqlDbType.VarBinary).Value = stream.ToArray();
                 InsertCommand.Connection = connection;
                 InsertCommand.ExecuteNonQuery();
-
-                connection.Close();
             }
         }
-
-
     }
 }

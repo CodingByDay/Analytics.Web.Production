@@ -1,0 +1,140 @@
+﻿.navbar {
+    border-radius: 0;
+    min-height: 40px;
+}
+
+.fa.fa-mobile {
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.fa.fa-desktop, .fa.fa-mobile {
+    padding-right: 7px;
+}
+
+.logo {
+    width: 170px;
+    height: auto;
+}
+
+@media (min-width: 992px) {
+    .container {
+        max-width: 1530px;
+    }
+}
+
+.switch {
+    right: 230px;
+    top: 3px;
+}
+
+    .switch:after {
+        top: 1px;
+    }
+
+.mobile-button, .desktop-button {
+    font-weight: 400 !important;
+    font-size: 14px;
+}
+
+.logout {
+    font-weight: 400;
+    font-size: 14px;
+}
+
+.container.body-content {
+    min-width: 100% !important;
+}
+
+.conn, .plus {
+    display: inline-block;
+}
+
+html {
+    background-color: white !important;
+}
+
+.column {
+    background-color: none !important;
+}
+
+.new {
+    float: right;
+    top: 0;
+    margin-right: 5px;
+}
+
+#userForm {
+    background-color: none !important;
+}
+
+.saveByUser {
+    float: right !important;
+}
+
+.user {
+    float: right !important;
+}
+
+.control {
+    min-height: 300px !important;
+    max-height: 300px !important;
+}
+
+.columns {
+    margin: auto;
+}
+
+#companyForm, #userForm {
+    display: none;
+}
+
+.column {
+    display: inline;
+}
+
+#saveGraphs, #byUser {
+    display: inline-block;
+}
+
+#saveGraphs, #byUser, #deleteCompany, #company, #user, #deleteUser {
+    bottom: auto;
+}
+
+#deleteCompany, #company {
+    display: inline-block;
+}
+
+#user, #deleteUser {
+    display: inline-block;
+}
+
+#byUser, #saveGraphs {
+    display: inline-block !important;
+}
+
+#byUser {
+    float: right !important;
+}
+
+#user, #company, #byUser {
+    float: right !important;
+}
+
+.wrapper {
+    margin: auto !important;
+}
+
+#by {
+    display: block;
+    color: black;
+}
+
+.by {
+    display: block;
+    color: black;
+}
+
+#ConnectionStringDiv {
+    display: none;
+}

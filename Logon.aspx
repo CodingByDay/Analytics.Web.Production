@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#"  AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="Dash.Logon" EnableEventValidation="false"%>
 
-<%@ Register Assembly="DevExpress.Web.Bootstrap.v20.2, Version=20.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
+<%@ Register Assembly="DevExpress.Web.Bootstrap.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Namespace="DevExpress.Web.Bootstrap" TagPrefix="dx" %>
 
 <!DOCTYPE html>
 <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1.0"/>
@@ -21,11 +21,10 @@
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
 	<link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
-	<link rel="manifest" href="favicons/manifest.json">
 	<link rel="shortcut icon" href="images/logo.png">
 	<meta name="msapplication-TileColor" content="#603cba">
 	<meta name="msapplication-TileImage" content="images/logo.png">
-    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Css/Logon.css" rel="stylesheet" type="text/css" />
 
     <title></title>
 </head>
@@ -47,6 +46,19 @@
     </script>
      <style>
          /* Smartphones (portrait and landscape) ----------- */
+         @media (max-width: 767px) {
+             #formContent {
+                 margin-top:-70%;
+             }
+             input[type=button], input[type=submit], input[type=reset] {
+
+                padding: 10px;
+            
+            }
+
+         }
+         
+
 
 .login {
     text-align: center!important;
@@ -58,6 +70,19 @@
          width: 100%!important;
          height: 100%!important;
      }
+     body {
+    background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+    background-size: cover; /* This makes sure the image covers the entire background */
+    background-position: center; /* Centers the image */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    min-height: 100vh; /* Ensures the body takes up the full height of the viewport */
+}
+
+     html, body {
+    height: 100%; /* Ensures the body takes full height */
+    margin: 0; /* Removes default margin */
+    overflow: hidden; /* Prevents scrolling */
+}
 
     </style>
    
@@ -94,7 +119,7 @@
                         </asp:HyperLink>
 
 
-                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="cmdLogin_Click" />
+                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="Login_Click" />
 
                         <center>
 

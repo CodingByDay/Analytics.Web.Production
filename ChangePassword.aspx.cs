@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -8,135 +9,182 @@ namespace Dash
 {
     public partial class ChangePassword : System.Web.UI.Page
     {
-        private SqlConnection conn;
-        // Comment
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            try
             {
-                if (!IsPasswordResetLinkValid())
+                if (!IsPostBack)
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Čas za resetiranje gesla je potekal ali link ni več vredo.'  );</script>");
-
+                    if (!IsPasswordResetLinkValid())
+                    {
+                        ShowAlert("Čas za resetiranje gesla je potekal ali link ni več vredo.");
+                        Response.Redirect("Logon.aspx", false);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
         protected void backButton_Click(object sender, EventArgs e)
         {
-            Response.Redirect("logon.aspx", true);
+            try
+            {
+                Response.Redirect("Logon.aspx", false);
+                Context.ApplicationInstance.CompleteRequest();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         protected void change_Click(object sender, EventArgs e)
         {
-            if (checkEquality())
+            try
             {
-                if (ChangeUserPassword())
+                if (ArePasswordsEqual())
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Geslo uspešno spremenjeno.'  );</script>");
-
+                    if (ChangeUserPassword())
+                    {
+                        ShowAlert("Geslo uspešno spremenjeno.");
+                        Response.Redirect("Logon.aspx", false); // Redirect after successful password change
+                    }
+                    else
+                    {
+                        ShowAlert("Link za spremembo gesla je potekal ali ni vejaven.");
+                    }
                 }
                 else
                 {
-                    Response.Write($"<script type=\"text/javascript\">alert('Link za spremembo gesla je potekal ali ni vejaven.'  );</script>");
-
+                    ShowAlert("Gesla nista enaka.");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Gesla niso ista.'  );</script>");
-
+                SentrySdk.CaptureException(ex);
             }
         }
-
-
 
         private bool IsPasswordResetLinkValid()
         {
-            List<SqlParameter> paramList = new List<SqlParameter>()
-         {
-         new SqlParameter()
-          {
-            ParameterName = "@GUID",
-            Value = Request.QueryString["uid"]
-          }
-        };
-
-            return ExecuteSP("spIsPasswordResetLinkValid", paramList);
-        }
-        private bool ChangeUserPassword()
-        {
-            List<SqlParameter> paramList = new List<SqlParameter>()
+            try
             {
-                new SqlParameter()
+                var uid = Request.QueryString["uid"];
+                if (string.IsNullOrEmpty(uid))
                 {
-                    ParameterName = "@GUID",
-                    Value = Request.QueryString["uid"]
-                },
-                new SqlParameter()
-                {
-                    ParameterName = "@Password",
-                    Value = FormsAuthentication.HashPasswordForStoringInConfigFile(pwd.Text, "SHA1")
+                    return false; // Handle missing UID
                 }
+
+                var paramList = new List<SqlParameter>
+            {
+                new SqlParameter("@GUID", uid)
             };
 
-            return ExecuteSP("spChangePassword", paramList);
-        }
-
-
-
-
-        private bool checkEquality()
-        {
-            if (pwd.Text == REpwd.Text)
-            {
-                return true;
-
+                return ExecuteStoredProcedure("sp_is_password_reset_link_valid", paramList);
             }
-            else
+            catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }
 
-        private bool ExecuteSP(string SPName, List<SqlParameter> SPParameters)
+        private bool ChangeUserPassword()
         {
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-
-            using (conn)
+            try
             {
-
-                SqlCommand cmd = new SqlCommand(SPName, conn);
-
-                cmd.CommandType = System.Data.CommandType.StoredProcedure;
-
-                foreach (SqlParameter parameter in SPParameters)
+                var uid = Request.QueryString["uid"];
+                if (string.IsNullOrEmpty(uid))
                 {
-                    cmd.Parameters.Add(parameter);
+                    return false; // Handle missing UID
                 }
 
+                var paramList = new List<SqlParameter>
+            {
+                new SqlParameter("@GUID", uid),
+                new SqlParameter("@Password", HashPassword(pwd.Text))
+            };
 
-                conn.Open();
-                return Convert.ToBoolean(cmd.ExecuteScalar());
-
-
-
-
-
-
-
+                return ExecuteStoredProcedure("sp_change_password", paramList);
             }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
 
+        private bool ArePasswordsEqual()
+        {
+            try
+            {
+                return string.Equals(pwd.Text, REpwd.Text);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
 
+        private bool ExecuteStoredProcedure(string spName, List<SqlParameter> spParameters)
+        {
+            try
+            {
+                string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    using (var cmd = new SqlCommand(spName, conn))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
+                        cmd.Parameters.AddRange(spParameters.ToArray());
 
+                        conn.Open();
+                        return Convert.ToBoolean(cmd.ExecuteScalar());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
 
-
-
-
+        private string HashPassword(string password)
+        {
+            try
+            {
+                // Consider using a more secure hashing algorithm like PBKDF2, bcrypt, or Argon2
+                return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
+        }
+        private void ShowAlert(string message)
+        {
+            try
+            {
+                string script = $@"
+            <script type='text/javascript'>
+                document.addEventListener('DOMContentLoaded', function() {{
+                    Swal.fire('{message}');
+                }});
+            </script>";
+                ClientScript.RegisterStartupScript(this.GetType(), "ShowAlert", script, false);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
     }
 }

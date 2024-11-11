@@ -1,0 +1,246 @@
+﻿.full-height {
+    height: 100vh; /* Makes the container fill the entire viewport height */
+    display: flex;
+    flex-direction: column; /* Align children vertically */
+}
+.toolbar-custom {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.actionButton {
+    width: 7em;
+}
+
+.dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus {
+    color: white;
+    font-weight: bold;
+}
+
+
+label.form-check-label {
+    padding-left: 2em;
+}
+.modal-xl {
+    max-width: 90%; /* This controls how wide the modal should be */
+}
+
+.modal-body .dxgv {
+    width: 100%;
+    max-height: 600px; /* You can also adjust the max height of grids */
+}
+
+.form-check input {
+    margin: 0.3em !important;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.grid-container {
+    flex: 1; /* Allow the grid to stretch to fill the remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+    .grid-container .grid {
+        flex: 1; /* Make the BootstrapGridView take up the full height */
+        overflow: hidden; /* Ensure the grid doesn't overflow the container */
+    }
+/* Flex container to manage the layout of inner items */
+.content-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100%;
+    padding: 10px;
+}
+span.badge.badge-secondary {
+    background: white;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+    Admin design 2024 / 2025 Janko Jovičić
+*/
+.focused_row {
+    background-color: rgba(0, 0, 0, .1);
+}
+
+i.fas.fa-info-circle.info-icons {
+    padding-top: 0.4em;
+}
+a, span, td {
+    color: darkslategray;
+}
+span.fa.fa-caret-down.image {
+    color: darkslategray;
+}
+.dxbs-fixed-header-content a {
+    font-weight: 600 !important;
+    font-size:0.9em;
+}
+span.image.fas.fa-edit, span.image.fa.fa-trash {
+    font-size: 0.8em;
+}
+td {
+    font-size:0.8em;
+    font-weight: 500;
+}
+
+body {
+    max-width: 100% !important;
+}
+label {
+    font-size: smaller;
+    color: darkslategray;
+}
+
+h5 {
+    color: darkslategray!important;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.action-buttons {
+    position: relative;
+    top: 2em;
+}
+/* Ensures each grid takes up 33% of the screen width and full height */
+.inner-item {
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Ensures the grid inside takes full height */
+.control_obj {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+    /* Style the BootstrapGridView to take up the full space available */
+    .control_obj .dxbs-gridview {
+        flex: 1;
+    }
+
+#companyForm {
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    display: none;
+    padding: 50px;
+    max-width: 1100px !important;
+    min-width: 1100px !important;
+    min-height: 400px;
+    max-height: 400px;
+    display: none; /* Hidden by default */
+    position: absolute; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    opacity: 0;
+    left: calc(50% - 550px);
+    top: calc(50% - 120px);
+    background-color: gray;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2),0 24px 40px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.8s
+}
+
+.other {
+    flex: 1;
+    width: 50%;
+}
+
+#userForm {
+    border-bottom-left-radius: 4px;
+    border-top-right-radius: 4px;
+    opacity: 0;
+    padding: 20px;
+    display: none;
+    max-width: 1100px !important;
+    min-width: 1100px !important;
+    display: none; /* Hidden by default */
+    position: absolute; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    min-height: 400px;
+    max-height: 400px;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    left: calc(50% - 550px);
+    top: calc(50% - 120px);
+    border: 1px solid #888;
+    width: 80%;
+    background-color: #fefefe;
+    margin: auto;
+    padding: 0;
+    border: 1px solid #888;
+    width: 80%;
+    box-shadow: 0 16px 32px 0 rgba(0,0,0,0.2),0 24px 40px 0 rgba(0,0,0,0.19);
+    animation-name: animatetop;
+    animation-duration: 0.8s
+}
+
+.auth {
+    flex: 1;
+    margin: 70px !important;
+    padding-left: 10px !important;
+}
+
+.auth {
+    margin: 10px !important;
+    width: 50%;
+    margin: 70px !important;
+}
+
+.grid {
+    min-height: 100px !important;
+    max-height: 100px !important;
+}
+
+@keyframes animatetop {
+    from {
+        top: -300px;
+        opacity: 0;
+    }
+
+    to {
+        top: 300px;
+        opacity: 1 !important;
+    }
+}

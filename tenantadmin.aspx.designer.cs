@@ -11,8 +11,17 @@ namespace Dash
 {
 
 
-    public partial class tenantadmin
+    public partial class TenantAdmin
     {
+
+        /// <summary>
+        /// usersGrid control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource usersGrid;
 
         /// <summary>
         /// usersGridView control.
@@ -22,6 +31,24 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::DevExpress.Web.Bootstrap.BootstrapGridView usersGridView;
+
+        /// <summary>
+        /// EditBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridViewCommandColumnCustomButton EditBtn;
+
+        /// <summary>
+        /// IsInitialLoad control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField IsInitialLoad;
 
         /// <summary>
         /// new_user control.
@@ -42,22 +69,49 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapButton deleteUser;
 
         /// <summary>
-        /// hidden control.
+        /// graphsGridView control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton hidden;
+        protected global::DevExpress.Web.Bootstrap.BootstrapGridView graphsGridView;
 
         /// <summary>
-        /// graphsListBox control.
+        /// TypeFilterDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapListBox graphsListBox;
+        protected global::System.Web.UI.WebControls.SqlDataSource TypeFilterDataSource;
+
+        /// <summary>
+        /// LanguageFilterDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource LanguageFilterDataSource;
+
+        /// <summary>
+        /// GroupsDropdown control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource GroupsDropdown;
+
+        /// <summary>
+        /// query control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource query;
 
         /// <summary>
         /// saveGraphs control.
@@ -69,22 +123,22 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapButton saveGraphs;
 
         /// <summary>
-        /// namesGridView control.
+        /// MoveUpButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapGridView namesGridView;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveUpButton;
 
         /// <summary>
-        /// newUser control.
+        /// MoveDownButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton newUser;
+        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveDownButton;
 
         /// <summary>
         /// TxtName control.
@@ -112,6 +166,15 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TxtUserName;
+
+        /// <summary>
+        /// referrer control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox referrer;
 
         /// <summary>
         /// TxtPassword control.
@@ -148,15 +211,6 @@ namespace Dash
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList userTypeList;
-
-        /// <summary>
-        /// companiesList control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList companiesList;
 
         /// <summary>
         /// registrationButton control.

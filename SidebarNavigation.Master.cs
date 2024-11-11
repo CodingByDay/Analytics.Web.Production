@@ -15,7 +15,7 @@ namespace Dash
             Content.InnerText = string.Format("Content for {0}", GetPageName());
         }
 
-        string GetPageName()
+        private string GetPageName()
         {
             string xField = Request.QueryString["x"];
             string name = string.IsNullOrEmpty(xField)
@@ -25,9 +25,7 @@ namespace Dash
 
         protected void NavigationPanel_Load(object sender, EventArgs e)
         {
-
             Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "tryLoad()", true);
-
         }
     }
 }

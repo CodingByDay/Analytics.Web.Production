@@ -1,29 +1,29 @@
 ﻿using Dash.DatabaseStorage;
-using Dash.DataExtract;
 using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
 using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
 using DevExpress.XtraReports.UI;
 using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Services;
-using System.Web.SessionState;
 using System.Web.UI.HtmlControls;
+using static Dash.Models.DashboardFilters;
 
 namespace Dash
 {
-    public partial class indextenant : System.Web.UI.Page
+    public partial class IndexTenant : System.Web.UI.Page
     {
         private string connection;
-        public static string ConnectionString;
         private SqlConnection conn;
         private int companyID;
         private int stringID;
@@ -34,108 +34,76 @@ namespace Dash
         private string returnString;
         private SqlCommand cmd;
         private int permisionID;
-        HttpRequest httpRequest;
+        private HttpRequest httpRequest;
         private string companyInfo;
         private object result;
+        private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
 
-        private int getIdCompany(string current)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{current}'", conn);
-                    result = cmd.ExecuteScalar();
-                    var finalID = System.Convert.ToInt32(result);
-                    return finalID;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-                    return -1;
-                }
-            }
-        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            string p = Request.QueryString["p"];
-           
-          
-                try
-                {
-                    if (Request.Cookies["tab"].Value.ToString() != null)
-                    {
-                        string uname = HttpContext.Current.User.Identity.Name;
-                        string name = getCompanyQuery(uname);
-                        int id = getIdCompany(name);
-
-                        Graph graph = new Graph(id);
-
-                        var dataX = graph.GetGraphs(id);
-
-                    }
-                }
-                catch { }
+            try
+            {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                if (Request.Cookies["dashboard"] != null | !String.IsNullOrEmpty(p))
+
+                dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(connection);
+
+                if (Request.Cookies["dashboard"] != null)
                 {
-                    if (!String.IsNullOrEmpty(p))
+                    // New OOP structure 23.09.2024
+                    if (   // User or group permissions.
+                           dataBaseDashboardStorage.permissionsUser.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString())
+                        || dataBaseDashboardStorage.permissionsGroup.DashboardWithIdAllowed(Request.Cookies["dashboard"].Value.ToString()
+                        ))
                     {
-                            string uname = HttpContext.Current.User.Identity.Name;
-                            string name = getCompanyQuery(uname);
-                            int id = getIdCompany(name);
-                            Graph graph = new Graph(id);
-                            var dataX = graph.getSingularNameOriginal(id, p);
-                            ASPxDashboard3.InitialDashboardId = dataX;
-                    } else {
-                        bool isAllowed = isUserOk(Request.Cookies["dashboard"].Value.ToString());
-                        if (isAllowed)
-                        {
-                            ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
-                        } 
+                        ASPxDashboard3.InitialDashboardId = Request.Cookies["dashboard"].Value.ToString();
                     }
                 }
-                HtmlAnchor admin = Master.FindControl("backButtonA") as HtmlAnchor;
-                admin.Visible = false;
-                ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
-                var dataBaseDashboardStorage = new DataBaseEditableDashboardStorageCustom(ConnectionString);
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
                 ASPxDashboard3.ConfigureDataConnection += ASPxDashboard1_ConfigureDataConnection;
                 ASPxDashboard3.AllowCreateNewDashboard = true;
                 ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
+                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
+                ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
+                ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
+                SetUpPage();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
 
-
-                ASPxDashboard3.CustomParameters += ASPxDashboard3_CustomParameters;
-
-                string TARGET_URL = "https://dash.in-sist.si";
-                if (Session != null)
+        private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
+        {
+            try
+            {
+                var dashboardId = e.DashboardId;
+                UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+                var userStates = userDashboardStates.GetInitialStateForTheUser(dashboardId);
+                LogDashboardView(HttpContext.Current.User.Identity.Name, e.DashboardId);
+                if (userStates.State != null)
                 {
-                    if (System.Web.HttpContext.Current.Session["UserAllowed"] != null)
-                    {
-                        if (Session["UserAllowed"].ToString() == "true")
-                        {
-                            ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
-                        }
-                        else
-                        {
-                            ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
-                        }
-                    }
-                    else
-                    {
-                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                    }
+                    e.InitialState = userStates.State;
                 }
-                else
-                {
-                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException (ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+            }
+        }
+
+  
+
+        private void SetUpPage()
+        {
+            try
+            {
                 if (Request.Cookies.Get("state") is null)
                 {
                     Response.Cookies["state"].Value = "light";
@@ -154,125 +122,39 @@ namespace Dash
                             break;
                     }
                 }
-                ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
-            
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
-
 
         [WebMethod]
         public static void DeleteItem(string id)
         {
-            string ID = id;
-            var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                string ID = id;
+                var connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"delete from Dashboards where ID={ID}", conn);
-                    var result = cmd.ExecuteNonQuery();
-                }
-                catch
-                {
-                }
-                finally
-                {
-
-                }
-            }
-        }
-
-
-        private string getCompanyQuery(string uname)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
                     try
                     {
-                        SqlDataReader reader = cmd.ExecuteReader();
-                        while (reader.Read())
-                        {
-                            companyInfo = (reader["company_name"].ToString());
-                        }
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"DELETE FROM Dashboards WHERE ID={ID}", conn);
+                        var result = cmd.ExecuteNonQuery();
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
+                        Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
                     }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(tenantadmin), ex.InnerException.Message);
-                }
             }
-            return companyInfo;
-        }
-
-
-
-        private int getIdPermision()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
+            catch (Exception ex)
             {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{HttpContext.Current.User.Identity.Name}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-                    return permisionID;
-                }
-                catch (Exception ex)
-                {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                    return -1;
-                }
-            }
-
-
-        }
-        private bool isUserOk(string id)
-        {
-            string ID = id;
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select Caption from Dashboards where ID = {id};", conn); /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    string ok = (string) cmd.ExecuteScalar();
-                    if(ok!=string.Empty)
-                    {
-                        int id_user = getIdPermision();
-                        var allowed = new SqlCommand($"select {ok} from permisions_user where id_permisions_user = {id_user};", conn);
-                        int isOk = (int) allowed.ExecuteScalar();
-                        var stop = true;
-                        if(isOk==1)
-                        {
-                            return true;
-                        } else
-                        {
-                            return false;
-                        }
-                    } else
-                    {
-                        return false;
-                    }                    
-                }
-                catch (Exception ex)
-                {
-                    return false;
-                }
+                SentrySdk.CaptureException(ex);
             }
         }
-
 
         /// <summary>
         /// Custom export event.
@@ -281,277 +163,269 @@ namespace Dash
         /// <param name="e"></param>
         private void ASPxDashboard3_CustomExport(object sender, CustomExportWebEventArgs e)
         {
-            var eDocument = e;
-
-            foreach (var printControl in e.GetPrintableControls())
+            try
             {
-                if (printControl.Value is XRChart)
+                var eDocument = e;
+
+                foreach (var printControl in e.GetPrintableControls())
                 {
-                    XRControl ctr = printControl.Value;
                     if (printControl.Value is XRChart)
                     {
-                        try
+                        XRControl ctr = printControl.Value;
+                        if (printControl.Value is XRChart)
                         {
-                            var chartItemName = printControl.Key;
-                            var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
-                            var legend = ((XRChart)ctr).Legend;
-                        }
-                        catch { }
-                    }
-                    else if (printControl.Key.StartsWith("grid"))
-                    {
-                        try
-                        {
-                            var ItemName = printControl.Key;
-                            var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
-                            foreach (var item in chartDashboardItem.Columns)
+                            try
                             {
-                                var deb = item;
+                                var chartItemName = printControl.Key;
+                                var chartDashboardItem = e.GetDashboardItem(chartItemName) as ChartDashboardItem;
+                                var legend = ((XRChart)ctr).Legend;
                             }
+                            catch { }
                         }
-                        catch { }
+                        else if (printControl.Key.StartsWith("grid"))
+                        {
+                            try
+                            {
+                                var ItemName = printControl.Key;
+                                var chartDashboardItem = e.GetDashboardItem(ItemName) as GridDashboardItem;
+                                foreach (var item in chartDashboardItem.Columns)
+                                {
+                                    var deb = item;
+                                }
+                            }
+                            catch { }
+                        }
                     }
                 }
             }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
-        private string GetProperName(string name)
+        [WebMethod]
+        public static void ProcessStateChanged(string state, string dashboard)
         {
             try
             {
-                var list = Request.Cookies["params"].Value;
-                var des = JsonConvert.DeserializeObject<List<Parameter>>(list);
-                var no = des;
-                return no.ToString();
+                DashboardState stateObject = new DashboardState();
+
+                if (state != string.Empty)
+                {
+                    stateObject.LoadFromJson(state);
+                }
+                UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
+                userDashboardStates.UpdateStates(dashboard, stateObject);
+                userDashboardStates.SetStatesForUser();                            
             }
             catch (Exception ex)
             {
-                var err = ex.InnerException;
-                return default(string);
+                SentrySdk.CaptureException (ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
+
         }
+
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
-            string group = getCurrentUserID();
-            e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
+            try
+            {
+                string group = GetCurrentUserID();
+                e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+            }
         }
 
         private void ASPxDashboard1_DashboardLoading(object sender, DevExpress.DashboardWeb.DashboardLoadingWebEventArgs e)
         {
-            
-            Response.Cookies["dashboard"].Value = e.DashboardId;
-            Session["current"] = e.DashboardId;
-            return;
-           
-        }
-
-        private bool checkDB(string ID)
-        {
-            bool flag = false;
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name;
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select isViewerOnly from Dashboards where ID={ID}", conn);
             try
             {
-                var result = cmd.ExecuteScalar();
-                value = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
+                Response.Cookies["dashboard"].Value = e.DashboardId;
+                return;
+            } catch (Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                SentrySdk.CaptureException(ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            if (value == 1)
-            {
-                flag = true;
-            }
-            else
-            {
-                flag = false;
-            }
-            return flag;
         }
+
+
+
+        public void LogDashboardView(string userId, string dashboardId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(this.connection))
+                {
+                    connection.Open();
+
+                    string query = @"
+                    INSERT INTO dashboard_view_logs (user_id, dashboard_id, view_time)
+                    VALUES (@userId, @dashboardId, GETDATE());";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userId", userId);
+                        command.Parameters.AddWithValue("@dashboardId", dashboardId);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
 
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
-            var ed = e.ConnectionParameters;
-            string type_string = e.ConnectionParameters.GetType().Name;
-            // MsSqlConnectionParameters
-          
-                if (type_string == "MsSqlConnectionParameters") {
-
-                        ConnectionStringSettings conn = GetConnectionString();
-                        MsSqlConnectionParameters parameters =
-                              (MsSqlConnectionParameters) e.ConnectionParameters;
-                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                        
-                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
-                        msSqlConnection.ServerName = builder.DataSource;
-                        msSqlConnection.DatabaseName = builder.InitialCatalog;
-                        msSqlConnection.UserName = builder.UserID;
-                        msSqlConnection.Password = builder.Password;
-                        e.ConnectionParameters = msSqlConnection;
-                
-                                    
-               } else
-               {
-                        ConnectionStringSettings conn = GetConnectionString();
-                        CustomStringConnectionParameters parameters =
-                                (CustomStringConnectionParameters)e.ConnectionParameters;
-                        MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
-                        parameters.ConnectionString = conn.ConnectionString;
-               }
-            
-        }
-
-        private string getCurrentUserID()
-        {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
             try
             {
-                var result = cmd.ExecuteScalar();
-                companyID = System.Convert.ToInt32(result);
-            }
-            catch (Exception error)
+                string type_string = e.ConnectionParameters.GetType().Name;
+
+                if (type_string == "MsSqlConnectionParameters")
+                {
+                    ConnectionStringSettings conn = GetConnectionString();
+                    MsSqlConnectionParameters parameters =
+                          (MsSqlConnectionParameters)e.ConnectionParameters;
+                    MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+
+                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(conn.ConnectionString);
+                    msSqlConnection.ServerName = builder.DataSource;
+                    msSqlConnection.DatabaseName = builder.InitialCatalog;
+                    msSqlConnection.UserName = builder.UserID;
+                    msSqlConnection.Password = builder.Password;
+                    e.ConnectionParameters = msSqlConnection;
+                }
+                else
+                {
+                    ConnectionStringSettings conn = GetConnectionString();
+                    CustomStringConnectionParameters parameters =
+                            (CustomStringConnectionParameters)e.ConnectionParameters;
+                    MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
+                    parameters.ConnectionString = conn.ConnectionString;
+                }
+            } catch(Exception ex)
             {
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                SentrySdk.CaptureException(ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
-            finally
+        }
+
+        private string GetCurrentUserID()
+        {
+            try
             {
-                cmd.Dispose();
-                conn.Close();
+                string userNameForChecking = HttpContext.Current.User.Identity.Name; // Get the current username
+                string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+                // Use 'using' statement to ensure resources are disposed properly
+                using (var conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    // Use parameterized query to avoid SQL injection
+                    using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @username", conn))
+                    {
+                        cmd.Parameters.AddWithValue("@username", userNameForChecking);
+                        try
+                        {
+                            var result = cmd.ExecuteScalar();
+                            if (result != null)
+                            {
+                                int companyId = Convert.ToInt32(result);
+                                return GetConnectionStringName(companyId);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                            return string.Empty; // Return null or an appropriate value if an error occurs
+                        }
+                    }
+                }
+                return string.Empty;
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                return string.Empty;
             }
-            var a = get_connectionStringName(companyID);
-            return a;
         }
 
         private ConnectionStringSettings GetConnectionString()
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select id_company from Users where uname='{UserNameForChecking}'", conn);
-
             try
             {
-              
-                var result = cmd.ExecuteScalar();
-                companyID = System.Convert.ToInt32(result);
+                string uname = HttpContext.Current.User.Identity.Name;
+                try
+                {
+                    using (var conn = new SqlConnection(connection))
+                    {
+                        conn.Open();
+                        using (var cmd = new SqlCommand("SELECT id_company FROM Users WHERE uname = @uname", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@uname", uname);
+                            var result = cmd.ExecuteScalar();
+                            companyID = Convert.ToInt32(result);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                }
+                string connectionName = GetConnectionStringName(companyID);
+                return ConfigurationManager.ConnectionStrings[connectionName];
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                // Implement logging here
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                SentrySdk.CaptureException(ex);
+                return new ConnectionStringSettings();
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-
-            var a = get_connectionStringName(companyID);
-            ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[a];
-            return stringFinal;
         }
 
-        private string get_connectionStringName(int companyID)
+
+        private string GetConnectionStringName(int companyID)
         {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select databaseName from companies where id_company={companyID}", conn);
-
             try
             {
-                string result = cmd.ExecuteScalar().ToString();
-                returnString = result;
-            }
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return returnString;
-        }
+                string result = string.Empty;
+                try
+                {
+                    using (var conn = new SqlConnection(connection))
+                    {
+                        conn.Open();
+                        using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyID", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@companyID", companyID);
 
-        /// <summary>
-        ///
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public int get_id_string(int id)
-        {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+                            var queryResult = cmd.ExecuteScalar();
+                            if (queryResult != null)
+                            {
+                                result = queryResult.ToString();
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
+                }
 
-            conn = new SqlConnection(ConnectionString);
-
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select ID from companies where id_company={id}", conn);
-
-            try
-            {
-                var result = cmd.ExecuteScalar();
-                stringID = System.Convert.ToInt32(result);
+                return result;
             }
-            catch (Exception error)
+            catch (Exception ex)
             {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return stringID;
-        }
-
-        public string get_conn_name(int id)
-        {
-            string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-            var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-            conn = new SqlConnection(ConnectionString);
-            conn.Open();
-            SqlCommand cmd = new SqlCommand($"select string from company_string where ID={id}", conn);
-
-            try
-            {
-                var result = cmd.ExecuteScalar();
-                stringConnection = result.ToString().Replace(" ", string.Empty);
-            }
-            catch (Exception error)
-            {
-                // Implement logging here.
-                Response.Write($"<script type=\"text/javascript\">alert('Prišlo je do napake... {error}'  );</script>");
-            }
-            finally
-            {
-                cmd.Dispose();
-                conn.Close();
-            }
-            return stringConnection;
         }
     }
 }

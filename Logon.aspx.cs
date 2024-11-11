@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Sentry;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
@@ -10,326 +11,201 @@ namespace Dash
 {
     public partial class Logon : System.Web.UI.Page
     {
-        private SqlConnection conn;
         private SqlCommand cmd;
         private string role;
-        private List<String> strings = new List<string>();
-        private bool passport = false;
+        private List<string> strings = new List<string>();
         private string connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Pumpkin");
-            HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
-            HttpContext.Current.Response.AddHeader("Expires", "0");
-            if (!IsPostBack)
+            try
             {
-                FetchDataFillList();
-                Session["passport"] = "false";
+                DevExpress.LookAndFeel.UserLookAndFeel.Default.SetSkinStyle("Pumpkin");
+                HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
+                HttpContext.Current.Response.AddHeader("Expires", "0");
+
+                if (!IsPostBack)
+                {
+                    FetchDataFillList();
+                }
+
+                // Check if the authentication cookie exists
+                if (Request.Cookies[FormsAuthentication.FormsCookieName] != null)
+                {
+                    // Decrypt the authentication ticket
+                    HttpCookie authCookie = Request.Cookies[FormsAuthentication.FormsCookieName];
+                    FormsAuthenticationTicket tkt = FormsAuthentication.Decrypt(authCookie.Value);
+                    string userName = tkt.Name;
+
+                    // Get the role of the user
+                    string role = GetRole(userName); // Adjusted to not require password
+
+                    // Redirect based on the user's role
+                    if (role == "SuperAdmin")
+                    {
+                        Response.Redirect("Index.aspx", false);
+                    }
+                    else
+                    {
+                        Response.Redirect("IndexTenant.aspx", false);
+                    }
+
+                    // Complete the request to prevent further processing
+                    Context.ApplicationInstance.CompleteRequest();
+                }
             }
-            
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
-        private string getRole(string username, string password)
-
+        private string GetRole(string username)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-
-                    var hashed = FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
-
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select userRole from Users where uname='{username}' and Pwd='{hashed}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
+                    try
                     {
-                        role = (reader["userRole"].ToString());
+                        conn.Open();
+                        cmd = new SqlCommand("SELECT user_role FROM users WHERE uname=@userName", conn);
+                        cmd.Parameters.AddWithValue("@userName", username);
+                        return cmd.ExecuteScalar()?.ToString(); // Returns the role or null
                     }
-                    return role;
-                }
-                catch (Exception)
-                {
-                    return string.Empty;
+                    catch (Exception)
+                    {
+                        return string.Empty;
+                    }
                 }
             }
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
         }
 
         private void FetchDataFillList()
         {
-            ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-            if (connections.Count != 0)
+            try
             {
-                // go trough all available ConnectionStrings in app.config
-                foreach (ConnectionStringSettings connection in connections)
+                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
+                if (connections.Count != 0)
                 {
-                    // reading the ConnectionString
-                    strings.Add(connection.Name);
-                }
-                strings.RemoveAt(0);
-                databaseList.DataSource = strings;
-                databaseList.DataBind();
-            }
-        }
-
-        private bool getCurrentID(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select id_company from users where uname='{name}';", conn);
-                    var result = cmd.ExecuteScalar();
-                    int FinalCurrentID = (int)result;
-
-
-
-                    var checkingDesigner = new SqlCommand($"select Designer from companies where id_company={FinalCurrentID};", conn);
-
-                    var flag = checkingDesigner.ExecuteScalar();
-
-                    var flagINT = (int)flag;
-                    cmd.Dispose();
-                    checkingDesigner.Dispose();
-                    conn.Close();
-                    if (flagINT == 1)
+                    foreach (ConnectionStringSettings connection in connections)
                     {
-                        return true;
+                        strings.Add(connection.Name);
                     }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
+                    strings.RemoveAt(0);
+                    databaseList.DataSource = strings;
+                    databaseList.DataBind();
                 }
             }
-
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
-
-
-
-
 
         private bool ValidateUser(string userName, string passWord)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-
-                    SqlCommand cmd;
-                    string lookupPassword = null;
-
-                    // Check for invalid userName.
-                    // userName must not be null and must be between 1 and 15 characters.
-                    if ((null == userName) || (0 == userName.Length) || (userName.Length > 15))
-                    {
-                        System.Diagnostics.Trace.WriteLine("[ValidateUser] Input validation of userName failed.");
-                        return false;
-                    }
-
-                    // Check for invalid passWord.
-                    // passWord must not be null and must be between 1 and 25 characters.
-                    if ((null == passWord) || (0 == passWord.Length) || (passWord.Length > 25))
-                    {
-                        System.Diagnostics.Trace.WriteLine("[ValidateUser] Input validation of passWord failed.");
-                        return false;
-                    }
-
                     try
                     {
-                        // Consult with your SQL Server administrator for an appropriate connection
-                        // string to use to connect to your local SQL Server.
-                        // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand("Select pwd from users where uname=@userName", conn);
-                        cmd.Parameters.Add("@userName", SqlDbType.VarChar, 25);
-                        cmd.Parameters["@userName"].Value = userName;
+                        conn.Open();
+                        string lookupPassword = null;
 
-                        // Execute command and fetch pwd field into lookupPassword string.
+                        // Input validation
+                        if ((string.IsNullOrEmpty(userName)) || (userName.Length > 15))
+                        {
+                            System.Diagnostics.Trace.WriteLine("[ValidateUser] Input validation of userName failed.");
+                            return false;
+                        }
+
+                        if ((string.IsNullOrEmpty(passWord)) || (passWord.Length > 25))
+                        {
+                            System.Diagnostics.Trace.WriteLine("[ValidateUser] Input validation of passWord failed.");
+                            return false;
+                        }
+
+                        // Get password from DB
+                        cmd = new SqlCommand("SELECT password FROM users WHERE uname=@userName", conn);
+                        cmd.Parameters.Add("@userName", SqlDbType.VarChar, 25).Value = userName;
                         lookupPassword = (string)cmd.ExecuteScalar();
 
-                        // Cleanup command and connection objects.
-                        cmd.Dispose();
+                        // If no password found, return false
+                        if (lookupPassword == null)
+                        {
+                            return false;
+                        }
+
+                        string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(passWord, "SHA1");
+                        return (lookupPassword.Equals(HashedPassword, StringComparison.Ordinal));
                     }
                     catch (Exception ex)
                     {
-                        // Add error handling here for debugging.
-                        // This error message should not be sent back to the caller.
-                        System.Diagnostics.Trace.WriteLine("[ValidateUser] Exception " + ex.Message);
+                        System.Diagnostics.Trace.WriteLine("[ValidateUser] Exception: " + ex.Message);
                         return false;
                     }
-
-                    // If no password found, return false.
-                    if (null == lookupPassword)
-                    {
-                        // You could write failed login attempts here to event log for additional security.
-                        return false;
-                    }
-
-                    string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(passWord, "SHA1");
-                    // Compare lookupPassword and input passWord, using a case-sensitive comparison.
-                    return (0 == string.Compare(lookupPassword, HashedPassword, false));
-                }
-                catch (Exception)
-                {
-                    return false;
                 }
             }
-
-        }
-
-        protected void cmdLogin_Click(object sender, EventArgs e)
-        {
-            var role = getRole(txtUserName.Value, txtUserPass.Value);
-            Session["conn"] = "";
-
-            validate();
-
-
-
-        }
-
-        private void validate()
-        {
-            Response.Cookies["EDIT"].Value = "no";
-            Session["change"] = "no";
-            if (ValidateUser(txtUserName.Value, txtUserPass.Value))
+            catch (Exception ex)
             {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
 
-                var isDesigner = getCurrentID(txtUserName.Value);
-                var isUserAllowed = isIndividualAllowed(txtUserName.Value);
-                if (isDesigner)
+        protected void Login_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                PerformUserValidation();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void PerformUserValidation()
+        {
+            try
+            {
+                if (ValidateUser(txtUserName.Value, txtUserPass.Value))
                 {
-                    Session["DesignerPayed"] = "true";
-                    if (isUserAllowed)
-                    {
-                        Session["UserAllowed"] = "true";
-                    }
-                    else
-                    {
-                        Session["UserAllowed"] = "false";
+                    FormsAuthenticationTicket tkt = new FormsAuthenticationTicket(1, txtUserName.Value, DateTime.Now,
+                    DateTime.Now.AddYears(42), true, "Analytics");
 
-                    }
+                    string cookiestr = FormsAuthentication.Encrypt(tkt);
+                    HttpCookie ck = new HttpCookie(FormsAuthentication.FormsCookieName, cookiestr)
+                    {
+                        Path = FormsAuthentication.FormsCookiePath
+                    };
+
+                    if (chkPersistCookie.Checked)
+                        ck.Expires = tkt.Expiration;
+
+                    Response.Cookies.Add(ck);
+                    string strRedirect = GetRole(txtUserName.Value);
+                    Response.Redirect(strRedirect == "SuperAdmin" ? "Index.aspx" : "IndexTenant.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
                 else
                 {
-                    Session["UserAllowed"] = "false";
-                    Session["DesignerPayed"] = "false";
+                    Response.Redirect("Logon.aspx", false);
+                    Context.ApplicationInstance.CompleteRequest();
                 }
-                FormsAuthenticationTicket tkt;
-                string cookiestr;
-                HttpCookie ck;
-                tkt = new FormsAuthenticationTicket(1, txtUserName.Value, DateTime.Now,
-                DateTime.Now.AddYears(42), true, "Analytics");
-                cookiestr = FormsAuthentication.Encrypt(tkt);
-                ck = new HttpCookie(FormsAuthentication.FormsCookieName, cookiestr);
-                if (chkPersistCookie.Checked)
-                    ck.Expires = tkt.Expiration;
-                ck.Path = FormsAuthentication.FormsCookiePath;
-                Response.Cookies.Add(ck);
-
-                Session["current"] = "";
-                string strRedirect;
-                role = getRole(txtUserName.Value, txtUserPass.Value);
-
-                if (role == "SuperAdmin")
-                {
-                    strRedirect = "index.aspx";
-                    Session["mode"] = "ViewerOnly";
-                    Session["flag"] = "false";
-                    Session["id"] = "2";
-                    Session["InitialPassed"] = "false";
-                    Session["FirstLoad"] = "true";
-                    // For some reason this doesn't fire.
-                    Session["value"] = "Skaza";
-
-                    Response.Redirect(strRedirect, true);
-                }
-                else
-                {
-                    Session["value"] = "Skaza";
-                    Session["flag"] = "false";
-                    Session["id"] = "2";
-                    Session["InitialPassed"] = "false";
-                    Session["FirstLoad"] = "true";
-
-                    strRedirect = "indextenant.aspx";
-                    Response.Redirect(strRedirect, true);
-                }
-
-
-
-                conn.Close();
-                conn.Dispose();
             }
-            else
+            catch (Exception ex)
             {
-                Response.Redirect("logon.aspx", true);
+                SentrySdk.CaptureException(ex);
             }
-        }
-
-        private bool isIndividualAllowed(string value)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    var checkingDesigner = new SqlCommand($"select ViewState from users where uname='{value}';", conn);
-
-                    var flag = checkingDesigner.ExecuteScalar();
-
-                    string result = flag.ToString();
-                    cmd.Dispose();
-                    checkingDesigner.Dispose();
-                    conn.Close();
-                    if (result == "Viewer&Designer")
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-                catch (Exception)
-                {
-                    return false;
-                }
-            }
-
-
-        }
-
-        protected void reset_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("ResetPassword.aspx");
-
-        }
-
-        protected void Button1_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("membership.aspx", true);
-        }
-
-        protected void membership_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("membership.aspx", true);
         }
     }
 }
-
-

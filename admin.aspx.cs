@@ -1,27 +1,33 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
-using Dash.ORM;
+using Dash.Models;
+using DevExpress.Data.Filtering;
+using DevExpress.Utils.Behaviors;
+using DevExpress.Utils.DragDrop;
+using DevExpress.Web;
+using DevExpress.Web.Bootstrap;
+using DevExpress.XtraReports.Configuration;
+using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Security;
+using System.Web.Services;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace Dash
 {
-    public partial class admin : System.Web.UI.Page
+    public partial class Admin : System.Web.UI.Page
     {
-
-
         private string connection;
-        // DB.
+        private BootstrapButton btnFilterBootstrap;
         private List<string> byUserList = new List<string>();
         private List<bool> valuesBool = new List<bool>();
         private List<String> columnNames = new List<string>();
@@ -44,7 +50,6 @@ namespace Dash
         private int flag;
         private string companyInfo;
         private List<String> companies = new List<string>();
-        private List<String> typesOfViews = new List<string>();
         private List<String> strings = new List<string>();
         private List<String> admins = new List<string>();
         private int permisionID;
@@ -63,1482 +68,1614 @@ namespace Dash
         private string company_name;
         private string company_number;
         private string websiteCompany;
-        private string admin_id;
         private string databaseName;
-        private bool isEditHappening = false;
-        private bool isEditUser;
+
         private string userRightNow;
 
-        protected void Page_Load(object sender, EventArgs e)
-        {
-            connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-            //  HtmlAnchor adminButton = this.Master.FindControl("adminButtonAnchor") as HtmlAnchor;
-            //  adminButton.Visible = false;
-            companiesGridView.SettingsBehavior.AllowFocusedRow = true;
-            companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            companiesGridView.EnableCallBacks = false;
-            companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
-            companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
-            companiesGridView.FocusedRowChanged += CompaniesGridView_FocusedRowChanged;
-            // All of this config is neccessary.           
-            usersGridView.SettingsBehavior.AllowFocusedRow = true;
-            usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
-            usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
-            usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
-            usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
-            usersGridView.EnableCallBacks = false;
-          
-            usersGridView.StartRowEditing += UsersGridView_StartRowEditing;
-            if (!IsPostBack)
-            {
-                graphsGridView.Enabled = true;
-                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
-                authenticate();
-                // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                // admin.Visible = true;
-                FillListGraphsNames();
-                companiesList.SelectedIndex = 0;
-                companiesGridView.FocusedRowIndex = 0;
-                var beginingID = 1;
-                companiesList.Enabled = false;
-                FillUsers(beginingID);
-                //fillCompanies();
-                // FillUsers();
-                FillListGraphs();
-                fillCompaniesRegistration();
-                FillListAdmin();
-                // User Types
-                typesOfViews.Add("Viewer");
-                typesOfViews.Add("Designer");
-                typesOfViews.Add("Viewer&Designer");
-            }
-            else
-            {
-                graphsGridView.Enabled = true;
-                // HtmlAnchor admin = this.Master.FindControl("backButtonA") as HtmlAnchor;
-                // admin.Visible = true;
-                FillListGraphs();
-                if (companiesGridView.Selection.Count != 0)
-                {
-                    var plurals = companiesGridView.GetSelectedFieldValues("company_name");
-                    var value = plurals[0].ToString();
-                    FillUsers(getIdCompany(value));
-                }
-                else
-                {
-                    companiesGridView.FocusedRowIndex = 0;
-                    companiesGridView.Selection.SelectRow(0);
-                    var current = companiesGridView.GetSelectedFieldValues("company_name");
-                    FillUsers(getIdCompany(current[0].ToString()));
-                }
 
+        private int CurrentFocusGraph
+        {
+            get
+            {
+                if (Session["CurrentFocusGraph"] == null)
+                {
+
+                    Session["CurrentFocusGraph"] = -1;
+
+                }
+                return (int) Session["CurrentFocusGraph"];
+            }
+            set
+            {
+                Session["CurrentFocusGraph"] = value;
+            }
+        }
+
+        private bool IsEditCompany
+        {
+            get
+            {
+                if (Session["IsEditCompany"] == null)
+                {
+
+                    Session["IsEditCompany"] = false;
+
+                }
+                return (bool) Session["IsEditCompany"];
+            }
+            set
+            {
+                Session["IsEditCompany"] = value;
+            }
+        }
+
+        private bool IsEditUser
+        {
+            get
+            {
+                if (Session["IsEditUser"] == null)
+                {
+
+                    Session["IsEditUser"] = false;
+
+                }
+                return (bool)Session["IsEditUser"];
+            }
+            set
+            {
+                Session["IsEditUser"] = value;
+            }
+        }
+
+
+        private string CurrentUsername
+        {
+            get
+            {
+                if (Session["CurrentUser"] == null)
+                {
+
+                   Session["CurrentUser"] = string.Empty;
+                    
+                }
+                return Session["CurrentUser"] as string;
+            }
+            set
+            {
+                Session["CurrentUser"] = value;
             }
         }
 
 
 
-        private void CompaniesGridView_FocusedRowChanged(object sender, EventArgs e)
+        private string CurrentCompany
         {
-
-            var index = companiesGridView.FocusedRowIndex;
-            if (index != -1)
+            get
             {
-                string[] names = { "company_name" };
-                var values = companiesGridView.GetRowValues(index, "company_name");
-                Session["current"] = values.ToString();
-
+                if (Session["CurrentCompany"] == null || (string) Session["CurrentCompany"] == string.Empty)
+                {
+                    // Create a new instance if the session is empty
+                    Session["CurrentCompany"] = GetFirstCompany();
+                }
+                return (string) Session["CurrentCompany"];
             }
-
-        }
-
-        private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        {
-
-            labl.Visible = true;
-            listAdmin.Visible = true;
-            Response.Cookies["EDIT"].Value = "yes";
-            isEditHappening = true;
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            updateFormCompany(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSyncCompany()", true);
-            e.Cancel = true;
-        }
-
-        private void updateFormCompany(string v)
-        {
-            // Select * from companies where id_company={}
-            using (SqlConnection conn = new SqlConnection(connection))
+            set
             {
-                try
-                {
-                    conn.Open();
-
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"Select * from companies where id_company={v};", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        company_name = (reader["company_name"].ToString());
-                        company_number = (reader["company_number"].ToString());
-                        websiteCompany = (reader["website"].ToString());
-                        admin_id = (reader["admin_id"].ToString());
-                        databaseName = (reader["databaseName"].ToString());
-                    }
-
-                    companyName.Text = company_name;
-                    companyNumber.Text = company_number;
-                    website.Text = websiteCompany;
-
-                    listAdmin.SelectedValue = admin_id;
-                    var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
-
-                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionDB);
-                    dbDataSource.Text = builder.DataSource;
-                    dbNameInstance.Text = builder.InitialCatalog;
-                    dbUser.Text = builder.UserID;
-                    dbPassword.Text = builder.Password;
-                    connName.Text = databaseName.ToString();
-
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
+                Session["CurrentCompany"] = value;
             }
-
-
-
         }
 
-        private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
+        private string GetFirstCompany()
         {
             using (SqlConnection conn = new SqlConnection(connection))
             {
                 try
                 {
                     conn.Open();
-                    var plurals = companiesGridView.GetSelectedFieldValues("company_name");
-                    if (plurals.Count != 0)
-                    {
-                        var connectionStringName = get_connectionStringName(plurals[0].ToString());
-                        Session["conn"] = connectionStringName;
-                        TxtUserName.Enabled = false;
-                        email.Enabled = false;
-                        current = plurals[0].ToString();
-                        var id = getIdCompany(plurals[0].ToString());
-                        FillUsers(id);
-                        var without = plurals[0].ToString();
-                        companiesList.SelectedValue = without;
-                        companiesList.Enabled = false;
-
-                        usersGridView.Selection.SetSelection(0, true);
-                    }
+                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
+                    var company = (string)cmd.ExecuteScalar();
+                    return company;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-        private void UsersGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
-        {
-
-            TxtUserName.Enabled = false;
-            var name = e.EditingKeyValue;
-            // Call js. function here if the test passes.
-            updateFormName(name.ToString());
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
-            e.Cancel = true;
-        }
-
-        private void UsersGridView_SelectionChanged(object sender, EventArgs e)
-        {
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
-            FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
-        }
-
-        private void UsersGridView_FocusedRowChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void authenticate()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var username = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"select userRole from Users where uname='{username}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        role = (reader["userRole"].ToString());
-                    }
-                    cmd.Dispose();
-                    if (role == "SuperAdmin")
-                    {
-                    }
-                    else
-                    {
-                        Response.Redirect("logon.aspx", true);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-        public void FillListAdmin()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    admins.Clear();
-                    strings.Clear();
-
-                    string UserNameForChecking
-                        = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("Select uname from Users", conn); /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        admins.Add(sdr["uname"].ToString());
-                    }
-                    listAdmin.DataSource = admins;
-                    listAdmin.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-
-        }
-
-        private void showConfig(List<String> obj)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    valuesBool.Clear();
-                    columnNames.Clear();
-                    config.Clear();
-
-                    // DECLARE @ColList Varchar(1000), @SQLStatment VARCHAR(4000)
-                    // SET @ColList = ''
-                    // select @ColList = @ColList + Name + ' , ' from syscolumns where id = object_id('permisions') AND Name != 'id_permisions'
-                    // SELECT @SQLStatment = 'SELECT ' + Substring(@ColList, 1, len(@ColList) - 1) + 'FROM permisions'
-                    // EXEC(@SQLStatment
-                    if (usersGridView.FocusedRowIndex >= 0)
-                    {
-
-
-                        var namePlural = usersGridView.GetSelectedFieldValues("uname");
-
-                        if (namePlural.Count == 0)
-                        {
-                            string nameUser = usersList.ElementAt(0).uname;
-                            findIdString = String.Format($"SELECT id_permision_user from Users where uname='{nameUser}'");
-                        }
-                        else
-                        {
-                            string name = namePlural[0].ToString();
-                            findIdString = String.Format($"SELECT id_permision_user from Users where uname='{name}'");
-                        }
-
-                        // Documentation. This query is for getting all the permision table data from the user
-                        cmd = new SqlCommand(findIdString, conn);
-                        idNumber = cmd.ExecuteScalar();
-                        Int32 Total_Key = System.Convert.ToInt32(idNumber);
-
-                        permisionQuery = $"SELECT * FROM permisions_user WHERE id_permisions_user={Total_Key}";
-                        cmd = new SqlCommand(permisionQuery, conn);
-
-
-                        using (SqlConnection connection = new SqlConnection(
-                          this.connection))
-                        {
-                            SqlCommand command = new SqlCommand(permisionQuery, connection);
-                            connection.Open();
-                            SqlDataReader reader =
-                            command.ExecuteReader(CommandBehavior.CloseConnection);
-                            while (reader.Read())
-                            {
-                                for (int i = 0; i < obj.Count; i++)
-                                {
-                                    int bitValueTemp = (int)(reader[values[i]] as int? ?? 0);
-                                    if (bitValueTemp == 1)
-                                    {
-
-
-                                        graphsGridView.Selection.SetSelection(i, true);
-                                        valuesBool.Add(true);
-                                    }
-                                    else
-                                    {
-                                        graphsGridView.Selection.SetSelection(i, false);
-                                        valuesBool.Add(false);
-                                    }
-                                }
-                            }
-
-                        }
-                    }
-                    else
-                    {
-
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-
-
-
-        }
-
-
-        public void FillListGraphs()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    graphList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-                    /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        graphList.Add(sdr["Caption"].ToString());
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-
-        }
-
-
-
-
-
-        public void FillUsers(int companyID)
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    byUserList.Clear();
-                    usersList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"Select * from Users where id_company={companyID}", conn);
-
-                    // Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-
-                    while (sdr.Read())
-                    {
-
-                        User user = new User(sdr["uname"].ToString(), sdr["Pwd"].ToString(), sdr["userRole"].ToString(), sdr["ViewState"].ToString(), sdr["email"].ToString());
-                        var test = user.uname;
-                        usersList.Add(user);
-                        byUserList.Add(sdr["uname"].ToString());
-
-                    }
-                    usersGridView.DataSource = usersList;
-                    usersGridView.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-
-        }
-
-
-
-
-
-
-        private void fillCompaniesRegistration()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand("Select * from companies", conn); /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        companies.Add(sdr["company_name"].ToString());
-                        var debug = sdr["company_name"].ToString();
-
-                    }
-                    companiesList.DataSource = companies;
-                    companiesList.DataBind();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-        }
-
-
-
-        private void updateForm()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    isEditUser = true;
-                    if (usersGridView.GetSelectedFieldValues("uname").Count > 1)
-                    {
-                        userRightNow = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    }
-                    else
-                    {
-                        try
-                        {
-                            userRightNow = usersGridView.GetRowValues(0, "uname").ToString();
-                        } catch
-                        {
-
-                        }
-                    }
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{userRightNow}'", conn);
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        TxtName.Text = sdr["FullName"].ToString();
-                        TxtUserName.Text = sdr["uname"].ToString();
-                        TxtUserName.Enabled = false;
-                        referer.Text = sdr["referer"].ToString();
-                        int number = (int)sdr["id_company"];
-                        string dare = GetCompanyName(number);
-                        companiesList.SelectedValue = dare;
-                        companiesList.Enabled = false;
-                        email.Enabled = false;
-                        string role = sdr["userRole"].ToString();
-                        string type = sdr["ViewState"].ToString();
-                        email.Text = sdr["email"].ToString();
-                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-
-                    }
-                    sdr.Close();
-                    cmd.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-        }
-        public string GetCompanyName(int company)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string uname = HttpContext.Current.User.Identity.Name;
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn); /// Intepolation or the F string. C# > 5.0       
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    var admin = (string)cmd.ExecuteScalar();
-                    cmd.Dispose();
-                    return admin;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    return String.Empty;
-                }
-            }
-        }
-
-        private void updateFormName(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    isEditUser = true;
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM Users WHERE uname='{name}'", conn);
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        TxtName.Text = sdr["FullName"].ToString();
-                        TxtUserName.Text = sdr["uname"].ToString();
-                        TxtUserName.Enabled = false;
-                        referer.Text = sdr["referer"].ToString();
-                        var number = (int)sdr["id_company"];
-                        var data = GetCompanyName(number);
-                        companiesList.SelectedValue = data;
-                        companiesList.Enabled = false;
-                        email.Enabled = false;
-                        string role = sdr["userRole"].ToString();
-                        string type = sdr["ViewState"].ToString();
-                        email.Text = sdr["email"].ToString();
-                        userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
-                        userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
-                    }
-                    sdr.Close();
-                    cmd.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-
-        protected void registrationButton_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    if (TxtUserName.Enabled == true)
-                    {
-                        SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permision_user) FROM Users;", conn);
-                        var result = cmd.ExecuteScalar();
-                        Int32 Total_ID = System.Convert.ToInt32(result);
-                        cmd.Dispose();
-                        int next = Total_ID + 1;
-                        if (TxtPassword.Text != TxtRePassword.Text)
-                        {
-
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso ista.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                        }
-                        else
-                        {
-                            SqlCommand check = new SqlCommand($"Select count(*) from Users where uname='{TxtUserName.Text}'", conn);
-                            var resultCheck = check.ExecuteScalar();
-                            Int32 resultUsername = System.Convert.ToInt32(resultCheck);
-                            check.Dispose();
-                            if (resultUsername > 0)
-                            {
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Uporabniško ime že obstaja.')", true);
-                            }
-                            else
-                            {
-                                string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
-                                SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-                                try
-                                {
-                                    createUserPermisions.ExecuteNonQuery();
-                                }
-                                catch (Exception error)
-                                {
-                                    var log = error;
-                                }
-                                createUserPermisions.Dispose();
-                                string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                                string companyINSERT = companiesList.SelectedItem.Value;
-                                int idCOMPANY = getIdCompany(companyINSERT);
-                                string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user, referer) VALUES ('{TxtUserName.Text}', '{HashedPassword}', '{userRole.SelectedValue}', '{next}', '{idCOMPANY}','{userTypeList.SelectedValue}','{TxtName.Text}', '{email.Text}', {next}, '{referer.Text}')");
-                                SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-                                var username = TxtUserName.Text;
-                                try
-                                {
-                                    var id = getIdCompany(companiesList.SelectedValue);
-                                    createUser.ExecuteNonQuery();
-                                    createUser.Dispose();
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno kreiran uporabnik.')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                    FillListAdmin();
-                                    FillUsers(id);
-                                    var company = companiesList.SelectedValue;
-                                    var spacelessCompany = company.Replace(" ", string.Empty);
-                                }
-                                catch (Exception ex)
-                                {
-                                    var log = ex;
-                                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                    TxtName.Text = "";
-                                    TxtPassword.Text = "";
-                                    TxtRePassword.Text = "";
-                                    TxtUserName.Text = "";
-                                    email.Text = "";
-                                }
-                            }
-                            cmd.Dispose();
-                        }
-                    }
-                    else
-                    {
-                        if (!String.IsNullOrEmpty(TxtRePassword.Text))
-                        {
-                            HashedPasswordEdit = FormsAuthentication.HashPasswordForStoringInConfigFile(TxtPassword.Text, "SHA1");
-                            cmdEdit = new SqlCommand($"UPDATE Users set Pwd='{HashedPasswordEdit}', userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', FullName='{TxtName.Text}', referer='{referer.Text}' where uname='{TxtUserName.Text}'", conn);
-                        }
-                        else
-                        {
-                            cmdEdit = new SqlCommand($"UPDATE Users set userRole='{userRole.SelectedValue}', ViewState='{userTypeList.SelectedValue}', referer='{referer.Text}', FullName='{TxtName.Text}' where uname='{TxtUserName.Text}'", conn);
-                        }
-                        if (TxtPassword.Text != TxtRePassword.Text)
-                        {
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Gesla niso enaka.')", true);
-                            TxtPassword.Text = "";
-                            TxtRePassword.Text = "";
-                        }
-                        else
-                        {
-                            try
-                            {
-                                var username = TxtUserName.Text.Replace(" ", string.Empty); ;
-                                cmdEdit.ExecuteNonQuery();
-
-                                cmdEdit.Dispose();
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki.')", true);
-
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-                                var company = companiesList.SelectedValue.Replace(" ", string.Empty);
-                            }
-                            catch (Exception ex)
-                            {
-
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                                var debug = ex.Message;
-                                TxtName.Text = "";
-                                TxtPassword.Text = "";
-                                TxtRePassword.Text = "";
-                                TxtUserName.Text = "";
-                                email.Text = "";
-
-                            }
-                            cmdEdit.Dispose();
-
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-
-        private bool checkIfNumber(string parametar)
-        {
-            var regex = new Regex(@"^-?[0-9][0-9,\.]+$");
-
-            var numeric = regex.IsMatch(parametar);
-
-            if (numeric)
-                return true;
-            else
-                return false;
-
-
-        }
-
-
-
-        private void insertCompany()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"Select MAX(id_company) from companies", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 next = System.Convert.ToInt32(result) + 1;
-                    cmd = new SqlCommand($"INSERT INTO companies(id_company, company_name, company_number, website, databaseName) VALUES({next}, '{companyName.Text}', {companyNumber.Text}, '{website.Text}', '{connName.Text}')", conn);
-                    cmd.ExecuteNonQuery();
-                    Graph graph = new Graph(next);
-                    graph.SetGraphs(next);
-                }
-                catch (Exception ex)
-                {
-
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-        }
-
-        private void updateAdminCompany(string admin_value, string cName)
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin_value}' WHERE company_name='{cName}'", conn);
-                    cmd.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-        }
-     
-        protected void companyButton_Click(object sender, EventArgs e)
-        {
-            var ed = Request.Cookies["EDIT"].Value.ToString();
-
-            if (!isEditHappening && ed == "no")
-            {                           
-                    insertCompany();
-                    fillCompaniesRegistration();
-                    var names = companyName.Text.Split(' ');
-                    Random random = new Random();
-                    string adminname = $"{names[0]}{random.Next(1, 1000)}";
-                    createAdminForTheCompany(adminname, companyName.Text);
-                    updateAdminCompany(adminname, companyName.Text);
-                    var checkDB = createConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    var sourceID = companiesGridView.DataSource;
-                    companiesGridView.DataSource = null;
-                    companiesGridView.DataSource = sourceID;
-                    companyNumber.Text = "";
-                    companyName.Text = "";
-                    website.Text = "";
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
-               
-            }
-            else
-            {
-                    SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-                    build.InitialCatalog = dbNameInstance.Text;
-                    build.DataSource = dbDataSource.Text;
-                    build.UserID = dbUser.Text;
-                    build.Password = dbPassword.Text;
-                    //  UpdateConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    updateCompanyData();
-            }
-        }
-
-
-
-        private bool isConnectionOk(string connection)
-        {
-            var _stringDB = GetResultFromDBTest(connection);
-            if (connName.Text == null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private void AddConnectionString(string stringConnection)
-        {
-            try
-            {
-                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                var builder = new SqlConnectionStringBuilder(stringConnection);
-                ConnectionStringSettings conn = new ConnectionStringSettings();
-                conn.ConnectionString = builder.ConnectionString;
-                conn.Name = connName.Text;
-                config.ConnectionStrings.ConnectionStrings.Add(conn);
-                config.Save(ConfigurationSaveMode.Modified, true);
-            } catch(Exception ex)
-            {
-                Logger.LogError(typeof(admin), ex.InnerException.Message);
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Isto ime konekcije že obstaja!')", true);
-
-            }
-        }
-
-
-
-        private string createConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
-        {
-            SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-            build.InitialCatalog = dbNameInstance;
-            build.DataSource = dbSource;
-            build.UserID = dbUser;
-            build.Password = dbPassword;
-            AddConnectionString(build.ConnectionString);
-            return build.ConnectionString;
-        }
-
-
-
-        private void UpdateConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
-        {
-            try
-            {
-                var ConnectionString = ConfigurationManager.ConnectionStrings[connName].ConnectionString;
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder(ConnectionString);
-                build.InitialCatalog = dbNameInstance;
-                build.DataSource = dbSource;
-                build.UserID = dbUser;
-                build.Password = dbPassword;
-                ConnectionStringSettings stringSettings = new ConnectionStringSettings();
-                stringSettings.ConnectionString = build.ConnectionString;
-                var settings = ConfigurationManager.ConnectionStrings[connName];
-                var fi = typeof(ConfigurationElement).GetField(
-                              "_bReadOnly",
-                              BindingFlags.Instance | BindingFlags.NonPublic);
-                fi.SetValue(settings, false);
-                settings.ConnectionString = build.ConnectionString;
-                ConfigurationManager.RefreshSection("connectionStrings");
-                ConfigurationManager.RefreshSection("connectionStrings");
-            }
-            catch
-            {
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Ne morete menjati ime konekcije!')", true);
-
-            }
-
-
-        }
-
-        private void updateCompanyData()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    var admin = listAdmin.SelectedValue;
-                    var websiteString = website.Text;
-                    var companyNum = companyNumber.Text;
-                    SqlCommand cmd = new SqlCommand($"UPDATE companies SET admin_id='{admin}', website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
-                    cmd.ExecuteNonQuery();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-        }
-
-        private void createAdminForTheCompany(string name, string cName)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT MAX(id_permisions_user) FROM permisions_user;", conn);
-                    var result = cmd.ExecuteScalar();
-                    Int32 Total_ID = System.Convert.ToInt32(result);
-                    cmd.Dispose();
-                    int next = Total_ID + 1;
-                    string finalQueryPermsions = String.Format($"insert into permisions_user(id_permisions_user) VALUES ({next});");
-                    SqlCommand createUserPermisions = new SqlCommand(finalQueryPermsions, conn);
-                    createUserPermisions.ExecuteNonQuery();
-                    string HashedPassword = FormsAuthentication.HashPasswordForStoringInConfigFile(name, "SHA1");
-                    string companyINSERT = cName;
-                    int idCOMPANY = getIdCompany(companyINSERT);
-                    string finalQueryRegistration = String.Format($"Insert into Users(uname, Pwd, userRole, id_permisions, id_company, ViewState, FullName, email, id_permision_user) VALUES ('{name}', '{HashedPassword}', 'Admin', '{next}', '{idCOMPANY}','Viewer&Designer','{name}', '{name}@{name}.com', {next})");
-                    SqlCommand createUser = new SqlCommand(finalQueryRegistration, conn);
-                    var username = TxtUserName.Text;
-                    var id = getIdCompany(cName.Trim());
-                    createUser.ExecuteNonQuery();
-                    FillListAdmin();
-                    FillUsers(id);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-        protected void deleteUser_Click(object sender, EventArgs e)
-        {
-           
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    string username = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    SqlCommand cmd = new SqlCommand($"delete from Users where uname='{username}'", conn);
-                    deletedID = usersGridView.GetSelectedFieldValues("uname")[0].ToString();
-                    getIdPermision();
-                    var company = getCompanyQuery(usersGridView.GetSelectedFieldValues("uname")[0].ToString());
-                    var spacelessCompany = company.Replace(" ", string.Empty);
-                    idFromString = getIdCompany(spacelessCompany);
-                    cmd.ExecuteNonQuery();
-                    FillListGraphs();
-                    List<String> values = FillListGraphsNames();
-                    showConfig(values);
-                    deletePermisionEntry();
-                    FillUsers(idFromString);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Izbrisan uporabnik.')", true);
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-
-
-
-        }
-        private string get_connectionStringName(string name)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    //var s = name.Replace(" ", string.Empty);
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    var ConnectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-                    SqlCommand cmd = new SqlCommand($"select databaseName from companies where company_name='{name}'", conn);
-                    string result = cmd.ExecuteScalar().ToString();
-                    returnString = result;
-                    return returnString;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    return String.Empty;
-                }
-            }
-        }
-
-
-        protected void usersGridView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
-            FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
-        }
-
-        public List<String> FillListGraphsNames()
-        {
-
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-
-                    graphList.Clear();
-                    string UserNameForChecking = HttpContext.Current.User.Identity.Name; /* For checking admin permission. */
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT Caption from Dashboards;", conn);
-
-                    // Intepolation or the F string. C# > 5.0    
-
-                    // Execute command and fetch pwd field into lookupPassword string.
-                    SqlDataReader sdr = cmd.ExecuteReader();
-                    while (sdr.Read())
-                    {
-                        graphList.Add(sdr["Caption"].ToString());
-                        string trimmed = sdr["Caption"].ToString();
-                        string stripped = String.Concat(trimmed.ToString().Where(c => !Char.IsWhiteSpace(c))).Replace("-", "");
-                        // Refils potential new tables.
-                        // finalQuery = String.Format($"ALTER TABLE permisions ADD {trimmed} BIT DEFAULT 0 NOT NULL;");
-                        values.Add(stripped);
-
-                    }
-                    return values;
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    return values;
-                }
-            }
-
-
-        }
-
-
-        private string getCompanyQuery(string uname)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    // Create SqlCommand to select pwd field from users table given supplied userName.
-                    cmd = new SqlCommand($"SELECT uname, company_name FROM Users INNER JOIN companies ON Users.id_company = companies.id_company WHERE uname='{uname}';", conn);
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        companyInfo = (reader["company_name"].ToString());
-                    }
-                    var final = companyInfo.Replace(" ", string.Empty);
-                    return final;
-                }
-                catch (Exception ex)
-                {
-
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
                     return string.Empty;
                 }
             }
         }
 
-
-        private void makeSQLquery(int numberOfRows)
+        private bool IsFilterActive
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            get
             {
-                try
+                if (Session["ActiveFilter"] == null)
                 {
-                    conn.Open();
+                    // Create a new instance if the session is empty
+                    Session["ActiveFilter"] = false;
+                }
+                return (bool)Session["ActiveFilter"];
+            }
+            set
+            {
+                Session["ActiveFilter"] = value;
+            }
+        }
 
-                    for (int i = 0; i < numberOfRows; i++)
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            try
+            {
+                connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+
+                companiesGridView.SettingsBehavior.AllowFocusedRow = false;
+                companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                companiesGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                companiesGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                companiesGridView.EnableCallBacks = false;
+                companiesGridView.EnableRowsCache = true;
+
+                companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
+                companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
+                companiesGridView.DataBound += CompaniesGridView_DataBound;
+
+                usersGridView.SettingsBehavior.AllowFocusedRow = false;
+                usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
+                usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
+                usersGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = true;
+                usersGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
+                usersGridView.EnableCallBacks = false;
+                usersGridView.EnableRowsCache = true;
+                usersGridView.CustomCallback += UsersGridView_CustomCallback;
+                usersGridView.BatchUpdate += UsersGridView_BatchUpdate;
+                usersGridView.SelectionChanged += UsersGridView_SelectionChanged;
+                usersGridView.DataBound += UsersGridView_DataBound;
+
+                graphsGridView.EnableRowsCache = true;
+                graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
+                graphsGridView.SettingsBehavior.AllowFocusedRow = true;
+                graphsGridView.DataBound += GraphsGridView_DataBound;
+                graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
+
+                if (!IsPostBack)
+                {
+
+                }
+
+                InitializeUiChanges();
+                Authenticate();
+
+                companiesGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+        private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            try
+            {
+                e.Handled = true;
+
+                foreach (var row in e.UpdateValues)
+                {
+                    usersGrid.UpdateParameters["group"].DefaultValue = row.NewValues["group_name"] != null ? row.NewValues["group_name"].ToString() : string.Empty;
+                    usersGrid.UpdateParameters["uname"].DefaultValue = CurrentUsername;
+                    usersGrid.Update();
+                }
+
+                usersGridView.DataBind();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void UsersGridView_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            try
+            {
+                var key = e.Parameters;
+                usersGridView.Selection.SelectRowByKey(key);
+                IsEditUser = true;
+                TxtUserName.Enabled = false;
+                UpdateFormName(key.ToString());
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void GraphsGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
+        {
+            try
+            {
+                e.Handled = true;
+
+                foreach (var row in e.UpdateValues)
+                {
+                    string rowId = row.Keys["id"].ToString();
+
+                    query.UpdateParameters["dashboard_id"].DefaultValue = rowId;
+                    query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+                    query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
+
+                    query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null
+                        ? row.NewValues["meta_type"].ToString()
+                        : DBNull.Value.ToString();
+                    query.UpdateParameters["meta_company"].DefaultValue = row.NewValues["meta_company"] != null
+                        ? row.NewValues["meta_company"].ToString()
+                        : DBNull.Value.ToString();
+                    query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null
+                        ? row.NewValues["meta_language"].ToString()
+                        : DBNull.Value.ToString();
+
+                    query.Update();
+                }
+
+                graphsGridView.DataBind();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        
+        private void InitializeUiChanges()
+        {
+            try
+            {
+                SiteMaster mymaster = Master as SiteMaster;
+                mymaster.BackButtonVisible = true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+   
+
+        private void UsersGridView_DataBound(object sender, EventArgs e)
+        {
+            try
+            {
+                usersGridView.Selection.SetSelectionByKey(CurrentUsername, true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void GraphsGridView_DataBound(object sender, EventArgs e)
+        {
+            try
+            {
+                if (CurrentUsername != string.Empty)
+                {
+
+                    query.SelectParameters["uname"].DefaultValue = CurrentUsername;
+                    query.SelectParameters["company"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+
+                    if (graphsGridView.VisibleRowCount > 0)
                     {
-                        var tempGraphString = values.ElementAt(i);
+                        graphsGridView.Selection.BeginSelection();
+                        ShowConfigForUser();
+                        graphsGridView.Selection.EndSelection();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
 
-                        var name = usersGridView.GetSelectedFieldValues("uname");
-                        var singular = name[0].ToString();
-                        findId = String.Format($"SELECT id_permision_user from Users where uname='{singular}'");
-                        // execute query
+       
+
+        private void CompaniesGridView_DataBound(object sender, EventArgs e)
+        {
+            try
+            {
+                companiesGridView.Selection.SetSelectionByKey(GetIdCompany(CurrentCompany), true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void CompaniesGridView_StartRowEditing(object sender, DevExpress.Web.Data.ASPxStartRowEditingEventArgs e)
+        {
+            try
+            {
+                var key = e.EditingKeyValue;
+                companiesGridView.Selection.SelectRowByKey(key);
+
+                IsEditCompany = true;
+                TxtUserName.Enabled = false;
+                var name = e.EditingKeyValue;
+                UpdateFormCompany(name.ToString());
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
+                e.Cancel = true;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void UpdateFormCompany(string v)
+        {
+            try
+            {
+                // Select * from companies where id_company={}
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+
+                        var username = HttpContext.Current.User.Identity.Name;
                         // Create SqlCommand to select pwd field from users table given supplied userName.
-                        cmd = new SqlCommand(findId, conn);
-                        try
+                        cmd = new SqlCommand($"SELECT * FROM companies WHERE id_company={v};", conn);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
                         {
-                            id = cmd.ExecuteScalar();
+                            company_name = (reader["company_name"].ToString());
+                            company_number = (reader["company_number"].ToString());
+                            websiteCompany = (reader["website"].ToString());
+                            databaseName = (reader["database_name"].ToString());
+                        }
+
+                        companyName.Text = company_name;
+                        companyNumber.Text = company_number;
+                        website.Text = websiteCompany;
+
+                        var connectionDB = ConfigurationManager.ConnectionStrings[databaseName].ConnectionString;
+
+                        SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(connectionDB);
+                        dbDataSource.Text = builder.DataSource;
+                        dbNameInstance.Text = builder.InitialCatalog;
+                        dbUser.Text = builder.UserID;
+                        dbPassword.Text = builder.Password;
+                        connName.Text = databaseName.ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        var plurals = companiesGridView.GetSelectedFieldValues("id_company");
+                        if (plurals.Count != 0)
+                        {
+                            var id = (int)plurals[0];
+
+                            CurrentCompany = GetCompanyName(id);
+                            GroupsDropdown.SelectParameters["company"].DefaultValue = id.ToString();
+
+                            // Apply the filter to the userGridView based on the selected id_company 30.09.2024 Janko Jovičić
+                            usersGridView.FilterExpression = $"[id_company] = {id}";
+                            usersGridView.DataBind();  // Refresh the userGridView with the applied filter
+                            graphsGridView.DataBind();
 
                         }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError(typeof(admin), ex.InnerException.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
 
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake...')", true);
-                            // error handling
-                        }
-                        Int32 Total_ID = System.Convert.ToInt32(id);
-                        if (graphsGridView.Selection.IsRowSelected(i) == true)
+       
+
+        private void UsersGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var NamePlural = usersGridView.GetSelectedFieldValues("uname");
+                if (NamePlural.Count == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    var selectedName = NamePlural[0].ToString();
+                    CurrentUsername = selectedName;
+                    graphsGridView.DataBind();
+                }
+
+                TxtUserName.Enabled = false;
+                email.Enabled = false;
+                graphsGridView.Enabled = true;
+
+                // UpdateForm();
+
+                if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
+                {
+                    // Show the configuration for the user.
+                    ShowConfigForUser();
+                }
+
+                usersGridView.StartEdit(usersGridView.FindVisibleIndexByKeyValue(CurrentUsername));
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void ShowConfigForUser()
+        {
+            try
+            {
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                {
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    {
+                        graphsGridView.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        graphsGridView.Selection.SetSelection(i, false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void Authenticate()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        var username = HttpContext.Current.User.Identity.Name;
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand($"SELECT user_role FROM users WHERE uname='{username}';", conn);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
                         {
-                            flag = 1;
+                            role = (reader["user_role"].ToString());
+                        }
+                        cmd.Dispose();
+                        if (role == "SuperAdmin")
+                        {
                         }
                         else
                         {
-                            flag = 0;
+                            Response.Redirect("Logon.aspx", false);
+                            Context.ApplicationInstance.CompleteRequest();
                         }
-                        finalQuerys = String.Format($"UPDATE permisions_user SET {tempGraphString}={flag} WHERE id_permisions_user={Total_ID};");
-                        cmd = new SqlCommand(finalQuerys, conn);
-                        try
-                        {
-                            cmd.ExecuteNonQuery();
-                        }
-                        catch (Exception)
-                        {
-                            continue;
-                        }
-
                     }
-                    cmd.Dispose();
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-
-                }
-            }
-
-        }
-
-
-
-        protected void saveGraphs_Click(object sender, EventArgs e)
-        {
-            if (usersGridView.GetSelectedFieldValues() == null)
-            {
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
-            }
-            else
-            {
-                List<String> values = FillListGraphsNames();
-                makeSQLquery(values.Count);
-                showConfig(values);
-            }
-        }
-
-
-        private void getIdPermision()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_permision_user from Users where uname='{deletedID}'", conn);
-                    var result = cmd.ExecuteScalar();
-                    permisionID = System.Convert.ToInt32(result);
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-
-        }
-
-
-
-        private void deletePermisionEntry()
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    SqlCommand cmd1 = new SqlCommand($"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}", conn);
-                    var final = $"DELETE FROM permisions_user WHERE id_permisions_user={permisionID}";
-                    var result = cmd1.ExecuteScalar();
-                    Int32 Total_ID = System.Convert.ToInt32(result);
-
-                }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
-                }
-            }
-
-        }
-
-
-
-        private string getCurrentCompany()
-        {
-            var company = companiesGridView.GetSelectedFieldValues("company_name");
-            return company[0].ToString();
-        }
-
-        protected void deleteCompany_Click(object sender, EventArgs e)
-        {
-            using (SqlConnection conn = new SqlConnection(connection))
-            {
-                try
-                {
-                    conn.Open();
-                    if (companiesGridView.FocusedRowIndex != -1)
+                    catch (Exception ex)
                     {
-                        //////////////////////////////////////////////////////////////////////////////////////////////
-                        //
-                        // Deleting the entry.
-                        //
-                        var current = Session["current"].ToString();
-                        var id = getIdCompany(current);
-                        Graph graph = new Graph(id);
-                        graph.Delete(id);
-                        //
-                        // Deleting the entry.
-                        //
-                        //////////////////////////////////////////////////////////////////////////////////////////////
-                        deleteMemberships(id);
-                        SqlCommand user = new SqlCommand($"delete from users where id_company={id}", conn);
-                        var deb = $"delete from users where id_company={id}";
-                        RemoveConnectionString(current);
-                        SqlCommand cmd = new SqlCommand($"DELETE FROM companies WHERE company_name='{current}'", conn);
-                        string dev = $"DELETE FROM companies WHERE company_name='{current}'";
-                        cmd.ExecuteNonQuery();
-                        try
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+     
+
+        public string GetCompanyName(int company)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string uname = HttpContext.Current.User.Identity.Name;
+                        cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn);
+                        var admin = (string)cmd.ExecuteScalar();
+                        cmd.Dispose();
+                        return admin;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        return String.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
+        }
+
+        private void UpdateFormName(string name)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{name}'", conn);
+                        SqlDataReader sdr = cmd.ExecuteReader();
+                        while (sdr.Read())
                         {
-                            user.ExecuteNonQuery();
+                            TxtName.Text = sdr["full_name"].ToString();
+                            TxtUserName.Text = sdr["uname"].ToString();
+                            TxtUserName.Enabled = false;
+                            referrer.Text = sdr["referrer"].ToString();
+                            var number = (int)sdr["id_company"];
+                            var data = GetCompanyName(number);
+                            email.Enabled = false;
+                            string role = sdr["user_role"].ToString();
+                            string type = sdr["view_allowed"].ToString();
+                            email.Text = sdr["email"].ToString();
+                            userRole.SelectedIndex = userRole.Items.IndexOf(userRole.Items.FindByValue(role));
+                            userTypeList.SelectedIndex = userTypeList.Items.IndexOf(userTypeList.Items.FindByValue(type));
+                        }
+                        sdr.Close();
+                        cmd.Dispose();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        protected void RegistrationButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (IsEditUser)
+                {
+                    UpdateUser();
+                }
+                else
+                {
+                    InsertUser();
+                }
+
+                // Call DataBind at the end
+                usersGridView.DataBind();
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+
+        private void InsertUser()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        if (TxtPassword.Text != TxtRePassword.Text)
+                        {
+                            Notify("Gesla se ne ujemata.", true);
+                            ClearInputs();
+                            return;
+                        }
+
+                        if (DoesUsernameExists(conn, TxtUserName.Text))
+                        {
+                            Notify("Uporabniško ime že obstaja.", true);
+                            return;
+                        }
+
+                        string hashedPassword = HashPassword(TxtPassword.Text);
+                        int idCompany = GetIdCompany(CurrentCompany);
+                        string query = @"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) 
+                             VALUES (@uname, @password, @user_role, @id_company, @view_allowed, @full_name, @Email, @referrer)";
+
+                        using (SqlCommand createUser = new SqlCommand(query, conn))
+                        {
+                            createUser.Parameters.AddWithValue("@uname", TxtUserName.Text);
+                            createUser.Parameters.AddWithValue("@password", hashedPassword);
+                            createUser.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                            createUser.Parameters.AddWithValue("@id_company", idCompany);
+                            createUser.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                            createUser.Parameters.AddWithValue("@full_name", TxtName.Text);
+                            createUser.Parameters.AddWithValue("@Email", email.Text);
+                            createUser.Parameters.AddWithValue("@referrer", referrer.Text);
+
+                            createUser.ExecuteNonQuery();
+                        }
+
+                        Notify("Uspešno kreiran uporabnik.", false);
+                        ClearInputs();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogErrorAndNotify(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void UpdateUser()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        string query;
+
+                        if (!string.IsNullOrEmpty(TxtPassword.Text))
+                        {
+                            if (TxtPassword.Text == TxtRePassword.Text)
+                            {
+                                string hashedPassword = HashPassword(TxtPassword.Text);
+                                query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed, 
+                          full_name = @full_name, referrer = @referrer WHERE uname = @uname";
+
+                                using (SqlCommand cmdEdit = new SqlCommand(query, conn))
+                                {
+                                    cmdEdit.Parameters.AddWithValue("@password", hashedPassword);
+                                    cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                                    cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                                    cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
+                                    cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
+                                    cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
+
+                                    cmdEdit.ExecuteNonQuery();
+                                }
+                            }
+                            else
+                            {
+                                Notify("Gesla se ne ujemata.", true);
+                                return;
+                            }
 
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            Logger.LogError(typeof(admin), ex.InnerException.Message);
-                            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                            query = @"UPDATE users SET user_role = @user_role, view_allowed = @view_allowed, 
+                          referrer = @referrer, full_name = @full_name WHERE uname = @uname";
+
+                            using (SqlCommand cmdEdit = new SqlCommand(query, conn))
+                            {
+                                cmdEdit.Parameters.AddWithValue("@user_role", userRole.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@view_allowed", userTypeList.SelectedValue);
+                                cmdEdit.Parameters.AddWithValue("@referrer", referrer.Text);
+                                cmdEdit.Parameters.AddWithValue("@full_name", TxtName.Text);
+                                cmdEdit.Parameters.AddWithValue("@uname", TxtUserName.Text);
+
+                                cmdEdit.ExecuteNonQuery();
+                            }
                         }
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
-                        var source = companiesGridView.DataSource;
-                        companiesGridView.DataSource = null;
-                        companiesGridView.DataSource = source;
-                        FillListGraphs();
-                        FillListAdmin();
-                        cmd.Dispose();
-                        string companyName = companiesGridView.GetRowValues(0, "company_name").ToString();
-                        int companyID = getIdCompany(companyName);
-                        FillUsers(companyID);
-                        
+
+                        Notify("Uspešno spremenjeni podatki.", false);
+                        ClearInputs();
+                    }
+                    catch (Exception ex)
+                    {
+                        LogErrorAndNotify(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private bool DoesUsernameExists(SqlConnection conn, string username)
+        {
+            try
+            {
+                string query = "SELECT COUNT(*) FROM Users WHERE uname = @uname";
+                using (SqlCommand cmdCheck = new SqlCommand(query, conn))
+                {
+                    cmdCheck.Parameters.AddWithValue("@uname", username);
+                    return (int)cmdCheck.ExecuteScalar() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            try
+            {
+                return FormsAuthentication.HashPasswordForStoringInConfigFile(password, "SHA1");
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
+        }
+
+        private void ClearInputs()
+        {
+            try
+            {
+                TxtName.Text = "";
+                TxtPassword.Text = "";
+                TxtRePassword.Text = "";
+                TxtUserName.Text = "";
+                email.Text = "";
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void Notify(string message, bool isError)
+        {
+            try
+            {
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", $"notify({isError.ToString().ToLower()}, '{message}')", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void LogErrorAndNotify(Exception ex)
+        {
+            try
+            {
+                Logger.LogError(typeof(Admin), ex.InnerException?.Message ?? ex.Message);
+                Notify("Napaka...", true);
+            }
+            catch (Exception exception)
+            {
+                SentrySdk.CaptureException(exception);
+            }
+        }
+
+        private int InsertCompany()
+        {
+            int newCompanyId = 0;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+
+                    using (SqlCommand insertCmd = new SqlCommand(
+                        "INSERT INTO companies (id_company, company_name, company_number, website, database_name) " +
+                        "VALUES (@Id, @Name, @Number, @Website, @DbName);", conn))
+                    {
+                        // Manually assign a value for id_company if needed
+                        // You can calculate the next ID or insert a value directly
+                        int nextId = GetNextCompanyId(conn); // You need to implement GetNextCompanyId to get the next ID
+
+                        insertCmd.Parameters.AddWithValue("@Id", nextId);
+                        insertCmd.Parameters.AddWithValue("@Name", companyName.Text);
+                        insertCmd.Parameters.AddWithValue("@Number", companyNumber.Text);
+                        insertCmd.Parameters.AddWithValue("@Website", website.Text);
+                        insertCmd.Parameters.AddWithValue("@DbName", connName.Text);
+
+                        int affected = insertCmd.ExecuteNonQuery();
+                        // Execute the query and get the new ID
+                        if (affected == 1)
+                        {
+                            newCompanyId = nextId;
+                        }
+                    }
+
+                    // Notify the user that the company has been added successfully
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Podjetje uspešno dodano!')", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                // Log the exception
+                Logger.LogError(typeof(Admin), ex.Message);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+            }
+
+            return newCompanyId;
+        }
+
+
+
+
+        private int GetNextCompanyId(SqlConnection conn)
+        {
+            // Assuming the ID column is either NULL or has a value
+            using (SqlCommand cmd = new SqlCommand("SELECT MAX(id_company) FROM companies", conn))
+            {
+                var result = cmd.ExecuteScalar();
+
+                // Check if the result is DBNull and return the next ID (e.g., 1 if no rows exist)
+                if (result == DBNull.Value)
+                {
+                    return 1; // If there are no companies, return 1 as the next ID
+                }
+
+                // Otherwise, return the next ID
+                return Convert.ToInt32(result) + 1;
+            }
+        }
+
+
+        protected void CompanyButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!IsEditCompany)
+                {
+                    var keyCompany = InsertCompany();
+
+                    companiesGridView.DataBind();
+
+                    companiesGridView.Selection.SelectRowByKey(keyCompany);
+
+                    CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    companyNumber.Text = "";
+                    companyName.Text = "";
+                    website.Text = "";
+                    
+
+
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
+                }
+                else
+                {
+                    UpdateCompanyData();
+                    CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void AddOrUpdateConnectionString(string stringConnection)
+        {
+            try
+            {
+                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+                var builder = new SqlConnectionStringBuilder(stringConnection);
+
+                string connectionName = connName.Text;
+
+                // Check if the connection string already exists
+                ConnectionStringSettings existingConn = config.ConnectionStrings.ConnectionStrings[connectionName];
+
+                if (existingConn != null)
+                {
+                    // Modify the existing connection string
+                    existingConn.ConnectionString = builder.ConnectionString;
+                }
+                else
+                {
+                    // Create a new connection string if it doesn't exist
+                    ConnectionStringSettings conn = new ConnectionStringSettings
+                    {
+                        ConnectionString = builder.ConnectionString,
+                        Name = connectionName
+                    };
+                    config.ConnectionStrings.ConnectionStrings.Add(conn);
+                }
+
+                // Save the configuration changes
+                config.Save(ConfigurationSaveMode.Modified, true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                // Log the full exception message
+                Logger.LogError(typeof(Admin), $"Error adding/updating connection string: {ex.Message}, StackTrace: {ex.StackTrace}");
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake!')", true);
+            }
+        }
+
+        private void CreateOrModifyConnectionString(string dbSource, string dbNameInstance, string dbPassword, string dbUser, string connName)
+        {
+            try
+            {
+                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+                build.InitialCatalog = dbNameInstance;
+                build.DataSource = dbSource;
+                build.UserID = dbUser;
+                build.Password = dbPassword;
+                AddOrUpdateConnectionString(build.ConnectionString);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void UpdateCompanyData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        var websiteString = website.Text;
+                        var companyNum = companyNumber.Text;
+                        SqlCommand cmd = new SqlCommand($"UPDATE companies SET website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
+                        cmd.ExecuteNonQuery();
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+      
+        protected void DeleteUser_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string username = null;
+                try
+                {
+                    var selectedValues = usersGridView.GetSelectedFieldValues("uname");
+                    // Ensure a user is selected
+                    if (selectedValues != null && selectedValues.Count > 0)
+                    {
+                        username = selectedValues[0]?.ToString();
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            using (SqlConnection conn = new SqlConnection(connection))
+                            using (SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE uname = @uname", conn))
+                            {
+                                cmd.Parameters.AddWithValue("@uname", username);
+                                conn.Open();
+                                cmd.ExecuteNonQuery();
+                                usersGridView.DataBind();
+                                // Notify success
+                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uporabnik izbrisan.')", true);
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
                     }
                 }
                 catch (Exception ex)
                 {
-                    var d = ex;
+                    string errorMessage = ex.InnerException?.Message ?? ex.Message;
+                    Logger.LogError(typeof(Admin), errorMessage);
+                    // Notify failure
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju uporabnika.')", true);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+        [WebMethod]
+        public static void CreatingCompanySessionEdit()
+        {
+            try
+            {
+                HttpContext.Current.Session["IsEditCompany"] = false;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+        private string GetCompanyQuery(string uname)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    try
+                    {
+                        conn.Open();
+                        // Create SqlCommand to select pwd field from users table given supplied userName.
+                        cmd = new SqlCommand($"SELECT uname, company_name FROM users INNER JOIN companies ON users.id_company = companies.id_company WHERE uname='{uname}';", conn);
+                        SqlDataReader reader = cmd.ExecuteReader();
+                        while (reader.Read())
+                        {
+                            companyInfo = (reader["company_name"].ToString());
+                        }
+                        var final = companyInfo.Replace(" ", string.Empty);
+                        return final;
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
+                        return string.Empty;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
+        }
+
+        protected void SaveGraphs_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (usersGridView.GetSelectedFieldValues() == null)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                }
+                else
+                {
+                    SaveUserPermissions();
+                    graphsGridView.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void SaveUserPermissions()
+        {
+            try
+            {
+                DashboardPermissions permissions = new DashboardPermissions();
+                var selectedIds = graphsGridView.GetSelectedFieldValues("id");
+                if (selectedIds != null)
+                {
+                    for (int i = 0; i < selectedIds.Count; i++)
+                    {
+                        string currentSelectedId = selectedIds[i].ToString();
+                        long parsed;
+                        if (Int64.TryParse(currentSelectedId, out parsed))
+                        {
+                            permissions.Permissions.Add(new DashboardPermission { id = (int)parsed });
+                        }
+                    }
+
+                    permissions.SetPermissionsForUser(CurrentUsername);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException (ex);
+                var d = ex;
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+            }
+        }
+
+        protected void DeleteCompany_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var current = CurrentCompany;
+
+                if (string.IsNullOrEmpty(current))
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju podjetja.')", true);
+                    return;
+                }
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(connection))
+                    {
+                        conn.Open();
+
+                        using (SqlCommand companyCmd = new SqlCommand("DELETE FROM companies WHERE company_name = @CompanyName", conn))
+                        {
+                            companyCmd.Parameters.AddWithValue("@CompanyName", current);
+                            companyCmd.ExecuteNonQuery();
+                        }
+
+                        RemoveConnectionString(current);
+
+                        // Refresh the grid
+                        companiesGridView.DataBind();
+                        usersGridView.DataBind();
+                        graphsGridView.DataBind();
+
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    Logger.LogError(typeof(Admin), $"SQL Error: {ex.Message}");
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError(typeof(Admin), $"Error: {ex.Message}");
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
                 }
             }
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void RemoveConnectionString(string current)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select databaseName from companies where company_name='{current}'", conn);
-                    result = cmd.ExecuteScalar();
-                    Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
-                    config.ConnectionStrings.ConnectionStrings.Remove($"{result}");
-                    config.Save(ConfigurationSaveMode.Modified, true);
+                    try
+                    {
+                        conn.Open();
+
+                        // Use parameterized query to prevent SQL injection
+                        using (SqlCommand cmd = new SqlCommand("SELECT database_name FROM companies WHERE company_name = @CompanyName", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@CompanyName", current);
+                            var result = cmd.ExecuteScalar();
+
+                            // Ensure result is valid
+                            if (result != null)
+                            {
+                                string databaseName = result.ToString();
+
+                                // Modify the web.config and remove the connection string
+                                Configuration config = WebConfigurationManager.OpenWebConfiguration(Request.ApplicationPath);
+                                ConnectionStringSettings connectionString = config.ConnectionStrings.ConnectionStrings[databaseName];
+
+                                if (connectionString != null)
+                                {
+                                    config.ConnectionStrings.ConnectionStrings.Remove(databaseName);
+                                    config.Save(ConfigurationSaveMode.Modified, true);
+
+                                    // Refresh the section to reflect changes immediately
+                                    ConfigurationManager.RefreshSection("connectionStrings");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the full exception message and stack trace
+                        Logger.LogError(typeof(Admin), $"Error removing connection string: {ex.Message}, StackTrace: {ex.StackTrace}");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    return;
-                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 
-        private int getIdCompany(string current)
+        private int GetIdCompany(string current)
         {
-            string spaceless = current.Trim();
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                if (current != null)
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"select id_company from companies where company_name='{spaceless}'", conn);
-                    result = cmd.ExecuteScalar();
-                    int finalID = System.Convert.ToInt32(result);
-                    return finalID;
-
+                    string spaceless = current.Trim();
+                    using (SqlConnection conn = new SqlConnection(connection))
+                    {
+                        try
+                        {
+                            conn.Open();
+                            SqlCommand cmd = new SqlCommand($"SELECT id_company FROM companies WHERE company_name='{spaceless}'", conn);
+                            result = cmd.ExecuteScalar();
+                            int id = System.Convert.ToInt32(result);
+                            return id;
+                        }
+                        catch (Exception)
+                        {
+                            return -1;
+                        }
+                    }
                 }
-                catch (Exception)
+                else
                 {
                     return -1;
                 }
             }
-
-
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return -1;
+            }
         }
 
-        private void deleteMemberships(int number)
+ 
+
+  
+
+        protected void NewUser_Click(object sender, EventArgs e)
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                IsEditUser = false;
+                TxtUserName.Enabled = true;
+                email.Enabled = true;
+                TxtUserName.Text = "";
+                TxtName.Text = "";
+                email.Text = "";
+                TxtPassword.Text = "";
+                TxtRePassword.Text = "";
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+  
+
+        protected void NewUserClick(object sender, EventArgs e)
+        {
+            try
+            {
+                TxtUserName.Enabled = true;
+                email.Enabled = true;
+                TxtUserName.Text = "";
+                TxtName.Text = "";
+                email.Text = "";
+                TxtPassword.Text = "";
+                TxtRePassword.Text = "";
+                // Call the client.
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
+        {
+            try
+            {
+                var selectedValues = new List<string>();
+                foreach (string row in gridView.GetSelectedFieldValues(columnName))
                 {
-                    conn.Open();
-                    var final = getCurrentCompany();
-                    SqlCommand cmd = new SqlCommand($"DELETE FROM memberships WHERE id_company={number}", conn);
-                    string dev = $"DELETE FROM companies WHERE company_name='{number}'";
-                    cmd.ExecuteNonQuery();
-
+                    selectedValues.Add(row);
                 }
-                catch (Exception ex)
+                return selectedValues;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new List<string>();
+            }
+        }
+
+    
+
+        public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
+        {
+            try
+            {
+                foreach (string item in selectedTypes)
                 {
-                    Logger.LogError(typeof(admin), ex.InnerException.Message);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    if (!dashboardMetaData.Types.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                foreach (string item in selectedCompanies)
+                {
+                    if (!dashboardMetaData.Companies.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                foreach (string item in selectedLanguages)
+                {
+                    if (!dashboardMetaData.Languages.Contains(item))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            catch(Exception ex) 
+            {
+                SentrySdk.CaptureException(ex);
+                return false;
+            }
+        }
+
+        protected void ClearFilterButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                graphsGridView.FilterExpression = string.Empty;
+                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
+                button.Visible = false;
+                IsFilterActive = false;
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                {
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    {
+                        graphsGridView.Selection.SetSelection(i, true);
+                    }
+                    else
+                    {
+                        graphsGridView.Selection.SetSelection(i, false);
+                    }
                 }
             }
-        }
-
-
-
-
-        public static bool testConnection()
-        {
-            return true;
-        }
-
-
-        protected void byUserListBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void newUser_Click(object sender, EventArgs e)
-        {
-            usersGridView.Selection.SetSelection(-1, true);
-            TxtUserName.Enabled = true;
-            email.Enabled = true;
-            TxtUserName.Text = "";
-            TxtName.Text = "";
-            email.Text = "";
-            TxtPassword.Text = "";
-            TxtRePassword.Text = "";
-            isEditUser = false;
-        }
-
-
-
-
-
-        private string GetResultFromDBTest(string connectionString)
-        {
-            CheckConnection TestConnection = new CheckConnection();
-            var _result = TestConnection.check_connection(connectionString);
-            string _textResult;
-
-            if (_result == false)
-
+            catch (Exception ex)
             {
-
-                _textResult = " ::Napaka v konekciji";
-
+                SentrySdk.CaptureException(ex);
             }
-            else
+        }
+
+        public void MoveUpButton_Click(object sender, EventArgs e)
+        {
+            try
             {
-                _textResult = " ::Uspešna konekcija";
+                // Get the index of the focused row
+                int focusedRowIndex = graphsGridView.FocusedRowIndex;
+                int beforeFocusedRowIndex = focusedRowIndex - 1;
+                // Get the DataRow for the focused row
+                DataRow focusedRowData = graphsGridView.GetDataRow(focusedRowIndex);
 
+                // Retrieve the id from the DataRow
+                if (focusedRowData != null)
+                {
+                    for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                    {
+                        DataRow dr = graphsGridView.GetDataRow(i);
+                        int dashboardId = (int)dr["id"];
+                        if (i == beforeFocusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                        }
+                        else if (i == focusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                        }                                                   
+                    }
 
+                    graphsGridView.FocusedRowIndex = focusedRowIndex - 1;
+                    graphsGridView.DataBind();
+                    
+                }
+            } catch(Exception ex) 
+            {
+                SentrySdk.CaptureException(ex);
+                return;
             }
-
-            return _textResult;
-
         }
 
-        protected void new_user_ServerClick2(object sender, EventArgs e)
+        protected void MoveDownButton_Click(object sender, EventArgs e)
         {
-            isEditUser = false;
-            TxtUserName.Enabled = true;
-            email.Enabled = true;
-            TxtUserName.Text = "";
-            TxtName.Text = "";
-            email.Text = "";
-            TxtPassword.Text = "";
-            TxtRePassword.Text = "";
-            // Call the client.
-            Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "showDialogSync()", true);
+            try
+            {
+                // Get the index of the focused row
+                int focusedRowIndex = graphsGridView.FocusedRowIndex;
+                int afterFocusedRowIndex = focusedRowIndex + 1;
+                // Get the DataRow for the focused row
+                DataRow focusedRowData = graphsGridView.GetDataRow(focusedRowIndex);
+                // Retrieve the id from the DataRow
+                if (focusedRowData != null)
+                {
+                    for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                    {
+                        DataRow dr = graphsGridView.GetDataRow(i);
+                        int dashboardId = (int)dr["id"];
+                        if (i == afterFocusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                        }
+                        else if (i == focusedRowIndex)
+                        {
+                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                        }
+                    }
 
+                    graphsGridView.FocusedRowIndex = focusedRowIndex + 1;
+                    graphsGridView.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return;
+            }
         }
 
-        protected void usersGridView_SelectionChanged(object sender, EventArgs e)
+        private void UpdateSortOrder(string uname, int dashboardId, int sortOrder)
         {
-            TxtUserName.Enabled = false;
-            email.Enabled = false;
-            graphsGridView.Enabled = true;
-            FillListGraphs();
-            List<String> values = FillListGraphsNames();
-            showConfig(values);
-            updateForm();
+            try
+            {
+                string query = @"
+                IF EXISTS (SELECT 1 FROM dashboards_sorted_by_user WHERE dashboard_id = @dashboard_id AND uname = @uname)
+                BEGIN
+                    UPDATE dashboards_sorted_by_user 
+                    SET sort_order = @sort_order 
+                    WHERE dashboard_id = @dashboard_id AND uname = @uname;
+                END
+                ELSE
+                BEGIN
+                    INSERT INTO dashboards_sorted_by_user (uname, dashboard_id, sort_order) 
+                    VALUES (@uname, @dashboard_id, @sort_order);
+                END";
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@uname", uname);
+                        cmd.Parameters.AddWithValue("@dashboard_id", dashboardId);
+                        cmd.Parameters.AddWithValue("@sort_order", sortOrder);
+
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
-        protected void test_Click(object sender, EventArgs e)
+        protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
         {
+            try
+            {
+                e.Handled = true;
+
+                List<MetaOption> data = new List<MetaOption>();
+                if (e.Column.Caption == "Tip")
+                {
+                    data = GetFilterValuesForSpecificFilter("type");
+                }
+                else if (e.Column.Caption == "Podjetje")
+                {
+                    data = GetFilterValuesForSpecificFilter("company");
+                }
+                else if (e.Column.Caption == "Jezik")
+                {
+                    data = GetFilterValuesForSpecificFilter("language");
+                }
+
+                e.Values.Clear();
+
+                for (int i = 0; i < data.Count; i++)
+                {
+                    e.AddValue(displayText: data[i].description, value: data[i].value);
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
-        protected void test_Click1(object sender, EventArgs e)
+        private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
         {
+            try
+            {
+                List<MetaOption> filterValues = new List<MetaOption>();
 
-        }
+                // Define your connection string (replace with actual connection string)
 
-        protected void hidden_Click(object sender, EventArgs e)
-        {
+                // Define the query
+                string query = "SELECT description, value FROM meta_options WHERE option_type = @filter";
 
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        // Add parameter to prevent SQL injection
+                        command.Parameters.AddWithValue("@filter", filter);
+
+                        // Open the connection
+                        conn.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            // Read each result and add to the list
+                            while (reader.Read())
+                            {
+                                filterValues.Add(new MetaOption
+                                {
+                                    description = reader["description"].ToString(),
+                                    value = reader["description"].ToString()
+                                });
+                            }
+                        }
+                    }
+                }
+
+                return filterValues;
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return new List<MetaOption>();
+            }
         }
     }
 }
