@@ -557,6 +557,12 @@ namespace Dash
         {
             try
             {
+                if(e == null)
+                {
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
+                    return;
+                }
+
                 var key = e.EditingKeyValue;
 
                 groupsGridView.Selection.SelectRowByKey(key);
@@ -1058,6 +1064,7 @@ namespace Dash
                     }
                 }
                 groupsGridView.DataBind();
+
             }
             catch (Exception ex)
             {

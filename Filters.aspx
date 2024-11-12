@@ -67,6 +67,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal1Label">Šifrant tipov</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <dx:BootstrapGridView ID="gridViewTypes" ClientInstanceName="gridViewTypes" runat="server" 
@@ -126,6 +129,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal2Label">Šifrant podjetj</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <dx:BootstrapGridView ID="gridViewOrganizations" ClientInstanceName="gridViewOrganizations" runat="server" 
@@ -184,6 +190,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="modal3Label">Šifrant jezikov</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <dx:BootstrapGridView ID="gridViewLanguages" ClientInstanceName="gridViewLanguages" runat="server" 

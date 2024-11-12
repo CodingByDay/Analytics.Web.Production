@@ -238,7 +238,10 @@ namespace Dash
                 Authenticate();
 
                 companiesGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
-            } catch (Exception ex)
+
+
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
@@ -394,6 +397,7 @@ namespace Dash
                 TxtUserName.Enabled = false;
                 var name = e.EditingKeyValue;
                 UpdateFormCompany(name.ToString());
+
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncCompany(); };", true);
                 e.Cancel = true;
             }
@@ -1134,6 +1138,8 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+        
+
 
 
         private string GetCompanyQuery(string uname)
