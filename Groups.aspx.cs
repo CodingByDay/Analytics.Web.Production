@@ -73,17 +73,22 @@ namespace Dash
         {
             get
             {
-                if (Session["GroupEdit"] == null)
+                // Retrieve the "GroupEdit" session variable from the database
+                bool? groupEdit = UserSession.GetSessionVariable<bool?>("GroupEdit");
+
+                // If the value is null, set it to false and save it
+                if (groupEdit == null)
                 {
-
-                    Session["GroupEdit"] = false;
-
+                    groupEdit = false;
+                    UserSession.SetSessionVariable("GroupEdit", groupEdit);
                 }
-                return (bool) Session["GroupEdit"];
+
+                return groupEdit.Value;
             }
             set
             {
-                Session["GroupEdit"] = value;
+                // Store the new value in the database
+                UserSession.SetSessionVariable("GroupEdit", value);
             }
         }
 
@@ -93,38 +98,49 @@ namespace Dash
         {
             get
             {
-                if (Session["CurrentGroup"] == null)
+                // Retrieve the "CurrentGroup" session variable from the database
+                string currentGroup = UserSession.GetSessionVariable<string>("CurrentGroup");
+
+                // If the value is null or empty, set it to an empty string and save it
+                if (string.IsNullOrEmpty(currentGroup))
                 {
-
-                    Session["CurrentGroup"] = string.Empty;
-
+                    currentGroup = string.Empty;
+                    UserSession.SetSessionVariable("CurrentGroup", currentGroup);
                 }
-                return Session["CurrentGroup"] as string;
+
+                return currentGroup;
             }
             set
             {
-                Session["CurrentGroup"] = value;
+                // Store the new group in the database
+                UserSession.SetSessionVariable("CurrentGroup", value);
             }
         }
-
 
 
         private string CurrentCompany
         {
             get
             {
-                if (Session["CurrentCompany"] == null || (string)Session["CurrentCompany"] == string.Empty)
+                // Retrieve the "CurrentCompany" session variable from the database
+                string company = UserSession.GetSessionVariable<string>("CurrentCompany");
+
+                // If the value is null or empty, retrieve the first company and store it in the database
+                if (string.IsNullOrEmpty(company))
                 {
-                    // Create a new instance if the session is empty
-                    Session["CurrentCompany"] = GetFirstCompany();
+                    company = GetFirstCompany();
+                    UserSession.SetSessionVariable("CurrentCompany", company);
                 }
-                return (string)Session["CurrentCompany"];
+
+                return company;
             }
             set
             {
-                Session["CurrentCompany"] = value;
+                // Store the new company in the database
+                UserSession.SetSessionVariable("CurrentCompany", value);
             }
         }
+
 
         private string GetFirstCompany()
         {
@@ -152,22 +168,7 @@ namespace Dash
             }
         }
 
-        private bool IsFilterActive
-        {
-            get
-            {
-                if (Session["ActiveFilter"] == null)
-                {
-                    // Create a new instance if the session is empty
-                    Session["ActiveFilter"] = false;
-                }
-                return (bool)Session["ActiveFilter"];
-            }
-            set
-            {
-                Session["ActiveFilter"] = value;
-            }
-        }
+      
 
         private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
         {
@@ -966,34 +967,7 @@ namespace Dash
             }
         }
 
-        protected void ClearFilterButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                graphsGridView.FilterExpression = string.Empty;
-                BootstrapButton button = graphsGridView.Toolbars.FindByName("FilterToolbar").Items.FindByName("RemoveFilter").FindControl("ClearFilterButton") as BootstrapButton;
-                button.Visible = false;
-                IsFilterActive = false;
-                DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
-                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
-                {
-                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
-                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
-                    {
-                        graphsGridView.Selection.SetSelection(i, true);
-                    }
-                    else
-                    {
-                        graphsGridView.Selection.SetSelection(i, false);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
-        }
-
+       
 
 
         protected void NewGroup_ServerClick(object sender, EventArgs e)

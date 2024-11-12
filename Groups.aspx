@@ -180,7 +180,7 @@
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
              </SettingsPager>
-            <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi"  SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
+            <SettingsText CommandUpdate="Posodobi" HeaderFilterCancelButton="Prekliči" CommandCancel="Zapri" CommandEdit="Uredi" HeaderFilterSelectAll ="Izberi vse" SearchPanelEditorNullText="Poiščite podjetje"></SettingsText>
 
                 <SettingsEditing Mode="PopupEditForm"></SettingsEditing>
 
@@ -231,7 +231,7 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="False">
           </SettingsPager>
 
-        <SettingsText  CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" "  SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
+        <SettingsText  CommandUpdate="Posodobi" HeaderFilterCancelButton="Prekliči" CommandCancel="Zapri" CommandEdit=" " HeaderFilterSelectAll ="Izberi vse" SearchPanelEditorNullText="Poiščite skupine"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
@@ -291,7 +291,7 @@
           <SettingsPager Mode="ShowAllRecords" PageSize="15" Visible="true">
           </SettingsPager>
 
-<SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi"  SearchPanelEditorNullText="Poiščite graf"></SettingsText>
+<SettingsText CommandUpdate="Posodobi" HeaderFilterCancelButton="Prekliči" CommandCancel="Zapri" HeaderFilterSelectAll ="Izberi vse"  CommandEdit="Uredi"  SearchPanelEditorNullText="Poiščite graf"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="False" />
           <Columns>

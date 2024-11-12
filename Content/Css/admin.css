@@ -12,7 +12,9 @@
 .actionButton {
     width: 7em;
 }
-
+body {
+    overflow: hidden;
+}
 .dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus {
     color: white;
     font-weight: bold;
