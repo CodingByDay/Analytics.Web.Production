@@ -453,7 +453,7 @@ namespace Dash
         {
             try
             {
-                groupsGridView.Selection.SetSelectionByKey(CurrentGroup, true);
+                groupsGridView.Selection.SetSelectionByKey(GetIdGroup(CurrentGroup), true);
             }
             catch (Exception ex)
             {
