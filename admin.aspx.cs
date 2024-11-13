@@ -1229,11 +1229,15 @@ namespace Dash
             try
             {
                 var current = CurrentCompany;
+                int companyId;
 
                 if (string.IsNullOrEmpty(current))
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju podjetja.')", true);
                     return;
+                } else
+                {
+                    companyId = GetIdCompany(current);
                 }
                 try
                 {
@@ -1241,9 +1245,9 @@ namespace Dash
                     {
                         conn.Open();
 
-                        using (SqlCommand companyCmd = new SqlCommand("DELETE FROM companies WHERE company_name = @CompanyName", conn))
+                        using (SqlCommand companyCmd = new SqlCommand("DELETE FROM companies WHERE id_company = @id_company;", conn))
                         {
-                            companyCmd.Parameters.AddWithValue("@CompanyName", current);
+                            companyCmd.Parameters.AddWithValue("@id_company", companyId);
                             companyCmd.ExecuteNonQuery();
                         }
 
