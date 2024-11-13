@@ -94,16 +94,26 @@ namespace Dash.HelperClasses
                 }
                 catch (Exception ex)
                 {
-                    // Catch SQL-specific exceptions (e.g., issues with the query or database connection)
-                    // Log the error, show it in debug mode, or display an appropriate message
-                    Console.WriteLine("SQL Error: " + ex.Message);
-                    Console.WriteLine("Stack Trace: " + ex.StackTrace);
+                    SentrySdk.CaptureException(ex);
                 }
             } catch(Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
         }
-    
+
+        public static void SignOutUser(string name)
+        {
+            string query = "DELETE FROM [session_user] WHERE uname = @uname";
+
+            using (SqlConnection connection = new SqlConnection(GraphsConnectionString))
+            {
+                SqlCommand command = new SqlCommand(query, connection);
+                command.Parameters.AddWithValue("@uname", name);
+                connection.Open();
+                command.ExecuteNonQuery();
+                connection.Close();
+            }
+        }
     }
 }

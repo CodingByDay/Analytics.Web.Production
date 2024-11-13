@@ -220,6 +220,7 @@ namespace Dash
         {
             try
             {
+                HelperClasses.UserSession.SignOutUser(HttpContext.Current.User.Identity.Name);
                 FormsAuthentication.SignOut();
                 Session["current"] = string.Empty;
                 Response.Redirect("Home.aspx", false);
