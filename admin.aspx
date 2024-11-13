@@ -563,6 +563,14 @@
             <div class="row">
               <div class="col-md-6">
                 <!-- Company Part -->
+
+                                  <!-- Hidden input for username -->
+                <input type="text" name="Username" style="display:none;" autocomplete="on">
+
+                <!-- Hidden input for password -->
+                <input type="password" name="Password" style="display:none;" autocomplete="on">
+
+
                 <div class="companyPart">
                   <div class="form-group">
                     <label for="companyName">Naziv podjetja</label>

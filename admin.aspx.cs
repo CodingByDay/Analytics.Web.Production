@@ -980,8 +980,9 @@ namespace Dash
                 }
                 else
                 {
-                    UpdateCompanyData();
+                    UpdateCompanyData(connName.Text, GetIdCompany(CurrentCompany));
                     CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
                 }
             }
             catch (Exception ex)
@@ -1047,35 +1048,40 @@ namespace Dash
             }
         }
 
-        private void UpdateCompanyData()
+        private void UpdateCompanyData(string dbName, int idCompany)
         {
             try
             {
+                // Define the SQL query with parameters
+                string query = "UPDATE companies SET database_name = @db_name WHERE id_company = @id_company";
+
+
+                // Create a new SQL connection
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    try
+                    // Open the connection
+                    conn.Open();
+
+                    // Create the SQL command with the query and connection
+                    using (SqlCommand command = new SqlCommand(query, conn))
                     {
-                        conn.Open();
-                        var websiteString = website.Text;
-                        var companyNum = companyNumber.Text;
-                        SqlCommand cmd = new SqlCommand($"UPDATE companies SET website='{websiteString}', company_number='{companyNum}' WHERE id_company={companiesGridView.FocusedRowIndex}", conn);
-                        cmd.ExecuteNonQuery();
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno spremenjeni podatki, informacije o konekciji spreminjajte v konfiguracijskem fajlu!')", true);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        // Add the parameters to prevent SQL injection
+                        command.Parameters.AddWithValue("@db_name", dbName);
+                        command.Parameters.AddWithValue("@id_company", idCompany);
+
+                        // Execute the update command
+                        command.ExecuteNonQuery();
                     }
                 }
             }
             catch (Exception ex)
             {
+                // Capture the exception with Sentry for logging and debugging
                 SentrySdk.CaptureException(ex);
             }
         }
 
-      
+
         protected void DeleteUser_Click(object sender, EventArgs e)
         {
             try

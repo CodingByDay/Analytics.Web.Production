@@ -164,7 +164,7 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
-            if (!permissionsUser.DashboardWithIdAllowed(dashboardID)&&permissionsGroup.DashboardWithIdAllowed(dashboardID))
+            if (!permissionsUser.DashboardWithIdAllowed(dashboardID)&&!permissionsGroup.DashboardWithIdAllowed(dashboardID))
             {
                 return null;
             }
