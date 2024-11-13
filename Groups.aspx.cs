@@ -128,8 +128,20 @@ namespace Dash
                 // If the value is null or empty, retrieve the first company and store it in the database
                 if (string.IsNullOrEmpty(company))
                 {
-                    company = GetFirstCompany();
-                    UserSession.SetSessionVariable("CurrentCompany", company);
+                    string type = GetUserType();
+                    if (!string.IsNullOrEmpty(type))
+                    {
+                        if (type == "SuperAdmin")
+                        {
+                            company = GetFirstCompany();
+                            UserSession.SetSessionVariable("CurrentCompany", company);
+                        } else if (type == "Admin")
+                        {
+                            company = GetCompanyName(GetCompanyIdForUser(HttpContext.Current.User.Identity.Name));
+                            UserSession.SetSessionVariable("CurrentCompany", company);
+                        }
+                    }
+
                 }
 
                 return company;
@@ -140,6 +152,7 @@ namespace Dash
                 UserSession.SetSessionVariable("CurrentCompany", value);
             }
         }
+
 
 
         private string GetFirstCompany()
@@ -402,9 +415,9 @@ namespace Dash
                             companyId = Convert.ToInt32(result); // Convert the result to an integer
                         }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-
+                        SentrySdk.CaptureException(ex);
                     }
                 }
 
@@ -737,7 +750,6 @@ namespace Dash
                     try
                     {
                         conn.Open();
-                        string uname = HttpContext.Current.User.Identity.Name;
                         cmd = new SqlCommand($"SELECT company_name FROM companies WHERE id_company={company}", conn);
                         var admin = (string)cmd.ExecuteScalar();
                         cmd.Dispose();
