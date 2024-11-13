@@ -309,8 +309,9 @@ namespace Dash
         {
             try
             {
-                DashboardPermissions dashboardPermissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
-                List<int> permittedDashboardIds = dashboardPermissions.Permissions.Select(p => p.id).ToList();
+                DashboardPermissions dashboardPermissionsUser = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+        
+                List<int> permittedDashboardIds = dashboardPermissionsUser.Permissions.Select(p => p.id).ToList();
                 string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
                 // Apply the filter to graphsGridView
                 string type = GetUserType();
@@ -634,7 +635,7 @@ namespace Dash
                 DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
-                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
+                    int idRow = (int) graphsGridView.GetRowValues(i, "id");
                     if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
                     {
                         graphsGridView.Selection.SetSelection(i, true);

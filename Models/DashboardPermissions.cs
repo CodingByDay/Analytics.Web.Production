@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Dash.Models
@@ -34,6 +35,8 @@ namespace Dash.Models
             }
             this.Permissions = GetPermissionsForGroup(group).Permissions;
         }
+
+
 
         public DashboardPermissions()
         {

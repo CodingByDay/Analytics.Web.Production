@@ -25,7 +25,7 @@ namespace Dash
     {
         private string connection;
         private SqlConnection conn;
-        private int companyID;
+        private int companyId;
         private int stringID;
         private string stringConnection;
         private int value;
@@ -373,7 +373,7 @@ namespace Dash
                         {
                             cmd.Parameters.AddWithValue("@uname", uname);
                             var result = cmd.ExecuteScalar();
-                            companyID = Convert.ToInt32(result);
+                            companyId = Convert.ToInt32(result);
                         }
                     }
                 }
@@ -381,7 +381,7 @@ namespace Dash
                 {
                     Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
                 }
-                string connectionName = GetConnectionStringName(companyID);
+                string connectionName = GetConnectionStringName(companyId);
                 return ConfigurationManager.ConnectionStrings[connectionName];
             }
             catch (Exception ex)
@@ -402,9 +402,9 @@ namespace Dash
                     using (var conn = new SqlConnection(connection))
                     {
                         conn.Open();
-                        using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyID", conn))
+                        using (var cmd = new SqlCommand("SELECT database_name FROM companies WHERE id_company = @companyId", conn))
                         {
-                            cmd.Parameters.AddWithValue("@companyID", companyID);
+                            cmd.Parameters.AddWithValue("@companyId", companyID);
 
                             var queryResult = cmd.ExecuteScalar();
                             if (queryResult != null)

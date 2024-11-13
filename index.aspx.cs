@@ -1,5 +1,6 @@
 ﻿using Dash.DatabaseStorage;
 using Dash.Models;
+using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
@@ -54,7 +55,6 @@ namespace Dash
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-
                 if (!IsPostBack)
                 {
                     ASPxDashboard3.SetConnectionStringsProvider(new DevExpress.DataAccess.Web.ConfigFileConnectionStringsProvider());
@@ -86,8 +86,7 @@ namespace Dash
             }
         }
 
-
-      
+    
 
         [WebMethod]
         public static void DeleteItem(string id)
@@ -162,13 +161,12 @@ namespace Dash
 
        
 
-        private ConnectionStringSettings GetConnectionString()
+        private ConnectionStringSettings GetConnectionString(string name)
         {
             try
             {
-                var ConnectionName = Session["conn"].ToString();
-                ConnectionStringSettings stringFinal = ConfigurationManager.ConnectionStrings[ConnectionName];
-                return stringFinal;
+                ConnectionStringSettings connection = ConfigurationManager.ConnectionStrings[name];
+                return connection;
             }
             catch (Exception ex)
             {
