@@ -385,10 +385,16 @@
             <!-- Users in the group -->
             <div class="col-md-5">
                 <h5>Uporabniki v skupini</h5>
-                <dx:BootstrapGridView ID="usersInGroupGrid" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
+                <dx:BootstrapGridView  ID="usersInGroupGrid" Width="100%" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
+
+                        <Settings VerticalScrollBarMode="Visible" />
+                        <SettingsPager  Mode="ShowAllRecords" Visible="False">
+                        </SettingsPager>
+
                     <Columns>
-                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" SelectAllCheckboxMode="AllPages"  />
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" Width="60"  SelectAllCheckboxMode="AllPages"  />
                         <dx:BootstrapGridViewTextColumn FieldName="uname" Caption="Uporabnik" />
+                        <dx:BootstrapGridViewTextColumn FieldName="full_name" Caption="Ime in priimek" />
                     </Columns>
                 </dx:BootstrapGridView>
                 <asp:SqlDataSource 
@@ -419,10 +425,14 @@
             <!-- Users not in the group -->
             <div class="col-md-5">
                 <h5>Uporabniki izven skupine</h5>
-                <dx:BootstrapGridView ID="usersNotInGroupGrid" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
+                <dx:BootstrapGridView ID="usersNotInGroupGrid" Width="100%" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
+                     <Settings VerticalScrollBarMode="Visible" />
+                     <SettingsPager  Mode="ShowAllRecords" Visible="False">
+                     </SettingsPager>
                     <Columns>
-                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" SelectAllCheckboxMode="AllPages" />
+                <dx:BootstrapGridViewCommandColumn ShowSelectCheckbox="true" Width="60" SelectAllCheckboxMode="AllPages" />
                         <dx:BootstrapGridViewTextColumn FieldName="uname" Caption="Uporabnik" />
+                        <dx:BootstrapGridViewTextColumn FieldName="full_name" Caption="Ime in priimek" />
                     </Columns>
                 </dx:BootstrapGridView>
                 <asp:SqlDataSource 

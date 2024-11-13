@@ -520,7 +520,6 @@ namespace Dash
                         {
                             var id = (int)plurals[0];
                             CurrentCompany = GetCompanyName(id);
-                            CurrentGroup = GetFirstGroupForCompany(CurrentCompany);
                             groupsGridView.FilterExpression = $"[company_id] = {id}";
                             groupsGridView.DataBind();
                             graphsGridView.DataBind();
