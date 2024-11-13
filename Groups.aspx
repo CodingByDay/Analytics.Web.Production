@@ -385,7 +385,8 @@
             <!-- Users in the group -->
             <div class="col-md-5">
                 <h5>Uporabniki v skupini</h5>
-                <dx:BootstrapGridView  ID="usersInGroupGrid" Width="100%" runat="server" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
+                <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersInGroupGrid" Width="100%" runat="server" Settings-ShowHeaderFilterButton="true" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
+                        <SettingsSearchPanel Visible="true" ShowApplyButton="False" ShowClearButton="False" />
 
                         <Settings VerticalScrollBarMode="Visible" />
                         <SettingsPager  Mode="ShowAllRecords" Visible="False">
@@ -425,7 +426,9 @@
             <!-- Users not in the group -->
             <div class="col-md-5">
                 <h5>Uporabniki izven skupine</h5>
-                <dx:BootstrapGridView ID="usersNotInGroupGrid" Width="100%" runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
+                <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersNotInGroupGrid" Width="100%"   runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
+                        <SettingsSearchPanel Visible="true" ShowApplyButton="False" ShowClearButton="False" />
+
                      <Settings VerticalScrollBarMode="Visible" />
                      <SettingsPager  Mode="ShowAllRecords" Visible="False">
                      </SettingsPager>
@@ -439,7 +442,7 @@
                     ID="UsersNotInGroupDataSource" 
                     runat="server"
                     ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-                    SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND (group_id != @group_id OR group_id IS NULL);">
+                    SelectCommand="SELECT * FROM users WHERE id_company = @id_company AND (group_id IS NULL);">
                     <SelectParameters>
                         <asp:Parameter Name="id_company" Type="Int32" />
                         <asp:Parameter Name="group_id" Type="Int32" />
