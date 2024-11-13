@@ -21,7 +21,7 @@ using MetaData = Dash.Models.MetaData;
 
 namespace Dash
 {
-    public partial class index : System.Web.UI.Page
+    public partial class Index : System.Web.UI.Page
     {
         public static string ConnectionString;
 
@@ -31,10 +31,7 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
-
-
       
-
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -56,7 +53,6 @@ namespace Dash
                 ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
-                // ASPxDashboard3.ConfigureDataConnection += ASPxDashboard3_ConfigureDataConnection;
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
 
                 if (!IsPostBack)
@@ -164,40 +160,7 @@ namespace Dash
             }
         }
 
-        private void ASPxDashboard3_ConfigureDataConnection(object sender, ConfigureDataConnectionWebEventArgs e)
-        {
-            try
-            {
-                string TARGET_URL = "https://dash.in-sist.si";
-                if (Session != null)
-                {
-                    if (System.Web.HttpContext.Current.Session["conn"] != null)
-                    {
-                        if (Session["conn"].ToString() != "")
-                        {
-                            string test = e.ConnectionName;
-                            ConnectionStringSettings conn = GetConnectionString();
-                            CustomStringConnectionParameters parameters =
-                            (CustomStringConnectionParameters)e.ConnectionParameters;
-
-                            parameters.ConnectionString = conn.ConnectionString;
-                        }
-                    }
-                    else
-                    {
-                        DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                    }
-                }
-                else
-                {
-                    DevExpress.Web.ASPxWebControl.RedirectOnCallback(TARGET_URL);
-                }
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
-        }
+       
 
         private ConnectionStringSettings GetConnectionString()
         {

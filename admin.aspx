@@ -223,7 +223,7 @@
 
             <dx:BootstrapGridView ID="companiesGridView" SettingsPopup-EditForm-AllowResize="false"  SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents  Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
+                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
               <Settings VerticalScrollBarMode="Visible" />
              <SettingsPager  Mode="ShowAllRecords" PageSize="15" Visible="False">
