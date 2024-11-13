@@ -203,6 +203,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin.aspx" />
+    <Content Include="assets\img\android-chrome-192x192.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\android-chrome-512x512.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\devices.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\favicon-16x16.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\favicon-32x32.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Images\edit.png" />
     <Content Include="App_Data\Navigation.xml" />
     <Content Include="App_Readme\Elmah.txt" />
@@ -220,21 +238,40 @@
     <Content Include="assets\img\app-gallery\app-gallery-7.png" />
     <Content Include="assets\img\app-gallery\app-gallery-8.png" />
     <Content Include="assets\img\app-gallery\app-gallery-9.png" />
-    <Content Include="assets\img\apple-touch-icon.png" />
-    <Content Include="assets\img\cards-2.png" />
-    <Content Include="assets\img\cards-4.png" />
-    <Content Include="assets\img\cards-6.png" />
-    <Content Include="assets\img\favicon.png" />
+    <Content Include="assets\img\apple-touch-icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\cards-2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\cards-4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\cards-6.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\img\features-1.svg" />
     <Content Include="assets\img\features-2.svg" />
     <Content Include="assets\img\features-3.svg" />
     <Content Include="assets\img\features-4.svg" />
-    <Content Include="assets\img\hero-bg.jpg" />
-    <Content Include="assets\img\logo.png" />
-    <Content Include="assets\img\page-title-bg.jpg" />
-    <Content Include="assets\img\phone_1.png" />
-    <Content Include="assets\img\phone_2.png" />
-    <Content Include="assets\img\steps.svg" />
+    <Content Include="assets\img\hero-bg.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\page-title-bg.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\phone_1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\phone_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\img\steps.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\img\testimonials\testimonials-1.jpg" />
     <Content Include="assets\img\testimonials\testimonials-2.jpg" />
     <Content Include="assets\img\testimonials\testimonials-3.jpg" />
@@ -301,33 +338,6 @@
     <Content Include="Groups.aspx" />
     <Content Include="Images\5f31883b507a4399a9cafe7bd10c269c.png" />
     <Content Include="Images\favicon.ico" />
-    <Content Include="Favicons\android-chrome-144x144.png" />
-    <Content Include="Favicons\android-chrome-192x192.png" />
-    <Content Include="Favicons\android-chrome-36x36.png" />
-    <Content Include="Favicons\android-chrome-48x48.png" />
-    <Content Include="Favicons\android-chrome-72x72.png" />
-    <Content Include="Favicons\android-chrome-96x96.png" />
-    <Content Include="Favicons\apple.png" />
-    <Content Include="Favicons\apple-touch-icon-120x120.png" />
-    <Content Include="Favicons\apple-touch-icon-144x144.png" />
-    <Content Include="Favicons\apple-touch-icon-152x152.png" />
-    <Content Include="Favicons\apple-touch-icon-180x180.png" />
-    <Content Include="Favicons\apple-touch-icon-57x57.png" />
-    <Content Include="Favicons\apple-touch-icon-60x60.png" />
-    <Content Include="Favicons\apple-touch-icon-72x72.png" />
-    <Content Include="Favicons\apple-touch-icon-76x76.png" />
-    <Content Include="Favicons\apple-touch-icon-precomposed.png" />
-    <Content Include="Favicons\apple-touch-icon.png" />
-    <Content Include="Favicons\favicon-16x16.png" />
-    <Content Include="Favicons\favicon-194x194.png" />
-    <Content Include="Favicons\favicon-32x32.png" />
-    <Content Include="Favicons\favicon-96x96.png" />
-    <Content Include="Favicons\favicon.ico" />
-    <Content Include="Favicons\mstile-144x144.png" />
-    <Content Include="Favicons\mstile-150x150.png" />
-    <Content Include="Favicons\mstile-310x150.png" />
-    <Content Include="Favicons\mstile-310x310.png" />
-    <Content Include="Favicons\mstile-70x70.png" />
     <Content Include="Global.asax" />
     <Content Include="Home.aspx" />
     <Content Include="Images\background.png" />
