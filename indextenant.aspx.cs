@@ -60,6 +60,17 @@ namespace Dash
                     }
                 }
 
+                string visibleDataMode = GetWorkingModeForUser(HttpContext.Current.User.Identity.Name);
+
+                if (visibleDataMode == "Viewer&Designer")
+                {
+                    ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                }
+                else
+                {
+                    ASPxDashboard3.WorkingMode = WorkingMode.ViewerOnly;
+                }
+
                 ASPxDashboard3.LimitVisibleDataMode = LimitVisibleDataMode.DesignerAndViewer;
                 ASPxDashboard3.SetConnectionStringsProvider(new ConfigFileConnectionStringsProvider());
                 ASPxDashboard3.SetDashboardStorage(dataBaseDashboardStorage);
@@ -68,7 +79,6 @@ namespace Dash
                 ASPxDashboard3.DashboardLoading += ASPxDashboard1_DashboardLoading;
                 ASPxDashboard3.ColorScheme = ASPxDashboard.ColorSchemeGreenMist;
                 ASPxDashboard3.DataRequestOptions.ItemDataRequestMode = ItemDataRequestMode.BatchRequests;
-                ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                 ASPxDashboard3.CustomExport += ASPxDashboard3_CustomExport;
                 ASPxDashboard3.SetInitialDashboardState += ASPxDashboard3_SetInitialDashboardState;
                 SetUpPage();
@@ -78,6 +88,48 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
+        private string GetWorkingModeForUser(string name)
+        {
+            // Placeholder to store the result
+            string workingMode = string.Empty;
+            try
+            {
+                // Define the SQL query with a parameter
+                string query = "SELECT view_allowed FROM users WHERE uname = @name";
+
+                // Create a new SQL connection
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    // Open the connection
+                    conn.Open();
+
+                    // Create the SQL command with the query and connection
+                    using (SqlCommand command = new SqlCommand(query, conn))
+                    {
+                        // Add the parameter to prevent SQL injection
+                        command.Parameters.AddWithValue("@name", name);
+
+                        // Execute the query and retrieve the result
+                        var result = command.ExecuteScalar();
+
+                        // If the result is not null, convert it to a string
+                        if (result != null)
+                        {
+                            workingMode = result.ToString();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Capture the exception with Sentry for logging and debugging
+                SentrySdk.CaptureException(ex);
+            }
+            // Return the working mode, or an empty string if not found
+            return workingMode;
+        }
+
 
         private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
         {
