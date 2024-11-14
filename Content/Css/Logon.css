@@ -5,9 +5,25 @@
 
 /* BASIC */
 
+:root {
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Raleway", sans-serif;
+    --nav-font: "Poppins", sans-serif;
+}
 
+/* Fonts */
 body {
-    font-family: "Poppins", sans-serif;
+    font-family: var(--default-font) !important;
+}
+
+h1, h2, h3 {
+    font-family: var(--heading-font) !important;
+}
+
+.navbar {
+    font-family: var(--nav-font) !important;
+}
+body {
     height: 100vh;
 }
 

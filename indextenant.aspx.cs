@@ -62,9 +62,9 @@ namespace Dash
 
                 string visibleDataMode = GetWorkingModeForUser(HttpContext.Current.User.Identity.Name);
 
-                if (visibleDataMode == "Viewer&Designer")
+                if (visibleDataMode == "Viewer & Designer")
                 {
-                    ASPxDashboard3.WorkingMode = WorkingMode.Designer;
+                    ASPxDashboard3.WorkingMode = WorkingMode.Viewer;
                 }
                 else
                 {

@@ -2,6 +2,39 @@
     font-size: 100.01%;
 }
 
+:root {
+    --default-font: "Roboto", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heading-font: "Raleway", sans-serif;
+    --nav-font: "Poppins", sans-serif;
+}
+
+/* Fonts */
+body {
+    font-family: var(--default-font)!important;
+}
+
+h1, h2, h3 {
+    font-family: var(--heading-font)!important;
+}
+
+.navbar {
+    font-family: var(--nav-font)!important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 img#pic {
     position: absolute;
     left: 2px;
@@ -96,7 +129,7 @@ html {
 body {
     margin: 0;
     height: 100%;
-    font: 1.3rem/1.61538 "Montserrat", sans-serif;
+    font: 1.3rem/1.61538 var(--heading-font);
 }
 
 p {

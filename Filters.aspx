@@ -29,7 +29,7 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
-            border: 2px solid #ccc;
+            border: 1px solid black;
             box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             text-align: center;
