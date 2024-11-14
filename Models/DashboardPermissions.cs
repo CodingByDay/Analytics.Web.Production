@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -36,6 +37,9 @@ namespace Dash.Models
             this.Permissions = GetPermissionsForGroup(group).Permissions;
         }
 
+ 
+
+      
 
 
         public DashboardPermissions()

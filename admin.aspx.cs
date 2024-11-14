@@ -7,6 +7,7 @@ using DevExpress.Utils.DragDrop;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
 using DevExpress.XtraReports.Configuration;
+using DevExpress.XtraRichEdit.Model;
 using Newtonsoft.Json;
 using Sentry;
 using System;
@@ -228,6 +229,7 @@ namespace Dash
                 graphsGridView.SettingsBehavior.AllowFocusedRow = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
+                graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
 
                 if (!IsPostBack)
                 {
@@ -531,15 +533,49 @@ namespace Dash
             }
         }
 
+
+        private int GetGroupForUser(string uname)
+        {
+            int groupId = -1;
+            string query = "SELECT group_id FROM users WHERE uname = @uname";
+
+            using (SqlConnection conn = new SqlConnection(connection))
+            {
+                SqlCommand command = new SqlCommand(query, conn);
+                command.Parameters.AddWithValue("@uname", uname);
+
+                try
+                {
+                    conn.Open();
+                    object result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        groupId = (int)result;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    SentrySdk.CaptureException(ex);
+                }
+            }
+
+            return groupId;
+        }
+
+
+
+
         private void ShowConfigForUser()
         {
             try
             {
-                DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+                // Group dashboards should be checked and disabled first. 14.11.2024
+                DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
                     int idRow = (int)graphsGridView.GetRowValues(i, "id");
-                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    if (dashboardPermissionsGroup.Permissions.Any(x => x.id == idRow))
                     {
                         graphsGridView.Selection.SetSelection(i, true);
                     }
@@ -548,10 +584,33 @@ namespace Dash
                         graphsGridView.Selection.SetSelection(i, false);
                     }
                 }
+
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
+                for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
+                {
+                    int idRow = (int) graphsGridView.GetRowValues(i, "id");
+                    if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
+                    {
+                        graphsGridView.Selection.SetSelection(i, true);
+                    }
+                }
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
+            }
+        }
+
+        private void GraphsGridView_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
+        {
+            if(e.KeyValue == null)
+            {
+                return;
+            }
+            DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
+            if(dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
+            {
+                e.Row.BackColor = System.Drawing.Color.LightBlue;
             }
         }
 
