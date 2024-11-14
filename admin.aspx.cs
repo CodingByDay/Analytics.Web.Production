@@ -591,7 +591,6 @@ namespace Dash
                         graphsGridView.Selection.SetSelection(i, true);
                     }
                 }
-                var debug = true;
             }
             catch (Exception ex)
             {
@@ -1252,6 +1251,7 @@ namespace Dash
                 {
                     SaveUserPermissions();
                     graphsGridView.DataBind();
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "saveGraphsBatch()", true);
                 }
             }
             catch (Exception ex)

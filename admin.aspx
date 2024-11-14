@@ -268,9 +268,9 @@
 
             <div class="action-buttons">
                  <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">
-                    <i class="fas fa-plus"></i>
+                   Dodaj <i class="fas fa-plus"> </i>
                 </button>
-                 <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany" UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="">
+                 <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany"  UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Pobriši">
                      <SettingsBootstrap RenderOption="Danger" />
                  </dx:BootstrapButton>
             </div>
@@ -355,9 +355,9 @@
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button" runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
-                    <i class="fas fa-plus"></i>
+                    Dodaj <i class="fas fa-plus"></i>
                     </button>
-                    <dx:BootstrapButton Badge-IconCssClass="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
+                    <dx:BootstrapButton Badge-IconCssClass="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -370,12 +370,12 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
+      <dx:BootstrapGridView  SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
+                    <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing"  Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
   
@@ -423,7 +423,10 @@
 
           </Columns>
           <SettingsSearchPanel Visible="True" />
-
+        <Templates>
+          <StatusBar>
+          </StatusBar>
+        </Templates>
       </dx:BootstrapGridView>
 
 
@@ -508,12 +511,40 @@
 
 
            <div class="action-buttons">
-                 <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-save" Text="" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
+
+               <div class="status_group">
+                 <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-save" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
+                   
                   </dx:BootstrapButton>
 
+               <dx:BootstrapButton 
+                    runat="server" 
+                    CssClasses-Icon="fa fa-eye" 
+                    Text="Predogled" 
+                    ID="previewChanges" 
+                    Visible="false"
+                    CssClasses-Control="actionButton" 
+                    AutoPostBack="false">
+                    <SettingsBootstrap RenderOption="Primary" />
+                    <ClientSideEvents Click="previewBatch" />
+                </dx:BootstrapButton>
+                  
+                <dx:BootstrapButton 
+                    runat="server" 
+                    CssClasses-Icon="fas fa-trash" 
+                    Text="Razveljavi" 
+                    Visible="false"
+                    ID="cancelChanges" 
+                    CssClasses-Control="actionButton" 
+                    AutoPostBack="false" >
+                    <SettingsBootstrap RenderOption="Danger" />
+                    <ClientSideEvents Click="cancelBatch" />
+                </dx:BootstrapButton>
 
-
+              
+            </div>
+            
           <div class="toolbar-custom">
 
               <div class="special_buttons">
@@ -711,7 +742,39 @@
 
 <script>
 
+    function OnBatchEditEndEditing(s, e) {
+        window.setTimeout(function () { SetButtonsVisibility(s); }, 0);
+    }
 
+    var isPreviewChangesVisible = false;
+
+    function saveGraphsBatch() {
+        dashboardGrid.UpdateEdit();
+    }
+
+    function previewBatch(s, e) {
+        if (isPreviewChangesVisible) {
+            s.SetText("Show changes");
+            dashboardGrid.batchEditApi.HideChangesPreview();
+        }
+        else {
+            s.SetText("Hide preview");
+            dashboardGrid.batchEditApi.ShowChangesPreview();
+        }
+        isPreviewChangesVisible = !isPreviewChangesVisible;
+    }
+
+    function cancelBatch(s, e) {
+        dashboardGrid.CancelEdit();
+        SetButtonsVisibility(dashboardGrid);
+    }
+
+    function SetButtonsVisibility(s) {
+        var visibility = s.batchEditApi.HasChanges()
+        btnPreview.SetVisible(visibility);
+        btnSave.SetVisible(visibility);
+        btnCancel.SetVisible(visibility);
+    }
 
     $("#newUser").click(function (e) {
 

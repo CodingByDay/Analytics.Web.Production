@@ -8,14 +8,17 @@
     justify-content: flex-end;
     width: 100%;
 }
-
+.status_group {
+    display: flex;
+    gap: 1em;
+}
 .actionButton {
-    width: 7em;
+    width: 8em;
 }
 body {
     overflow: hidden;
 }
-.dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus {
+.dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus, .fa.fa-eye {
     color: white;
     font-weight: bold;
 }
