@@ -72,9 +72,7 @@ namespace Dash
         private string databaseName;
 
         private string userRightNow;
-
-
-
+        private DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions();
 
         private bool IsEditCompany
         {
@@ -230,7 +228,6 @@ namespace Dash
                 graphsGridView.DataBound += GraphsGridView_DataBound;
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
                 graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
-
                 if (!IsPostBack)
                 {
 
@@ -571,7 +568,7 @@ namespace Dash
             try
             {
                 // Group dashboards should be checked and disabled first. 14.11.2024
-                DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
+                dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
                     int idRow = (int)graphsGridView.GetRowValues(i, "id");
@@ -594,6 +591,7 @@ namespace Dash
                         graphsGridView.Selection.SetSelection(i, true);
                     }
                 }
+                var debug = true;
             }
             catch (Exception ex)
             {
@@ -603,15 +601,17 @@ namespace Dash
 
         private void GraphsGridView_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
         {
+            
             if(e.KeyValue == null)
             {
                 return;
             }
-            DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
+
             if(dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
             {
                 e.Row.BackColor = System.Drawing.Color.LightBlue;
             }
+            
         }
 
         private void Authenticate()

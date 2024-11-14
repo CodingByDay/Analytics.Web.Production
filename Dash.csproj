@@ -584,6 +584,7 @@
     </Compile>
     <Compile Include="HelperClasses\CheckConnection.cs" />
     <Compile Include="HelperClasses\GeneralHelper.cs" />
+    <Compile Include="HelperClasses\PermissionsCache.cs" />
     <Compile Include="HelperClasses\UserSession.cs" />
     <Compile Include="Home.aspx.cs">
       <DependentUpon>Home.aspx</DependentUpon>
