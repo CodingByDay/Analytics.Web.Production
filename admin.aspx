@@ -370,12 +370,12 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView  SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
+      <dx:BootstrapGridView   SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
-                              <SettingsEditing Mode="Batch" />
+                              <SettingsEditing BatchEditSettings-AllowValidationOnEndEdit="false" Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing"  Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
+                    <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing" Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
   
@@ -398,25 +398,29 @@
               <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="caption"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
 
-              <dx:BootstrapGridViewTextColumn FieldName="custom_name" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
+                    <PropertiesTextEdit>
+                    <ValidationSettings RequiredField-IsRequired="false" />
+                  </PropertiesTextEdit>
               </dx:BootstrapGridViewTextColumn>
 
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
-                      <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource" >
+              <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+                      <PropertiesComboBox TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="TypeFilterDataSource" >
+                         <ValidationSettings  RequiredField-IsRequired="false" />
+                      </PropertiesComboBox>
+                  
+              </dx:BootstrapGridViewComboBoxColumn>
+
+              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+                      <PropertiesComboBox  AllowNull="true"  TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="CompanyFilterDataSource">
+                          <ValidationSettings RequiredField-IsRequired="false" />
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje"  SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
-                      <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="CompanyFilterDataSource">
-                      </PropertiesComboBox>
-              </dx:BootstrapGridViewComboBoxColumn>
-
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                     <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
-                        IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
+              <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+                     <PropertiesComboBox  TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="LanguageFilterDataSource">
+                        <ValidationSettings RequiredField-IsRequired="false" />
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
 
@@ -437,9 +441,9 @@
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
             SelectCommand=
             "
-                SELECT * FROM meta_options WHERE option_type = 'type'
+                SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'type'
                 UNION ALL
-                SELECT NULL AS id, 'type', '', 'Brez tipa'
+                SELECT -1 AS id, 'type', '', 'Brez tipa'
                 ORDER BY id ASC;
             ">
         </asp:SqlDataSource>
@@ -448,8 +452,8 @@
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
             SelectCommand=
             "
-            SELECT * FROM meta_options WHERE option_type = 'company'
-            UNION ALL SELECT NULL, 'company', '', 'Brez podjetja'
+            SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'company'
+            UNION ALL SELECT -1, 'company', '', 'Brez podjetja'
             ORDER BY id ASC;
             "
             >
@@ -459,8 +463,8 @@
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
             SelectCommand=
             "
-            SELECT * FROM meta_options WHERE option_type = 'language'
-             UNION ALL SELECT NULL, '', '', 'Brez' ORDER BY id ASC;"
+            SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'language'
+             UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
             >
         </asp:SqlDataSource>
 
@@ -501,7 +505,7 @@
         <asp:Parameter Name="dashboard_id" Type="Int32" />
         <asp:Parameter Name="company_id" Type="Int32" />
         <asp:Parameter Name="custom_name" Type="String" />
-        <asp:Parameter Name="meta_type"   ConvertEmptyStringToNull="true" Type="Int32" />
+        <asp:Parameter Name="meta_type" ConvertEmptyStringToNull="true" Type="Int32" />
         <asp:Parameter Name="meta_company" ConvertEmptyStringToNull="true" Type="Int32" />
         <asp:Parameter Name="meta_language" ConvertEmptyStringToNull="true" Type="Int32" />
     </UpdateParameters>
@@ -513,35 +517,17 @@
            <div class="action-buttons">
 
                <div class="status_group">
-                 <dx:BootstrapButton runat="server" CssClasses-Icon="fas fa-save" Text="Shrani" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
+                 <dx:BootstrapButton 
+                     runat="server"
+                     CssClasses-Icon="fas fa-save" 
+                     Text="Shrani" 
+                     ID="saveGraphs" 
+                     OnClick="SaveGraphs_Click" 
+                     CssClasses-Control="actionButton"
+                     AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
-                   
+
                   </dx:BootstrapButton>
-
-               <dx:BootstrapButton 
-                    runat="server" 
-                    CssClasses-Icon="fa fa-eye" 
-                    Text="Predogled" 
-                    ID="previewChanges" 
-                    Visible="false"
-                    CssClasses-Control="actionButton" 
-                    AutoPostBack="false">
-                    <SettingsBootstrap RenderOption="Primary" />
-                    <ClientSideEvents Click="previewBatch" />
-                </dx:BootstrapButton>
-                  
-                <dx:BootstrapButton 
-                    runat="server" 
-                    CssClasses-Icon="fas fa-trash" 
-                    Text="Razveljavi" 
-                    Visible="false"
-                    ID="cancelChanges" 
-                    CssClasses-Control="actionButton" 
-                    AutoPostBack="false" >
-                    <SettingsBootstrap RenderOption="Danger" />
-                    <ClientSideEvents Click="cancelBatch" />
-                </dx:BootstrapButton>
-
               
             </div>
             
@@ -743,38 +729,22 @@
 <script>
 
     function OnBatchEditEndEditing(s, e) {
-        window.setTimeout(function () { SetButtonsVisibility(s); }, 0);
+        setTimeout(function () {
+            if (s.batchEditApi.HasChanges()) {
+                debugger;
+                var data = {
+                    rowKey: e.key,
+                    columnName: e.focusedColumn.fieldName,
+                    cellValue: e.rowValues[e.focusedColumn.index].value
+                }
+                var jsonData = JSON.stringify(data);
+                dashboardGrid.PerformCallback(jsonData)
+                s.batchEditApi.EndEdit();
+            }
+        }, 1000);
     }
 
-    var isPreviewChangesVisible = false;
-
-    function saveGraphsBatch() {
-        dashboardGrid.UpdateEdit();
-    }
-
-    function previewBatch(s, e) {
-        if (isPreviewChangesVisible) {
-            s.SetText("Show changes");
-            dashboardGrid.batchEditApi.HideChangesPreview();
-        }
-        else {
-            s.SetText("Hide preview");
-            dashboardGrid.batchEditApi.ShowChangesPreview();
-        }
-        isPreviewChangesVisible = !isPreviewChangesVisible;
-    }
-
-    function cancelBatch(s, e) {
-        dashboardGrid.CancelEdit();
-        SetButtonsVisibility(dashboardGrid);
-    }
-
-    function SetButtonsVisibility(s) {
-        var visibility = s.batchEditApi.HasChanges()
-        btnPreview.SetVisible(visibility);
-        btnSave.SetVisible(visibility);
-        btnCancel.SetVisible(visibility);
-    }
+   
 
     $("#newUser").click(function (e) {
 

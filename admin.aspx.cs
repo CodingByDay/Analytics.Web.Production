@@ -1,4 +1,5 @@
-﻿using Dash.HelperClasses;
+﻿using Antlr.Runtime.Tree;
+using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
 using DevExpress.Data.Filtering;
@@ -228,6 +229,7 @@ namespace Dash
                 graphsGridView.DataBound += GraphsGridView_DataBound;
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
                 graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
+                graphsGridView.CustomCallback += GraphsGridView_CustomCallback;                
                 if (!IsPostBack)
                 {
 
@@ -246,6 +248,85 @@ namespace Dash
             }
         }
 
+
+
+        // This is the callback for the batch update 
+        private void GraphsGridView_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
+        {
+            try
+            {
+                var data = JsonConvert.DeserializeObject<BatchEditDataEvent>(e.Parameters);
+
+                // Parse the ID from the callback parameter
+                int dashboardId = Int32.Parse(data.RowKey);
+
+                if(data.ColumnName.StartsWith("meta"))
+                {
+                    string query = $@"
+                    UPDATE dashboards
+                    SET {data.ColumnName} = @cell_value
+                    WHERE id = @dashboard_id";
+
+                    // Execute the query
+                    using (SqlConnection conn = new SqlConnection(connection))
+                    {
+                        using (SqlCommand command = new SqlCommand(query, conn))
+                        {
+                            // Add parameters to prevent SQL injection
+                            command.Parameters.AddWithValue("@cell_value", data.CellValue);
+                            command.Parameters.AddWithValue("@dashboard_id", dashboardId);
+
+                            // Open the connection and execute the command
+                            conn.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                } else
+                {
+                    int companyId = GetIdCompany(CurrentCompany);
+                    string value = data.CellValue;
+                    // SQL Query for upsert logic
+                    string query = @"
+                        IF EXISTS (SELECT 1 FROM dashboards_custom_names WHERE dashboard_id = @dashboard_id AND company_id = @company_id)
+                        BEGIN
+                            UPDATE dashboards_custom_names
+                            SET custom_name = @custom_name
+                            WHERE dashboard_id = @dashboard_id AND company_id = @company_id;
+                        END
+                        ELSE
+                        BEGIN
+                            INSERT INTO dashboards_custom_names (dashboard_id, company_id, custom_name)
+                            VALUES (@dashboard_id, @company_id, @custom_name);
+                        END";
+
+                    // Execute the query
+                    using (SqlConnection conn = new SqlConnection(connection))
+                    {
+                        using (SqlCommand command = new SqlCommand(query, conn))
+                        {
+                            // Add parameters to prevent SQL injection
+                            command.Parameters.AddWithValue("@dashboard_id", dashboardId);
+                            command.Parameters.AddWithValue("@company_id", companyId);
+                            command.Parameters.AddWithValue("@custom_name", value);
+
+                            // Open the connection and execute the command
+                            conn.Open();
+                            command.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (log errors, etc.)
+                SentrySdk.CaptureException(ex);
+            } finally
+            {
+                graphsGridView.CancelEdit();
+                graphsGridView.e
+                graphsGridView.DataBind();
+            }
+        }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
         {
@@ -1251,7 +1332,6 @@ namespace Dash
                 {
                     SaveUserPermissions();
                     graphsGridView.DataBind();
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "saveGraphsBatch()", true);
                 }
             }
             catch (Exception ex)

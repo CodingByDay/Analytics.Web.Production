@@ -622,6 +622,7 @@
     <Compile Include="MobileDashboard.aspx.designer.cs">
       <DependentUpon>MobileDashboard.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Models\BatchEditDataEvent.cs" />
     <Compile Include="Models\DashboardFilters.cs" />
     <Compile Include="Models\DashboardOrder.cs" />
     <Compile Include="Models\DashboardPermissions.cs" />
