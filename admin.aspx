@@ -208,6 +208,18 @@
             userGrid.UpdateEdit(); // Calls SaveBatchChanges on the server side
         }
 
+
+        function saveBatchChangesDashboards() {
+            dashboardGrid.UpdateEdit();
+        }
+
+        function OnBatchEditEndEditing(s, e) {
+            setTimeout(function () {
+                if (s.batchEditApi.HasChanges()) {
+                    dashboardGrid.UpdateEdit();
+                }
+            }, 1000);
+        }
     </script>
 
 
@@ -370,9 +382,9 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView   SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
+      <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
-                              <SettingsEditing BatchEditSettings-AllowValidationOnEndEdit="false" Mode="Batch" />
+                              <SettingsEditing  Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing" Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
@@ -400,27 +412,25 @@
 
               <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
                     <PropertiesTextEdit>
-                    <ValidationSettings RequiredField-IsRequired="false" />
+                    <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
                   </PropertiesTextEdit>
               </dx:BootstrapGridViewTextColumn>
 
 
-              <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
-                      <PropertiesComboBox TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="TypeFilterDataSource" >
-                         <ValidationSettings  RequiredField-IsRequired="false" />
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+                      <PropertiesComboBox  ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >
+                      
                       </PropertiesComboBox>
                   
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
-                      <PropertiesComboBox  AllowNull="true"  TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="CompanyFilterDataSource">
-                          <ValidationSettings RequiredField-IsRequired="false" />
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+                      <PropertiesComboBox  ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                     <PropertiesComboBox  TextField="description" ValueField="id" ValueType="System.Int32" DataSourceID="LanguageFilterDataSource">
-                        <ValidationSettings RequiredField-IsRequired="false" />
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+                     <PropertiesComboBox ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
 
@@ -437,7 +447,8 @@
        </div>
        </div>
 
-        <asp:SqlDataSource ID="TypeFilterDataSource" runat="server" 
+        <asp:SqlDataSource 
+            ID="TypeFilterDataSource" runat="server" 
             ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
             SelectCommand=
             "
@@ -445,7 +456,11 @@
                 UNION ALL
                 SELECT -1 AS id, 'type', '', 'Brez tipa'
                 ORDER BY id ASC;
-            ">
+            "
+           
+            >
+
+
         </asp:SqlDataSource>
 
         <asp:SqlDataSource ID="CompanyFilterDataSource" runat="server" 
@@ -456,7 +471,10 @@
             UNION ALL SELECT -1, 'company', '', 'Brez podjetja'
             ORDER BY id ASC;
             "
+            
             >
+
+  
         </asp:SqlDataSource>
 
         <asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
@@ -465,7 +483,9 @@
             "
             SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'language'
              UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+
             >
+
         </asp:SqlDataSource>
 
             <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
@@ -497,7 +517,6 @@
     >
     
     <SelectParameters>
-        <asp:Parameter Name="uname" Type="String" Direction="Input" />
         <asp:Parameter Name="company" Type="Int32" Direction="Input" />       
     </SelectParameters>
     
@@ -527,6 +546,7 @@
                      AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
 
+                 
                   </dx:BootstrapButton>
               
             </div>

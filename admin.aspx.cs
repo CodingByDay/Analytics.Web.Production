@@ -227,9 +227,12 @@ namespace Dash
                 graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
                 graphsGridView.SettingsBehavior.AllowFocusedRow = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
+
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
+
+
                 graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
-                graphsGridView.CustomCallback += GraphsGridView_CustomCallback;                
+
                 if (!IsPostBack)
                 {
 
@@ -249,84 +252,6 @@ namespace Dash
         }
 
 
-
-        // This is the callback for the batch update 
-        private void GraphsGridView_CustomCallback(object sender, ASPxGridViewCustomCallbackEventArgs e)
-        {
-            try
-            {
-                var data = JsonConvert.DeserializeObject<BatchEditDataEvent>(e.Parameters);
-
-                // Parse the ID from the callback parameter
-                int dashboardId = Int32.Parse(data.RowKey);
-
-                if(data.ColumnName.StartsWith("meta"))
-                {
-                    string query = $@"
-                    UPDATE dashboards
-                    SET {data.ColumnName} = @cell_value
-                    WHERE id = @dashboard_id";
-
-                    // Execute the query
-                    using (SqlConnection conn = new SqlConnection(connection))
-                    {
-                        using (SqlCommand command = new SqlCommand(query, conn))
-                        {
-                            // Add parameters to prevent SQL injection
-                            command.Parameters.AddWithValue("@cell_value", data.CellValue);
-                            command.Parameters.AddWithValue("@dashboard_id", dashboardId);
-
-                            // Open the connection and execute the command
-                            conn.Open();
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                } else
-                {
-                    int companyId = GetIdCompany(CurrentCompany);
-                    string value = data.CellValue;
-                    // SQL Query for upsert logic
-                    string query = @"
-                        IF EXISTS (SELECT 1 FROM dashboards_custom_names WHERE dashboard_id = @dashboard_id AND company_id = @company_id)
-                        BEGIN
-                            UPDATE dashboards_custom_names
-                            SET custom_name = @custom_name
-                            WHERE dashboard_id = @dashboard_id AND company_id = @company_id;
-                        END
-                        ELSE
-                        BEGIN
-                            INSERT INTO dashboards_custom_names (dashboard_id, company_id, custom_name)
-                            VALUES (@dashboard_id, @company_id, @custom_name);
-                        END";
-
-                    // Execute the query
-                    using (SqlConnection conn = new SqlConnection(connection))
-                    {
-                        using (SqlCommand command = new SqlCommand(query, conn))
-                        {
-                            // Add parameters to prevent SQL injection
-                            command.Parameters.AddWithValue("@dashboard_id", dashboardId);
-                            command.Parameters.AddWithValue("@company_id", companyId);
-                            command.Parameters.AddWithValue("@custom_name", value);
-
-                            // Open the connection and execute the command
-                            conn.Open();
-                            command.ExecuteNonQuery();
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions (log errors, etc.)
-                SentrySdk.CaptureException(ex);
-            } finally
-            {
-                graphsGridView.CancelEdit();
-                graphsGridView.e
-                graphsGridView.DataBind();
-            }
-        }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
         {
@@ -400,7 +325,7 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
+           
         
         private void InitializeUiChanges()
         {
@@ -435,7 +360,6 @@ namespace Dash
                 if (CurrentUsername != string.Empty)
                 {
 
-                    query.SelectParameters["uname"].DefaultValue = CurrentUsername;
                     query.SelectParameters["company"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
 
                     if (graphsGridView.VisibleRowCount > 0)
@@ -1627,11 +1551,11 @@ namespace Dash
                         int dashboardId = (int)dr["id"];
                         if (i == beforeFocusedRowIndex)
                         {
-                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                            UpdateSortOrder(dashboardId, i + 1);
                         }
                         else if (i == focusedRowIndex)
                         {
-                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                            UpdateSortOrder(dashboardId, i - 1);
                         }                                                   
                     }
 
@@ -1664,11 +1588,11 @@ namespace Dash
                         int dashboardId = (int)dr["id"];
                         if (i == afterFocusedRowIndex)
                         {
-                            UpdateSortOrder(CurrentUsername, dashboardId, i - 1);
+                            UpdateSortOrder(dashboardId, i - 1);
                         }
                         else if (i == focusedRowIndex)
                         {
-                            UpdateSortOrder(CurrentUsername, dashboardId, i + 1);
+                            UpdateSortOrder(dashboardId, i + 1);
                         }
                     }
 
@@ -1683,30 +1607,18 @@ namespace Dash
             }
         }
 
-        private void UpdateSortOrder(string uname, int dashboardId, int sortOrder)
+        private void UpdateSortOrder(int dashboardId, int sortOrder)
         {
             try
             {
-                string query = @"
-                IF EXISTS (SELECT 1 FROM dashboards_sorted_by_user WHERE dashboard_id = @dashboard_id AND uname = @uname)
-                BEGIN
-                    UPDATE dashboards_sorted_by_user 
-                    SET sort_order = @sort_order 
-                    WHERE dashboard_id = @dashboard_id AND uname = @uname;
-                END
-                ELSE
-                BEGIN
-                    INSERT INTO dashboards_sorted_by_user (uname, dashboard_id, sort_order) 
-                    VALUES (@uname, @dashboard_id, @sort_order);
-                END";
+                string query = @"UPDATE dashboards SET sort = @sort WHERE id = @id;";
 
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
                     using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        cmd.Parameters.AddWithValue("@uname", uname);
-                        cmd.Parameters.AddWithValue("@dashboard_id", dashboardId);
-                        cmd.Parameters.AddWithValue("@sort_order", sortOrder);
+                        cmd.Parameters.AddWithValue("@id", dashboardId);
+                        cmd.Parameters.AddWithValue("@sort", sortOrder);
 
                         conn.Open();
                         cmd.ExecuteNonQuery();
