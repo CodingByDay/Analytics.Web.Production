@@ -258,10 +258,10 @@
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewGroup_ServerClick" id="NewGroup" class="btn btn-primary actionButton">
 
-                            <i class="fas fa-plus">Dodaj</i> 
+                            Dodaj <i class="fas fa-plus"></i> 
 
                     </button>
-                    <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="DeleteGroup" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton">
+                    <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
