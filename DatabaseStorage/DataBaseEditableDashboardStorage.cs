@@ -72,8 +72,9 @@ namespace Dash.DatabaseStorage
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-                SqlCommand GetCommand = new SqlCommand("SELECT id, caption FROM dashboards");
-                GetCommand.Connection = connection;
+                SqlCommand GetCommand = new SqlCommand("sp_get_admin_dashboards", connection);
+                GetCommand.CommandType = CommandType.StoredProcedure;
+
                 SqlDataReader reader = GetCommand.ExecuteReader();
                 while (reader.Read())
                 {

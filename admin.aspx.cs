@@ -267,6 +267,12 @@ namespace Dash
                 }
 
                 usersGridView.DataBind();
+
+
+                if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
+                {
+                    ShowConfigForUser();
+                }
             }
             catch (Exception ex)
             {
