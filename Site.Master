@@ -200,28 +200,28 @@
                 
 
                 <div class="inner" runat="server" id="adminButtonOuter"><a runat="server" id="adminButton" onserverclick="Administration_Click"  title="Administration">
-                <i class="fa fa-wrench"></i> Nastavitve
+                <i class="fa fa-wrench"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Settings%>" />
                 </a></div>
                
 
 
                <div class="inner" runat="server" id="groupsButtonOuter"><a runat="server" id="groupsButton" onserverclick="groupsButton_ServerClick"  title="Administration">
-                <i class="fa fa-users"></i> Skupine
+                <i class="fa fa-users"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Groups%>" />
                 </a></div>
 
     
 
                 <div class="inner" runat="server" id="filterButtonOuter"><a runat="server" id="filtersButton" onserverclick="Filters_Click"  title="Administration">
-                <i class="fa fa-filter"></i> Šifranti
+                <i class="fa fa-filter"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Filters%>" />
                 </a></div>
 
                 <div class="inner" runat="server" id="backButtonOuter" visible="false">   <a runat="server" id="backButton" onserverclick="Back_Click"  title="Back">
-                <i class="fa fa-reply"></i> Nazaj
+                <i class="fa fa-reply"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Back%>" />
                 </a></div>
 
 
                 <div class="inner" > <a runat="server" id="signOutButton" onserverclick="SignOut_Click"  title="Logout">
-                <i class="fa fa-chevron-right"></i> Odjava
+                <i class="fa fa-chevron-right"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Logout%>" />
                 </a></div>
 
 

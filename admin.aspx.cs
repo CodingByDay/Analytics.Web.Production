@@ -227,7 +227,7 @@ namespace Dash
                 graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
                 graphsGridView.SettingsBehavior.AllowFocusedRow = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
-
+               
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
 
@@ -240,6 +240,7 @@ namespace Dash
 
                 InitializeUiChanges();
                 Authenticate();
+                SetLocalizationProperties();
 
                 companiesGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
 
@@ -251,7 +252,29 @@ namespace Dash
             }
         }
 
+        private void SetLocalizationProperties()
+        {
+            try
+            {
+                deleteCompany.Text = Resources.Resource.Delete;
+                deleteUser.Text = Resources.Resource.Delete;
+                saveGraphs.Text = Resources.Resource.Save;
 
+
+                companiesGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
+
+
+                usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
+                usersGridView.Columns["Skupina"].Caption = Resources.Resource.Group;
+
+
+               
+
+            } catch(Exception err)
+            {
+                SentrySdk.CaptureException (err);
+            }
+        }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
         {
@@ -394,6 +417,10 @@ namespace Dash
         {
             try
             {
+
+             
+
+
                 if (CurrentUsername != string.Empty)
                 {
 

@@ -265,7 +265,7 @@
                     <CssClasses Control="control" />
 
 
- 
+
             
 
 
@@ -276,11 +276,12 @@
 	        </div>
 
 
+            
 
 
             <div class="action-buttons">
                  <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">
-                  Dodaj <i class="fas fa-plus"> </i>  
+                  <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"> </i>  
                 </button>
                  <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany"  UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Pobriši">
                      <SettingsBootstrap RenderOption="Danger" />
@@ -341,7 +342,7 @@
               <dx:BootstrapGridViewTextColumn FieldName="uname" Visible="true" Name="uname" ReadOnly="false" VisibleIndex="1" Caption="Uporabniško ime">
               <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="password"  Visible="false" Name="password" VisibleIndex="2" Caption="Password">
+              <dx:BootstrapGridViewTextColumn FieldName="password"  Visible="false"  Name="password" VisibleIndex="2" Caption="Password">
               </dx:BootstrapGridViewTextColumn>
               <dx:BootstrapGridViewTextColumn FieldName="user_role" Visible="false" Name="user_role" VisibleIndex="3" Caption="UserRole">
               </dx:BootstrapGridViewTextColumn>
@@ -367,7 +368,7 @@
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button" runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
-                    Dodaj <i class="fas fa-plus"></i>
+                    <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"></i>
                     </button>
                     <dx:BootstrapButton Badge-IconCssClass="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
@@ -417,19 +418,19 @@
               </dx:BootstrapGridViewTextColumn>
 
 
-              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="5" Caption="Tip">
                       <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >
                       
                       </PropertiesComboBox>
                   
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="5" Caption="Podjetje">
                       <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="6" Caption="Jezik">
                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
