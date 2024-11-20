@@ -259,18 +259,20 @@ namespace Dash
                 deleteCompany.Text = Resources.Resource.Delete;
                 deleteUser.Text = Resources.Resource.Delete;
                 saveGraphs.Text = Resources.Resource.Save;
-
-
                 companiesGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
-
-
-                usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
+                /*usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
                 usersGridView.Columns["Skupina"].Caption = Resources.Resource.Group;
+                graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
+                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;
+                graphsGridView.Columns["Tip"].Caption = Resources.Resource.Type;
+                graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
+                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;*/
 
 
-               
+                graphsGridView.DataBind();
 
-            } catch(Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException (err);
             }

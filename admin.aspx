@@ -411,7 +411,7 @@
               <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="caption"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
 
-              <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Interni naziv" VisibleIndex="3" Caption="Interni naziv">
                     <PropertiesTextEdit>
                     <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
                   </PropertiesTextEdit>
@@ -426,7 +426,7 @@
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="5" Caption="Podjetje">
-                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
+                      <PropertiesComboBox  AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
