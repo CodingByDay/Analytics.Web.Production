@@ -384,7 +384,7 @@
 
       <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
-                              <SettingsEditing  Mode="Batch" />
+                              <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing" Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
@@ -418,19 +418,19 @@
 
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
-                      <PropertiesComboBox  ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >
+                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >
                       
                       </PropertiesComboBox>
                   
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="3" Caption="Podjetje">
-                      <PropertiesComboBox  ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
+                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                     <PropertiesComboBox ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="LanguageFilterDataSource">
+                     <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>
              </dx:BootstrapGridViewComboBoxColumn>
 
@@ -748,21 +748,7 @@
 
 <script>
 
-    function OnBatchEditEndEditing(s, e) {
-        setTimeout(function () {
-            if (s.batchEditApi.HasChanges()) {
-                debugger;
-                var data = {
-                    rowKey: e.key,
-                    columnName: e.focusedColumn.fieldName,
-                    cellValue: e.rowValues[e.focusedColumn.index].value
-                }
-                var jsonData = JSON.stringify(data);
-                dashboardGrid.PerformCallback(jsonData)
-                s.batchEditApi.EndEdit();
-            }
-        }, 1000);
-    }
+  
 
    
 

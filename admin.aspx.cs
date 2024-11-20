@@ -311,14 +311,17 @@ namespace Dash
                     query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
                     query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
 
+                    // Ensure DBNull.Value is passed for nulls
                     query.UpdateParameters["meta_type"].DefaultValue = row.NewValues["meta_type"] != null
-                        ? row.NewValues["meta_type"].ToString()
+                        ? GetIdForMetaDescription("type", row.NewValues["meta_type"].ToString())
                         : DBNull.Value.ToString();
+
                     query.UpdateParameters["meta_company"].DefaultValue = row.NewValues["meta_company"] != null
-                        ? row.NewValues["meta_company"].ToString()
+                        ? GetIdForMetaDescription("company", row.NewValues["meta_company"].ToString())
                         : DBNull.Value.ToString();
+
                     query.UpdateParameters["meta_language"].DefaultValue = row.NewValues["meta_language"] != null
-                        ? row.NewValues["meta_language"].ToString()
+                        ? GetIdForMetaDescription("language", row.NewValues["meta_language"].ToString())
                         : DBNull.Value.ToString();
 
                     query.Update();
@@ -331,8 +334,36 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-           
-        
+        private string GetIdForMetaDescription(string type, string description)
+        {
+            try
+            {
+                // Corrected SQL query with both conditions combined using AND
+                string query = "SELECT id FROM meta_options WHERE option_type = @type AND description = @description";
+
+                using (SqlConnection conn = new SqlConnection(connection))
+                {
+                    conn.Open();
+                    SqlCommand command = new SqlCommand(query, conn);
+
+                    // Adding both parameters to the SQL command
+                    command.Parameters.Add("@type", SqlDbType.NVarChar).Value = type;
+                    command.Parameters.Add("@description", SqlDbType.NVarChar).Value = description;
+
+                    // Execute the query and retrieve the id
+                    object result = command.ExecuteScalar();
+
+                    // If result is not null, return it as string, otherwise return null
+                    return result != null ? result.ToString() : null;
+                }
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
+            }
+        }
+
+
         private void InitializeUiChanges()
         {
             try

@@ -166,7 +166,13 @@
                 s.PerformCallback(key);
             }
         }
-
+        function OnBatchEditEndEditing(s, e) {
+            setTimeout(function () {
+                if (s.batchEditApi.HasChanges()) {
+                    dashboardGrid.UpdateEdit();
+                }
+            }, 1000);
+        }
     </script>
 
 
@@ -218,7 +224,7 @@
 <SettingsText HeaderFilterCancelButton="Prekliči" HeaderFilterSelectAll ="Izberi vse" CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit="Uredi" SearchPanelEditorNullText="Poiščite uporabnika"></SettingsText>
 
           <SettingsDataSecurity AllowEdit="True" />
-                                    <Templates>
+             <Templates>
           <StatusBar>
           </StatusBar>
 </Templates>
@@ -255,7 +261,7 @@
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
-                            <i class="fas fa-plus">Dodaj</i>
+                           Dodaj <i class="fas fa-plus"></i>
                     </button>
                     <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
@@ -275,7 +281,7 @@
 <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
+                    <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing"  Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
    <Toolbars>
@@ -296,26 +302,27 @@
               <dx:BootstrapGridViewTextColumn FieldName="id" Settings-AllowHeaderFilter="False"   Visible="false" ReadOnly="True" VisibleIndex="1">
                   <SettingsEditForm Visible="False" />
               </dx:BootstrapGridViewTextColumn>
-              <dx:BootstrapGridViewTextColumn FieldName="caption" Settings-AllowHeaderFilter="False"   Name="Graf" VisibleIndex="2" Caption="Naziv">
+              <dx:BootstrapGridViewTextColumn ReadOnly="true" FieldName="caption" Settings-AllowHeaderFilter="False"   Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
                 <dx:BootstrapGridViewTextColumn FieldName="custom_name" Settings-AllowHeaderFilter="False"  Name="Podjetje" VisibleIndex="3" Caption="Interni naziv">
                 </dx:BootstrapGridViewTextColumn>
 
 
-               <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
-                     <PropertiesComboBox TextField="description" ValueField="id" EnableSynchronization="False"
-                       IncrementalFilteringMode="StartsWith" AllowNull="true" DataSourceID="TypeFilterDataSource">
-                     </PropertiesComboBox>
-             </dx:BootstrapGridViewComboBoxColumn>
+               <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+
+             </dx:BootstrapGridViewTextColumn>
 
 
-             <dx:BootstrapGridViewComboBoxColumn SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-                    <PropertiesComboBox  TextField="description" ValueField="id" EnableSynchronization="False"
-                       IncrementalFilteringMode="StartsWith" AllowNull="true"  DataSourceID="LanguageFilterDataSource">
-                    </PropertiesComboBox>
-            </dx:BootstrapGridViewComboBoxColumn>
+             <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+
+            </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
+
+                          <Templates>
+          <StatusBar>
+          </StatusBar>
+</Templates>
       </dx:BootstrapGridView>
 
 
@@ -370,7 +377,6 @@
     >
     
     <SelectParameters>
-        <asp:Parameter Name="uname" Type="String" Direction="Input" />
         <asp:Parameter Name="company" Type="Int32" Direction="Input" />       
     </SelectParameters>
     
@@ -393,20 +399,6 @@
 
 
 
-          <div class="toolbar-custom">
-               <div class="special_buttons">
-
-                       <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-up" runat="server" Text="" ID="MoveUpButton" OnClick="MoveUpButton_Click"  AutoPostBack="false">
-                        <SettingsBootstrap RenderOption="Primary" />
-                      </dx:BootstrapButton>
-     
-     
-                     <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-down" runat="server" Text="" ID="MoveDownButton" OnClick="MoveDownButton_Click" AutoPostBack="false">
-                        <SettingsBootstrap RenderOption="Primary" />
-                      </dx:BootstrapButton>
-         
-                 </div>
-        </div>
 
 
            </div>
