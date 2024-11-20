@@ -286,7 +286,6 @@ namespace Dash.DatabaseStorage
                     GetCommand.CommandType = CommandType.StoredProcedure;
 
                     // Add parameters for the stored procedure
-                    GetCommand.Parameters.AddWithValue("@uname", HttpContext.Current.User.Identity.Name);
                     GetCommand.Parameters.AddWithValue("@company", GetIdCompany(GetCompanyForUser()));
 
                     // Execute the command and read the results
