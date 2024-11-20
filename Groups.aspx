@@ -111,7 +111,7 @@
 
         function AdjustSize(gridName) {
 
-            var height = Math.max(0, document.documentElement.clientHeight - (0.2 * document.documentElement.clientHeight)); // 10vh bottom margin 06.09.2024 Janko Jovičić
+            var height = Math.max(0, document.documentElement.clientHeight - (0.25 * document.documentElement.clientHeight)); 
 
             if (gridName == "company") {
                 companyGrid.SetHeight(height);
@@ -261,7 +261,7 @@
                             Dodaj <i class="fas fa-plus"></i> 
 
                     </button>
-                    <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton">
+                    <dx:BootstrapButton runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši"  CssClasses-Icon="fas fa-trash" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton right">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        

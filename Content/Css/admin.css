@@ -8,6 +8,14 @@
     justify-content: flex-end;
     width: 100%;
 }
+
+.right {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-around;
+    align-items: center;
+}
+
 .status_group {
     display: flex;
     gap: 1em;

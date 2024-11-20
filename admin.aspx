@@ -280,7 +280,7 @@
 
             <div class="action-buttons">
                  <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">
-                   Dodaj <i class="fas fa-plus"> </i>
+                  Dodaj <i class="fas fa-plus"> </i>  
                 </button>
                  <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany"  UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Pobriši">
                      <SettingsBootstrap RenderOption="Danger" />
@@ -538,8 +538,8 @@
                <div class="status_group">
                  <dx:BootstrapButton 
                      runat="server"
-                     CssClasses-Icon="fas fa-save" 
                      Text="Shrani" 
+                     CssClasses-Icon="fas fa-save" 
                      ID="saveGraphs" 
                      OnClick="SaveGraphs_Click" 
                      CssClasses-Control="actionButton"
