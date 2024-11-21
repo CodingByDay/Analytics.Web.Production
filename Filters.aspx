@@ -48,16 +48,16 @@
 
  <div class="containerFilters">
     <div class="square" onclick="openModal('modal1')">
-        <img src="images/type.png" alt="Tip šifranta" />
-        <span>Šifrant tipov</span>
+        <img src="images/type.png"  />
+        <span><asp:Literal runat="server" Text="<%$ Resources:Resource, FiltersType%>" /></span>
     </div>
     <div class="square" onclick="openModal('modal2')">
-        <img src="images/organization.png" alt="Šifrant podjetj" />
-        <span>Šifrant podjetj</span>
+        <img src="images/organization.png"  />
+        <span><asp:Literal runat="server" Text="<%$ Resources:Resource, FiltersCompany%>" /></span>
     </div>
     <div class="square" onclick="openModal('modal3')">
-        <img src="images/language.png" alt="Šifrant jezikov" />
-        <span>Šifrant jezikov</span>
+        <img src="images/language.png"  />
+        <span><asp:Literal runat="server" Text="<%$ Resources:Resource, FiltersLanguages%>" /></span>
     </div>
 </div>
 
@@ -66,7 +66,6 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal1Label">Šifrant tipov</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -87,7 +86,8 @@
                         <dx:BootstrapGridViewDataColumn FieldName="value" Caption="Vrednost" />
                         <dx:BootstrapGridViewDataColumn FieldName="description" Caption="Opis" />
                     </Columns>
-                                                    <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " CommandDelete=" " ></SettingsText>
+
+                    <SettingsText CommandUpdate="Posodobi" CommandCancel="Zapri" CommandEdit=" " CommandDelete=" " ></SettingsText>
 
                     <SettingsEditing Mode="EditForm" />
                 </dx:BootstrapGridView>
@@ -128,7 +128,6 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal2Label">Šifrant podjetj</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -189,7 +188,6 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modal3Label">Šifrant jezikov</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

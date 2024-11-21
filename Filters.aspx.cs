@@ -1,4 +1,5 @@
 ﻿using Dash.Log;
+using DevExpress.XtraRichEdit.Commands;
 using DevExpress.XtraRichEdit.Model;
 using Sentry;
 using System;
@@ -38,10 +39,53 @@ namespace Dash
 
                 InitializeUiChanges();
                 Authenticate();
+                SetLocalizationProperties();
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+        private void SetLocalizationProperties()
+        {
+            try
+            {
+
+
+                gridViewTypes.Columns["Možnosti"].Caption = Resources.Resource.Actions;
+                gridViewTypes.Columns["Vrednost"].Caption = Resources.Resource.Value;
+                gridViewTypes.Columns["Opis"].Caption = Resources.Resource.Description;
+                gridViewTypes.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
+                gridViewTypes.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                gridViewTypes.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                gridViewTypes.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+                gridViewTypes.SettingsText.CommandCancel = Resources.Resource.Cancel;
+                gridViewTypes.SettingsText.CommandUpdate = Resources.Resource.Update;
+
+
+                gridViewOrganizations.Columns["Možnosti"].Caption = Resources.Resource.Actions;
+                gridViewOrganizations.Columns["Vrednost"].Caption = Resources.Resource.Value;
+                gridViewOrganizations.Columns["Opis"].Caption = Resources.Resource.Description;
+                gridViewOrganizations.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
+                gridViewOrganizations.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                gridViewOrganizations.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                gridViewOrganizations.SettingsText.CommandCancel = Resources.Resource.Cancel;
+                gridViewOrganizations.SettingsText.CommandUpdate = Resources.Resource.Update;
+
+                gridViewLanguages.Columns["Možnosti"].Caption = Resources.Resource.Actions;
+                gridViewLanguages.Columns["Vrednost"].Caption = Resources.Resource.Value;
+                gridViewLanguages.Columns["Opis"].Caption = Resources.Resource.Description;
+                gridViewLanguages.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                gridViewLanguages.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                gridViewLanguages.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+                gridViewLanguages.SettingsText.CommandCancel = Resources.Resource.Cancel;
+                gridViewLanguages.SettingsText.CommandUpdate = Resources.Resource.Update;
+            }
+            catch (Exception err)
+            {
+                SentrySdk.CaptureException(err);
             }
         }
 
