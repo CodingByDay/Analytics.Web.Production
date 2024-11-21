@@ -334,7 +334,7 @@ namespace Dash
                 companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
                 companiesGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
                 companiesGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
-                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
 
                 groupsGridView.Columns["Naziv"].Caption = Resources.Resource.Username;
                 groupsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGroups;

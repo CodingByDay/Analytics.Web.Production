@@ -5,6 +5,7 @@ using DevExpress.Utils.Behaviors;
 using DevExpress.Utils.DragDrop;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
+using DevExpress.XtraRichEdit.Commands;
 using Newtonsoft.Json;
 using Sentry;
 using System;
@@ -144,7 +145,35 @@ namespace Dash
                 UserSession.SetSessionVariable("CurrentCompany", value);
             }
         }
+        private void SetLocalizationProperties()
+        {
+            try
+            {
+                registrationButton.Text = Resources.Resource.Confirm;
+                deleteUser.Text = Resources.Resource.Delete;
+                saveGraphs.Text = Resources.Resource.Save;
 
+
+                usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
+                usersGridView.Columns["Skupina"].Caption = Resources.Resource.Group;
+                usersGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
+                usersGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                usersGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+
+                graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
+                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;
+                graphsGridView.Columns["Tip"].Caption = Resources.Resource.Type;
+                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;
+                graphsGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+
+            }
+            catch (Exception err)
+            {
+                SentrySdk.CaptureException(err);
+            }
+        }
         private string GetFirstCompany()
         {
             try
@@ -211,6 +240,7 @@ namespace Dash
                 InitializeUiChanges();
                 Authenticate();
                 LimitDashboardsToLocalAdminPermissions();
+                SetLocalizationProperties();
             }
             catch (Exception ex)
             {
@@ -456,11 +486,11 @@ namespace Dash
                 e.Handled = true;
 
                 List<MetaOption> data = new List<MetaOption>();
-                if (e.Column.Caption == "Tip")
+                if (e.Column.Caption == "Tip" || e.Column.Caption == "Type")
                 {
                     data = GetFilterValuesForSpecificFilter("type");
                 }
-                else if (e.Column.Caption == "Jezik")
+                else if (e.Column.Caption == "Jezik" || e.Column.Caption == "Language")
                 {
                     data = GetFilterValuesForSpecificFilter("language");
                 }

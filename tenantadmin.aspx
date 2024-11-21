@@ -229,7 +229,7 @@
           </StatusBar>
 </Templates>
           <Columns>
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="false" VisibleIndex="0" ShowEditButton="False" Caption=" " HeaderBadge-IconCssClass="fa fa-caret-down" >
                         <CustomButtons>
                             <dx:BootstrapGridViewCommandColumnCustomButton IconCssClass="fas fa-edit"  Visibility="AllDataRows"  ID="EditBtn" Text="" CssClass="custom-edit-btn" />
                         </CustomButtons>
@@ -261,7 +261,7 @@
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
-                           Dodaj <i class="fas fa-plus"></i>
+                           <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /><i class="fas fa-plus"></i>
                     </button>
                     <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
@@ -296,7 +296,7 @@
           <SettingsDataSecurity AllowEdit="True" />
           <Columns>
 
-              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="False" Caption="Možnosti">
+              <dx:BootstrapGridViewCommandColumn SelectAllCheckboxMode="Page" ShowSelectCheckbox="True" VisibleIndex="0" ShowEditButton="False" Caption=" " HeaderBadge-IconCssClass="fa fa-caret-down" >
 
               </dx:BootstrapGridViewCommandColumn>
               <dx:BootstrapGridViewTextColumn FieldName="id" Settings-AllowHeaderFilter="False"   Visible="false" ReadOnly="True" VisibleIndex="1">
@@ -309,12 +309,16 @@
 
 
                <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
-
+                    <SettingsHeaderFilter>
+                     <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
+                 </SettingsHeaderFilter>
              </dx:BootstrapGridViewTextColumn>
 
 
              <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
-
+                  <SettingsHeaderFilter>
+                     <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
+                 </SettingsHeaderFilter>
             </dx:BootstrapGridViewTextColumn>
           </Columns>
           <SettingsSearchPanel Visible="True" />
@@ -441,40 +445,40 @@
 
 
                 <div class="form-group">
-                  <label for="TxtName">Ime in Priimek</label>
-                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtName"><asp:Literal runat="server" Text="<%$ Resources:Resource, Username%>" /></label>
+                  <asp:TextBox ID="TxtName" runat="server" placeholder="<%$ Resources:Resource, Username%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control"></asp:TextBox>
+                  <label for="email"><asp:Literal runat="server" Text="<%$ Resources:Resource, Email%>" /></label>
+                  <asp:TextBox ID="email" runat="server" placeholder="<%$ Resources:Resource, Email%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtUserName">Uporabniško ime</label>
-                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtUserName"><asp:Literal runat="server" Text="<%$ Resources:Resource, Username%>" /></label>
+                  <asp:TextBox ID="TxtUserName" runat="server" placeholder="<%$ Resources:Resource, Username%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="referer">Komercialist</label>
-                  <asp:TextBox ID="referrer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
+                  <label for="referer"><asp:Literal runat="server" Text="<%$ Resources:Resource, Commercialist%>" /></label>
+                  <asp:TextBox ID="referrer" runat="server" placeholder="<%$ Resources:Resource, Commercialist%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtPassword">Geslo</label>
-                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtPassword"><asp:Literal runat="server" Text="<%$ Resources:Resource, Password%>" /></label>
+                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="<%$ Resources:Resource, Password%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtRePassword">Ponovite geslo</label>
-                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtRePassword"><asp:Literal runat="server" Text="<%$ Resources:Resource, RePassword%>" /></label>
+                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="<%$ Resources:Resource, RePassword%>" CssClass="form-control"></asp:TextBox>
                 </div>
               </div>
               <div class="col-md-6">
                 <!-- User Role and Rights -->
-                <h3>Vloga uporabnika</h3>
+                <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRole%>" /></h5>
                 <div class="form-group">
                   <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
                     <asp:ListItem>Admin</asp:ListItem>
                     <asp:ListItem>User</asp:ListItem>
                   </asp:RadioButtonList>
                 </div>
-                <h3>Pravice uporabnika</h3>
+                <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRights%>" /></h5>
                 <div class="form-group">
                   <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
                     <asp:ListItem>Viewer</asp:ListItem>
@@ -490,7 +494,7 @@
       </div>
       <div class="modal-footer">
         <asp:Button CssClass="btn btn-primary" ID="registrationButton" runat="server" Text="Potrdi" OnClick="RegistrationButton_Click" />
-        <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal">Zapri</button>
+        <button type="button" class="btn btn-danger" id="closeUser" data-dismiss="modal"><asp:Literal runat="server" Text="<%$ Resources:Resource, Close%>" /></button>
       </div>
     </div>
   </div>

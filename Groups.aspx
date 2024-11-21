@@ -387,7 +387,7 @@
 
                 <asp:Literal runat="server" Text="<%$ Resources:Resource, UsersInsideGroup%>" />
 
-                <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersInGroupGrid" Width="100%" runat="server" Settings-ShowHeaderFilterButton="true" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
+                <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersInGroupGrid" Width="100%" runat="server" Settings-ShowHeaderFilterButton="false" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
                         <SettingsSearchPanel Visible="true" ShowApplyButton="False" ShowClearButton="False" />
 
                         <Settings VerticalScrollBarMode="Visible" />
