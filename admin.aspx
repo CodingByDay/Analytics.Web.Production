@@ -621,16 +621,16 @@
 
                 <div class="companyPart">
                   <div class="form-group">
-                    <label for="companyName">Naziv podjetja</label>
-                    <asp:TextBox ID="companyName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="companyName"><asp:Literal runat="server" Text="<%$ Resources:Resource, CompanyName%>" /></label>
+                    <asp:TextBox ID="companyName" runat="server" placeholder="<%$ Resources:Resource, CompanyName%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="companyNumber">Kontaktna številka</label>
-                    <asp:TextBox ID="companyNumber" runat="server" placeholder="Kontaktna številka" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="companyNumber"><asp:Literal runat="server" Text="<%$ Resources:Resource, ContactNumber%>" /></label>
+                    <asp:TextBox ID="companyNumber" runat="server" placeholder="<%$ Resources:Resource, ContactNumber%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="website">Spletna stran</label>
-                    <asp:TextBox ID="website" runat="server" placeholder="Spletna stran" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="website"><asp:Literal runat="server" Text="<%$ Resources:Resource, Website%>" /></label>
+                    <asp:TextBox ID="website" runat="server" placeholder="<%$ Resources:Resource, Website%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>                  
                 </div>
               </div>
@@ -638,24 +638,24 @@
                 <!-- Connection Part -->
                 <div class="connectionPart">
                   <div class="form-group">
-                    <label for="dbDataSource">Data source</label>
-                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="Data source" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="dbDataSource"><asp:Literal runat="server" Text="<%$ Resources:Resource, Datasource%>" /></label>
+                    <asp:TextBox ID="dbDataSource" runat="server" placeholder="<%$ Resources:Resource, Datasource%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="dbUser">Uporabnik</label>
-                    <asp:TextBox ID="dbUser" runat="server" placeholder="Uporabnik" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="dbUser"><asp:Literal runat="server" Text="<%$ Resources:Resource, User%>" /></label>
+                    <asp:TextBox ID="dbUser" runat="server" placeholder="<%$ Resources:Resource, User%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="dbPassword">Geslo</label>
-                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="dbPassword"><asp:Literal runat="server" Text="<%$ Resources:Resource, Password%>" /></label>
+                    <asp:TextBox ID="dbPassword" runat="server" TextMode="Password" placeholder="<%$ Resources:Resource, Password%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="dbNameInstance">Naziv baze</label>
-                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="dbNameInstance"><asp:Literal runat="server" Text="<%$ Resources:Resource, DatabaseName%>" /></label>
+                    <asp:TextBox ID="dbNameInstance" runat="server" placeholder="<%$ Resources:Resource, DatabaseName%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                   <div class="form-group">
-                    <label for="connName">Naziv povezave</label>
-                    <asp:TextBox ID="connName" runat="server" placeholder="Ime" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
+                    <label for="connName"><asp:Literal runat="server" Text="<%$ Resources:Resource, ConnectionName%>" /></label>
+                    <asp:TextBox ID="connName" runat="server" placeholder="<%$ Resources:Resource, ConnectionName%>" CssClass="form-control" Enabled="true" ClientIDMode="Static"></asp:TextBox>
                   </div>
                 </div>
               </div>
@@ -665,8 +665,8 @@
       </div>
       <div class="modal-footer">
         <asp:Button CssClass="btn btn-primary" ID="companyButton" ClientIDMode="AutoID" Enabled="true" style="display:none" runat="server" Text="Potrdi" OnClick="CompanyButton_Click" />
-        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test">Testiraj</button>
-        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing">Potrdi</button>
+        <button type="button" class="btn btn-info" onclick="testConnection(); return false;" id="test"><asp:Literal runat="server" Text="<%$ Resources:Resource, Test%>" /></button>
+        <button type="button" class="btn btn-primary" onclick="checkFields(); return false;" id="testing"><asp:Literal runat="server" Text="<%$ Resources:Resource, Confirm%>" /></button>
       </div>
     </div>
   </div>
@@ -693,40 +693,40 @@
                 <input type="password" name="Password" style="display:none;" autocomplete="on">
 
                 <div class="form-group">
-                  <label for="TxtName">Ime in Priimek</label>
-                  <asp:TextBox ID="TxtName" runat="server" placeholder="Ime in priimek" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtName"><asp:Literal runat="server" Text="<%$ Resources:Resource, NameSurname%>" /></label>
+                  <asp:TextBox ID="TxtName" runat="server" placeholder="<%$ Resources:Resource, NameSurname%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="email">Email</label>
-                  <asp:TextBox ID="email" runat="server" placeholder="Email" CssClass="form-control"></asp:TextBox>
+                  <label for="email"><asp:Literal runat="server" Text="<%$ Resources:Resource, Email%>" /></label>
+                  <asp:TextBox ID="email" runat="server" placeholder="<%$ Resources:Resource, Email%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtUserName">Uporabniško ime</label>
-                  <asp:TextBox  ID="TxtUserName" runat="server" placeholder="Uporabniško ime" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtUserName"><asp:Literal runat="server" Text="<%$ Resources:Resource, Username%>" /></label>
+                  <asp:TextBox  ID="TxtUserName" runat="server" placeholder="<%$ Resources:Resource, Username%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="referer">Komercialist</label>
-                  <asp:TextBox ID="referrer" runat="server" placeholder="Komercialist" CssClass="form-control"></asp:TextBox>
+                  <label for="referer"><asp:Literal runat="server" Text="<%$ Resources:Resource, Commercialist%>" /></label>
+                  <asp:TextBox ID="referrer" runat="server" placeholder="<%$ Resources:Resource, Commercialist%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtPassword">Geslo</label>
-                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtPassword"><asp:Literal runat="server" Text="<%$ Resources:Resource, Password%>" /></label>
+                  <asp:TextBox ID="TxtPassword" runat="server" TextMode="Password" placeholder="<%$ Resources:Resource, Password%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
-                  <label for="TxtRePassword">Ponovite geslo</label>
-                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="Geslo še enkrat" CssClass="form-control"></asp:TextBox>
+                  <label for="TxtRePassword"><asp:Literal runat="server" Text="<%$ Resources:Resource, RePassword%>" /></label>
+                  <asp:TextBox ID="TxtRePassword" runat="server" TextMode="Password" placeholder="<%$ Resources:Resource, RePassword%>" CssClass="form-control"></asp:TextBox>
                 </div>
               </div>
               <div class="col-md-6">
                 <!-- User Role and Rights -->
-                <h5>Vloga uporabnika</h5>
+                <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRole%>" /></h5>
                 <div class="form-group">
                   <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
                     <asp:ListItem>Admin</asp:ListItem>
                     <asp:ListItem>User</asp:ListItem>
                   </asp:RadioButtonList>
                 </div>
-                <h5>Pravice uporabnika</h5>
+                <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRights%>" /></h5>
                 <div class="form-group">
                   <asp:DropDownList ID="userTypeList" runat="server" CssClass="form-control">
                     <asp:ListItem>Viewer</asp:ListItem>

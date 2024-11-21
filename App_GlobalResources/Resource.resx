@@ -126,14 +126,41 @@
   <data name="Cancel" xml:space="preserve">
     <value>Cancel</value>
   </data>
+  <data name="Close" xml:space="preserve">
+    <value>Close</value>
+  </data>
+  <data name="Commercialist" xml:space="preserve">
+    <value>Commercialist</value>
+  </data>
   <data name="Company" xml:space="preserve">
     <value>Company</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Company name</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirm</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>Connection name</value>
+  </data>
+  <data name="ContactNumber" xml:space="preserve">
+    <value>Contact number</value>
+  </data>
+  <data name="DatabaseName" xml:space="preserve">
+    <value>Database name</value>
+  </data>
+  <data name="Datasource" xml:space="preserve">
+    <value>Data source</value>
   </data>
   <data name="Delete" xml:space="preserve">
     <value>Delete</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
   </data>
   <data name="FilterCompany" xml:space="preserve">
     <value>Filter company</value>
@@ -144,11 +171,29 @@
   <data name="Filters" xml:space="preserve">
     <value>Filters</value>
   </data>
+  <data name="FiltersCompany" xml:space="preserve">
+    <value>Filter companies</value>
+  </data>
+  <data name="FiltersLanguages" xml:space="preserve">
+    <value>Filter languages</value>
+  </data>
+  <data name="FiltersType" xml:space="preserve">
+    <value>Filter types</value>
+  </data>
   <data name="FilterType" xml:space="preserve">
     <value>Filter type</value>
   </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Full</value>
+  </data>
   <data name="Group" xml:space="preserve">
     <value>Group</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Group description</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Group name</value>
   </data>
   <data name="Groups" xml:space="preserve">
     <value>Groups</value>
@@ -165,8 +210,17 @@
   <data name="Name" xml:space="preserve">
     <value>Name</value>
   </data>
+  <data name="NameSurname" xml:space="preserve">
+    <value>Name and Surname</value>
+  </data>
   <data name="Options" xml:space="preserve">
     <value>Options</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="RePassword" xml:space="preserve">
+    <value>Repeat Password</value>
   </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
@@ -180,6 +234,9 @@
   <data name="SearchGraph" xml:space="preserve">
     <value>Search graphs</value>
   </data>
+  <data name="SearchGroups" xml:space="preserve">
+    <value>Search groups</value>
+  </data>
   <data name="SearchUser" xml:space="preserve">
     <value>Search users</value>
   </data>
@@ -189,13 +246,40 @@
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Type</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update </value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
   <data name="Username" xml:space="preserve">
     <value>Username</value>
   </data>
+  <data name="UserRights" xml:space="preserve">
+    <value>User Rights</value>
+  </data>
+  <data name="UserRole" xml:space="preserve">
+    <value>User Role</value>
+  </data>
+  <data name="UsersInsideGroup" xml:space="preserve">
+    <value>Users in the group</value>
+  </data>
+  <data name="UsersOutsideGroup" xml:space="preserve">
+    <value>Users outside of the group</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+  </data>
   <data name="Values" xml:space="preserve">
     <value>Values</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
   </data>
 </root>

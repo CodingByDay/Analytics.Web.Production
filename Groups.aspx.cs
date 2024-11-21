@@ -3,6 +3,7 @@ using Dash.Log;
 using Dash.Models;
 using DevExpress.Data.Helpers;
 using DevExpress.Web.Bootstrap;
+using DevExpress.XtraRichEdit.Commands;
 using Newtonsoft.Json;
 using Sentry;
 using System;
@@ -307,6 +308,7 @@ namespace Dash
                 LimitCompanyGrid();
                 HideColumnForCompanies();
                 LimitDashboardsPermissions();
+                SetLocalizationProperties();
 
                 groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
 
@@ -317,6 +319,51 @@ namespace Dash
             }
 
         }
+
+
+
+        private void SetLocalizationProperties()
+        {
+            try
+            {
+
+                DeleteGroup.Text = Resources.Resource.Delete;
+                saveGraphs.Text = Resources.Resource.Save;
+
+                companiesGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
+                companiesGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                companiesGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+
+                groupsGridView.Columns["Naziv"].Caption = Resources.Resource.Username;
+                groupsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGroups;
+
+                graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
+                graphsGridView.Columns["Tip"].Caption = Resources.Resource.InternalName;
+                graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Type;
+                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Company;
+                graphsGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+
+
+                usersInGroupGrid.Columns["Uporabnik"].Caption = Resources.Resource.User;
+                usersInGroupGrid.Columns["Ime in priimek"].Caption = Resources.Resource.FullName;
+                usersInGroupGrid.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
+
+                usersNotInGroupGrid.Columns["Uporabnik"].Caption = Resources.Resource.User;
+                usersNotInGroupGrid.Columns["Ime in priimek"].Caption = Resources.Resource.FullName;
+                usersNotInGroupGrid.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
+
+
+            }
+            catch (Exception err)
+            {
+                SentrySdk.CaptureException(err);
+            }
+        }
+
 
         private void LimitDashboardsPermissions()
         {

@@ -258,7 +258,7 @@
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewGroup_ServerClick" id="NewGroup" class="btn btn-primary actionButton">
 
-                            Dodaj <i class="fas fa-plus"></i> 
+                        <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"> </i>  
 
                     </button>
                     <dx:BootstrapButton runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši"  CssClasses-Icon="fas fa-trash" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton right">
@@ -371,12 +371,12 @@
             <!-- Group Name and Description -->
             <div class="col-md-12">
               <div class="form-group">
-                <label for="groupName">Ime Skupine</label>
-                <asp:TextBox ID="groupName" runat="server" placeholder="Vnesite ime skupine" CssClass="form-control"></asp:TextBox>
+                <label for="groupName"><asp:Literal runat="server" Text="<%$ Resources:Resource, GroupName%>" /></label>
+                <asp:TextBox ID="groupName" runat="server" placeholder="<%$ Resources:Resource, GroupName%>" CssClass="form-control"></asp:TextBox>
               </div>
               <div class="form-group">
-                <label for="groupDescription">Opis Skupine</label>
-                <asp:TextBox ID="groupDescription" runat="server" TextMode="MultiLine" placeholder="Vnesite opis skupine" CssClass="form-control"></asp:TextBox>
+                <label for="groupDescription"><asp:Literal runat="server" Text="<%$ Resources:Resource, GroupDescription%>" /></label>
+                <asp:TextBox ID="groupDescription" runat="server" TextMode="MultiLine" placeholder="<%$ Resources:Resource, GroupDescription%>" CssClass="form-control"></asp:TextBox>
               </div>
             </div>
           </div>
@@ -384,7 +384,9 @@
             <div class="row" id="GroupsGrids" runat="server">
             <!-- Users in the group -->
             <div class="col-md-5">
-                <h5>Uporabniki v skupini</h5>
+
+                <asp:Literal runat="server" Text="<%$ Resources:Resource, UsersInsideGroup%>" />
+
                 <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersInGroupGrid" Width="100%" runat="server" Settings-ShowHeaderFilterButton="true" DataSourceID="UsersInGroupDataSource" KeyFieldName="uname">
                         <SettingsSearchPanel Visible="true" ShowApplyButton="False" ShowClearButton="False" />
 
@@ -425,7 +427,9 @@
 
             <!-- Users not in the group -->
             <div class="col-md-5">
-                <h5>Uporabniki izven skupine</h5>
+
+                 <asp:Literal runat="server" Text="<%$ Resources:Resource, UsersOutsideGroup%>" />
+
                 <dx:BootstrapGridView SettingsText-SearchPanelEditorNullText="Poiščite uporabnika" ID="usersNotInGroupGrid" Width="100%"   runat="server" DataSourceID="UsersNotInGroupDataSource" KeyFieldName="uname">
                         <SettingsSearchPanel Visible="true" ShowApplyButton="False" ShowClearButton="False" />
 
