@@ -260,7 +260,7 @@
 
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
-                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
+                    <button type="button"  runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton right">
                            <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /><i class="fas fa-plus"></i>
                     </button>
                     <dx:BootstrapButton CssClasses-Icon="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">

@@ -59,6 +59,7 @@ namespace Dash
 
                 HideHamburgerIfNecessary();
 
+                UpdateVersionLiteral();
 
                 if (Request.Browser.IsMobileDevice && Request.Browser.ScreenPixelsWidth <= 767)
                 {
@@ -71,7 +72,18 @@ namespace Dash
             }
         }
 
-     
+        private void UpdateVersionLiteral()
+        {
+            // Get the version value from the appSettings section
+            string version = ConfigurationManager.AppSettings["Version"];
+
+            if (!string.IsNullOrEmpty(version))
+            {
+                // Assuming you have a Literal control named VersionLiteral
+                versionLiteral.Text = "v. " + version;
+            }
+
+        }
 
         private void HideActionButtonsForMobile()
         {

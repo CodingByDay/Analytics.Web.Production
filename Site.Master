@@ -76,7 +76,31 @@
 cursor: pointer;
 
 }
+.language-icon {
+    display: inline-block; 
+    vertical-align: middle; 
+    margin: 0; 
+    padding: 0; 
+    box-sizing: border-box; 
+}
 
+.info-center p {
+    color: white;
+    font-weight: 700;
+}
+
+
+.info-center {
+    display: flex;
+    justify-content: center;   
+    align-items: center;       
+    margin-left:1em;
+}
+
+p {
+    margin: 0;                 
+    line-height: 1;            
+}
 </style>
 
 </head>
@@ -169,22 +193,17 @@ cursor: pointer;
        
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
   <img runat="server" src="images/show.png" id="pic" style="width:25px;height:25px;"/>
-                  
+             
              
   <div class="container">
 
-       
+        <div class="info-center" >
+    <p><asp:Literal runat="server"  ID="versionLiteral"/></p>
+</div> 
 
       
 
-      <div id="desktop_div">
-           <a id="desktop-button" href="<%= Page.ResolveUrl("/IndexTenant.aspx") %>" class="dx-state-selected">
-              <i class="fa fa-desktop" aria-hidden="true"></i> Desktop
-           </a>
-           <a id="mobile-button" href="<%= Page.ResolveUrl("/Emulator.aspx") %>" onclick="dxDemo.Navigation.navigate(this.href); return false;">
-              <i class="fa fa-mobile" aria-hidden="true"></i> Mobile
-           </a>
-        </div>
+   
      
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         
@@ -198,6 +217,9 @@ cursor: pointer;
               </div>
                
           <div runat="server" class="outer" style="position:absolute;float:right; right:5px">
+
+              
+
 
               <div class="languages">
                <img src="Content/Images/slovenia.png" width="20" class="language-icon lSlovenia" data-lang="sl" />
@@ -258,17 +280,20 @@ cursor: pointer;
             // On page load, check the language cookie and set the border
             var langCookie = getCookie("Language");
             if (langCookie) {
-                // Add border to the icon corresponding to the cookie value
-                $(".language-icon[data-lang='" + langCookie + "']").css("border", "2px solid white");
+                // Remove background hue from all icons
+                $(".language-icon").css("background-color", "transparent");
+
+                // Add a more visible transparent hue to the icon corresponding to the cookie value
+                $(".language-icon[data-lang='" + langCookie + "']").css("background-color", "rgba(255, 255, 255, 0.5)"); // Increased opacity for more visibility
             }
 
-            // Add click event to all language icons
+            // Language icon click event
             $(".language-icon").click(function () {
-                // Remove border from all icons
-                $(".language-icon").css("border", "none");
+                // Remove background hue from all icons
+                $(".language-icon").css("background-color", "transparent");
 
-                // Add a 2px white border to the clicked icon
-                $(this).css("border", "2px solid white");
+                // Add a more visible transparent hue to the clicked icon
+                $(this).css("background-color", "rgba(255, 255, 255, 0.5)"); // Increased opacity for more visibility
 
                 // Get the selected language from the data attribute
                 var selectedLang = $(this).data("lang");
@@ -279,6 +304,7 @@ cursor: pointer;
                 // Refresh the page
                 location.reload();
             });
+
         });
 
 
