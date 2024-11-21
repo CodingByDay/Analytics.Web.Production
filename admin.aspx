@@ -418,21 +418,31 @@
               </dx:BootstrapGridViewTextColumn>
 
 
-              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="5" Caption="Tip">
-                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >
-                      
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"   SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="5" Caption="Tip">
+                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="TypeFilterDataSource" >                      
                       </PropertiesComboBox>
                   
+                              <SettingsHeaderFilter>
+                                <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
+                            </SettingsHeaderFilter>
+
               </dx:BootstrapGridViewComboBoxColumn>
 
-              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="5" Caption="Podjetje">
-                      <PropertiesComboBox  AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
+              <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"  SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_company" Name="Podjetje" VisibleIndex="5" Caption="Podjetje">
+                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="CompanyFilterDataSource">
                       </PropertiesComboBox>
+
+                    <SettingsHeaderFilter>
+                        <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
+                    </SettingsHeaderFilter>
               </dx:BootstrapGridViewComboBoxColumn>
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="6" Caption="Jezik">
                      <PropertiesComboBox AllowNull="true" ConvertEmptyStringToNull="true" ValidationSettings-RequiredField-IsRequired="false"  TextField="description"  DataSourceID="LanguageFilterDataSource">
                      </PropertiesComboBox>
+                    <SettingsHeaderFilter>
+                        <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
+                    </SettingsHeaderFilter>
              </dx:BootstrapGridViewComboBoxColumn>
 
 

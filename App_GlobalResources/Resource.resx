@@ -183,7 +183,7 @@
   <data name="SearchUser" xml:space="preserve">
     <value>Search users</value>
   </data>
-  <data name="Select All" xml:space="preserve">
+  <data name="SelectAll" xml:space="preserve">
     <value>Select All</value>
   </data>
   <data name="Settings" xml:space="preserve">

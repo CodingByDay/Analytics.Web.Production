@@ -256,20 +256,31 @@ namespace Dash
         {
             try
             {
+
                 deleteCompany.Text = Resources.Resource.Delete;
                 deleteUser.Text = Resources.Resource.Delete;
                 saveGraphs.Text = Resources.Resource.Save;
+
                 companiesGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
-                /*usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
+                companiesGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                companiesGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+
+                usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
                 usersGridView.Columns["Skupina"].Caption = Resources.Resource.Group;
+                usersGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
+                usersGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                usersGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+
                 graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
-                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;
+                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;              
                 graphsGridView.Columns["Tip"].Caption = Resources.Resource.Type;
                 graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
-                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;*/
-
-
-                graphsGridView.DataBind();
+                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;
+                graphsGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
+                graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
+                graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
 
             }
             catch (Exception err)
@@ -1704,15 +1715,15 @@ namespace Dash
                 e.Handled = true;
 
                 List<MetaOption> data = new List<MetaOption>();
-                if (e.Column.Caption == "Tip")
+                if (e.Column.Caption == "Tip" || e.Column.Caption == "Type")
                 {
                     data = GetFilterValuesForSpecificFilter("type");
                 }
-                else if (e.Column.Caption == "Podjetje")
+                else if (e.Column.Caption == "Podjetje" || e.Column.Caption == "Company" || e.Column.Caption == "Firma")
                 {
                     data = GetFilterValuesForSpecificFilter("company");
                 }
-                else if (e.Column.Caption == "Jezik")
+                else if (e.Column.Caption == "Jezik" || e.Column.Caption == "Language")
                 {
                     data = GetFilterValuesForSpecificFilter("language");
                 }

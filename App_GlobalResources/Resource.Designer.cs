@@ -261,9 +261,9 @@ namespace Resources {
         /// <summary>
         ///   Looks up a localized string similar to Select All.
         /// </summary>
-        internal static string Select_All {
+        internal static string SelectAll {
             get {
-                return ResourceManager.GetString("Select All", resourceCulture);
+                return ResourceManager.GetString("SelectAll", resourceCulture);
             }
         }
         
