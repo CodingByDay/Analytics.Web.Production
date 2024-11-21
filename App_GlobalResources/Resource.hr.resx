@@ -117,10 +117,172 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AdminButtonText" xml:space="preserve">
-    <value>Settings</value>
+  <data name="Actions" xml:space="preserve">
+    <value>Mogućnosti</value>
   </data>
-  <data name="GroupsButtonText" xml:space="preserve">
-    <value>Groups</value>
+  <data name="Add" xml:space="preserve">
+    <value>Dodaj</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Nazaj</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Otkaži</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Zatvori</value>
+  </data>
+  <data name="Commercialist" xml:space="preserve">
+    <value>Komercialista</value>
+  </data>
+  <data name="Company" xml:space="preserve">
+    <value>Poduzeće</value>
+  </data>
+  <data name="CompanyName" xml:space="preserve">
+    <value>Naziv poduzeća</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Potrvrdi</value>
+  </data>
+  <data name="ConnectionName" xml:space="preserve">
+    <value>Naziv konekcije</value>
+  </data>
+  <data name="ContactNumber" xml:space="preserve">
+    <value>Kontakt telefon</value>
+  </data>
+  <data name="DatabaseName" xml:space="preserve">
+    <value>Naziv baze</value>
+  </data>
+  <data name="Datasource" xml:space="preserve">
+    <value>Data source</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Obriši</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Opis</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="FilterCompany" xml:space="preserve">
+    <value>Šifrant poduzeće</value>
+  </data>
+  <data name="FilterLanguage" xml:space="preserve">
+    <value>Šifrant jezik</value>
+  </data>
+  <data name="Filters" xml:space="preserve">
+    <value>Šifranti</value>
+  </data>
+  <data name="FiltersCompany" xml:space="preserve">
+    <value>Šifranti poduzeće</value>
+  </data>
+  <data name="FiltersLanguages" xml:space="preserve">
+    <value>Šifranti jezika</value>
+  </data>
+  <data name="FiltersType" xml:space="preserve">
+    <value>Šifranti tip</value>
+  </data>
+  <data name="FilterType" xml:space="preserve">
+    <value>Filter tip</value>
+  </data>
+  <data name="FullName" xml:space="preserve">
+    <value>Ime i prezime</value>
+  </data>
+  <data name="Group" xml:space="preserve">
+    <value>Grupa</value>
+  </data>
+  <data name="GroupDescription" xml:space="preserve">
+    <value>Grupa opis</value>
+  </data>
+  <data name="GroupName" xml:space="preserve">
+    <value>Grupa ime</value>
+  </data>
+  <data name="Groups" xml:space="preserve">
+    <value>Grupe</value>
+  </data>
+  <data name="InternalName" xml:space="preserve">
+    <value>Interno ime</value>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Jezik</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Odjava</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Ime</value>
+  </data>
+  <data name="NameSurname" xml:space="preserve">
+    <value>Ime i prezime</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Podešavanja</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Šifra</value>
+  </data>
+  <data name="RePassword" xml:space="preserve">
+    <value>Ponovite šifru</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Spremi</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Pretražite</value>
+  </data>
+  <data name="SearchCompany" xml:space="preserve">
+    <value>Pretražite poduzeća</value>
+  </data>
+  <data name="SearchGraph" xml:space="preserve">
+    <value>Pretražite analize</value>
+  </data>
+  <data name="SearchGroups" xml:space="preserve">
+    <value>Pretražite grupe</value>
+  </data>
+  <data name="SearchUser" xml:space="preserve">
+    <value>Pretražite korisnike</value>
+  </data>
+  <data name="SelectAll" xml:space="preserve">
+    <value>Izaberite sve</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Postavke</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tip</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Ažuriranje</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Korisnik</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Korisničko ime</value>
+  </data>
+  <data name="UserRights" xml:space="preserve">
+    <value>Prava korisnika</value>
+  </data>
+  <data name="UserRole" xml:space="preserve">
+    <value>Uloga korisnika</value>
+  </data>
+  <data name="UsersInsideGroup" xml:space="preserve">
+    <value>Korisnici u grupi</value>
+  </data>
+  <data name="UsersOutsideGroup" xml:space="preserve">
+    <value>Korisnici izvan grupe</value>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Vrijednost</value>
+  </data>
+  <data name="Values" xml:space="preserve">
+    <value>Vrijednosti</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Web stranica</value>
   </data>
 </root>

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -32,7 +33,35 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
-      
+
+
+        protected override void InitializeCulture()
+        {
+            // Check if the language cookie exists
+            HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
+
+            if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+            {
+                // Get the language code from the cookie
+                string lang = langCookie.Value;
+
+                // Set the culture and UI culture
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+            }
+            else
+            {
+                // Optional: Set a default language if no cookie is found
+                string defaultLang = "sl"; // Default to English
+                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
+                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+            }
+
+            // Call the base method to ensure other initializations are performed
+            base.InitializeCulture();
+        }
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -86,7 +115,7 @@ namespace Dash
             }
         }
 
-    
+       
 
         [WebMethod]
         public static void DeleteItem(string id)

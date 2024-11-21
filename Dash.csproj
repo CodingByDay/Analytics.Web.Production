@@ -221,7 +221,12 @@
     <Content Include="assets\img\favicon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Images\edit.png" />
+    <Content Include="Content\Images\croatia.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\edit.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\Navigation.xml" />
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="App_Start\Sql.txt" />
@@ -332,6 +337,12 @@
     <Content Include="Content\Images\search.svg" />
     <Content Include="Content\Css\Sidebar.css" />
     <Content Include="Content\Css\Site.css" />
+    <Content Include="Content\Images\slovenia.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\Images\united-kingdom.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Javascript\Site.js" />
     <Content Include="Filters.aspx" />
     <Content Include="forms\Readme.txt" />
@@ -550,15 +561,20 @@
     <Compile Include="Admin.aspx.designer.cs">
       <DependentUpon>Admin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Resource.Designer.cs">
+    <Compile Include="App_GlobalResources\Resource.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resource.resx</DependentUpon>
     </Compile>
-    <Compile Include="App_GlobalResources\Resource.en.designer.cs">
+    <Compile Include="App_GlobalResources\Resource.sl.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resource.en.resx</DependentUpon>
+      <DependentUpon>Resource.sl.resx</DependentUpon>
+    </Compile>
+    <Compile Include="App_GlobalResources\Resource.hr.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.hr.resx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -723,16 +739,16 @@
   <ItemGroup>
     <Content Include="App_GlobalResources\Resource.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resource.designer.cs</LastGenOutput>
     </Content>
-    <Content Include="App_GlobalResources\Resource.en.resx">
+    <Content Include="App_GlobalResources\Resource.sl.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
-      <LastGenOutput>Resource.en.designer.cs</LastGenOutput>
+      <LastGenOutput>Resource.sl.designer.cs</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="App_LocalResources\Site.Master.resx">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    <Content Include="App_GlobalResources\Resource.hr.resx">
+      <Generator>GlobalResourceProxyGenerator</Generator>
+      <LastGenOutput>Resource.hr.designer.cs</LastGenOutput>
+    </Content>
     <EmbeddedResource Include="Properties\licenses.licx" />
   </ItemGroup>
   <ItemGroup>
