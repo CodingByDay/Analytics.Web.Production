@@ -376,15 +376,44 @@ namespace Dash
                 SentrySdk.CaptureException(err);
             }
         }
+        private int GetIdGroupForUser(string name)
+        {
+            int groupId = -1; // Default value if group_id is not found
 
+            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT group_id FROM users WHERE uname = @userName";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@userName", name);
+                    conn.Open();
+
+                    // Execute the command and get the group_id
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value) // Check if result is not null
+                    {
+                        groupId = Convert.ToInt32(result); // Convert result to int
+                    }
+                }
+            }
+
+            return groupId; // Return the found group_id or -1
+        }
         private void LimitDashboardsPermissions()
         {
             try
             {
                 DashboardPermissions dashboardPermissionsUser = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+                DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions(GetIdGroupForUser(HttpContext.Current.User.Identity.Name));
 
-                List<int> permittedDashboardIds = dashboardPermissionsUser.Permissions.Select(p => p.id).ToList();
-                string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
+                var availableUser = dashboardPermissionsUser.Permissions.Select(p => p.id).ToList();
+                var availableGroup = dashboardPermissionsGroup.Permissions.Select(p => p.id).ToList();
+
+                // Combine both lists and remove duplicates
+                var combinedIds = availableUser.Union(availableGroup).ToList();
+                string filterExpression = $"[id] IN ({string.Join(",", combinedIds)})";
                 // Apply the filter to graphsGridView
                 string type = GetUserType();
                 if (!string.IsNullOrEmpty(type))

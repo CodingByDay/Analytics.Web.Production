@@ -312,7 +312,7 @@
 
 
 
-            <dx:BootstrapGridView ID="usersGridView" SettingsPopup-EditForm-AllowResize="false" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="80%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="usersGridView" SettingsPopup-EditForm-AllowResize="false" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
