@@ -7,7 +7,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Analytics</title>
+  <title>Dash</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -34,7 +34,52 @@
 </head>
 
 <body class="index-page">
+    <style>
+        /* Cookie Consent Banner Styling */
+    .cookie-consent-banner {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 14px;
+        z-index: 9999;
+        display: none; /* Hidden by default */
+    }
 
+    .cookie-consent-banner .cookie-content {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .cookie-consent-banner a {
+        color: #f1c40f!important;
+        text-decoration: none!important;
+    }
+
+    .cookie-consent-banner button {
+        margin-left: 20px;
+        background-color: #f1c40f;
+        color: #333;
+        border: none;
+        padding: 8px 20px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .cookie-consent-banner button:hover {
+        background-color: #e0b60f;
+    }
+        /* Styling for disabled links */
+    .cookie-disabled-link.disabled {
+        color: #ccc; /* Light gray color */
+        cursor: not-allowed; /* Change cursor to indicate the link is disabled */
+        text-decoration: none; /* Remove underline */
+    }
+</style>
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
@@ -49,7 +94,7 @@
           <li><a href="#hero" class="active">Home</a></li>
           <li><a href="#featured">Features</a></li>
           <li><a href="#contact">About us</a></li>
-          <li><a href="<%= Page.ResolveUrl("/Logon.aspx") %>" >Log in</a></li>
+          <li><a href="<%= Page.ResolveUrl("/Logon.aspx") %>" id="logInLink" class="cookie-disabled-link">Log in</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -215,6 +260,21 @@
     </div>
   </footer>
 
+
+
+                    <!-- Cookie Consent Banner -->
+                <div id="cookieConsent" class="cookie-consent-banner" style="display:none;">
+                    <div class="cookie-content">
+                        <p>We use cookies to ensure you get the best experience on our website. By continuing, you agree to our use of cookies. 
+                            <a onclick="window.open('App_Data/Privacy Policy.pdf', '_blank', 'fullscreen=yes'); return false;">Learn more</a>
+                        </p>
+                        <button id="acceptCookiesBtn">Accept</button>
+                    </div>
+                </div>
+
+
+
+
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
@@ -230,7 +290,66 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Check if cookies have been accepted
+            if (!getCookie("cookieConsent")) {
+                // Show the cookie consent banner if cookies are not accepted
+                document.getElementById("cookieConsent").style.display = "block";
 
+                // Disable the log in link if cookies are not accepted
+                var logInLink = document.getElementById("logInLink");
+                if (logInLink) {
+                    logInLink.classList.add("disabled"); // Add disabled class
+                    logInLink.style.pointerEvents = "none"; // Prevent clicks
+                }
+            } else {
+                // Enable the login link if cookies are accepted
+                var logInLink = document.getElementById("logInLink");
+                if (logInLink) {
+                    logInLink.classList.remove("disabled"); // Remove disabled class
+                    logInLink.style.pointerEvents = "auto"; // Enable clicks
+                }
+            }
+
+            // Event listener to handle acceptance of cookies
+            document.getElementById("acceptCookiesBtn").addEventListener("click", function () {
+                setCookie("cookieConsent", "true", 365); // Set the cookie for 1 year
+                document.getElementById("cookieConsent").style.display = "none"; // Hide the banner
+
+                // Enable the login link after cookies are accepted
+                var logInLink = document.getElementById("logInLink");
+                if (logInLink) {
+                    logInLink.classList.remove("disabled"); // Remove disabled class
+                    logInLink.style.pointerEvents = "auto"; // Enable clicks
+                }
+            });
+        });
+
+        // Function to get a cookie value by name
+        function getCookie(name) {
+            var nameEq = name + "=";
+            var ca = document.cookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i].trim();
+                if (c.indexOf(nameEq) === 0) return c.substring(nameEq.length, c.length);
+            }
+            return null;
+        }
+
+        // Function to set a cookie
+        function setCookie(name, value, days) {
+            var expires = "";
+            if (days) {
+                var date = new Date();
+                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                expires = "; expires=" + date.toUTCString();
+            }
+            document.cookie = name + "=" + (value || "") + expires + "; path=/";
+        }
+
+
+    </script>
 </body>
 
 </html>

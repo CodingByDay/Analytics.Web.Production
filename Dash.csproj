@@ -445,6 +445,7 @@
     <Content Include="assets\vendor\swiper\swiper-bundle.min.js.map" />
     <Content Include="forms\contact.php" />
     <Content Include="App_Data\Privacy Policy.pdf" />
+    <None Include="Properties\PublishProfiles\Dash system publishing profile.pubxml" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
