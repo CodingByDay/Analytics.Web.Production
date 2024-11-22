@@ -64,6 +64,8 @@ namespace Dash
                 {
                     // Optional: Set a default language if no cookie is found
                     string defaultLang = "sl"; // Default to English
+                    Response.Cookies["Language"].Value = defaultLang;
+                    Response.Cookies["Language"].Expires = DateTime.Now.AddYears(1); // Set expiry
                     System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
                     System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
                 }

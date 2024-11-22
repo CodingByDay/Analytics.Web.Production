@@ -84,7 +84,7 @@ cursor: pointer;
     box-sizing: border-box; 
 }
 
-.info-center p {
+.info-center span {
     color: white;
     font-weight: 700;
 }
@@ -100,6 +100,11 @@ cursor: pointer;
 p {
     margin: 0;                 
     line-height: 1;            
+}
+
+
+#versionInformation {
+    cursor:pointer;
 }
 </style>
 
@@ -117,17 +122,7 @@ p {
                 });
             }
 
-            function checkCookie() {
-                let username = getCookie("username");
-                if (username != "") {
-                    alert("Welcome again " + username);
-                } else {
-                    username = prompt("Please enter your name:", "");
-                    if (username != "" && username != null) {
-                        setCookie("username", username, 365);
-                    }
-                }
-            }
+       
 
             function getCookie(cname) {
                 let name = cname + "=";
@@ -198,7 +193,9 @@ p {
   <div class="container">
 
         <div class="info-center" >
-    <p><asp:Literal runat="server"  ID="versionLiteral"/></p>
+        <span id="versionInformation" runat="server" data-toggle="tooltip" data-html="true">
+            <asp:Literal runat="server"  ID="versionLiteral" />
+        </span>
 </div> 
 
       
@@ -277,6 +274,9 @@ p {
     </form>
     <script>   
         $(document).ready(function () {
+
+            $('[data-toggle="tooltip"]').tooltip();
+
             // On page load, check the language cookie and set the border
             var langCookie = getCookie("Language");
             if (langCookie) {

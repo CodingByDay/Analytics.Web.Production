@@ -50,7 +50,7 @@ namespace Dash
 
                 HideHamburgerIfNecessary();
 
-                UpdateVersionLiteral();
+                UpdateVersionLiteralAndNotes();
 
                 if (Request.Browser.IsMobileDevice && Request.Browser.ScreenPixelsWidth <= 767)
                 {
@@ -63,7 +63,7 @@ namespace Dash
             }
         }
 
-        private void UpdateVersionLiteral()
+        private void UpdateVersionLiteralAndNotes()
         {
             try
             {
@@ -75,13 +75,19 @@ namespace Dash
                     // Assuming you have a Literal control named VersionLiteral
                     versionLiteral.Text = "v. " + version;
                 }
+
+                string releaseNotes = GetReleaseNotes(); // Fetch release notes from a method or data source
+                versionInformation.Attributes["title"] = releaseNotes;
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
         }
-
+        private string GetReleaseNotes()
+        {
+            return "<strong>Release Notes:</strong><br>Localization added<br>Dashboard sorting<br>Group permissions";
+        }
         private void HideActionButtonsForMobile()
         {
             try
