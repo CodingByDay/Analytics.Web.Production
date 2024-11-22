@@ -63,11 +63,11 @@ namespace Dash
                         if (Convert.ToBoolean(rdr["ReturnCode"]))
                         {
                             SendPasswordResetEmail(rdr["Email"].ToString(), username.Text, rdr["UniqueId"].ToString());
-                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'Email sa instrukcijama za resetiranje vašega gesla smo poslali na vaš email.', 'success'); };</script>");
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Email Sent!', 'We have sent you an email with instructions.', 'success'); };</script>");
                         }
                         else
                         {
-                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'Prišlo je do napake. Uporabniško ime ne obstaja.', 'error'); };</script>");
+                            Response.Write("<script type=\"text/javascript\">window.onload = function() { Swal.fire('Error', 'There was an error in reseting the password', 'error'); };</script>");
                         }
                     }
                 }
@@ -104,20 +104,20 @@ namespace Dash
 
                 // StringBuilder class is present in System.Text namespace
                 StringBuilder sbEmailBody = new StringBuilder();
-                sbEmailBody.Append("Spoštovani " + UserName + ",<br/><br/>");
-                sbEmailBody.Append("Prosimo da na naslednji povezavi resetirate geslo.");
+                sbEmailBody.Append("Dear " + UserName + ",<br/><br/>");
+                sbEmailBody.Append("Please reset you password at the following link.");
                 sbEmailBody.Append("<br/>");
 
                 // Get the base URL dynamically
                 string baseUrl = $"{Request.Url.Scheme}://{Request.Url.Authority}/";
-                sbEmailBody.Append($"<a href='{baseUrl}ChangePassword.aspx?uid={UniqueId}'>Resetirajte geslo</a><br/><br/>");
+                sbEmailBody.Append($"<a href='{baseUrl}ChangePassword.aspx?uid={UniqueId}'>Reset password</a><br/><br/>");
 
                 sbEmailBody.Append("<br/><br/>");
                 sbEmailBody.Append("<b>In.Sist d.o.o.</b>");
 
                 mailMessage.IsBodyHtml = true;
                 mailMessage.Body = sbEmailBody.ToString();
-                mailMessage.Subject = "Resetiranje gesla In.Sist d.o.o.";
+                mailMessage.Subject = "Dash system password reset";
 
                 SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
                 smtpClient.Credentials = new System.Net.NetworkCredential()

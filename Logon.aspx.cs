@@ -27,7 +27,6 @@ namespace Dash
 
                 if (!IsPostBack)
                 {
-                    FetchDataFillList();
                 }
 
                 // Check if the authentication cookie exists
@@ -87,27 +86,6 @@ namespace Dash
             }
         }
 
-        private void FetchDataFillList()
-        {
-            try
-            {
-                ConnectionStringSettingsCollection connections = ConfigurationManager.ConnectionStrings;
-                if (connections.Count != 0)
-                {
-                    foreach (ConnectionStringSettings connection in connections)
-                    {
-                        strings.Add(connection.Name);
-                    }
-                    strings.RemoveAt(0);
-                    databaseList.DataSource = strings;
-                    databaseList.DataBind();
-                }
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-            }
-        }
 
         private bool ValidateUser(string userName, string passWord)
         {

@@ -24,21 +24,21 @@ namespace Dash
         protected global::System.Web.UI.WebControls.TextBox username;
 
         /// <summary>
-        /// reset control.
+        /// ResetButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button reset;
+        protected global::System.Web.UI.WebControls.Button ResetButton;
 
         /// <summary>
-        /// backButton control.
+        /// BackButton control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button backButton;
+        protected global::System.Web.UI.WebControls.Button BackButton;
     }
 }

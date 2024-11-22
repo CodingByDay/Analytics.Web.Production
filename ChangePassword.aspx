@@ -13,7 +13,7 @@
 
     <style>
         body {
-            background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+            background-color: rgba(20, 46, 108, 0.9); /* Change the path to your image */
             background-size: cover; /* Ensures the image covers the entire background */
             background-position: center; /* Centers the image */
             background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -32,10 +32,9 @@
         .form-card {
             background-color: white;
             padding: 30px;
-            border-radius: 8px; /* Rounded corners for the card */
+            border-radius:5px; /* Rounded corners for the card */
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            width: 100%;
-            max-width: 400px; /* Maximum width for better readability */
+            width: 20%;
         }
 
         h3 {
@@ -66,8 +65,8 @@
             box-shadow: none; /* Remove default shadow on focus */
         }
 
-        .btn {
-            background-color: #17c0eb; /* Button background color */
+        .btn-change {
+            background-color: rgba(20, 46, 108, 0.9); /* Button background color */
             color: white; /* Button text color */
             width: 100%; /* Full-width button */
             padding: 10px;
@@ -96,17 +95,16 @@
 <body>
     <div class="container">
         <div class="form-card">
-            <h3>Spremeni geslo</h3>
             <form action="#" runat="server">
                 <div class="form-group">
-                    <asp:TextBox ID="pwd" runat="server" TextMode="Password" placeholder="Geslo" CssClass="form-control" />
+                    <asp:TextBox ID="pwd" runat="server" TextMode="Password" placeholder="Password" CssClass="form-control" />
                 </div>
                 <div class="form-group">
-                    <asp:TextBox ID="REpwd" runat="server" TextMode="Password" placeholder="Še enkrat" CssClass="form-control" />
+                    <asp:TextBox ID="REpwd" runat="server" TextMode="Password" placeholder="Repeat password" CssClass="form-control" />
                 </div>
-                <asp:Button ID="change" runat="server" Text="Spremeni" OnClick="change_Click" CssClass="btn" />
+                <asp:Button ID="change" runat="server" Text="Change" OnClick="change_Click" CssClass="btn-change" />
                 <br /><br />
-                <asp:Button ID="backButton" runat="server" Text="Nazaj" OnClick="backButton_Click" CssClass="btn" />
+                <asp:Button ID="backButton" runat="server" Text="Back" OnClick="backButton_Click" CssClass="btn-change" />
             </form>
         </div>
     </div>

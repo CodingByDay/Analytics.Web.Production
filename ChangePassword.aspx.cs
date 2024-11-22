@@ -17,7 +17,7 @@ namespace Dash
                 {
                     if (!IsPasswordResetLinkValid())
                     {
-                        ShowAlert("Čas za resetiranje gesla je potekal ali link ni več vredo.");
+                        ShowAlert("Time to reset the password has expired or the link is no longer valid.");
                         Response.Redirect("Logon.aspx", false);
                     }
                 }
@@ -49,17 +49,17 @@ namespace Dash
                 {
                     if (ChangeUserPassword())
                     {
-                        ShowAlert("Geslo uspešno spremenjeno.");
+                        ShowAlert("Password successfully changed.");
                         Response.Redirect("Logon.aspx", false); // Redirect after successful password change
                     }
                     else
                     {
-                        ShowAlert("Link za spremembo gesla je potekal ali ni vejaven.");
+                        ShowAlert("The link to change the password has expired or is no longer valid.");
                     }
                 }
                 else
                 {
-                    ShowAlert("Gesla nista enaka.");
+                    ShowAlert("The passwords do not match.");
                 }
             }
             catch (Exception ex)

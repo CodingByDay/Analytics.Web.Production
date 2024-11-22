@@ -7,26 +7,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head runat="server">
-    <link rel="apple-touch-icon" sizes="57x57" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="images/logo.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="images/logo.png">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="32x32">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="194x194">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="96x96">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="192x192">
-	<link rel="icon" type="image/png" href="images/logo.png" sizes="16x16">
-	<link rel="shortcut icon" href="images/logo.png">
-	<meta name="msapplication-TileColor" content="#603cba">
-	<meta name="msapplication-TileImage" content="images/logo.png">
+       <link href="assets/img/favicon.ico" rel="icon">
+        <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
     <link href="~/Content/Css/Logon.css" rel="stylesheet" type="text/css" />
 
-    <title></title>
+    <title>Dash</title>
 </head>
 
 
@@ -71,7 +56,7 @@
          height: 100%!important;
      }
      body {
-    background-image: url('assets/img/hero-bg.jpg'); /* Change the path to your image */
+    background-color: rgba(20, 46, 108, 0.9);
     background-size: cover; /* This makes sure the image covers the entire background */
     background-position: center; /* Centers the image */
     background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -91,7 +76,7 @@
         <div id="formContent">
             <form id="form1" runat="server">
                 <div>
-                    <div class="formTitle">Analytics<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
+                    <div class="formTitle">Dash<br /><span class="formSubTitle">Analytics by In.SIST d.o.o.</span></div>
 
                     <input id="txtUserName" type="text" runat="server">
                     <asp:RequiredFieldValidator ControlToValidate="txtUserName"
@@ -106,7 +91,7 @@
 
                     <div class="center">
 
-                        <span style="color: #808080;">Zapomni si prijavo</span>
+                        <span style="color: #808080;">Remember me</span>
 
                         <asp:CheckBox ID="chkPersistCookie" runat="server" AutoPostBack="false" />
 
@@ -114,18 +99,17 @@
 
                         <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
 
-                                     Pozabili ste geslo?
+                                     Forgot your password?
 
                         </asp:HyperLink>
 
 
-                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Prijava" type="submit" OnClick="Login_Click" />
+                        <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Login" type="submit" OnClick="Login_Click" />
 
                         <center>
 
                          <div id="database" runat="server" visible="false">
 
-                         <asp:DropDownList ID="databaseList" runat="server" AutoPostBack="true" Width="100px" Height="50px"></asp:DropDownList>
 
                         </div>
 
