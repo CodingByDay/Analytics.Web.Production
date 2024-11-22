@@ -232,28 +232,28 @@ p {
                 </label>
                 
 
-                <div class="inner" runat="server" id="adminButtonOuter"><a runat="server" id="adminButton" onserverclick="Administration_Click"  title="Administration">
+                <div class="inner" runat="server" id="adminButtonOuter"><a  runat="server" id="adminButton"  onserverclick="Administration_Click" >
                 <i class="fa fa-wrench"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Settings%>" />
                 </a></div>
                
 
 
-               <div class="inner" runat="server" id="groupsButtonOuter"><a runat="server" id="groupsButton" onserverclick="groupsButton_ServerClick"  title="Administration">
+               <div class="inner" runat="server" id="groupsButtonOuter"><a runat="server" id="groupsButton" onserverclick="groupsButton_ServerClick" >
                 <i class="fa fa-users"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Groups%>" />
                 </a></div>
 
     
 
-                <div class="inner" runat="server" id="filterButtonOuter"><a runat="server" id="filtersButton" onserverclick="Filters_Click"  title="Administration">
+                <div class="inner" runat="server" id="filterButtonOuter"><a runat="server" id="filtersButton" onserverclick="Filters_Click"  >
                 <i class="fa fa-filter"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Filters%>" />
                 </a></div>
 
-                <div class="inner" runat="server" id="backButtonOuter" visible="false">   <a runat="server" id="backButton" onserverclick="Back_Click"  title="Back">
+                <div class="inner" runat="server" id="backButtonOuter" visible="false">   <a runat="server" id="backButton" onserverclick="Back_Click" >
                 <i class="fa fa-reply"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Back%>" />
                 </a></div>
 
 
-                <div class="inner" > <a runat="server" id="signOutButton" onserverclick="SignOut_Click"  title="Logout">
+                <div class="inner" > <a runat="server" id="signOutButton" onserverclick="SignOut_Click"  >
                 <i class="fa fa-chevron-right"></i> <asp:Literal runat="server" Text="<%$ Resources:Resource, Logout%>" />
                 </a></div>
 

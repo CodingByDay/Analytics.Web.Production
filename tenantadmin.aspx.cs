@@ -10,6 +10,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Security;
 using System.Web.UI;
@@ -293,9 +294,16 @@ namespace Dash
         {
             try
             {
-                DashboardPermissions dashboardPermissions = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
-                List<int> permittedDashboardIds = dashboardPermissions.Permissions.Select(p => p.id).ToList();
-                string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
+                DashboardPermissions dashboardPermissionsUser = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
+                DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions( GetIdGroupForUser(HttpContext.Current.User.Identity.Name));
+
+                var availableUser = dashboardPermissionsUser.Permissions.Select(p => p.id).ToList();
+                var availableGroup = dashboardPermissionsGroup.Permissions.Select(p => p.id).ToList();
+
+                // Combine both lists and remove duplicates
+                var combinedIds = availableUser.Union(availableGroup).ToList();
+
+                string filterExpression = $"[id] IN ({string.Join(",", combinedIds)})";
                 // Apply the filter to graphsGridView
                 graphsGridView.FilterExpression = filterExpression;
             }
@@ -305,7 +313,31 @@ namespace Dash
                 return;
             }
         }
+        private int GetIdGroupForUser(string name)
+        {
+            int groupId = -1; // Default value if group_id is not found
 
+            string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                string query = "SELECT group_id FROM users WHERE uname = @userName";
+                using (SqlCommand command = new SqlCommand(query, conn))
+                {
+                    command.Parameters.AddWithValue("@userName", name);
+                    conn.Open();
+
+                    // Execute the command and get the group_id
+                    object result = command.ExecuteScalar();
+                    if (result != null && result != DBNull.Value) // Check if result is not null
+                    {
+                        groupId = Convert.ToInt32(result); // Convert result to int
+                    }
+                }
+            }
+
+            return groupId; // Return the found group_id or -1
+        }
         private void UsersGridView_CustomCallback(object sender, DevExpress.Web.ASPxGridViewCustomCallbackEventArgs e)
         {
             try
