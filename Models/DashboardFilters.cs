@@ -2,10 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Text.RegularExpressions;
 
 namespace Dash.Models
@@ -14,11 +13,11 @@ namespace Dash.Models
     {
         [JsonIgnore]
         public string Connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
         [JsonIgnore]
         public string uname { get; set; }
 
         public List<DashboardFilter> Filters { get; set; } = new List<DashboardFilter>();
-
 
         public DashboardFilters(string username)
         {
@@ -28,7 +27,6 @@ namespace Dash.Models
 
         public DashboardFilters()
         {
-            
         }
 
         public DashboardFilters GetFiltersForUser(string uname)
@@ -64,6 +62,7 @@ namespace Dash.Models
                 }
             }
         }
+
         public string ConvertFiltersToJson(DashboardFilters permissions)
         {
             return JsonConvert.SerializeObject(permissions);
@@ -108,6 +107,7 @@ namespace Dash.Models
                 }
             }
         }
+
         public DashboardFilters ConvertJsonToPermissions(string json)
         {
             string unescapedJson = Regex.Unescape(json);
@@ -119,17 +119,16 @@ namespace Dash.Models
         {
             try
             {
-
                 if (this.Filters.Any(f => f.ItemName == filterChange.ItemName))
                 {
-                    if (this.Filters.Where(f => 
-                    
+                    if (this.Filters.Where(f =>
+
                     f.ItemName == filterChange.ItemName
-                    
+
                     &&
-                    
+
                     f.Dashboard == filterChange.Dashboard
-                    
+
                     ).ToList().Count > 1)
                     {
                         return;
@@ -148,7 +147,6 @@ namespace Dash.Models
             {
                 return;
             }
-
         }
 
         public class FilterSelection

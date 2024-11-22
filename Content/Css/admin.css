@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column; /* Align children vertically */
 }
+
 .toolbar-custom {
     display: flex;
     justify-content: flex-end;
@@ -20,21 +21,24 @@
     display: flex;
     gap: 1em;
 }
+
 .actionButton {
     width: 8em;
 }
+
 body {
     overflow: hidden;
 }
+
 .dxbs-button .fas.fa-arrow-up, .fas.fa-arrow-down, .fas.fa-save, .fas.fa-trash, .fas.fa-plus, .fa.fa-eye {
     color: white;
     font-weight: bold;
 }
 
-
 label.form-check-label {
     padding-left: 2em;
 }
+
 .modal-xl {
     max-width: 90%; /* This controls how wide the modal should be */
 }
@@ -72,22 +76,12 @@ label.form-check-label {
     height: 100%;
     padding: 10px;
 }
+
 span.badge.badge-secondary {
     background: white;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-/* 
+/*
     Admin design 2024 / 2025 Janko Jovičić
 */
 .focused_row {
@@ -97,49 +91,41 @@ span.badge.badge-secondary {
 i.fas.fa-info-circle.info-icons {
     padding-top: 0.4em;
 }
+
 a, span, td {
     color: darkslategray;
 }
-span.fa.fa-caret-down.image {
-    color: darkslategray;
-}
+
+    span.fa.fa-caret-down.image {
+        color: darkslategray;
+    }
+
 .dxbs-fixed-header-content a {
     font-weight: 600 !important;
-    font-size:0.9em;
+    font-size: 0.9em;
 }
+
 span.image.fas.fa-edit, span.image.fa.fa-trash {
     font-size: 0.8em;
 }
+
 td {
-    font-size:0.8em;
+    font-size: 0.8em;
     font-weight: 500;
 }
 
 body {
     max-width: 100% !important;
 }
+
 label {
     font-size: smaller;
     color: darkslategray;
 }
 
 h5 {
-    color: darkslategray!important;
-
+    color: darkslategray !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .action-buttons {
     position: relative;

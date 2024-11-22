@@ -3087,5 +3087,4 @@
   }
 
   return glightbox;
-
 })));

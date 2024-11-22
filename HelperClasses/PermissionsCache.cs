@@ -1,11 +1,8 @@
-﻿
-
-using Dash.Models;
-using DevExpress.XtraRichEdit.Model;
+﻿using Dash.Models;
 using Sentry;
-using System.Data.SqlClient;
 using System;
 using System.Configuration;
+using System.Data.SqlClient;
 
 namespace Dash.HelperClasses
 {
@@ -18,9 +15,9 @@ namespace Dash.HelperClasses
                 return ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
             }
         }
+
         public static DashboardPermissions GetPermissions(string user)
         {
-
             // Retrieve the "IsEditCompany" session variable from the database
             DashboardPermissions permissions = UserSession.GetSessionVariable<DashboardPermissions>("IsEditCompany");
 
@@ -32,9 +29,7 @@ namespace Dash.HelperClasses
             }
 
             return permissions;
-      
         }
-
 
         private static int GetGroupForUser(string uname)
         {
@@ -64,6 +59,5 @@ namespace Dash.HelperClasses
 
             return groupId;
         }
-
     }
 }

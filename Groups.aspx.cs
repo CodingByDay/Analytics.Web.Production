@@ -1,22 +1,17 @@
 ﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
-using DevExpress.Data.Helpers;
 using DevExpress.Web.Bootstrap;
-using DevExpress.XtraRichEdit.Commands;
-using Newtonsoft.Json;
 using Sentry;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
-using System.Web.Configuration;
-using System.Web.Security;
 using System.Web.UI;
+
 namespace Dash
 {
     public partial class Groups : System.Web.UI.Page
@@ -68,8 +63,6 @@ namespace Dash
         private bool isEditUser;
         private string userRightNow;
 
-
-
         private bool GroupEdit
         {
             get
@@ -92,8 +85,6 @@ namespace Dash
                 UserSession.SetSessionVariable("GroupEdit", value);
             }
         }
-
-
 
         private string CurrentGroup
         {
@@ -118,7 +109,6 @@ namespace Dash
             }
         }
 
-
         private string CurrentCompany
         {
             get
@@ -136,13 +126,13 @@ namespace Dash
                         {
                             company = GetFirstCompany();
                             UserSession.SetSessionVariable("CurrentCompany", company);
-                        } else if (type == "Admin")
+                        }
+                        else if (type == "Admin")
                         {
                             company = GetCompanyName(GetCompanyIdForUser(HttpContext.Current.User.Identity.Name));
                             UserSession.SetSessionVariable("CurrentCompany", company);
                         }
                     }
-
                 }
 
                 return company;
@@ -153,8 +143,6 @@ namespace Dash
                 UserSession.SetSessionVariable("CurrentCompany", value);
             }
         }
-
-
 
         private string GetFirstCompany()
         {
@@ -181,8 +169,6 @@ namespace Dash
                 return string.Empty;
             }
         }
-
-      
 
         private List<MetaOption> GetFilterValuesForSpecificFilter(string filter)
         {
@@ -228,6 +214,7 @@ namespace Dash
                 return new List<MetaOption>();
             }
         }
+
         protected void graphsGridView_BeforeHeaderFilterFillItems(object sender, BootstrapGridViewBeforeHeaderFilterFillItemsEventArgs e)
         {
             try
@@ -260,13 +247,12 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
 
                 companiesGridView.SettingsBehavior.AllowFocusedRow = false;
                 companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -296,12 +282,9 @@ namespace Dash
                 graphsGridView.SettingsBehavior.ProcessSelectionChangedOnServer = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
 
-
-
                 if (!IsPostBack)
                 {
                 }
-
 
                 InitializeUiChanges();
                 Authenticate();
@@ -311,22 +294,17 @@ namespace Dash
                 SetLocalizationProperties();
 
                 groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
-
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
-
         }
-
-
 
         private void SetLocalizationProperties()
         {
             try
             {
-
                 DeleteGroup.Text = Resources.Resource.Delete;
                 saveGraphs.Text = Resources.Resource.Save;
 
@@ -347,7 +325,6 @@ namespace Dash
                 graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
                 graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
 
-
                 usersInGroupGrid.Columns["Uporabnik"].Caption = Resources.Resource.User;
                 usersInGroupGrid.Columns["Ime in priimek"].Caption = Resources.Resource.FullName;
                 usersInGroupGrid.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
@@ -355,8 +332,6 @@ namespace Dash
                 usersNotInGroupGrid.Columns["Uporabnik"].Caption = Resources.Resource.User;
                 usersNotInGroupGrid.Columns["Ime in priimek"].Caption = Resources.Resource.FullName;
                 usersNotInGroupGrid.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchUser;
-
-
             }
             catch (Exception err)
             {
@@ -390,17 +365,19 @@ namespace Dash
 
                 // Call the base method to ensure other initializations are performed
                 base.InitializeCulture();
-            } catch(Exception err)
+            }
+            catch (Exception err)
             {
                 SentrySdk.CaptureException(err);
             }
         }
+
         private void LimitDashboardsPermissions()
         {
             try
             {
                 DashboardPermissions dashboardPermissionsUser = new DashboardPermissions(HttpContext.Current.User.Identity.Name);
-        
+
                 List<int> permittedDashboardIds = dashboardPermissionsUser.Permissions.Select(p => p.id).ToList();
                 string filterExpression = $"[id] IN ({string.Join(",", permittedDashboardIds)})";
                 // Apply the filter to graphsGridView
@@ -418,7 +395,6 @@ namespace Dash
                 return;
             }
         }
-
 
         private void HideColumnForCompanies()
         {
@@ -459,14 +435,15 @@ namespace Dash
                     else if (type == "Admin")
                     {
                         companiesGrid.SelectParameters["company_id"].DefaultValue = GetCompanyIdForUser(HttpContext.Current.User.Identity.Name).ToString();
-
                     }
                 }
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return;
             }
         }
+
         public int GetCompanyIdForUser(string uname)
         {
             try
@@ -506,6 +483,7 @@ namespace Dash
                 return -1;
             }
         }
+
         private void InitializeUiChanges()
         {
             try
@@ -518,12 +496,13 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
         /*private void InitializeFilters()
         {
             // Initialize the controls with the empty dataset since no company is selected at the start so its more readable and easier to maintain the codebase.
             // 2.10.2024 Janko Jovičić
             groupsGridView.FilterExpression = $"[id_company] = -9999";
-            graphsGridView.FilterExpression = 
+            graphsGridView.FilterExpression =
         }*/
 
         private void groupsGridView_DataBound(object sender, EventArgs e)
@@ -555,8 +534,6 @@ namespace Dash
             }
         }
 
-
-
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
             try
@@ -580,8 +557,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
-      
 
         private void CompaniesGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -647,7 +622,7 @@ namespace Dash
         {
             try
             {
-                if(e == null)
+                if (e == null)
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncGroup(); };", true);
                     return;
@@ -675,7 +650,6 @@ namespace Dash
 
                 UsersNotInGroupDataSource.SelectParameters["id_company"].DefaultValue = companyParameter.ToString();
                 UsersNotInGroupDataSource.SelectParameters["group_id"].DefaultValue = groupParameter.ToString();
-
 
                 var result = GetDataForGroupById(groupParameter);
 
@@ -724,7 +698,7 @@ namespace Dash
                 DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
-                    int idRow = (int) graphsGridView.GetRowValues(i, "id");
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
                     if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
                     {
                         graphsGridView.Selection.SetSelection(i, true);
@@ -815,8 +789,6 @@ namespace Dash
             }
         }
 
-
-
         public string GetCompanyName(int company)
         {
             try
@@ -845,10 +817,8 @@ namespace Dash
             }
         }
 
-    
         public (string groupName, string groupDescription) GetDataForGroupById(int groupId)
         {
-
             try
             {
                 using (SqlConnection conn = new SqlConnection(connection))
@@ -894,12 +864,9 @@ namespace Dash
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                return (null, null);    
+                return (null, null);
             }
         }
-      
-
-
 
         protected void SaveGraphs_Click(object sender, EventArgs e)
         {
@@ -943,13 +910,11 @@ namespace Dash
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 var d = ex;
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
             }
         }
-
-      
 
         private int GetIdCompany(string current)
         {
@@ -978,7 +943,6 @@ namespace Dash
                 return -1;
             }
         }
-
 
         private int GetIdGroup(string current)
         {
@@ -1026,8 +990,6 @@ namespace Dash
             }
         }
 
-       
-
         public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
         {
             try
@@ -1055,15 +1017,12 @@ namespace Dash
                 }
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 return false;
             }
         }
-
-       
-
 
         protected void NewGroup_ServerClick(object sender, EventArgs e)
         {
@@ -1153,7 +1112,6 @@ namespace Dash
                     }
                 }
                 groupsGridView.DataBind();
-
             }
             catch (Exception ex)
             {
@@ -1200,7 +1158,6 @@ namespace Dash
                     usersInGroupGrid.DataBind();
 
                     groupsGridView_StartRowEditing(this, null);
-
                 }
             }
             catch (Exception ex)
@@ -1208,7 +1165,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-    
 
         protected void moveToInGroupButton_Click(object sender, EventArgs e)
         {
@@ -1252,7 +1208,6 @@ namespace Dash
                     usersInGroupGrid.DataBind();
 
                     groupsGridView_StartRowEditing(this, null);
-
                 }
             }
             catch (Exception ex)

@@ -3,27 +3,24 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Dash.Models
 {
-
     public class UserDashboardState
     {
         [JsonIgnore]
         public string Connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
+
         [JsonIgnore]
         public string uname { get; set; }
 
-
-
         public UserDashboardState()
         {
-                
         }
 
         public UserDashboardState(string username)
@@ -31,8 +28,6 @@ namespace Dash.Models
             this.uname = username;
             this.States = GetStatesForUser(uname).States;
         }
-
-
 
         public UserDashboardState GetStatesForUser(string uname)
         {
@@ -67,6 +62,7 @@ namespace Dash.Models
                 }
             }
         }
+
         public UserDashboardState ConvertJsonToStates(string json)
         {
             string unescapedJson = Regex.Unescape(json);
@@ -87,11 +83,11 @@ namespace Dash.Models
             return new DashboardStateSingle();
         }
 
-
         public string ConvertStatesToJson()
         {
             return JsonConvert.SerializeObject(this);
         }
+
         public bool SetStatesForUser()
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -156,7 +152,7 @@ namespace Dash.Models
             SetStatesForUser();
         }
 
-        public List<DashboardStateSingle> States {  get; set; } = new List<DashboardStateSingle>();
+        public List<DashboardStateSingle> States { get; set; } = new List<DashboardStateSingle>();
     }
 
     public class DashboardStateSingle

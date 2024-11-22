@@ -6,18 +6,12 @@ using DevExpress.DashboardWeb;
 using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
 using DevExpress.XtraReports.UI;
-using Newtonsoft.Json;
 using Sentry;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Web;
 using System.Web.Services;
-using System.Web.UI.HtmlControls;
-using static Dash.Models.DashboardFilters;
 
 namespace Dash
 {
@@ -38,7 +32,6 @@ namespace Dash
         private string companyInfo;
         private object result;
         private DataBaseEditableDashboardStorageCustom dataBaseDashboardStorage;
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -115,9 +108,10 @@ namespace Dash
 
                 // Call the base method to ensure other initializations are performed
                 base.InitializeCulture();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -162,12 +156,13 @@ namespace Dash
                 }
                 // Return the working mode, or an empty string if not found
                 return workingMode;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
         }
-
 
         private void ASPxDashboard3_SetInitialDashboardState(object sender, SetInitialDashboardStateEventArgs e)
         {
@@ -181,14 +176,13 @@ namespace Dash
                 {
                     e.InitialState = userStates.State;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
-
-  
 
         private void SetUpPage()
         {
@@ -307,16 +301,14 @@ namespace Dash
                 }
                 UserDashboardState userDashboardStates = new UserDashboardState(HttpContext.Current.User.Identity.Name);
                 userDashboardStates.UpdateStates(dashboard, stateObject);
-                userDashboardStates.SetStatesForUser();                            
+                userDashboardStates.SetStatesForUser();
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
-
         }
-
 
         private void ASPxDashboard3_CustomParameters(object sender, CustomParametersWebEventArgs e)
         {
@@ -324,7 +316,8 @@ namespace Dash
             {
                 string group = GetCurrentUserID();
                 e.Parameters.Add(new DevExpress.DataAccess.Parameter("ID", typeof(string), group));
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
@@ -337,14 +330,13 @@ namespace Dash
             {
                 Response.Cookies["dashboard"].Value = e.DashboardId;
                 return;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
             }
         }
-
-
 
         public void LogDashboardView(string userId, string dashboardId)
         {
@@ -372,7 +364,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
 
         private void ASPxDashboard1_ConfigureDataConnection(object sender, DevExpress.DashboardWeb.ConfigureDataConnectionWebEventArgs e)
         {
@@ -402,7 +393,8 @@ namespace Dash
                     MsSqlConnectionParameters msSqlConnection = new MsSqlConnectionParameters();
                     parameters.ConnectionString = conn.ConnectionString;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
@@ -441,7 +433,8 @@ namespace Dash
                     }
                 }
                 return string.Empty;
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 Logger.LogError(typeof(IndexTenant), ex.InnerException.Message);
@@ -480,7 +473,6 @@ namespace Dash
                 return new ConnectionStringSettings();
             }
         }
-
 
         private string GetConnectionStringName(int companyID)
         {

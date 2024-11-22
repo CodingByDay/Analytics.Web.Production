@@ -1,12 +1,9 @@
-﻿using DevExpress.XtraRichEdit.Model;
-using Sentry;
+﻿using Sentry;
 using System;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Web;
 using System.Web.Security;
-using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -23,23 +20,18 @@ namespace Dash
         {
             get { return backButton.Visible; }
 
-
-            set { 
+            set
+            {
                 backButton.Visible = value;
                 backButtonOuter.Visible = value;
             }
         }
-
-      
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
-
 
                 HttpContext.Current.Response.AddHeader("Cache-Control", "no-cache, no-store, must-revalidate");
                 HttpContext.Current.Response.AddHeader("Pragma", "no-cache");
@@ -48,7 +40,6 @@ namespace Dash
                 signOutButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
                 adminButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
                 backButton.Attributes.Add("onkeydown", "return (event.keyCode!=13);");
-
 
                 string uname = HttpContext.Current.User.Identity.Name;
                 CheckUserTypeModifyUI(uname);
@@ -84,7 +75,8 @@ namespace Dash
                     // Assuming you have a Literal control named VersionLiteral
                     versionLiteral.Text = "v. " + version;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
@@ -104,15 +96,13 @@ namespace Dash
                 groupsButtonOuter.Visible = false;
                 pic.Visible = false;
                 languages.Visible = false;
-                versionLiteral.Visible = false; 
+                versionLiteral.Visible = false;
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
         }
-
-
 
         private void HideHamburgerIfNecessary()
         {
@@ -281,7 +271,6 @@ namespace Dash
                             groupsButtonOuter.Visible = false;
                             filtersButton.Visible = false;
                             filterButtonOuter.Visible = false;
-
                         }
                         else if (userRole == "SuperAdmin")
                         {
@@ -291,7 +280,6 @@ namespace Dash
                             groupsButtonOuter.Visible = true;
                             filtersButton.Visible = true;
                             filterButtonOuter.Visible = true;
-
                         }
                         else if (userRole == "Admin")
                         {
@@ -301,7 +289,6 @@ namespace Dash
                             groupsButtonOuter.Visible = true;
                             filtersButton.Visible = false;
                             filterButtonOuter.Visible = false;
-
                         }
                     }
                 }
@@ -311,7 +298,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
 
         protected void Administration_Click(object sender, EventArgs e)
         {

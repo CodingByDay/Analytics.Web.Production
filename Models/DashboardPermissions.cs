@@ -1,11 +1,9 @@
 ﻿using Newtonsoft.Json;
-using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Dash.Models
@@ -27,20 +25,14 @@ namespace Dash.Models
             this.Permissions = GetPermissionsForUser(uname).Permissions;
         }
 
-
         public DashboardPermissions(int group)
         {
-            if(group == -1)
+            if (group == -1)
             {
                 this.Permissions = new List<DashboardPermission>();
             }
             this.Permissions = GetPermissionsForGroup(group).Permissions;
         }
-
- 
-
-      
-
 
         public DashboardPermissions()
         {
@@ -80,12 +72,6 @@ namespace Dash.Models
             }
         }
 
-
-
-
-
-
-
         public DashboardPermissions GetPermissionsForUser(string uname)
         {
             using (SqlConnection conn = new SqlConnection(Connection))
@@ -119,7 +105,6 @@ namespace Dash.Models
                 }
             }
         }
-
 
         public bool SetPermissionsForGroup(int group)
         {

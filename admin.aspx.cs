@@ -1,15 +1,8 @@
-﻿using Antlr.Runtime.Tree;
-using Dash.HelperClasses;
+﻿using Dash.HelperClasses;
 using Dash.Log;
 using Dash.Models;
-using DevExpress.Data.Filtering;
-using DevExpress.Utils.Behaviors;
-using DevExpress.Utils.DragDrop;
 using DevExpress.Web;
 using DevExpress.Web.Bootstrap;
-using DevExpress.XtraReports.Configuration;
-using DevExpress.XtraRichEdit.Model;
-using Newtonsoft.Json;
 using Sentry;
 using System;
 using System.Collections.Generic;
@@ -22,7 +15,6 @@ using System.Web.Configuration;
 using System.Web.Security;
 using System.Web.Services;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace Dash
 {
@@ -98,7 +90,6 @@ namespace Dash
             }
         }
 
-
         private bool IsEditUser
         {
             get
@@ -122,7 +113,6 @@ namespace Dash
             }
         }
 
-
         private string CurrentUsername
         {
             get
@@ -145,9 +135,6 @@ namespace Dash
                 UserSession.SetSessionVariable("CurrentUser", value);
             }
         }
-
-
-
 
         private string CurrentCompany
         {
@@ -190,21 +177,19 @@ namespace Dash
                         return string.Empty;
                     }
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return string.Empty;
             }
         }
 
-
         protected void Page_Load(object sender, EventArgs e)
         {
-
             try
             {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
-
 
                 companiesGridView.SettingsBehavior.AllowFocusedRow = false;
                 companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
@@ -234,15 +219,13 @@ namespace Dash
                 graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
                 graphsGridView.SettingsBehavior.AllowFocusedRow = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
-               
-                graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
+                graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
                 graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
 
                 if (!IsPostBack)
                 {
-
                 }
 
                 InitializeUiChanges();
@@ -250,8 +233,6 @@ namespace Dash
                 SetLocalizationProperties();
 
                 companiesGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
-
-
             }
             catch (Exception ex)
             {
@@ -263,7 +244,6 @@ namespace Dash
         {
             try
             {
-
                 deleteCompany.Text = Resources.Resource.Delete;
                 deleteUser.Text = Resources.Resource.Delete;
                 saveGraphs.Text = Resources.Resource.Save;
@@ -281,18 +261,17 @@ namespace Dash
                 usersGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
 
                 graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
-                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;              
+                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;
                 graphsGridView.Columns["Tip"].Caption = Resources.Resource.Type;
                 graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
                 graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;
                 graphsGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
                 graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
                 graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
-
             }
             catch (Exception err)
             {
-                SentrySdk.CaptureException (err);
+                SentrySdk.CaptureException(err);
             }
         }
 
@@ -322,7 +301,8 @@ namespace Dash
 
                 // Call the base method to ensure other initializations are performed
                 base.InitializeCulture();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
@@ -342,7 +322,6 @@ namespace Dash
                 }
 
                 usersGridView.DataBind();
-
 
                 if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentUsername))
                 {
@@ -409,6 +388,7 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
         private string GetIdForMetaDescription(string type, string description)
         {
             try
@@ -431,13 +411,13 @@ namespace Dash
                     // If result is not null, return it as string, otherwise return null
                     return result != null ? result.ToString() : null;
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return string.Empty;
             }
         }
-
 
         private void InitializeUiChanges()
         {
@@ -451,7 +431,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-   
 
         private void UsersGridView_DataBound(object sender, EventArgs e)
         {
@@ -469,13 +448,8 @@ namespace Dash
         {
             try
             {
-
-             
-
-
                 if (CurrentUsername != string.Empty)
                 {
-
                     query.SelectParameters["company"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
 
                     if (graphsGridView.VisibleRowCount > 0)
@@ -491,8 +465,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
-       
 
         private void CompaniesGridView_DataBound(object sender, EventArgs e)
         {
@@ -597,7 +569,6 @@ namespace Dash
                             usersGridView.FilterExpression = $"[id_company] = {id}";
                             usersGridView.DataBind();  // Refresh the userGridView with the applied filter
                             graphsGridView.DataBind();
-
                         }
                     }
                     catch (Exception ex)
@@ -612,8 +583,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
-       
 
         private void UsersGridView_SelectionChanged(object sender, EventArgs e)
         {
@@ -651,7 +620,6 @@ namespace Dash
             }
         }
 
-
         private int GetGroupForUser(string uname)
         {
             int groupId = -1;
@@ -681,15 +649,13 @@ namespace Dash
                 }
 
                 return groupId;
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return -1;
             }
         }
-
-
-
 
         private void ShowConfigForUser()
         {
@@ -713,7 +679,7 @@ namespace Dash
                 DashboardPermissions dashboardPermissions = new DashboardPermissions(CurrentUsername);
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
-                    int idRow = (int) graphsGridView.GetRowValues(i, "id");
+                    int idRow = (int)graphsGridView.GetRowValues(i, "id");
                     if (dashboardPermissions.Permissions.Any(x => x.id == idRow))
                     {
                         graphsGridView.Selection.SetSelection(i, true);
@@ -739,9 +705,10 @@ namespace Dash
                 {
                     e.Row.BackColor = System.Drawing.Color.LightBlue;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
             }
         }
 
@@ -784,7 +751,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-     
 
         public string GetCompanyName(int company)
         {
@@ -879,8 +845,6 @@ namespace Dash
             }
         }
 
-
-
         private void InsertUser()
         {
             try
@@ -905,7 +869,7 @@ namespace Dash
 
                         string hashedPassword = HashPassword(TxtPassword.Text);
                         int idCompany = GetIdCompany(CurrentCompany);
-                        string query = @"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer) 
+                        string query = @"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer)
                              VALUES (@uname, @password, @user_role, @id_company, @view_allowed, @full_name, @Email, @referrer)";
 
                         using (SqlCommand createUser = new SqlCommand(query, conn))
@@ -953,7 +917,7 @@ namespace Dash
                             if (TxtPassword.Text == TxtRePassword.Text)
                             {
                                 string hashedPassword = HashPassword(TxtPassword.Text);
-                                query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed, 
+                                query = @"UPDATE users SET password = @password, user_role = @user_role, view_allowed = @view_allowed,
                           full_name = @full_name, referrer = @referrer WHERE uname = @uname";
 
                                 using (SqlCommand cmdEdit = new SqlCommand(query, conn))
@@ -973,11 +937,10 @@ namespace Dash
                                 Notify("Gesla se ne ujemata.", true);
                                 return;
                             }
-
                         }
                         else
                         {
-                            query = @"UPDATE users SET user_role = @user_role, view_allowed = @view_allowed, 
+                            query = @"UPDATE users SET user_role = @user_role, view_allowed = @view_allowed,
                           referrer = @referrer, full_name = @full_name WHERE uname = @uname";
 
                             using (SqlCommand cmdEdit = new SqlCommand(query, conn))
@@ -1125,9 +1088,6 @@ namespace Dash
             return newCompanyId;
         }
 
-
-
-
         private int GetNextCompanyId(SqlConnection conn)
         {
             try
@@ -1146,12 +1106,13 @@ namespace Dash
                     // Otherwise, return the next ID
                     return Convert.ToInt32(result) + 1;
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
+                return 1;
             }
         }
-
 
         protected void CompanyButton_Click(object sender, EventArgs e)
         {
@@ -1169,8 +1130,6 @@ namespace Dash
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
-                    
-
 
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
                 }
@@ -1251,7 +1210,6 @@ namespace Dash
                 // Define the SQL query with parameters
                 string query = "UPDATE companies SET database_name = @db_name WHERE id_company = @id_company";
 
-
                 // Create a new SQL connection
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
@@ -1276,7 +1234,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
 
         protected void DeleteUser_Click(object sender, EventArgs e)
         {
@@ -1327,7 +1284,6 @@ namespace Dash
             }
         }
 
-
         [WebMethod]
         public static void CreatingCompanySessionEdit()
         {
@@ -1340,9 +1296,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-        
-
-
 
         private string GetCompanyQuery(string uname)
         {
@@ -1420,7 +1373,7 @@ namespace Dash
             }
             catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 var d = ex;
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
             }
@@ -1437,7 +1390,8 @@ namespace Dash
                 {
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju podjetja.')", true);
                     return;
-                } else
+                }
+                else
                 {
                     companyId = GetIdCompany(current);
                 }
@@ -1564,10 +1518,6 @@ namespace Dash
             }
         }
 
- 
-
-  
-
         protected void NewUser_Click(object sender, EventArgs e)
         {
             try
@@ -1587,8 +1537,6 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
-  
 
         protected void NewUserClick(object sender, EventArgs e)
         {
@@ -1628,8 +1576,6 @@ namespace Dash
             }
         }
 
-    
-
         public bool FilterDashboardComply(List<string> selectedTypes, List<string> selectedCompanies, List<string> selectedLanguages, MetaData dashboardMetaData)
         {
             try
@@ -1657,13 +1603,12 @@ namespace Dash
                 }
                 return true;
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return false;
             }
         }
-
 
         public void MoveUpButton_Click(object sender, EventArgs e)
         {
@@ -1689,14 +1634,14 @@ namespace Dash
                         else if (i == focusedRowIndex)
                         {
                             UpdateSortOrder(dashboardId, i - 1);
-                        }                                                   
+                        }
                     }
 
                     graphsGridView.FocusedRowIndex = focusedRowIndex - 1;
                     graphsGridView.DataBind();
-                    
                 }
-            } catch(Exception ex) 
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return;

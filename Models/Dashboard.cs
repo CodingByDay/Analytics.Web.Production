@@ -141,9 +141,6 @@ namespace Dash.Models
             }
         }
 
-       
-
-
         public List<DashboardInternal> GetGraphs(int id)
         {
             using (SqlConnection conn = new SqlConnection(Connection))

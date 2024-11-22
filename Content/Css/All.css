@@ -10,39 +10,27 @@
 
 /* Fonts */
 body {
-    font-family: var(--default-font)!important;
+    font-family: var(--default-font) !important;
 }
 
 h1, h2, h3 {
-    font-family: var(--heading-font)!important;
+    font-family: var(--heading-font) !important;
 }
 
 .navbar {
-    font-family: var(--nav-font)!important;
+    font-family: var(--nav-font) !important;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 img#pic {
     position: absolute;
     left: 2px;
     top: 5px;
 }
+
 label#switcherOuter {
     margin-top: 0.4em;
 }
+
 .outer {
     display: flex;
     align-items: center;

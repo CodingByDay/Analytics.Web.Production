@@ -28,7 +28,7 @@ namespace Dash.DatabaseStorage
             d.LoadFromXDocument(document);
             d.Title.Text = dashboardName;
             document = d.SaveToXDocument();
-          
+
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();

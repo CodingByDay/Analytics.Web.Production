@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dash.HelperClasses
+﻿namespace Dash.HelperClasses
 {
     public class GeneralHelper
     {

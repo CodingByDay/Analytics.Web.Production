@@ -1,6 +1,4 @@
 ﻿using Dash.Log;
-using DevExpress.XtraRichEdit.Commands;
-using DevExpress.XtraRichEdit.Model;
 using Sentry;
 using System;
 using System.Configuration;
@@ -34,7 +32,6 @@ namespace Dash
 
                 if (!IsPostBack)
                 {
-
                 }
 
                 InitializeUiChanges();
@@ -73,17 +70,17 @@ namespace Dash
 
                 // Call the base method to ensure other initializations are performed
                 base.InitializeCulture();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
         }
+
         private void SetLocalizationProperties()
         {
             try
             {
-
-
                 gridViewTypes.Columns["Možnosti"].Caption = Resources.Resource.Actions;
                 gridViewTypes.Columns["Vrednost"].Caption = Resources.Resource.Value;
                 gridViewTypes.Columns["Opis"].Caption = Resources.Resource.Description;
@@ -93,7 +90,6 @@ namespace Dash
                 gridViewTypes.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
                 gridViewTypes.SettingsText.CommandCancel = Resources.Resource.Cancel;
                 gridViewTypes.SettingsText.CommandUpdate = Resources.Resource.Update;
-
 
                 gridViewOrganizations.Columns["Možnosti"].Caption = Resources.Resource.Actions;
                 gridViewOrganizations.Columns["Vrednost"].Caption = Resources.Resource.Value;
@@ -118,7 +114,6 @@ namespace Dash
                 SentrySdk.CaptureException(err);
             }
         }
-
 
         private void Authenticate()
         {
@@ -160,7 +155,6 @@ namespace Dash
             }
         }
 
-
         private void InitializeUiChanges()
         {
             try
@@ -173,6 +167,7 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
         private void GridViewLanguages_CustomJSProperties(object sender, DevExpress.Web.ASPxGridViewClientJSPropertiesEventArgs e)
         {
             try
@@ -197,7 +192,6 @@ namespace Dash
             }
         }
 
-
         private void GridViewTypes_CustomJSProperties(object sender, DevExpress.Web.ASPxGridViewClientJSPropertiesEventArgs e)
         {
             try
@@ -209,13 +203,5 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
-
     }
-
-
-
-
-
-
 }

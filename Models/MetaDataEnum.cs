@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Dash.Models
+﻿namespace Dash.Models
 {
-    enum MetaDataEnum
+    internal enum MetaDataEnum
     {
         Type,
         Company,

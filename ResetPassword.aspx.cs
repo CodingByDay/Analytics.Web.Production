@@ -14,8 +14,8 @@ namespace Dash
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            try { 
-            
+            try
+            {
             }
             catch (Exception ex)
             {
@@ -123,7 +123,7 @@ namespace Dash
                 smtpClient.Credentials = new System.Net.NetworkCredential()
                 {
                     UserName = username,
-                    Password = password 
+                    Password = password
                 };
                 smtpClient.EnableSsl = true;
                 smtpClient.Send(mailMessage);
@@ -133,6 +133,5 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
-
     }
 }

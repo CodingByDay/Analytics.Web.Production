@@ -138,7 +138,6 @@ var Detector = function () {
     }
 
     // http://browserhacks.com/#hack-acea075d0ac6954f275a70023906050c
-
   }, {
     key: 'ie11',
     value: function ie11() {
@@ -197,7 +196,6 @@ var applyClasses = function applyClasses(el, top) {
       position = el.position,
       node = el.node,
       data = el.data;
-
 
   var hide = function hide() {
     if (!el.animated) return;

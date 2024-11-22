@@ -4,7 +4,6 @@ using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
@@ -87,7 +86,7 @@ namespace Dash.DatabaseStorage
 
                 object result = InsertCommand.ExecuteScalar();
 
-                if(result == null)
+                if (result == null)
                 {
                     return "";
                 }
@@ -96,14 +95,14 @@ namespace Dash.DatabaseStorage
                 // Call the procedure to get admin IDs who need permissions for this dashboard
                 SqlCommand GetAdminsCommand = new SqlCommand("sp_get_user_role_info", connection);
                 GetAdminsCommand.CommandType = CommandType.StoredProcedure;
-                GetAdminsCommand.Parameters.Add("uname", SqlDbType.VarChar).Value = HttpContext.Current.User.Identity.Name; 
+                GetAdminsCommand.Parameters.Add("uname", SqlDbType.VarChar).Value = HttpContext.Current.User.Identity.Name;
 
                 using (SqlDataReader reader = GetAdminsCommand.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         string adminUname = reader["uname"].ToString();
-                        if(adminUname != "Role not recognized")
+                        if (adminUname != "Role not recognized")
                         {
                             DashboardPermissions dashboardPermissions = new DashboardPermissions(adminUname);
                             dashboardPermissions.Permissions.Add(new DashboardPermission { id = Int32.Parse(result.ToString()) });
@@ -112,13 +111,8 @@ namespace Dash.DatabaseStorage
                     }
                 }
 
-
                 return result.ToString();
             }
-
-
-
-
         }
 
         public string GetCompanyForUser()
@@ -164,7 +158,7 @@ namespace Dash.DatabaseStorage
 
         public XDocument LoadDashboard(string dashboardID)
         {
-            if (!permissionsUser.DashboardWithIdAllowed(dashboardID)&&!permissionsGroup.DashboardWithIdAllowed(dashboardID))
+            if (!permissionsUser.DashboardWithIdAllowed(dashboardID) && !permissionsGroup.DashboardWithIdAllowed(dashboardID))
             {
                 return null;
             }
@@ -259,8 +253,6 @@ namespace Dash.DatabaseStorage
             return doc;
         }
 
-
-
         public IEnumerable<DashboardInfo> GetAvailableDashboardsInfo()
         {
             var availableUser = permissionsUser.Permissions.Select(p => p.id).ToList();
@@ -268,7 +260,6 @@ namespace Dash.DatabaseStorage
 
             // Combine both lists and remove duplicates
             var combinedIds = availableUser.Union(availableGroup).ToList();
-
 
             if (combinedIds.Count == 0)
             {
@@ -295,7 +286,8 @@ namespace Dash.DatabaseStorage
                         {
                             string ID = reader["id"].ToString(); // Use column name
                             string customName = reader["custom_name"] != DBNull.Value ? reader["custom_name"].ToString() : string.Empty; // Use column name
-                            if (combinedIds.Exists(x => x.ToString() == ID)) {
+                            if (combinedIds.Exists(x => x.ToString() == ID))
+                            {
                                 list.Add(new DashboardInfo() { ID = ID, Name = customName });
                             }
                         }

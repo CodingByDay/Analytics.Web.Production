@@ -4,27 +4,21 @@ var viewerApiExtension;
 var dashboardControl;
 let filterSelections = {};
 
-
-
-
 function onDashboardStateChanged(e) {
     let dashboardId = getCookie("dashboard");
     let dState = dashboard.GetDashboardControl().getDashboardState();
     $.ajax({
         type: "POST",
-        url: "IndexTenant.aspx/ProcessStateChanged", 
+        url: "IndexTenant.aspx/ProcessStateChanged",
         data: JSON.stringify({ state: dState, dashboard: dashboardId }),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (response) {
-            
         },
         error: function (xhr, status, error) {
-            
         }
     });
 }
-
 
 function onItemCaptionToolbarUpdated(s, e) {
     var control = dashboard.GetDashboardControl();
@@ -335,7 +329,6 @@ function onBeforeRender(sender) {
 
 let previousViewerMode = "viewer";
 function checkViewerMode() {
-
     var control = dashboard.GetDashboardControl();
     const currentViewerMode = getCurrentViewerMode();
 
@@ -343,7 +336,6 @@ function checkViewerMode() {
         control.loadDashboard(getCookie("dashboard"))
         previousViewerMode = currentViewerMode; // Update the previous mode
     }
-
 }
 function getCurrentViewerMode() {
     var control = dashboard.GetDashboardControl();
@@ -455,7 +447,6 @@ function onCollapse() {
 }
 
 function correctTheLoadingState(s, e) {
-
     window.currentDashboardId = e.DashboardId;
 
     var control = dashboard.GetDashboardControl();
@@ -465,7 +456,6 @@ function correctTheLoadingState(s, e) {
     if (design == false) {
         onCollapse();
     }
-
 
     if (!design) {
         var list = dashboard.GetParameters().GetParameterList();

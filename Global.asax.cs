@@ -15,7 +15,6 @@ namespace Dash
 
         private void Application_Start(object sender, EventArgs e)
         {
-
             System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
 
             SentrySdk.Init(options =>
@@ -38,7 +37,6 @@ namespace Dash
             // DevExpress.Web.ASPxWebControl.CallbackError += Application_Error;
             log4net.Config.XmlConfigurator.Configure();
             ASPxWebControl.CallbackError += ASPxWebControl_CallbackError;
-
         }
 
         private void ASPxWebControl_CallbackError(object sender, EventArgs e)

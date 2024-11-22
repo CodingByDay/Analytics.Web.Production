@@ -1,25 +1,14 @@
 ﻿using Dash.DatabaseStorage;
-using Dash.Models;
-using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
-using DevExpress.DataAccess.ConnectionParameters;
 using DevExpress.DataAccess.Web;
-using DevExpress.Web;
-using DevExpress.Web.Bootstrap;
-using DevExpress.Web.Internal;
-using Newtonsoft.Json;
 using Sentry;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 using System.Web;
 using System.Web.Services;
-using System.Web.UI;
 using System.Web.UI.HtmlControls;
-using MetaData = Dash.Models.MetaData;
 
 namespace Dash
 {
@@ -33,7 +22,6 @@ namespace Dash
         private SqlCommand cmd;
         private string role;
         private static int permisionID;
-
 
         protected override void InitializeCulture()
         {
@@ -61,12 +49,12 @@ namespace Dash
 
                 // Call the base method to ensure other initializations are performed
                 base.InitializeCulture();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }
         }
-
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -121,8 +109,6 @@ namespace Dash
             }
         }
 
-       
-
         [WebMethod]
         public static void DeleteItem(string id)
         {
@@ -156,10 +142,10 @@ namespace Dash
                 Response.Cookies["dashboard"].Value = e.DashboardId;
 
                 Session["current"] = e.DashboardId.ToString();
-
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
-                SentrySdk.CaptureException (ex);
+                SentrySdk.CaptureException(ex);
                 return;
             }
         }
@@ -194,8 +180,6 @@ namespace Dash
             }
         }
 
-       
-
         private ConnectionStringSettings GetConnectionString(string name)
         {
             try
@@ -209,10 +193,5 @@ namespace Dash
                 return new ConnectionStringSettings();
             }
         }
-
-     
-
-   
-
     }
 }

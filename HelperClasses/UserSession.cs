@@ -1,27 +1,22 @@
 ﻿using Newtonsoft.Json;
 using Sentry;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Web;
 
 namespace Dash.HelperClasses
 {
     public static class UserSession
     {
-        public static string Uname {
-
+        public static string Uname
+        {
             get
             {
                 return HttpContext.Current.User.Identity.Name;
             }
-                
-                
         }
-   
+
         public static string GraphsConnectionString
         {
             get
@@ -59,7 +54,8 @@ namespace Dash.HelperClasses
 
                     return default(T);  // Return default value if no result is found
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
                 return default(T);
@@ -96,7 +92,8 @@ namespace Dash.HelperClasses
                 {
                     SentrySdk.CaptureException(ex);
                 }
-            } catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
             }

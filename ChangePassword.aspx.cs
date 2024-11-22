@@ -169,6 +169,7 @@ namespace Dash
                 return string.Empty;
             }
         }
+
         private void ShowAlert(string message)
         {
             try
