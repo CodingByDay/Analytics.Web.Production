@@ -91,69 +91,81 @@ namespace Dash
 
         protected override void InitializeCulture()
         {
-            // Check if the language cookie exists
-            HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
-
-            if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+            try
             {
-                // Get the language code from the cookie
-                string lang = langCookie.Value;
+                // Check if the language cookie exists
+                HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
 
-                // Set the culture and UI culture
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
-            }
-            else
+                if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+                {
+                    // Get the language code from the cookie
+                    string lang = langCookie.Value;
+
+                    // Set the culture and UI culture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+                }
+                else
+                {
+                    // Optional: Set a default language if no cookie is found
+                    string defaultLang = "sl"; // Default to English
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                }
+
+                // Call the base method to ensure other initializations are performed
+                base.InitializeCulture();
+            } catch (Exception ex)
             {
-                // Optional: Set a default language if no cookie is found
-                string defaultLang = "sl"; // Default to English
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                SentrySdk.CaptureException (ex);
             }
-
-            // Call the base method to ensure other initializations are performed
-            base.InitializeCulture();
         }
 
         private string GetWorkingModeForUser(string name)
         {
-            // Placeholder to store the result
-            string workingMode = string.Empty;
             try
             {
-                // Define the SQL query with a parameter
-                string query = "SELECT view_allowed FROM users WHERE uname = @name";
-
-                // Create a new SQL connection
-                using (SqlConnection conn = new SqlConnection(connection))
+                // Placeholder to store the result
+                string workingMode = string.Empty;
+                try
                 {
-                    // Open the connection
-                    conn.Open();
+                    // Define the SQL query with a parameter
+                    string query = "SELECT view_allowed FROM users WHERE uname = @name";
 
-                    // Create the SQL command with the query and connection
-                    using (SqlCommand command = new SqlCommand(query, conn))
+                    // Create a new SQL connection
+                    using (SqlConnection conn = new SqlConnection(connection))
                     {
-                        // Add the parameter to prevent SQL injection
-                        command.Parameters.AddWithValue("@name", name);
+                        // Open the connection
+                        conn.Open();
 
-                        // Execute the query and retrieve the result
-                        var result = command.ExecuteScalar();
-
-                        // If the result is not null, convert it to a string
-                        if (result != null)
+                        // Create the SQL command with the query and connection
+                        using (SqlCommand command = new SqlCommand(query, conn))
                         {
-                            workingMode = result.ToString();
+                            // Add the parameter to prevent SQL injection
+                            command.Parameters.AddWithValue("@name", name);
+
+                            // Execute the query and retrieve the result
+                            var result = command.ExecuteScalar();
+
+                            // If the result is not null, convert it to a string
+                            if (result != null)
+                            {
+                                workingMode = result.ToString();
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception ex)
+                catch (Exception ex)
+                {
+                    // Capture the exception with Sentry for logging and debugging
+                    SentrySdk.CaptureException(ex);
+                }
+                // Return the working mode, or an empty string if not found
+                return workingMode;
+            } catch (Exception ex)
             {
-                // Capture the exception with Sentry for logging and debugging
                 SentrySdk.CaptureException(ex);
             }
-            // Return the working mode, or an empty string if not found
-            return workingMode;
         }
 
 

@@ -74,15 +74,20 @@ namespace Dash
 
         private void UpdateVersionLiteral()
         {
-            // Get the version value from the appSettings section
-            string version = ConfigurationManager.AppSettings["Version"];
-
-            if (!string.IsNullOrEmpty(version))
+            try
             {
-                // Assuming you have a Literal control named VersionLiteral
-                versionLiteral.Text = "v. " + version;
-            }
+                // Get the version value from the appSettings section
+                string version = ConfigurationManager.AppSettings["Version"];
 
+                if (!string.IsNullOrEmpty(version))
+                {
+                    // Assuming you have a Literal control named VersionLiteral
+                    versionLiteral.Text = "v. " + version;
+                }
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
         }
 
         private void HideActionButtonsForMobile()
@@ -98,6 +103,8 @@ namespace Dash
                 groupsButton.Visible = false;
                 groupsButtonOuter.Visible = false;
                 pic.Visible = false;
+                languages.Visible = false;
+                versionLiteral.Visible = false; 
             }
             catch (Exception ex)
             {

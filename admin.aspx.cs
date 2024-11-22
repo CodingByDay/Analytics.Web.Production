@@ -174,19 +174,26 @@ namespace Dash
 
         private string GetFirstCompany()
         {
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
-                    var company = (string)cmd.ExecuteScalar();
-                    return company;
+                    try
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
+                        var company = (string)cmd.ExecuteScalar();
+                        return company;
+                    }
+                    catch (Exception)
+                    {
+                        return string.Empty;
+                    }
                 }
-                catch (Exception)
-                {
-                    return string.Empty;
-                }
+            } catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return string.Empty;
             }
         }
 
@@ -291,28 +298,34 @@ namespace Dash
 
         protected override void InitializeCulture()
         {
-            // Check if the language cookie exists
-            HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
-
-            if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+            try
             {
-                // Get the language code from the cookie
-                string lang = langCookie.Value;
+                // Check if the language cookie exists
+                HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
 
-                // Set the culture and UI culture
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
-            }
-            else
+                if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+                {
+                    // Get the language code from the cookie
+                    string lang = langCookie.Value;
+
+                    // Set the culture and UI culture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+                }
+                else
+                {
+                    // Optional: Set a default language if no cookie is found
+                    string defaultLang = "sl"; // Default to English
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                }
+
+                // Call the base method to ensure other initializations are performed
+                base.InitializeCulture();
+            } catch (Exception ex)
             {
-                // Optional: Set a default language if no cookie is found
-                string defaultLang = "sl"; // Default to English
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                SentrySdk.CaptureException(ex);
             }
-
-            // Call the base method to ensure other initializations are performed
-            base.InitializeCulture();
         }
 
         private void UsersGridView_BatchUpdate(object sender, DevExpress.Web.Data.ASPxDataBatchUpdateEventArgs e)
@@ -642,30 +655,37 @@ namespace Dash
         private int GetGroupForUser(string uname)
         {
             int groupId = -1;
-            string query = "SELECT group_id FROM users WHERE uname = @uname";
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                SqlCommand command = new SqlCommand(query, conn);
-                command.Parameters.AddWithValue("@uname", uname);
+                string query = "SELECT group_id FROM users WHERE uname = @uname";
 
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    object result = command.ExecuteScalar();
+                    SqlCommand command = new SqlCommand(query, conn);
+                    command.Parameters.AddWithValue("@uname", uname);
 
-                    if (result != null && result != DBNull.Value)
+                    try
                     {
-                        groupId = (int)result;
+                        conn.Open();
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            groupId = (int)result;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SentrySdk.CaptureException(ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    SentrySdk.CaptureException(ex);
-                }
-            }
 
-            return groupId;
+                return groupId;
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return -1;
+            }
         }
 
 
@@ -708,17 +728,21 @@ namespace Dash
 
         private void GraphsGridView_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
         {
-            
-            if(e.KeyValue == null)
+            try
             {
-                return;
-            }
+                if (e.KeyValue == null)
+                {
+                    return;
+                }
 
-            if(dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
+                if (dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
+                {
+                    e.Row.BackColor = System.Drawing.Color.LightBlue;
+                }
+            } catch(Exception ex)
             {
-                e.Row.BackColor = System.Drawing.Color.LightBlue;
+                SentrySdk.CaptureException (ex);
             }
-            
         }
 
         private void Authenticate()
@@ -1106,19 +1130,25 @@ namespace Dash
 
         private int GetNextCompanyId(SqlConnection conn)
         {
-            // Assuming the ID column is either NULL or has a value
-            using (SqlCommand cmd = new SqlCommand("SELECT MAX(id_company) FROM companies", conn))
+            try
             {
-                var result = cmd.ExecuteScalar();
-
-                // Check if the result is DBNull and return the next ID (e.g., 1 if no rows exist)
-                if (result == DBNull.Value)
+                // Assuming the ID column is either NULL or has a value
+                using (SqlCommand cmd = new SqlCommand("SELECT MAX(id_company) FROM companies", conn))
                 {
-                    return 1; // If there are no companies, return 1 as the next ID
-                }
+                    var result = cmd.ExecuteScalar();
 
-                // Otherwise, return the next ID
-                return Convert.ToInt32(result) + 1;
+                    // Check if the result is DBNull and return the next ID (e.g., 1 if no rows exist)
+                    if (result == DBNull.Value)
+                    {
+                        return 1; // If there are no companies, return 1 as the next ID
+                    }
+
+                    // Otherwise, return the next ID
+                    return Convert.ToInt32(result) + 1;
+                }
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
             }
         }
 

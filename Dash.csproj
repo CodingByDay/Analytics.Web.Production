@@ -388,7 +388,6 @@
     <Content Include="Js\jquery-1.11.2.min.js" />
     <Content Include="Js\jquery.main.js" />
     <Content Include="Js\SaveAsExtension.js" />
-    <Content Include="MobileDashboard.aspx" />
     <Content Include="Navigation.ascx" />
     <Content Include="Navigation.xml" />
     <Content Include="ResetPassword.aspx" />
@@ -641,13 +640,6 @@
       <DependentUpon>Logon.aspx</DependentUpon>
     </Compile>
     <Compile Include="Log\Logger.cs" />
-    <Compile Include="MobileDashboard.aspx.cs">
-      <DependentUpon>MobileDashboard.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MobileDashboard.aspx.designer.cs">
-      <DependentUpon>MobileDashboard.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Models\BatchEditDataEvent.cs" />
     <Compile Include="Models\DashboardFilters.cs" />
     <Compile Include="Models\DashboardOrder.cs" />

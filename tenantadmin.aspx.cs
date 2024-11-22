@@ -177,28 +177,34 @@ namespace Dash
 
         protected override void InitializeCulture()
         {
-            // Check if the language cookie exists
-            HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
-
-            if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+            try
             {
-                // Get the language code from the cookie
-                string lang = langCookie.Value;
+                // Check if the language cookie exists
+                HttpCookie langCookie = HttpContext.Current.Request.Cookies["Language"];
 
-                // Set the culture and UI culture
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
-            }
-            else
+                if (langCookie != null && !string.IsNullOrEmpty(langCookie.Value))
+                {
+                    // Get the language code from the cookie
+                    string lang = langCookie.Value;
+
+                    // Set the culture and UI culture
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(lang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(lang);
+                }
+                else
+                {
+                    // Optional: Set a default language if no cookie is found
+                    string defaultLang = "sl"; // Default to English
+                    System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
+                    System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                }
+
+                // Call the base method to ensure other initializations are performed
+                base.InitializeCulture();
+            } catch (Exception ex)
             {
-                // Optional: Set a default language if no cookie is found
-                string defaultLang = "sl"; // Default to English
-                System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo(defaultLang);
-                System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(defaultLang);
+                SentrySdk.CaptureException(ex);
             }
-
-            // Call the base method to ensure other initializations are performed
-            base.InitializeCulture();
         }
 
 
@@ -280,17 +286,21 @@ namespace Dash
 
         private void GraphsGridView_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
         {
-
-            if (e.KeyValue == null)
+            try
             {
-                return;
-            }
+                if (e.KeyValue == null)
+                {
+                    return;
+                }
 
-            if (dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
+                if (dashboardPermissionsGroup.Permissions.Any(x => x.id == (int)e.KeyValue))
+                {
+                    e.Row.BackColor = System.Drawing.Color.LightBlue;
+                }
+            } catch (Exception ex)
             {
-                e.Row.BackColor = System.Drawing.Color.LightBlue;
+                SentrySdk.CaptureException(ex);
             }
-
         }
 
         private void LimitDashboardsToLocalAdminPermissions()
@@ -641,30 +651,37 @@ namespace Dash
         private int GetGroupForUser(string uname)
         {
             int groupId = -1;
-            string query = "SELECT group_id FROM users WHERE uname = @uname";
-
-            using (SqlConnection conn = new SqlConnection(connection))
+            try
             {
-                SqlCommand command = new SqlCommand(query, conn);
-                command.Parameters.AddWithValue("@uname", uname);
+                string query = "SELECT group_id FROM users WHERE uname = @uname";
 
-                try
+                using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    conn.Open();
-                    object result = command.ExecuteScalar();
+                    SqlCommand command = new SqlCommand(query, conn);
+                    command.Parameters.AddWithValue("@uname", uname);
 
-                    if (result != null && result != DBNull.Value)
+                    try
                     {
-                        groupId = (int)result;
+                        conn.Open();
+                        object result = command.ExecuteScalar();
+
+                        if (result != null && result != DBNull.Value)
+                        {
+                            groupId = (int)result;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        SentrySdk.CaptureException(ex);
                     }
                 }
-                catch (Exception ex)
-                {
-                    SentrySdk.CaptureException(ex);
-                }
-            }
 
-            return groupId;
+                return groupId;
+            } catch(Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+                return groupId;
+            }
         }
 
 
