@@ -73,7 +73,7 @@ namespace Dash
                 if (!string.IsNullOrEmpty(version))
                 {
                     // Assuming you have a Literal control named VersionLiteral
-                    versionLiteral.Text = "v. " + version;
+                    versionLiteral.Text = "v." + version;
                 }
 
                 string releaseNotes = GetReleaseNotes(); // Fetch release notes from a method or data source

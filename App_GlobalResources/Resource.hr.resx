@@ -213,6 +213,9 @@
   <data name="Name" xml:space="preserve">
     <value>Ime</value>
   </data>
+  <data name="NameOther" xml:space="preserve">
+    <value>Naziv</value>
+  </data>
   <data name="NameSurname" xml:space="preserve">
     <value>Ime i prezime</value>
   </data>

@@ -175,11 +175,11 @@ namespace Dash
             try
             {
                 string script = $@"
-            <script type='text/javascript'>
-                document.addEventListener('DOMContentLoaded', function() {{
-                    Swal.fire('{message}');
-                }});
-            </script>";
+                <script type='text/javascript'>
+                    document.addEventListener('DOMContentLoaded', function() {{
+                        Swal.fire('{message}');
+                    }});
+                </script>";
                 ClientScript.RegisterStartupScript(this.GetType(), "ShowAlert", script, false);
             }
             catch (Exception ex)

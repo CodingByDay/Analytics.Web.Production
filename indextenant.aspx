@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="IndexTenant.aspx.cs" Inherits="Dash.IndexTenant" %>
+﻿<%@ Page Title="Dash" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="IndexTenant.aspx.cs" Inherits="Dash.IndexTenant" %>
 
 <%@ Register assembly="DevExpress.Dashboard.v24.1.Web.WebForms, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" namespace="DevExpress.DashboardWeb" tagprefix="dx" %>
 

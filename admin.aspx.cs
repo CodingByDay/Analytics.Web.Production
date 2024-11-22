@@ -1248,6 +1248,9 @@ namespace Dash
                                 cmd.Parameters.AddWithValue("@uname", username);
                                 conn.Open();
                                 cmd.ExecuteNonQuery();
+
+                                CurrentUsername = string.Empty;
+
                                 usersGridView.DataBind();
                             }
                         }
@@ -1397,6 +1400,8 @@ namespace Dash
 
                         RemoveConnectionString(current);
 
+                        CurrentCompany = GetFirstCompany();
+
                         // Refresh the grid
                         companiesGridView.DataBind();
                         usersGridView.DataBind();
@@ -1406,10 +1411,12 @@ namespace Dash
                 }
                 catch (SqlException ex)
                 {
+                    SentrySdk.CaptureException(ex);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
                 catch (Exception ex)
                 {
+                    SentrySdk.CaptureException(ex);
                     Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
             }

@@ -349,6 +349,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Naziv.
+        /// </summary>
+        internal static string NameOther {
+            get {
+                return ResourceManager.GetString("NameOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name and Surname.
         /// </summary>
         internal static string NameSurname {

@@ -288,6 +288,8 @@ namespace Dash
 
                 InitializeUiChanges();
                 Authenticate();
+
+
                 LimitCompanyGrid();
                 HideColumnForCompanies();
                 LimitDashboardsPermissions();
@@ -317,10 +319,11 @@ namespace Dash
                 groupsGridView.Columns["Naziv"].Caption = Resources.Resource.Username;
                 groupsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGroups;
 
-                graphsGridView.Columns["Naziv"].Caption = Resources.Resource.Name;
-                graphsGridView.Columns["Tip"].Caption = Resources.Resource.InternalName;
-                graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Type;
-                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Company;
+                graphsGridView.Columns["Naziv"].Caption = Resources.Resource.NameOther;
+                graphsGridView.Columns["Interni naziv"].Caption = Resources.Resource.InternalName;
+                graphsGridView.Columns["Tip"].Caption = Resources.Resource.Type;
+                graphsGridView.Columns["Podjetje"].Caption = Resources.Resource.Company;
+                graphsGridView.Columns["Jezik"].Caption = Resources.Resource.Language;
                 graphsGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
                 graphsGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
                 graphsGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
@@ -408,11 +411,12 @@ namespace Dash
                     // For all companies set the default values to -1 06.11.2024 Janko Jovičić
                     if (type == "SuperAdmin")
                     {
-                        graphsGridView.Columns[4].Visible = true;
+                        graphsGridView.Columns["Podjetje"].Visible = true;
+
                     }
                     else if (type == "Admin")
                     {
-                        graphsGridView.Columns[4].Visible = false;
+                        graphsGridView.Columns["Podjetje"].Visible = false;
                     }
                 }
             }
