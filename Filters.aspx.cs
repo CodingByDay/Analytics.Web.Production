@@ -145,7 +145,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }

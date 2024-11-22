@@ -1045,7 +1045,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -1077,7 +1077,6 @@ namespace Dash
                                 cmd.ExecuteNonQuery();
                                 usersGridView.DataBind();
                                 // Notify success
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uporabnik izbrisan.')", true);
                             }
                         }
                         else
@@ -1095,7 +1094,7 @@ namespace Dash
                     string errorMessage = ex.InnerException?.Message ?? ex.Message;
                     Logger.LogError(typeof(Admin), errorMessage);
                     // Notify failure
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju uporabnika.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
             }
             catch (Exception ex)
@@ -1143,7 +1142,7 @@ namespace Dash
             {
                 if (usersGridView.GetSelectedFieldValues() == null)
                 {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'You need to choose the user')", true);
                 }
                 else
                 {
@@ -1186,7 +1185,7 @@ namespace Dash
             {
                 SentrySdk.CaptureException(ex);
                 var d = ex;
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
             }
         }
 
