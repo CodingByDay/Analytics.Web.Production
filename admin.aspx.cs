@@ -538,7 +538,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -574,7 +574,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -742,7 +742,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -813,7 +813,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -856,14 +856,14 @@ namespace Dash
                         conn.Open();
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
-                            Notify("Gesla se ne ujemata.", true);
+                            Notify("Passwords are not the same.", true);
                             ClearInputs();
                             return;
                         }
 
                         if (DoesUsernameExists(conn, TxtUserName.Text))
                         {
-                            Notify("Uporabniško ime že obstaja.", true);
+                            Notify("Username already exists.", true);
                             return;
                         }
 
@@ -886,7 +886,6 @@ namespace Dash
                             createUser.ExecuteNonQuery();
                         }
 
-                        Notify("Uspešno kreiran uporabnik.", false);
                         ClearInputs();
                     }
                     catch (Exception ex)
@@ -934,7 +933,7 @@ namespace Dash
                             }
                             else
                             {
-                                Notify("Gesla se ne ujemata.", true);
+                                Notify("Passwords are not the same.", true);
                                 return;
                             }
                         }
@@ -955,7 +954,6 @@ namespace Dash
                             }
                         }
 
-                        Notify("Uspešno spremenjeni podatki.", false);
                         ClearInputs();
                     }
                     catch (Exception ex)
@@ -1034,7 +1032,7 @@ namespace Dash
             try
             {
                 Logger.LogError(typeof(Admin), ex.InnerException?.Message ?? ex.Message);
-                Notify("Napaka...", true);
+                Notify("Error", true);
             }
             catch (Exception exception)
             {
@@ -1073,16 +1071,12 @@ namespace Dash
                         }
                     }
 
-                    // Notify the user that the company has been added successfully
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Podjetje uspešno dodano!')", true);
                 }
             }
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                // Log the exception
-                Logger.LogError(typeof(Admin), ex.Message);
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
             }
 
             return newCompanyId;
@@ -1131,13 +1125,11 @@ namespace Dash
                     companyName.Text = "";
                     website.Text = "";
 
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
                 }
                 else
                 {
                     UpdateCompanyData(connName.Text, GetIdCompany(CurrentCompany));
                     CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspeh.')", true);
                 }
             }
             catch (Exception ex)
@@ -1181,8 +1173,7 @@ namespace Dash
             {
                 SentrySdk.CaptureException(ex);
                 // Log the full exception message
-                Logger.LogError(typeof(Admin), $"Error adding/updating connection string: {ex.Message}, StackTrace: {ex.StackTrace}");
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake!')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
             }
         }
 
@@ -1256,8 +1247,6 @@ namespace Dash
                                 conn.Open();
                                 cmd.ExecuteNonQuery();
                                 usersGridView.DataBind();
-                                // Notify success
-                                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uporabnik izbrisan.')", true);
                             }
                         }
                         else
@@ -1273,9 +1262,7 @@ namespace Dash
                 catch (Exception ex)
                 {
                     string errorMessage = ex.InnerException?.Message ?? ex.Message;
-                    Logger.LogError(typeof(Admin), errorMessage);
-                    // Notify failure
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju uporabnika.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
             }
             catch (Exception ex)
@@ -1336,7 +1323,7 @@ namespace Dash
             {
                 if (usersGridView.GetSelectedFieldValues() == null)
                 {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Morate izbrati uporabnika.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'You need to choose the user.')", true);
                 }
                 else
                 {
@@ -1375,7 +1362,7 @@ namespace Dash
             {
                 SentrySdk.CaptureException(ex);
                 var d = ex;
-                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
             }
         }
 
@@ -1388,7 +1375,6 @@ namespace Dash
 
                 if (string.IsNullOrEmpty(current))
                 {
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka pri brisanju podjetja.')", true);
                     return;
                 }
                 else
@@ -1414,18 +1400,15 @@ namespace Dash
                         usersGridView.DataBind();
                         graphsGridView.DataBind();
 
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(false, 'Uspešno brisanje.')", true);
                     }
                 }
                 catch (SqlException ex)
                 {
-                    Logger.LogError(typeof(Admin), $"SQL Error: {ex.Message}");
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Prišlo je do napake.')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
                 catch (Exception ex)
                 {
-                    Logger.LogError(typeof(Admin), $"Error: {ex.Message}");
-                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                    Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                 }
             }
             catch (Exception ex)

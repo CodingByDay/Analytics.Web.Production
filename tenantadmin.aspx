@@ -42,9 +42,9 @@
                 dataType: 'json',
                 success: function (msg) {
                     if (msg.d) {
-                        notify(false, "Uspešna konekcija.");
+                        notify(false, "Successful connection.");
                     } else {
-                        notify(true, "Napaka v konekciji.");
+                        notify(true, "Error in connection.");
                     }
                 }
             });
@@ -58,13 +58,13 @@
         function notify(isError, message) {
             if (isError) {
                 Swal.fire(
-                    'Napaka',
+                    'Error',
                     message,
                     'error'
                 )
             } else {
                 Swal.fire(
-                    'Uspeh!',
+                    'Success!',
                     message,
                     'success'
                 )

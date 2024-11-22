@@ -730,7 +730,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -802,7 +802,7 @@ namespace Dash
                     catch (Exception ex)
                     {
                         Logger.LogError(typeof(Admin), ex.InnerException.Message);
-                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Napaka...')", true);
+                        Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "notify(true, 'Error')", true);
                     }
                 }
             }
@@ -845,7 +845,7 @@ namespace Dash
                             }
                             else
                             {
-                                Notify("Gesla se ne ujemata.", true);
+                                Notify("Passwords are not the same.", true);
                                 return;
                             }
                         }
@@ -866,7 +866,6 @@ namespace Dash
                             }
                         }
 
-                        Notify("Uspešno spremenjeni podatki.", false);
                         ClearInputs();
                     }
                     catch (Exception ex)
@@ -945,7 +944,7 @@ namespace Dash
             try
             {
                 Logger.LogError(typeof(Admin), ex.InnerException?.Message ?? ex.Message);
-                Notify("Napaka...", true);
+                Notify("Error", true);
             }
             catch (Exception exception)
             {
@@ -986,14 +985,14 @@ namespace Dash
                         conn.Open();
                         if (TxtPassword.Text != TxtRePassword.Text)
                         {
-                            Notify("Gesla se ne ujemata.", true);
+                            Notify("Passwords are not the same.", true);
                             ClearInputs();
                             return;
                         }
 
                         if (IsUsernameExists(conn, TxtUserName.Text))
                         {
-                            Notify("Uporabniško ime že obstaja.", true);
+                            Notify("Username already exists.", true);
                             return;
                         }
 
@@ -1016,7 +1015,6 @@ namespace Dash
                             createUser.ExecuteNonQuery();
                         }
 
-                        Notify("Uspešno kreiran uporabnik.", false);
                         ClearInputs();
                     }
                     catch (Exception ex)

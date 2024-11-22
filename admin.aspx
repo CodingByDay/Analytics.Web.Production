@@ -58,9 +58,9 @@
                  dataType: 'json',
                  success: function (msg) {
                      if (msg.d) {
-                         notify(false, "Uspešna konekcija.");
+                         notify(false, "Successful connection.");
                      } else {
-                         notify(true, "Napaka v konekciji.");
+                         notify(true, "Error in connection.");
                      }
                  }
              });
@@ -74,13 +74,13 @@
         function notify(isError, message) {
             if (isError) {
                 Swal.fire(
-                    'Napaka',
+                    'Error',
                     message,
                     'error'
                 )
             } else {
                 Swal.fire(
-                    'Uspeh!',
+                    'Success!',
                     message,
                     'success'
                 )
@@ -94,10 +94,10 @@
             company_number = document.getElementById("companyNumber").value
 
             if (company_name == "" || website == "" || company_number == "") {
-               notify(true, "Podatki manjkajo.")
+               notify(true, "Data is missing.")
             } else {
                 if (isNaN(company_number)) {
-                    notify(true, "Številka ni v pravi obliki.")
+                    notify(true, "Number is not in the correct format.")
                 } else {
                     btnRegistration = document.getElementById('<%=companyButton.ClientID %>');
                     btnRegistration.click();
