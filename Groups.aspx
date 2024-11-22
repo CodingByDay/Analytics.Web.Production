@@ -258,10 +258,10 @@
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button"  runat="server" onserverclick="NewGroup_ServerClick" id="NewGroup" class="btn btn-primary actionButton">
 
-                        <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"> </i>  
+                        <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" />   
 
                     </button>
-                    <dx:BootstrapButton runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši"  CssClasses-Icon="fas fa-trash" OnClick="DeleteGroup_Click" CssClasses-Control="actionButton right">
+                    <dx:BootstrapButton runat="server" ID="DeleteGroup" UseSubmitBehavior="False" Text="Pobriši"  OnClick="DeleteGroup_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -340,7 +340,7 @@
 
 
            <div class="action-buttons">
-                 <dx:BootstrapButton runat="server" Text="Shrani" CssClasses-Icon="fas fa-save" ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
+                 <dx:BootstrapButton runat="server" Text="Shrani"  ID="saveGraphs" OnClick="SaveGraphs_Click" CssClasses-Control="actionButton" AutoPostBack="false">
                     <SettingsBootstrap RenderOption="Primary" />
                   </dx:BootstrapButton>
            </div>

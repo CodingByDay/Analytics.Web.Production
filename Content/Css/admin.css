@@ -23,7 +23,8 @@
 }
 
 .actionButton {
-    width: 8em;
+    width: 7em;
+    font-weight:700;
 }
 
 body {

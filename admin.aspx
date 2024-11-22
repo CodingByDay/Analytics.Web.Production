@@ -281,9 +281,9 @@
 
             <div class="action-buttons">
                  <button type="button" class="btn btn-primary actionButton" id="company" data-toggle="modal" data-target="#companyModal">
-                  <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"> </i>  
+                  <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" />  
                 </button>
-                 <dx:BootstrapButton runat="server" Badge-IconCssClass="fas fa-trash" ID ="deleteCompany"  UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Pobriši">
+                 <dx:BootstrapButton runat="server" ID ="deleteCompany"  UseSubmitBehavior="False" CssClasses-Control="actionButton" OnClick="DeleteCompany_Click" Text="Pobriši">
                      <SettingsBootstrap RenderOption="Danger" />
                  </dx:BootstrapButton>
             </div>
@@ -368,9 +368,9 @@
                 <div class="action-buttons">
                     <asp:HiddenField ID="IsInitialLoad" runat="server" Value="true" />
                     <button type="button" runat="server" onserverclick="NewUser_Click" id="new_user" class="btn btn-primary actionButton">
-                    <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> <i class="fas fa-plus"></i>
+                    <asp:Literal runat="server" Text="<%$ Resources:Resource, Add%>" /> 
                     </button>
-                    <dx:BootstrapButton Badge-IconCssClass="fas fa-trash" runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
+                    <dx:BootstrapButton  runat="server" ID="deleteUser" UseSubmitBehavior="False"  Text="Pobriši" OnClick="DeleteUser_Click" CssClasses-Control="actionButton">
                     <SettingsBootstrap RenderOption="Danger" /></dx:BootstrapButton>
                 </div>
 		                        
@@ -550,7 +550,6 @@
                  <dx:BootstrapButton 
                      runat="server"
                      Text="Shrani" 
-                     CssClasses-Icon="fas fa-save" 
                      ID="saveGraphs" 
                      OnClick="SaveGraphs_Click" 
                      CssClasses-Control="actionButton"
