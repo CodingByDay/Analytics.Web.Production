@@ -145,7 +145,7 @@
 
 
     <div class="content-flex">
-        <div class="inner-item companies">
+        <div class="inner-item companies" style="flex: 0 0 25%;">
 
 
 		  <asp:SqlDataSource 
@@ -173,7 +173,7 @@
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
 
-            <dx:BootstrapGridView ID="companiesGridView" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server"  KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="70%" CssClasses-Control="control" AutoGenerateColumns="False">
+            <dx:BootstrapGridView ID="companiesGridView" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server"  KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
 
@@ -216,12 +216,12 @@
            </div>
 
 
-        <div class="inner-item user">
+        <div class="inner-item user" style="flex: 0 0 25%;">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
             <asp:SqlDataSource ID="groupsGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT * FROM [groups]"></asp:SqlDataSource>
-            <dx:BootstrapGridView ID="groupsGridView" SettingsResizing-ColumnResizeMode="NextColumn" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="70%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+            <dx:BootstrapGridView ID="groupsGridView" SettingsResizing-ColumnResizeMode="NextColumn" DataSourceID="groupsGrid" ClientInstanceName="groupsGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  KeyFieldName="group_id"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
            <CssClasses Control="grid"></CssClasses>
 
           <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
@@ -268,7 +268,7 @@
 
    </div>
 
-	   <div class="inner-item graphs">
+	   <div class="inner-item graphs" style="flex: 0 0 50%;">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 

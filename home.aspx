@@ -58,6 +58,7 @@
     .cookie-consent-banner a {
         color: #f1c40f!important;
         text-decoration: none!important;
+        cursor:pointer!important;
     }
 
     .cookie-consent-banner button {

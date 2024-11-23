@@ -191,7 +191,7 @@
      
 
 
-        <div class="inner-item user">
+        <div class="inner-item user" style="flex: 0 0 40%;">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
@@ -210,7 +210,7 @@
             </UpdateParameters>
         </asp:SqlDataSource>         
                 
-                <dx:BootstrapGridView ID="usersGridView" SettingsResizing-ColumnResizeMode="Disabled"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
+                <dx:BootstrapGridView ID="usersGridView" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  SettingsEditing-Mode="PopupEditForm" KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
                               <SettingsEditing Mode="Batch" />
 
@@ -270,7 +270,7 @@
 
    </div>
 
-	   <div class="inner-item graphs">
+	   <div class="inner-item graphs" style="flex: 0 0 60%;">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 <asp:ScriptManager runat="server" />
