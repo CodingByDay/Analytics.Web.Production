@@ -411,11 +411,19 @@
               <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="caption"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="2" Caption="Naziv">
               </dx:BootstrapGridViewTextColumn>
 
-              <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Interni naziv" VisibleIndex="3" Caption="Interni naziv">
+              <dx:BootstrapGridViewTextColumn FieldName="custom_name"  PropertiesTextEdit-ValidationSettings-RequiredField-IsRequired="false" PropertiesTextEdit-ValidationSettings-CausesValidation="false" Settings-AllowHeaderFilter="False" Name="Interni naziv" VisibleIndex="2" Caption="Interni naziv">
                     <PropertiesTextEdit>
                     <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
                   </PropertiesTextEdit>
               </dx:BootstrapGridViewTextColumn>
+
+
+                  <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="sort"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="3" Caption="Klasifikacija">
+                            <PropertiesTextEdit>
+                              <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
+                            </PropertiesTextEdit>
+                 </dx:BootstrapGridViewTextColumn>
+
 
 
               <dx:BootstrapGridViewComboBoxColumn PropertiesComboBox-ValidationSettings-RequiredField-IsRequired="false"   SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="5" Caption="Tip">
@@ -444,6 +452,7 @@
                         <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
                     </SettingsHeaderFilter>
              </dx:BootstrapGridViewComboBoxColumn>
+
 
 
           </Columns>
@@ -538,6 +547,7 @@
         <asp:Parameter Name="meta_type" ConvertEmptyStringToNull="true" Type="Int32" />
         <asp:Parameter Name="meta_company" ConvertEmptyStringToNull="true" Type="Int32" />
         <asp:Parameter Name="meta_language" ConvertEmptyStringToNull="true" Type="Int32" />
+        <asp:Parameter Name="sort" ConvertEmptyStringToNull="true" Type="Int32" />
     </UpdateParameters>
 </asp:SqlDataSource>
 

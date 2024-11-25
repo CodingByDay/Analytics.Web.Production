@@ -380,6 +380,10 @@ namespace Dash
                         ? GetIdForMetaDescription("language", row.NewValues["meta_language"].ToString())
                         : DBNull.Value.ToString();
 
+                    query.UpdateParameters["sort"].DefaultValue = row.NewValues["sort"] != null
+                        ? row.NewValues["sort"].ToString()
+                        : DBNull.Value.ToString();
+
                     query.Update();
                 }
 
