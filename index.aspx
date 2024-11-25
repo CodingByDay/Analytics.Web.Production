@@ -334,7 +334,7 @@ height: 100% !important;
                           ItemWidgetCreated="customizeWidgets"
                           DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
                           DashboardEndUpdate="onDashboardEndUpdate"
-                          ItemWidgetUpdated="updatecustomizeWidgets"        
+                          ItemWidgetUpdated="updateCustomizeWidgets"        
                           ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated" 
                           DashboardInitialized="correctTheLoadingState" 
                          

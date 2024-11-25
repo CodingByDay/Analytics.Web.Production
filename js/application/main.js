@@ -243,7 +243,7 @@ function updateCustomizeWidgets(sender, args) {
 
         d_old = getSafeParsedCookie('old');
         d_new = getSafeParsedCookie('new');
-        debugger;
+
         for (var i = 0; i < items.length; i++) {
             var iCurrent = items[i];
             item_caption = iCurrent.name();
