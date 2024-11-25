@@ -272,7 +272,7 @@ namespace Dash.DatabaseStorage
                 connection.Open();
 
                 // Create the command for the stored procedure
-                using (SqlCommand GetCommand = new SqlCommand("sp_get_dashboards", connection))
+                using (SqlCommand GetCommand = new SqlCommand("sp_get_dashboards_sorted", connection))
                 {
                     GetCommand.CommandType = CommandType.StoredProcedure;
 

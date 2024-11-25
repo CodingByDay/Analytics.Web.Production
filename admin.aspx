@@ -227,12 +227,14 @@
 
 
     <div class="content-flex">
-        <div class="inner-item companies" style="flex: 0 0 25%;">
+        <div class="inner-item companies" style="flex: 0 0 20%;">
 		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
-
+            <input type="text" name="Username" style="display:none;" autocomplete="on">
+            <!-- Hidden input for password -->
+            <input type="password" name="Password" style="display:none;" autocomplete="on">
             <dx:BootstrapGridView ID="companiesGridView" SettingsPopup-EditForm-AllowResize="false"  SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn" ClientInstanceName="companyGrid" Settings-VerticalScrollableHeight="400"  runat="server" SettingsEditing-Mode="PopupEditForm" KeyFieldName="id_company" Settings-VerticalScrollBarMode="Visible" DataSourceID="companiesGrid" Width="100%" CssClasses-Control="control" AutoGenerateColumns="False">
                 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
                     <ClientSideEvents Init="function(s, e) { OnInitSpecific(s, e, 'company'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'company'); }" />
@@ -247,7 +249,7 @@
                    <SettingsDataSecurity AllowEdit="True" />
                 <Columns>
 
-                    <dx:BootstrapGridViewCommandColumn  HeaderBadge-IconCssClass="fa fa-caret-down"   ShowEditButton="True" VisibleIndex="0" Caption=" " >
+                    <dx:BootstrapGridViewCommandColumn  HeaderBadge-IconCssClass="fa fa-caret-down" ShowEditButton="True" VisibleIndex="0" Caption=" " >
       
                     </dx:BootstrapGridViewCommandColumn>
 
@@ -294,7 +296,7 @@
            </div>
 
 
-        <div class="inner-item user" style="flex: 0 0 25%;">
+        <div class="inner-item user" style="flex: 0 0 20%;">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
@@ -310,7 +312,9 @@
     </UpdateParameters>
 </asp:SqlDataSource>
 
-
+         <input type="text" name="Username" style="display:none;" autocomplete="on">
+         <!-- Hidden input for password -->
+         <input type="password" name="Password" style="display:none;" autocomplete="on">
 
             <dx:BootstrapGridView ID="usersGridView" SettingsPopup-EditForm-AllowResize="false" SettingsBehavior-AllowDragDrop="false" SettingsResizing-ColumnResizeMode="NextColumn"  DataSourceID="usersGrid" ClientInstanceName="userGrid" Settings-VerticalScrollableHeight="400"  AutoPostBack="false" runat="server" Settings-VerticalScrollBarMode="Visible"  Width="100%" AutoGenerateColumns="False"  KeyFieldName="uname"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj" CssClasses-Control="grid">
 <CssClasses Control="grid"></CssClasses>
@@ -377,11 +381,14 @@
 
    </div>
 
-	   <div class="inner-item graphs" style="flex: 0 0 50%;">
+	   <div class="inner-item graphs" style="flex: 0 0 60%;">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 <asp:ScriptManager runat="server" />
 
+         <input type="text" name="Username" style="display:none;" autocomplete="on">
+         <!-- Hidden input for password -->
+         <input type="password" name="Password" style="display:none;" autocomplete="on">
 
       <dx:BootstrapGridView SettingsBehavior-AllowDragDrop="false" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"   SettingsPopup-EditForm-AllowResize="false"  CssClasses-FocusedRow="focused_row" SettingsResizing-ColumnResizeMode="NextColumn" AutoPostBack="false" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" ID="graphsGridView" Settings-ShowHeaderFilterButton="true" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" >
 <CssClasses Control="grid"></CssClasses>
@@ -418,7 +425,7 @@
               </dx:BootstrapGridViewTextColumn>
 
 
-                  <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="sort"  Settings-AllowHeaderFilter="False" Name="Graf" VisibleIndex="3" Caption="Klasifikacija">
+                  <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="sort"  Settings-AllowHeaderFilter="False" Name="Graf" Width="70" VisibleIndex="3" Caption="Sortiranje">
                             <PropertiesTextEdit>
                               <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
                             </PropertiesTextEdit>

@@ -145,7 +145,7 @@
 
 
     <div class="content-flex">
-        <div class="inner-item companies" style="flex: 0 0 25%;">
+        <div class="inner-item companies" style="flex: 0 0 20%;">
 
 
 		  <asp:SqlDataSource 
@@ -216,7 +216,7 @@
            </div>
 
 
-        <div class="inner-item user" style="flex: 0 0 25%;">
+        <div class="inner-item user" style="flex: 0 0 20%;">
             <div class="control_obj">
             <div id="gridContainerUser" style="visibility: hidden">
 
@@ -268,7 +268,7 @@
 
    </div>
 
-	   <div class="inner-item graphs" style="flex: 0 0 50%;">
+	   <div class="inner-item graphs" style="flex: 0 0 60%;">
            <div class="control_obj">
                                 <div id="gridContainerDashboard" style="visibility: hidden">
 
