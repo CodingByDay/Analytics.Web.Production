@@ -192,14 +192,15 @@ function getSafeParsedCookie(cookieName) {
         return null;
     }
 }
-function updatecustomizeWidgets(sender, args) {
+function updateCustomizeWidgets(sender, args) {
     var control = dashboard.GetDashboardControl();
     design = control.isDesignMode();
     if (!design) {
         var parName = []
         var collection = dashboard.GetParameters().GetParameterList();
 
-        setCookie('new', JSON.stringify(collection))
+        setCookie('old', getCookie("new"));
+        setCookie('new', JSON.stringify(collection));
 
         if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
             initialPayload = [];
@@ -232,13 +233,17 @@ function updatecustomizeWidgets(sender, args) {
             }
             grid.option("columns", columns);
         }
+
+
+        // Here is the error that causes dynamic parameters to be only changed once.
+
         var items = dashboard.GetDashboardControl().dashboard().items();
         tabItems = []
         window.counter = 0;
 
         d_old = getSafeParsedCookie('old');
         d_new = getSafeParsedCookie('new');
-
+        debugger;
         for (var i = 0; i < items.length; i++) {
             var iCurrent = items[i];
             item_caption = iCurrent.name();
@@ -466,19 +471,19 @@ function correctTheLoadingState(s, e) {
         var items = s.GetDashboardControl().dashboard().items();
         tabItems = []
         window.counter = 0;
-
         for (var i = 0; i < items.length; i++) {
             var iCurrent = items[i];
             item_caption = iCurrent.name();
             var parameterized_values = regex_return(item_caption);
             if (parameterized_values.length != 0) {
+
+
                 parameterized_values.forEach((singular) => {
                     const found = list.find(element => element.Name == singular)
                     indexOfElement = list.indexOf(found)
 
                     if (found != null && indexOfElement != -1) {
                         text_to_replace = "#" + found.Name;
-
                         try {
                             text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
                         } catch (err) {

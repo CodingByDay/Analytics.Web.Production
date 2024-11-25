@@ -140,7 +140,7 @@
             DashboardEndUpdate="onDashboardEndUpdate"
             DashboardStateChanged="onDashboardStateChanged"
             DashboardTitleToolbarUpdated ="onDashboardTitleToolbarUpdated"
-            ItemWidgetUpdated="updatecustomizeWidgets"
+            ItemWidgetUpdated="updateCustomizeWidgets"
             DashboardInitialized="correctTheLoadingState" />
       </dx:ASPxDashboard>
         </div>
