@@ -273,7 +273,7 @@
                 gridViewOrganizations.AddNewRow();
                 // Start editing the last added row (the new row)
                 var newRowIndex = gridViewOrganizations.cpTotalRows - 1; // Get the index of the new row
-            } else if (gridViewId == "gridViewTypes") {
+            } else if (gridViewId == "gridViewLanguages") {
 
                 // Add a new row to the grid
                 gridViewLanguages.AddNewRow();
