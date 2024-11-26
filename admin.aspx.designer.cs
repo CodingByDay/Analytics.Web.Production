@@ -159,24 +159,6 @@ namespace Dash
         protected global::DevExpress.Web.Bootstrap.BootstrapButton saveGraphs;
 
         /// <summary>
-        /// MoveUpButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveUpButton;
-
-        /// <summary>
-        /// MoveDownButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::DevExpress.Web.Bootstrap.BootstrapButton MoveDownButton;
-
-        /// <summary>
         /// hiddenButtonCompany control.
         /// </summary>
         /// <remarks>

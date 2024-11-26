@@ -978,33 +978,48 @@ namespace Dash
             }
         }
 
-        private int GetIdGroup(string current)
+        private int GetIdGroup(string group)
         {
             try
             {
-                string clean = current.Trim();
+                // Get the company ID for the current company
+                int companyId = GetIdCompany(CurrentCompany);
+                // Trim the input group name
+                string cleanGroupName = group?.Trim() ?? string.Empty;
+
+                // Return -1 if the group name is invalid
+                if (string.IsNullOrEmpty(cleanGroupName))
+                    return -1;
+
                 using (SqlConnection conn = new SqlConnection(connection))
                 {
-                    try
+                    conn.Open();
+                    // Use parameterized query to prevent SQL injection
+                    string query = "SELECT group_id FROM groups WHERE group_name = @group_name AND company_id = @id_company";
+                    using (SqlCommand cmd = new SqlCommand(query, conn))
                     {
-                        conn.Open();
-                        SqlCommand cmd = new SqlCommand($"SELECT group_id FROM groups WHERE group_name='{clean}'", conn);
-                        result = cmd.ExecuteScalar();
-                        int id = System.Convert.ToInt32(result);
-                        return id;
-                    }
-                    catch (Exception)
-                    {
-                        return -1;
+                        cmd.Parameters.AddWithValue("@group_name", cleanGroupName);
+                        cmd.Parameters.AddWithValue("@id_company", companyId);
+                        // Execute the query and safely convert the result
+                        object result = cmd.ExecuteScalar();
+                        if (result != null && result != DBNull.Value)
+                        {
+                            return Convert.ToInt32(result);
+                        }
                     }
                 }
+                // If no matching group is found, return -1
+                return -1;
             }
             catch (Exception ex)
             {
+                // Log the exception to Sentry
                 SentrySdk.CaptureException(ex);
+                // Return -1 to indicate failure
                 return -1;
             }
         }
+
 
         private List<string> GetSelectedValues(BootstrapGridView gridView, string columnName)
         {

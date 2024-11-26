@@ -4,6 +4,7 @@ using DevExpress.DashboardCommon;
 using DevExpress.DashboardWeb;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;

@@ -1127,6 +1127,8 @@ namespace Dash
                     companiesGridView.Selection.SelectRowByKey(keyCompany);
 
                     CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
+
+
                     companyNumber.Text = "";
                     companyName.Text = "";
                     website.Text = "";
@@ -1134,6 +1136,7 @@ namespace Dash
                 }
                 else
                 {
+                    UpdateCompanyDataForm(companyName.Text, companyNumber.Text, website.Text);
                     UpdateCompanyData(connName.Text, GetIdCompany(CurrentCompany));
                     CreateOrModifyConnectionString(dbDataSource.Text, dbNameInstance.Text, dbPassword.Text, dbUser.Text, connName.Text);
                 }
@@ -1143,6 +1146,44 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
+
+
+        public void UpdateCompanyDataForm(string name, string number, string website)
+        {
+            
+            const string query = @"
+            UPDATE companies 
+            SET company_name = @name, 
+                company_number = @number, 
+                website = @website 
+            WHERE id_company = @id";
+
+            try
+            {
+                using (var conn = new SqlConnection(connection))
+                {
+                    using (var command = new SqlCommand(query, conn))
+                    {
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@number", number);
+                        command.Parameters.AddWithValue("@website", website);
+                        command.Parameters.AddWithValue("@id", GetIdCompany(CurrentCompany));
+
+                        conn.Open();
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                SentrySdk.CaptureException(ex);
+            }
+        }
+
+
+
+
 
         private void AddOrUpdateConnectionString(string stringConnection)
         {
@@ -1187,12 +1228,15 @@ namespace Dash
         {
             try
             {
-                SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
-                build.InitialCatalog = dbNameInstance;
-                build.DataSource = dbSource;
-                build.UserID = dbUser;
-                build.Password = dbPassword;
-                AddOrUpdateConnectionString(build.ConnectionString);
+                if (connName != string.Empty)
+                {
+                    SqlConnectionStringBuilder build = new SqlConnectionStringBuilder();
+                    build.InitialCatalog = dbNameInstance;
+                    build.DataSource = dbSource;
+                    build.UserID = dbUser;
+                    build.Password = dbPassword;
+                    AddOrUpdateConnectionString(build.ConnectionString);
+                }
             }
             catch (Exception ex)
             {
@@ -1253,7 +1297,7 @@ namespace Dash
                                 conn.Open();
                                 cmd.ExecuteNonQuery();
 
-                                CurrentUsername = string.Empty;
+                                CurrentUsername = GetFirstUserForCompany(CurrentCompany);
 
                                 usersGridView.DataBind();
                             }
@@ -1279,6 +1323,36 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
+        private string GetFirstUserForCompany(string currentCompany)
+        {
+            // Get the company ID based on the current company name
+            int companyId = GetIdCompany(currentCompany);
+            // Define the query to get the first user for the company
+            string query = "SELECT TOP 1 uname FROM users WHERE id_company = @company_id";
+            // Initialize the result variable
+            string firstUser = string.Empty;
+            // Use the global connection string for the operation
+            using (SqlConnection conn = new SqlConnection(connection))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // Add the parameter for the query
+                cmd.Parameters.AddWithValue("@company_id", companyId);
+                // Open the connection
+                conn.Open();
+                // Execute the query and read the results
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        // Retrieve the value of the uname column
+                        firstUser = reader["uname"] as string;
+                    }
+                }
+            }
+            return firstUser; 
+        }
+
 
         [WebMethod]
         public static void CreatingCompanySessionEdit()
@@ -1606,6 +1680,7 @@ namespace Dash
             }
         }
 
+       /* 
         public void MoveUpButton_Click(object sender, EventArgs e)
         {
             try
@@ -1680,6 +1755,7 @@ namespace Dash
                 return;
             }
         }
+        */
 
         private void UpdateSortOrder(int dashboardId, int sortOrder)
         {

@@ -395,7 +395,7 @@
                               <SettingsEditing Mode="Batch" />
 
 <CssClassesEditor NullText="Urejaj"></CssClassesEditor>
-                    <ClientSideEvents BatchEditEndEditing="OnBatchEditEndEditing" Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
+                    <ClientSideEvents  BatchEditEndEditing="OnBatchEditEndEditing" Init="function(s, e) { OnInitSpecific(s, e, 'dashboard'); }"  EndCallback="function(s, e) { OnEndCallback(s, e, 'dashboard'); }" />
 
               <Settings VerticalScrollBarMode="Visible" ShowFilterRow="false"/>
   
@@ -580,18 +580,9 @@
             
           <div class="toolbar-custom">
 
-              <div class="special_buttons">
 
-                    <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-up" runat="server" Text="" ID="MoveUpButton" OnClick="MoveUpButton_Click"  AutoPostBack="false">
-                     <SettingsBootstrap RenderOption="Primary" />
-                   </dx:BootstrapButton>
-              
-              
-                  <dx:BootstrapButton CssClasses-Icon="fas fa-arrow-down" runat="server" Text="" ID="MoveDownButton" OnClick="MoveDownButton_Click" AutoPostBack="false">
-                     <SettingsBootstrap RenderOption="Primary" />
-                   </dx:BootstrapButton>
-                  
-              </div>
+
+ 
 
         </div>
 
@@ -628,7 +619,7 @@
               <div class="col-md-6">
                 <!-- Company Part -->
 
-                                  <!-- Hidden input for username -->
+                <!-- Hidden input for username -->
                 <input type="text" name="Username" style="display:none;" autocomplete="on">
 
                 <!-- Hidden input for password -->
@@ -707,6 +698,8 @@
 
                 <!-- Hidden input for password -->
                 <input type="password" name="Password" style="display:none;" autocomplete="on">
+
+                <input type="text" name="Email" style="display:none;" autocomplete="on">
 
                 <div class="form-group">
                   <label for="TxtName"><asp:Literal runat="server" Text="<%$ Resources:Resource, NameSurname%>" /></label>
