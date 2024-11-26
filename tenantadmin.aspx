@@ -445,8 +445,8 @@
 
 
                 <div class="form-group">
-                  <label for="TxtName"><asp:Literal runat="server" Text="<%$ Resources:Resource, Username%>" /></label>
-                  <asp:TextBox ID="TxtName" runat="server" placeholder="<%$ Resources:Resource, Username%>" CssClass="form-control"></asp:TextBox>
+                    <label for="TxtName"><asp:Literal runat="server" Text="<%$ Resources:Resource, NameSurname%>" /></label>
+                    <asp:TextBox ID="TxtName" runat="server" placeholder="<%$ Resources:Resource, NameSurname%>" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div class="form-group">
                   <label for="email"><asp:Literal runat="server" Text="<%$ Resources:Resource, Email%>" /></label>
@@ -475,7 +475,7 @@
                 <div class="form-group">
                   <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
                     <asp:ListItem>Admin</asp:ListItem>
-                    <asp:ListItem>User</asp:ListItem>
+                    <asp:ListItem Selected="True">User</asp:ListItem>
                   </asp:RadioButtonList>
                 </div>
                 <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRights%>" /></h5>

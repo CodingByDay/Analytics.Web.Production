@@ -732,7 +732,7 @@
                 <div class="form-group">
                   <asp:RadioButtonList ID="userRole" runat="server" RepeatDirection="Horizontal" CssClass="form-check">
                     <asp:ListItem>Admin</asp:ListItem>
-                    <asp:ListItem>User</asp:ListItem>
+                    <asp:ListItem Selected="True">User</asp:ListItem>
                   </asp:RadioButtonList>
                 </div>
                 <h5><asp:Literal runat="server" Text="<%$ Resources:Resource, UserRights%>" /></h5>

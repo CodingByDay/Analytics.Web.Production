@@ -65,7 +65,6 @@ namespace Dash
         private string admin_id;
         private string databaseName;
         private bool isEditHappening = false;
-        private bool isEditUser;
         private string userRightNow;
         private DashboardPermissions dashboardPermissionsGroup = new DashboardPermissions();
 
@@ -115,28 +114,7 @@ namespace Dash
             }
         }
 
-        private string CurrentCompany
-        {
-            get
-            {
-                // Retrieve the "CurrentCompany" session variable from the database
-                string company = UserSession.GetSessionVariable<string>("CurrentCompany");
 
-                // If the value is null or empty, retrieve the first company and store it in the database
-                if (string.IsNullOrEmpty(company))
-                {
-                    company = GetFirstCompany();
-                    UserSession.SetSessionVariable("CurrentCompany", company);
-                }
-
-                return company;
-            }
-            set
-            {
-                // Store the new company in the database
-                UserSession.SetSessionVariable("CurrentCompany", value);
-            }
-        }
         private void SetLocalizationProperties()
         {
             try
@@ -200,31 +178,8 @@ namespace Dash
             }
         }
 
-        private string GetFirstCompany()
-        {
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connection))
-                {
-                    try
-                    {
-                        conn.Open();
-                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
-                        var company = (string)cmd.ExecuteScalar();
-                        return company;
-                    }
-                    catch (Exception)
-                    {
-                        return string.Empty;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                SentrySdk.CaptureException(ex);
-                return string.Empty;
-            }
-        }
+
+    
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -256,8 +211,8 @@ namespace Dash
                 {
                 }
 
-                usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany();
-                GroupsDropdown.SelectParameters["company"].DefaultValue = GetUserCompany();
+                usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany().ToString();
+                GroupsDropdown.SelectParameters["company"].DefaultValue = GetUserCompany().ToString();
 
                 InitializeUiChanges();
                 Authenticate();
@@ -366,7 +321,7 @@ namespace Dash
                     string rowId = row.Keys["id"].ToString();
 
                     query.UpdateParameters["dashboard_id"].DefaultValue = rowId;
-                    query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+                    query.UpdateParameters["company_id"].DefaultValue = GetUserCompany().ToString();
                     query.UpdateParameters["custom_name"].DefaultValue = row.NewValues["custom_name"] != null ? row.NewValues["custom_name"].ToString() : string.Empty;
                     query.Update();
                 }
@@ -412,7 +367,7 @@ namespace Dash
                 e.Cancel = true;
                 string id = e.Keys["id"] != null ? e.Keys["id"].ToString() : string.Empty;
                 query.UpdateParameters["dashboard_id"].DefaultValue = id;
-                query.UpdateParameters["company_id"].DefaultValue = GetIdCompany(CurrentCompany).ToString();
+                query.UpdateParameters["company_id"].DefaultValue = GetUserCompany().ToString();
                 query.UpdateParameters["custom_name"].DefaultValue = e.NewValues["custom_name"] != null ? e.NewValues["custom_name"].ToString() : string.Empty;
                 query.Update();
                 graphsGridView.DataBind();
@@ -464,7 +419,7 @@ namespace Dash
             }
         }
 
-        private string GetUserCompany()
+        private int GetUserCompany()
         {
             try
             {
@@ -475,7 +430,7 @@ namespace Dash
                 string connectionString = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
                 // Variable to store the company ID
-                string companyId = string.Empty;
+                int companyId = -1; // Default value if no company ID is found
 
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
@@ -488,9 +443,9 @@ namespace Dash
                         {
                             cmd.Parameters.AddWithValue("@uname", username);
                             var result = cmd.ExecuteScalar();
-                            if (result != null)
+                            if (result != null && result != DBNull.Value)
                             {
-                                companyId = result.ToString();
+                                companyId = Convert.ToInt32(result); // Safely convert to int
                             }
                         }
                     }
@@ -508,9 +463,11 @@ namespace Dash
             catch (Exception ex)
             {
                 SentrySdk.CaptureException(ex);
-                return string.Empty;
+                return -1; // Return -1 to indicate an error occurred
             }
         }
+
+
 
         /* private void InitializeFilters()
         {
@@ -680,7 +637,7 @@ namespace Dash
 
                         if (result != null && result != DBNull.Value)
                         {
-                            groupId = (int)result;
+                            groupId = (int) result;
                         }
                     }
                     catch (Exception ex)
@@ -811,7 +768,7 @@ namespace Dash
                 {
                     try
                     {
-                        isEditUser = true;
+                        IsEditUser = true;
                         conn.Open();
                         SqlCommand cmd = new SqlCommand($"SELECT * FROM users WHERE uname='{name}'", conn);
                         SqlDataReader sdr = cmd.ExecuteReader();
@@ -1031,7 +988,7 @@ namespace Dash
                         }
 
                         string hashedPassword = HashPassword(TxtPassword.Text);
-                        int idCompany = GetIdCompany(CurrentCompany);
+                        int idCompany = GetUserCompany();
                         string query = @"INSERT INTO users(uname, password, user_role, id_company, view_allowed, full_name, email, referrer)
                              VALUES (@uname, @password, @user_role, @id_company, @view_allowed, @full_name, @Email, @referrer)";
 
@@ -1108,9 +1065,15 @@ namespace Dash
                             {
                                 cmd.Parameters.AddWithValue("@uname", username);
                                 conn.Open();
-                                cmd.ExecuteNonQuery();
-                                usersGridView.DataBind();
+                                int afftected = cmd.ExecuteNonQuery();
                                 // Notify success
+                                if(afftected == 1)
+                                {
+                                    CurrentUsername = GetFirstUserForCompany(GetUserCompany());
+                                }
+
+                                usersGridView.DataBind();
+
                             }
                         }
                         else
@@ -1136,6 +1099,41 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
+
+
+
+
+        private string GetFirstUserForCompany(int currentCompany)
+        {
+
+            // Define the query to get the first user for the company
+            string query = "SELECT TOP 1 uname FROM users WHERE id_company = @company_id";
+            // Initialize the result variable
+            string firstUser = string.Empty;
+            // Use the global connection string for the operation
+            using (SqlConnection conn = new SqlConnection(connection))
+            using (SqlCommand cmd = new SqlCommand(query, conn))
+            {
+                // Add the parameter for the query
+                cmd.Parameters.AddWithValue("@company_id", currentCompany);
+                // Open the connection
+                conn.Open();
+                // Execute the query and read the results
+                using (SqlDataReader reader = cmd.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        // Retrieve the value of the uname column
+                        firstUser = reader["uname"] as string;
+                    }
+                }
+            }
+            return firstUser;
+        }
+
+
+
 
         private string GetCompanyQuery(string uname)
         {
@@ -1270,7 +1268,7 @@ namespace Dash
                 email.Text = "";
                 TxtPassword.Text = "";
                 TxtRePassword.Text = "";
-                isEditUser = false;
+                IsEditUser = false;
                 Page.ClientScript.RegisterStartupScript(GetType(), "CallMyFunction", "window.onload = function() { showDialogSyncUser(); };", true);
             }
             catch (Exception ex)
@@ -1283,7 +1281,7 @@ namespace Dash
         {
             try
             {
-                isEditUser = false;
+                IsEditUser = false;
                 TxtUserName.Enabled = true;
                 email.Enabled = true;
                 TxtUserName.Text = "";

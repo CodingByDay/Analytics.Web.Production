@@ -635,7 +635,7 @@ namespace Dash
                     {
                         int id_company = GetIdCompany(company);
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) group_name FROM groups WHERE company_id = @id;", conn);
+                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) group_name FROM groups WHERE company_id = @id ORDER BY group_id ASC;", conn);
                         cmd.Parameters.AddWithValue("@id", id_company);
                         var group = (string)cmd.ExecuteScalar();
                         return group;
@@ -1109,6 +1109,11 @@ namespace Dash
                             cmd.Parameters.AddWithValue("@groupId", groupId);
                             // Execute the command
                             int rowsAffected = cmd.ExecuteNonQuery();
+
+                            if(rowsAffected == 1)
+                            {
+                                CurrentGroup = GetFirstGroupForCompany(CurrentCompany);
+                            }
                         }
                     }
                 }
