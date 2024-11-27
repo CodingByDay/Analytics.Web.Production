@@ -134,7 +134,7 @@
         <dx:ASPxDashboard ID="ASPxDashboard3" runat="server" AllowCreateNewJsonConnection="True" ClientInstanceName="dashboard" DataRequestOptions-ItemDataRequestMode="BatchRequests"  AllowExecutingCustomSql="True" AllowInspectAggregatedData="True" MobileLayoutEnabled="Auto" AllowInspectRawData="True" EnableCustomSql="True" EnableTextBoxItemEditor="True">
         <ClientSideEvents 
             BeforeRender="onBeforeRender"
-            DashboardInitializing ="ask"
+            DashboardInitializing ="ask" 
             ItemCaptionToolbarUpdated="onItemCaptionToolbarUpdated"
             ItemWidgetCreated="customizeWidgets"
             DashboardEndUpdate="onDashboardEndUpdate"

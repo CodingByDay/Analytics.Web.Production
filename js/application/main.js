@@ -109,41 +109,7 @@ function customizeWidgets(sender, args) {
 
         if (args.ItemName.startsWith("chart")) {
             var chart = args.GetWidget();
-            let tip = chart.tooltip =
-            {
-                enabled: true,
-                customizeTooltip(arg) {
-                    let rWork = arg.seriesName;
-                    window.item_caption = rWork;
-                    var list = dashboard.GetParameters().GetParameterList();
-                    if (list.length > 0) {
-                        var parameterized_values = regex_return(arg.seriesName);
-                        if (parameterized_values.length != 0) {
-                            parameterized_values.forEach((singular) => {
-                                const found = list.find(element => element.Name == singular)
-                                indexOfElement = list.indexOf(found)
-                                if (found != null && indexOfElement != -1) {
-                                    text_to_replace = "#" + found.Name
-                                    try {
-                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
-                                    } catch (err) {
-                                        text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
-                                    }
-                                    window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
-                                }
-                            })
-                        }
-                    }
-                    var splited = window.item_caption.split(" ");
-                    splited_removed = removeItemOnce(splited)
-                    let replaced = splited_removed.join(" ");
-
-                    return {
-                        text: `${replaced}: ${arg.valueText}`,
-                    };
-                }
-            };
-            chart.option("tooltip", tip);
+           
 
             var legend = chart.option("legend");
             legend.customizeText = function (arg) {
@@ -176,6 +142,26 @@ function customizeWidgets(sender, args) {
     }
 }
 
+
+function customizeWidgetOptions(e) {
+    debugger;
+    if (e.dashboardItem instanceof DevExpress.Dashboard.Model.ChartItem) {
+
+        let contentTemplateBase = e.options.tooltip.contentTemplate;
+
+        e.options.tooltip.contentTemplate = function (info, container) {
+
+            var text = "your additional tooltip text";
+
+            var result = contentTemplateBase(info, container);
+            result.append(text);
+            container.append(result);
+        }
+    }
+}
+
+
+
 function removeItemOnce(arr) {
         arr.splice(0, 1);
 
@@ -193,6 +179,8 @@ function getSafeParsedCookie(cookieName) {
     }
 }
 function updateCustomizeWidgets(sender, args) {
+
+
     var control = dashboard.GetDashboardControl();
     design = control.isDesignMode();
     if (!design) {
@@ -201,6 +189,8 @@ function updateCustomizeWidgets(sender, args) {
 
         setCookie('old', getCookie("new"));
         setCookie('new', JSON.stringify(collection));
+
+        
 
         if (args.ItemName.startsWith("gridDashboardItem") && collection.length > 0) {
             initialPayload = [];
@@ -268,6 +258,7 @@ function updateCustomizeWidgets(sender, args) {
             }
         }
 
+
         if (args.ItemName.startsWith("chart")) {
             var chart = args.GetWidget();
             var legend = chart.option("legend");
@@ -330,7 +321,57 @@ function onBeforeRender(sender) {
     dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
     dashboardControl.unregisterExtension("designerToolbar");
     viewerApiExtension = dashboardControl.findExtension('viewerApi');
+    if (viewerApiExtension) {
+        viewerApiExtension.on('itemWidgetOptionsPrepared', customizeWidgetOptions);
+    }
 }
+
+function customizeWidgetOptions(e) {
+
+    if (e.dashboardItem instanceof DevExpress.Dashboard.Model.ChartItem) {
+
+        let contentTemplateBase = e.options.tooltip.contentTemplate;
+        e.options.tooltip.contentTemplate = function (info, container) {
+
+            var result = contentTemplateBase(info, container);
+            let tooltipText = result.innerHTML;
+            window.item_caption = tooltipText;
+
+            var list = dashboard.GetParameters().GetParameterList();
+
+            if (list.length > 0) {
+
+                var parameterized_values = regex_return(tooltipText);
+                if (parameterized_values.length != 0) {
+                    parameterized_values.forEach((singular) => {
+
+                        const found = list.find(element => element.Name == singular)
+                        indexOfElement = list.indexOf(found)
+                        if (found != null && indexOfElement != -1) {
+                            text_to_replace = "#" + found.Name
+                            try {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                            } catch (err) {
+                                text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                            }
+                            window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+
+                        }
+                    })
+                }
+
+            }
+
+            result.innerHTML = window.item_caption;
+
+            container.append(result);
+        }
+    }
+}
+
+
+
+
 
 let previousViewerMode = "viewer";
 function checkViewerMode() {
