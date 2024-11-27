@@ -220,6 +220,10 @@
                 }
             }, 1000);
         }
+
+
+ 
+
     </script>
 
 
@@ -425,7 +429,7 @@
               </dx:BootstrapGridViewTextColumn>
 
 
-                  <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="sort"  Settings-AllowHeaderFilter="False" Name="Graf" Width="70" VisibleIndex="3" Caption="Sortiranje">
+                  <dx:BootstrapGridViewTextColumn ExportCellStyle-BackColor="Black" FieldName="sort" Settings-AllowHeaderFilter="False" Name="Graf" Width="70" VisibleIndex="3" Caption="Sortiranje">
                             <PropertiesTextEdit>
                               <ValidationSettings CausesValidation="false"  RequiredField-IsRequired="false" />
                             </PropertiesTextEdit>
