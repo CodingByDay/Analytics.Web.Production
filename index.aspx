@@ -130,9 +130,58 @@ height: 100% !important;
                 dashboardControl.registerExtension(extension);
                 dashboardControl.registerExtension(new DeleteDashboardExtension(sender));
                 // dashboardControl.registerExtension(new AssignMetadataExtension(sender));
+                viewerApiExtension = dashboardControl.findExtension('viewerApi');
+                if (viewerApiExtension) {
+                    viewerApiExtension.on('itemWidgetOptionsPrepared', customizeWidgetOptions);
+                }
                 dashboardControl.unregisterExtension("designerToolbar");
 
+            }
 
+
+
+
+            function customizeWidgetOptions(e) {
+
+                if (e.dashboardItem instanceof DevExpress.Dashboard.Model.ChartItem) {
+
+                    let contentTemplateBase = e.options.tooltip.contentTemplate;
+                    e.options.tooltip.contentTemplate = function (info, container) {
+
+                        var result = contentTemplateBase(info, container);
+                        let tooltipText = result.innerHTML;
+                        window.item_caption = tooltipText;
+
+                        var list = dashboard.GetParameters().GetParameterList();
+
+                        if (list.length > 0) {
+
+                            var parameterized_values = regex_return(tooltipText);
+                            if (parameterized_values.length != 0) {
+                                parameterized_values.forEach((singular) => {
+
+                                    const found = list.find(element => element.Name == singular)
+                                    indexOfElement = list.indexOf(found)
+                                    if (found != null && indexOfElement != -1) {
+                                        text_to_replace = "#" + found.Name
+                                        try {
+                                            text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value.toLocaleDateString("uk-Uk")
+                                        } catch (err) {
+                                            text_replace = dashboard.GetParameters().GetParameterList()[indexOfElement].Value
+                                        }
+                                        window.item_caption = window.item_caption.replace(text_to_replace, text_replace);
+
+                                    }
+                                })
+                            }
+
+                        }
+
+                        result.innerHTML = window.item_caption;
+
+                        container.append(result);
+                    }
+                }
             }
 
             function setCookie(cname, cvalue, exdays) {

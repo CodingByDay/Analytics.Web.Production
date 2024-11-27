@@ -143,23 +143,6 @@ function customizeWidgets(sender, args) {
 }
 
 
-function customizeWidgetOptions(e) {
-    debugger;
-    if (e.dashboardItem instanceof DevExpress.Dashboard.Model.ChartItem) {
-
-        let contentTemplateBase = e.options.tooltip.contentTemplate;
-
-        e.options.tooltip.contentTemplate = function (info, container) {
-
-            var text = "your additional tooltip text";
-
-            var result = contentTemplateBase(info, container);
-            result.append(text);
-            container.append(result);
-        }
-    }
-}
-
 
 
 function removeItemOnce(arr) {
