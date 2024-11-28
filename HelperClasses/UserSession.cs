@@ -99,7 +99,7 @@ namespace Dash.HelperClasses
             }
         }
 
-        public static void SignOutUser(string name)
+        public static void ClearUserCache(string name)
         {
             string query = "DELETE FROM [session_user] WHERE uname = @uname";
 

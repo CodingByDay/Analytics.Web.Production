@@ -646,7 +646,7 @@ namespace Dash
 
                         if (result != null && result != DBNull.Value)
                         {
-                            groupId = (int)result;
+                            groupId = (int) result;
                         }
                     }
                     catch (Exception ex)

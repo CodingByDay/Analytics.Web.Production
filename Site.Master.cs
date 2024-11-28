@@ -244,7 +244,7 @@ namespace Dash
         {
             try
             {
-                HelperClasses.UserSession.SignOutUser(HttpContext.Current.User.Identity.Name);
+                HelperClasses.UserSession.ClearUserCache(HttpContext.Current.User.Identity.Name);
                 FormsAuthentication.SignOut();
                 Session["current"] = string.Empty;
                 Response.Redirect("Home.aspx", false);
@@ -313,6 +313,8 @@ namespace Dash
         {
             try
             {
+                HelperClasses.UserSession.ClearUserCache(HttpContext.Current.User.Identity.Name);
+
                 // Data
                 if (userRole == "SuperAdmin")
                 {
@@ -340,6 +342,8 @@ namespace Dash
         {
             try
             {
+                HelperClasses.UserSession.ClearUserCache(HttpContext.Current.User.Identity.Name);
+
                 if (userRole == "SuperAdmin")
                 {
                     Response.Redirect("Index.aspx", false);
@@ -361,6 +365,8 @@ namespace Dash
         {
             try
             {
+                HelperClasses.UserSession.ClearUserCache(HttpContext.Current.User.Identity.Name);
+
                 Response.Redirect("Filters.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
             }
@@ -374,6 +380,8 @@ namespace Dash
         {
             try
             {
+                HelperClasses.UserSession.ClearUserCache(HttpContext.Current.User.Identity.Name);
+
                 Response.Redirect("Groups.aspx", false);
                 Context.ApplicationInstance.CompleteRequest();
             }

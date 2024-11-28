@@ -345,7 +345,7 @@
 
 <section class="columns">
 
-        <div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-labelledby="groupFormModalLabel" aria-hidden="true">
+  <div class="modal fade" id="groupFormModal" tabindex="-1" role="dialog" aria-labelledby="groupFormModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -444,7 +444,7 @@
             </div>
         </div>
 
-        <div class="modal-footer">
+        <div class="modal-footer saveDiv">
              <asp:Button CssClass="btn btn-primary" ID="saveGroupButton" runat="server" Text="Shrani"  OnClick="SaveGroupButton_Click"/>
         </div>
     </div>

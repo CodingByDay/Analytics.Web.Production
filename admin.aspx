@@ -214,13 +214,27 @@
         }
 
         function OnBatchEditEndEditing(s, e) {
-            setTimeout(function () {
-                if (s.batchEditApi.HasChanges()) {
-                    dashboardGrid.UpdateEdit();
-                }
-            }, 1000);
-        }
+            debugger;
+            var sort = e.itemValues[dashboardGrid.GetColumnByField("sort").index];
 
+            // Check if sort.value is not null and not castable to a three-digit integer
+            if (
+                sort.value !== null && // Value is not null
+                (!/^\d{3}$/.test(sort.value) || isNaN(parseInt(sort.value))) // Not a valid three-digit integer
+            ) {
+                setTimeout(function () {
+                    if (s.batchEditApi.HasChanges()) {
+                        dashboardGrid.CancelEdit(); // Cancel the edit
+                    }
+                }, 1000);
+            } else {
+                setTimeout(function () {
+                    if (s.batchEditApi.HasChanges()) {
+                        dashboardGrid.UpdateEdit(); // Proceed with update
+                    }
+                }, 1000);
+            }
+        }
 
  
 

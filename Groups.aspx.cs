@@ -254,9 +254,6 @@ namespace Dash
             {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
-                
-                
-
                 companiesGridView.SettingsBehavior.AllowFocusedRow = false;
                 companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
                 companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -565,7 +562,7 @@ namespace Dash
                 if (graphsGridView.VisibleRowCount > 0)
                 {
                     graphsGridView.Selection.BeginSelection();
-                    ShowConfigForUser();
+                    ShowConfigForGroup();
                     graphsGridView.Selection.EndSelection();
                 }
             }
@@ -723,7 +720,7 @@ namespace Dash
                 if (graphsGridView.VisibleRowCount > 0 && !String.IsNullOrEmpty(CurrentGroup))
                 {
                     // Show the configuration for the user.
-                    ShowConfigForUser();
+                    ShowConfigForGroup();
                 }
             }
             catch (Exception ex)
@@ -732,11 +729,15 @@ namespace Dash
             }
         }
 
-        private void ShowConfigForUser()
+        private void ShowConfigForGroup()
         {
             try
             {
-                DashboardPermissions dashboardPermissions = new DashboardPermissions(GetIdGroup(CurrentGroup));
+                int groupId = GetIdGroup(CurrentGroup);
+
+                DashboardPermissions dashboardPermissions = new DashboardPermissions(groupId);
+
+
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
                 {
                     int idRow = (int)graphsGridView.GetRowValues(i, "id");
