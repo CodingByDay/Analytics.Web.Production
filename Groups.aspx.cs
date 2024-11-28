@@ -254,6 +254,9 @@ namespace Dash
             {
                 connection = ConfigurationManager.ConnectionStrings["graphsConnectionString"].ConnectionString;
 
+                
+                
+
                 companiesGridView.SettingsBehavior.AllowFocusedRow = false;
                 companiesGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
                 companiesGridView.SettingsBehavior.AllowSelectByRowClick = true;
@@ -284,18 +287,21 @@ namespace Dash
 
                 if (!IsPostBack)
                 {
+                    LimitDashboardsPermissions();
                 }
 
                 InitializeUiChanges();
                 Authenticate();
 
-
                 LimitCompanyGrid();
+              
                 HideColumnForCompanies();
-                LimitDashboardsPermissions();
+                
+                
                 SetLocalizationProperties();
 
                 groupsGridView.SettingsCommandButton.EditButton.IconCssClass = "fas fa-edit";
+                
             }
             catch (Exception ex)
             {

@@ -124,17 +124,6 @@
         }
 
 
-        function filterGrid(category) {
-
-            if (category === 'all') {
-
-                dashboardGrid.PerformCallback(""); 
-            } else {
-
-                dashboardGrid.PerformCallback("filter|" + category); 
-            }
-
-        }
 
 
 

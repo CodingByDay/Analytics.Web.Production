@@ -219,7 +219,6 @@ namespace Dash
                 graphsGridView.SettingsBehavior.ProcessFocusedRowChangedOnServer = false;
                 graphsGridView.SettingsBehavior.AllowFocusedRow = true;
                 graphsGridView.DataBound += GraphsGridView_DataBound;
-                graphsGridView.RowValidating += GraphsGridView_RowValidating;
                 graphsGridView.BatchUpdate += GraphsGridView_BatchUpdate;
 
                 graphsGridView.HtmlRowPrepared += GraphsGridView_HtmlRowPrepared;
@@ -240,10 +239,7 @@ namespace Dash
             }
         }
 
-        private void GraphsGridView_RowValidating(object sender, DevExpress.Web.Data.ASPxDataValidationEventArgs e)
-        {
-            var debug = true;
-        }
+  
 
         private void SetLocalizationProperties()
         {

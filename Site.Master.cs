@@ -56,6 +56,10 @@ namespace Dash
                 {
                     HideActionButtonsForMobile();
                 }
+
+
+                ConditionalyAddStylesBasedOnTheUrl();
+
             }
             catch (Exception ex)
             {

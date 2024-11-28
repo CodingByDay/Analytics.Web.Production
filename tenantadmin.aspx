@@ -276,7 +276,7 @@
 <asp:ScriptManager runat="server" />
 
 
-      <dx:BootstrapGridView AutoPostBack="false" CssClasses-FocusedRow="focused_row" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"  SettingsResizing-ColumnResizeMode="NextColumn" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
+      <dx:BootstrapGridView CssClasses-FocusedRow="focused_row" SettingsText-CommandBatchEditPreviewChanges="Preveri spremembe" SettingsText-CommandBatchEditCancel="Prekliči" SettingsText-CommandBatchEditUpdate="Posodobi"  SettingsResizing-ColumnResizeMode="NextColumn" OnBeforeHeaderFilterFillItems="graphsGridView_BeforeHeaderFilterFillItems" Settings-ShowHeaderFilterButton="true"  SettingsBehavior-AllowDragDrop="true" ID="graphsGridView" runat="server" ClientInstanceName="dashboardGrid" Settings-VerticalScrollableHeight="400"  AutoGenerateColumns="False" Settings-VerticalScrollBarMode="Visible"  SettingsText-SearchPanelEditorNullText="Poiščite graf" CssClassesEditor-NullText="Urejaj"  Width="100%" DataSourceID="query" KeyFieldName="id" CssClasses-Control="graph">
 <CssClasses Control="grid"></CssClasses>
 <SettingsEditing Mode="Batch" />
 
@@ -308,14 +308,14 @@
                 </dx:BootstrapGridViewTextColumn>
 
 
-               <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
+               <dx:BootstrapGridViewTextColumn Settings-AllowHeaderFilter="True" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_type" Name="Tip" VisibleIndex="3" Caption="Tip">
                     <SettingsHeaderFilter>
                      <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
                  </SettingsHeaderFilter>
              </dx:BootstrapGridViewTextColumn>
 
 
-             <dx:BootstrapGridViewTextColumn ReadOnly="true" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
+             <dx:BootstrapGridViewTextColumn Settings-AllowHeaderFilter="True" SettingsHeaderFilter-ListBoxSearchUISettings-EditorNullText="Iskanje" SettingsHeaderFilter-DateRangeCalendarSettings-FastNavProperties-CancelButtonText="Prekliči"  SettingsHeaderFilter-Mode="CheckedList"  FieldName="meta_language" Name="Jezik" VisibleIndex="3" Caption="Jezik">
                   <SettingsHeaderFilter>
                      <ListBoxSearchUISettings  EditorNullText='<%$ Resources:Resource, Search %>' />
                  </SettingsHeaderFilter>
@@ -332,25 +332,34 @@
 
        </div>
        </div>
-<asp:SqlDataSource ID="TypeFilterDataSource" runat="server" 
-    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-    SelectCommand=
-    "
-        SELECT * FROM meta_options WHERE option_type = 'type'
-        UNION ALL
-        SELECT NULL AS id, 'type', '', 'Brez tipa'
-        ORDER BY id ASC;
-    ">
-</asp:SqlDataSource>
 
-<asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
-    ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
-    SelectCommand=
-    "
-    SELECT * FROM meta_options WHERE option_type = 'language'
-     UNION ALL SELECT NULL, '', '', 'Brez' ORDER BY id ASC;"
-    >
-</asp:SqlDataSource>
+        <asp:SqlDataSource 
+            ID="TypeFilterDataSource" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+            SelectCommand=
+            "
+                SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'type'
+                UNION ALL
+                SELECT -1 AS id, 'type', '', 'Brez tipa'
+                ORDER BY id ASC;
+            "
+           
+            >
+
+
+        </asp:SqlDataSource>
+
+
+        <asp:SqlDataSource ID="LanguageFilterDataSource" runat="server" 
+            ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"
+            SelectCommand=
+            "
+            SELECT id, option_type, value, description FROM meta_options WHERE option_type = 'language'
+             UNION ALL SELECT -1, '', '', 'Brez' ORDER BY id ASC;"
+
+            >
+
+        </asp:SqlDataSource>
 
     <asp:SqlDataSource ID="GroupsDropdown" runat="server" 
      ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>"

@@ -209,6 +209,7 @@ namespace Dash
 
                 if (!IsPostBack)
                 {
+                    LimitDashboardsToLocalAdminPermissions();
                 }
 
                 usersGrid.SelectParameters["company_id"].DefaultValue = GetUserCompany().ToString();
@@ -216,7 +217,6 @@ namespace Dash
 
                 InitializeUiChanges();
                 Authenticate();
-                LimitDashboardsToLocalAdminPermissions();
                 SetLocalizationProperties();
             }
             catch (Exception ex)
