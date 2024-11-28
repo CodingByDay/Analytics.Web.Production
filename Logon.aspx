@@ -68,7 +68,12 @@
     margin: 0; /* Removes default margin */
     overflow: hidden; /* Prevents scrolling */
 }
-
+     .pwd-rest {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 1em;
+}
     </style>
    
  
@@ -91,18 +96,15 @@
 
                     <div class="center">
 
-                        <span style="color: #808080;">Remember me</span>
+                        <div class="pwd-rest">
+                            <img src="images/pass.png" />
 
-                        <asp:CheckBox ID="chkPersistCookie" runat="server" AutoPostBack="false" />
+                            <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
 
-                        <img src="images/pass.png" />
+                                         Forgot your password?
 
-                        <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ResetPassword.aspx" >
-
-                                     Forgot your password?
-
-                        </asp:HyperLink>
-
+                            </asp:HyperLink>
+                        </div>
 
                         <asp:Button ID="cmdLogin" CssClass="login" runat="server" Text="Login" type="submit" OnClick="Login_Click" />
 

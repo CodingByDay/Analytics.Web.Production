@@ -165,10 +165,9 @@ namespace Dash
                     {
                         Path = FormsAuthentication.FormsCookiePath
                     };
-
-                    if (chkPersistCookie.Checked)
-                        ck.Expires = tkt.Expiration;
-
+                   
+                    ck.Expires = tkt.Expiration;
+                    
                     Response.Cookies.Add(ck);
                     string strRedirect = GetRole(txtUserName.Value);
                     Response.Redirect(strRedirect == "SuperAdmin" ? "Index.aspx" : "IndexTenant.aspx", false);
