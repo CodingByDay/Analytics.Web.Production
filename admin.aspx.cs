@@ -253,7 +253,7 @@ namespace Dash
                 companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
                 companiesGridView.SettingsText.HeaderFilterCancelButton = Resources.Resource.Cancel;
                 companiesGridView.SettingsText.HeaderFilterSelectAll = Resources.Resource.SelectAll;
-                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchGraph;
+                companiesGridView.SettingsText.SearchPanelEditorNullText = Resources.Resource.SearchCompany;
 
                 usersGridView.Columns["Uporabniško ime"].Caption = Resources.Resource.Username;
                 usersGridView.Columns["Skupina"].Caption = Resources.Resource.Group;
@@ -668,6 +668,8 @@ namespace Dash
         {
             try
             {
+                // Continue here if you want to avoid user selection reduntant behaviour.
+
                 // Group dashboards should be checked and disabled first. 14.11.2024
                 dashboardPermissionsGroup = new DashboardPermissions(GetGroupForUser(CurrentUsername));
                 for (int i = 0; i < graphsGridView.VisibleRowCount; i++)
@@ -698,6 +700,8 @@ namespace Dash
                 SentrySdk.CaptureException(ex);
             }
         }
+
+
 
         private void GraphsGridView_HtmlRowPrepared(object sender, ASPxGridViewTableRowEventArgs e)
         {
