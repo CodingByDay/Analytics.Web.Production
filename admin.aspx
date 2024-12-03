@@ -88,7 +88,6 @@
         }
 
         function checkFields(company_name, website, company_number) {
-
             company_name = document.getElementById("companyName").value
             website = document.getElementById("website").value
             company_number = document.getElementById("companyNumber").value
