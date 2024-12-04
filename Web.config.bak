@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
   For more information on how to configure your ASP.NET application, please visit
   http://go.microsoft.com/fwlink/?LinkId=169433
@@ -7,12 +7,12 @@
 	<configSections>
 		<section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
 		<sectionGroup name="devExpress">
-			<section name="themes" type="DevExpress.Web.ThemesConfigurationSection, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
-			<section name="compression" type="DevExpress.Web.CompressionConfigurationSection, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
-			<section name="settings" type="DevExpress.Web.SettingsConfigurationSection, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
-			<section name="errors" type="DevExpress.Web.ErrorsConfigurationSection, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
-			<section name="resources" type="DevExpress.Web.ResourcesConfigurationSection, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
-			<section name="bootstrap" type="DevExpress.Web.Bootstrap.BootstrapConfigurationSection, DevExpress.Web.Bootstrap.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="themes" type="DevExpress.Web.ThemesConfigurationSection, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="compression" type="DevExpress.Web.CompressionConfigurationSection, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="settings" type="DevExpress.Web.SettingsConfigurationSection, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="errors" type="DevExpress.Web.ErrorsConfigurationSection, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="resources" type="DevExpress.Web.ResourcesConfigurationSection, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
+			<section name="bootstrap" type="DevExpress.Web.Bootstrap.BootstrapConfigurationSection, DevExpress.Web.Bootstrap.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" requirePermission="false" />
 		</sectionGroup>
 	</configSections>
 	<configProtectedData />
@@ -102,12 +102,12 @@
 		<xhtmlConformance />
 		<compilation debug="true" targetFramework="4.5.2">
    <assemblies>
-    <add assembly="DevExpress.Data.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <add assembly="DevExpress.Drawing.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <add assembly="DevExpress.Web.ASPxThemes.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <add assembly="DevExpress.RichEdit.v24.1.Core, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <add assembly="DevExpress.Printing.v24.1.Core, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <add assembly="DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.Data.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.Drawing.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.Web.ASPxThemes.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.RichEdit.v24.1.Core, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.Printing.v24.1.Core, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add assembly="DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
    </assemblies>
   </compilation>
 		<authentication mode="Forms">
@@ -129,19 +129,19 @@
     <clear />
     <add connectionStringName="ApplicationServices" applicationName="/"
      name="AspNetSqlRoleProvider" type="System.Web.Security.SqlRoleProvider" />
-    <add applicationName="/"
-     name="AspNetWindowsTokenRoleProvider"
+    <add applicationName="/" name="AspNetWindowsTokenRoleProvider"
      type="System.Web.Security.WindowsTokenRoleProvider" />
    </providers>
   </roleManager>
 		<httpHandlers>
    <add path="ASPxUploadProgressHandlerPage.ashx" verb="GET,POST"
-    type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
-   <add path="DX.ashx" verb="GET,POST"
-    type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" validate="false" />
+    type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    validate="false" />
+   <add path="DX.ashx" verb="GET,POST" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    validate="false" />
   </httpHandlers>
 		<httpModules>
-   <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+   <add name="ASPxHttpHandlerModule" type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
   </httpModules>
 		<globalization culture="" uiCulture="" />
 		<httpRuntime executionTimeout="110" maxRequestLength="4096" requestValidationMode="4.0"
@@ -151,7 +151,7 @@
     <add namespace="System.Web.Optimization" />
    </namespaces>
    <controls>
-    <add tagPrefix="dx" namespace="DevExpress.Web" assembly="DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <add tagPrefix="dx" namespace="DevExpress.Web" assembly="DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <add tagPrefix="webopt" namespace="Microsoft.AspNet.Web.Optimization.WebForms"
      assembly="Microsoft.AspNet.Web.Optimization.WebForms" />
    </controls>
@@ -180,13 +180,16 @@
   </httpCompression>
   <!-- Modules -->
   <modules runAllManagedModulesForAllRequests="true">
-   <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" name="ASPxHttpHandlerModule" />
+   <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    name="ASPxHttpHandlerModule" />
   </modules>
   <!-- Handlers -->
   <handlers>
-   <add type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" name="ASPxUploadProgressHandler"
+   <add type="DevExpress.Web.ASPxUploadProgressHttpHandler, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    verb="GET,POST" path="ASPxUploadProgressHandlerPage.ashx" name="ASPxUploadProgressHandler"
     preCondition="integratedMode" />
-   <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" verb="GET,POST" path="DX.ashx" name="ASPxHttpHandlerModule" preCondition="integratedMode" />
+   <add type="DevExpress.Web.ASPxHttpHandlerModule, DevExpress.Web.v24.1, Version=24.1.6.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a"
+    verb="GET,POST" path="DX.ashx" name="ASPxHttpHandlerModule" preCondition="integratedMode" />
   </handlers>
   <!-- Security -->
   <security>
