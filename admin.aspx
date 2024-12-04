@@ -202,7 +202,6 @@
             }
         }
         function groupChanged(s, e) {
-
             // Save batch changes
             userGrid.UpdateEdit(); // Calls SaveBatchChanges on the server side
         }
@@ -213,7 +212,6 @@
         }
 
         function OnBatchEditEndEditing(s, e) {
-            debugger;
             var sort = e.itemValues[dashboardGrid.GetColumnByField("sort").index];
 
             // Check if sort.value is not null and not castable to a three-digit integer

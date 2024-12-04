@@ -202,7 +202,7 @@ namespace Dash
                 companiesGridView.SelectionChanged += CompaniesGridView_SelectionChanged;
                 companiesGridView.StartRowEditing += CompaniesGridView_StartRowEditing;
                 companiesGridView.DataBound += CompaniesGridView_DataBound;
-
+             
                 usersGridView.SettingsBehavior.AllowFocusedRow = false;
                 usersGridView.SettingsBehavior.AllowSelectSingleRowOnly = true;
                 usersGridView.SettingsBehavior.AllowSelectByRowClick = true;
