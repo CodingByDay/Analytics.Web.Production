@@ -153,7 +153,7 @@ namespace Dash
                     try
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies;", conn);
+                        SqlCommand cmd = new SqlCommand($"SELECT TOP (1) company_name FROM companies ORDER BY id_company;", conn);
                         var company = (string)cmd.ExecuteScalar();
                         return company;
                     }

@@ -243,7 +243,7 @@
 
     <div class="content-flex">
         <div class="inner-item companies" style="flex: 0 0 20%;">
-		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies"></asp:SqlDataSource>
+		    <asp:SqlDataSource ID="companiesGrid" runat="server" ConnectionString="<%$ ConnectionStrings:graphsConnectionString %>" SelectCommand="SELECT id_company, company_name, database_name FROM companies ORDER BY id_company"></asp:SqlDataSource>
             <div class="control_obj">
              <div class="grid-container full-height">
                  <div id="gridContainerCompanies" style="visibility: hidden">
