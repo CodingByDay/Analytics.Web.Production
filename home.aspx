@@ -80,6 +80,15 @@
         cursor: not-allowed; /* Change cursor to indicate the link is disabled */
         text-decoration: none; /* Remove underline */
     }
+
+    .youtube-demonstration {
+        display: flex;
+        gap: 1em;
+        margin-bottom: 2em;
+        flex-direction: column;
+        align-items:center;
+
+    }
 </style>
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
@@ -133,6 +142,17 @@
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
+
+          <div class="youtube-demonstration">
+              <h2>Youtube demonstration</h2>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/_eL_fjxu7NY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+
+
+
+
+
+
         <h2>Empower Your Business with Dash</h2>
         <p>Take control of your analytics and drive success. With Dash’s comprehensive features, you’ll unlock new opportunities and insights that propel your business forward.</p>
       </div><!-- End Section Title -->
